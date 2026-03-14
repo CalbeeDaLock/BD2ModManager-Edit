@@ -15,14 +15,15 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 ---
 
-## ✨ Features
+## ✨ New UPDATE 4.0.0 ✨
+* Remade the entire mod manager in another language (from pyside to tauri)
+* Mod manager 3.5x smaller
+* New UI Design
+* Multiplatform (Windows, Linux)
+* Much faster
+* Characters Tab with grid, list view
+* Install bepinex, browndustx inside the mod manager
 
-- Mod profiles to save and apply different enabled mod states
-- Preview Spine animations  
-- Automatic game detection  
-- Auto-updates for new characters & assets  
-- Multi-language support: en-US, pt-BR, ja-JP, ko-KR, zh-CN  
-- Easy mod management: search, filter, install, enable/disable
 
 ---
 
@@ -32,10 +33,8 @@ If you have suggestions or run into any problems with the app, feel free to open
 2. **Select your Brown Dust 2 directory** (where `BrownDust II.exe` is located)
    - Example: F:\Neowiz\Browndust2\Browndust2_10000001
 3. **Add your mods** by:
-   - Dragging and dropping them into the Mod Manager  
-   - Or moving them into the `mods/` folder  
+   - Noving them into the `mods/` folder  
      ⚠️ **Note:** This is *not* the BrownDustX `mods` directory. It's a separate folder used by this manager
-
 4. **Enable or disable mods**.
 5. **Sync your mods** to apply changes:
    - This will create a folder named `BD2MM` inside the `BrownDustX` mods folder with all your enabled mods.
@@ -92,14 +91,6 @@ Creates shortcuts instead of copying files.
 
 ### Where can I get mods?
 You can find mods on the BrownDustX Discord server: [https://discord.gg/B3Aqz6tDG2](https://discord.gg/B3Aqz6tDG2)
-
-### Why is the `.exe` flagged as a virus?
-This is a **false positive** caused by how PyInstaller packages apps. The program does **not** contain any malware.  
-If you're unsure, you can check the [source code](https://github.com/bruhnn/BD2ModManager) and build the `.exe` yourself.
-
-### What's the difference between the `.exe` and the `*-Full.zip` version?
-- The `.exe` is a standalone, single-file version.
-- The `*-Full.zip` is the **full version**, containing all required files and less likely to trigger false positives. It's recommended if you run into issues with the single `.exe`.
 
 ## 🤝 Credits
 

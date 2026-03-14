@@ -1,0 +1,99 @@
+<script setup lang="ts">
+import { computed } from "vue"
+import { Check } from "lucide-vue-next"
+
+const props = defineProps<{
+  modelValue: boolean
+  label?: string
+  // labelClass?: string
+  description?: string
+  // descriptionClass?: string
+  disabled?: boolean
+  icon?: any
+}>()
+
+const emit = defineEmits<{
+  (event: "update:modelValue", value: boolean): void
+}>()
+
+const toggle = () => {
+  if (props.disabled) return
+  emit("update:modelValue", !props.modelValue)
+}
+
+const boxClasses = computed(() => [
+  "w-5 h-5 rounded-sm flex items-center justify-center",
+  "border border-border transition-all duration-200 ease-in-out",
+  "focus:outline-none",
+  props.modelValue
+    ? "bg-accent-primary border-accent-primary"
+    : "bg-interactive-bg border-interactive-border",
+  !props.disabled && !props.modelValue
+    ? "hover:border-accent-primary"
+    : "",
+  props.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+])
+
+const id = `checkbox-${Math.random().toString(36).substr(2, 9)}`
+</script>
+
+<template>
+  <div
+    class="flex items-center gap-2 select-none"
+    :class="{ 'cursor-not-allowed': disabled, 'cursor-pointer': !disabled }"
+  >
+    <input
+      type="checkbox"
+      class="sr-only peer"
+      :checked="modelValue"
+      :disabled="disabled"
+      @change="toggle"
+      :id="id"
+    />
+
+
+    <!-- // checkbox  -->
+    <div
+      :class="boxClasses"
+      tabindex="0"
+      @click="toggle"
+      @keydown.space.prevent="toggle"
+    >
+      <Transition
+        enter-active-class="transition transform duration-150 ease-out"
+        enter-from-class="scale-50 opacity-0"
+        enter-to-class="scale-100 opacity-100"
+        leave-active-class="transition transform duration-100 ease-in"
+        leave-from-class="scale-100 opacity-100"
+        leave-to-class="scale-50 opacity-0"
+      >
+        <component
+          v-if="modelValue && icon"
+          :is="icon"
+          class="w-3.5 h-3.5 text-primary"
+        />
+
+        <Check
+          v-else-if="modelValue"
+          class="w-3.5 h-3.5 text-primary"
+          stroke-width="3"
+        />
+      </Transition>
+    </div>
+
+
+    <label
+      v-if="label"
+      :class="['text-primary text-sm ']"
+      :for="id"
+    >
+      {{ label }}
+      <p
+        v-if="description"
+        class="text-xs text-secondary mt-1 font-normal"
+      >
+        {{ description }}
+      </p>
+  </label>
+  </div>
+</template>
