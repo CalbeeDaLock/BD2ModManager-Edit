@@ -1,0 +1,77 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'windows-latest'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '4b77da7fed37817f124936239197833469f1b9a8'
+
+      - name: install vcpkg packages
+        run: |
+          ${{ env.VCPKG_ROOT }}/vcpkg install `
+            libarchive[bzip2,crypto,lz4,lzma,xar,zstd]:x64-windows-static-md `
+            liblzma:x64-windows-static-md `
+            lz4:x64-windows-static-md `
+            bzip2:x64-windows-static-md `
+            zstd:x64-windows-static-md `
+            zlib:x64-windows-static-md `
+            openssl:x64-windows-static-md
+
+      - name: set vcpkg env vars
+        run: |
+          echo "VCPKG_ROOT=${{ env.VCPKG_ROOT }}" >> $env:GITHUB_ENV
+          echo "VCPKGRS_TRIPLET=x64-windows-static-md" >> $env:GITHUB_ENV
+          echo "VCPKGRS_DYNAMIC=0" >> $env:GITHUB_ENV
+          echo "${{ env.VCPKG_ROOT }}/installed/x64-windows-static-md/bin" >> $env:GITHUB_PATH
+          echo "LIBARCHIVE_INCLUDE_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows-static-md/include" >> $env:GITHUB_ENV
+          echo "LIBARCHIVE_LIB_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows-static-md/lib" >> $env:GITHUB_ENV
+
+      - name: download bundled tools
+        run: |
+          mkdir -p src-tauri/bundled_tools
+          curl -L "https://github.com/bruhnn/bd2modpreview/releases/latest/download/bd2modpreview.exe" `
+            -o src-tauri/bundled_tools/bd2modpreview.exe
+
+      - name: install frontend dependencies
+        run: pnpm install
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: ${{ github.ref_name }}
+          releaseBody: 'See assets below to download and install.'
+          releaseDraft: true

@@ -1,0 +1,52 @@
+[package]
+name = "BD2ModManager"
+version = "4.0.0"
+description = "Brown Dust 2 Mod Manager"
+authors = ["bruhnn"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "bd2modmanager_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+walkdir = "2.5.0"
+log = "0.4.27"
+tauri-plugin-log = { version = "2", features = ["colored"] }
+rayon = "1.11.0"
+uuid = { version = "1.18.0", features = ["v4"] }
+chrono = { version = "0.4.41", features = ["serde"] }
+tempfile = "3.21.0"
+tauri-plugin-store = "2"
+winreg = "0.55.0"
+tauri-plugin-dialog = "2"
+pelite = "0.10.0"
+zip = "4.6.1"
+sha2 = "0.10.9"
+windows-sys = { version = "0.61.0", features = ["Win32_System_Threading", "Win32_Security"] }
+tauri-plugin-shell = "2"
+anyhow = "1.0.99"
+reqwest = {version="0.12.23", features= ["json", "stream"] }
+futures-util = "0.3"
+tokio = {version="1.47.1" }
+regex = "1.12.3"
+semver = "1.0.27"
+tauri-plugin-os = "2"
+compress-tools = { version = "0.15.1", features = ["static"] }
+unrar = "0.5.8"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-window-state = "2"
+
