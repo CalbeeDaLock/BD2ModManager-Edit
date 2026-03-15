@@ -138,7 +138,7 @@ const columns = [
             }, [
                 preferencesStore.modTypeDisplay === 'iconOnly' || preferencesStore.modTypeDisplay === 'full' ? h(Image, {
                     class: "w-[1.25rem] h-[1.25rem] object-contain",
-                    src: `src/assets/icons/${modType.toLowerCase()}.png`
+                    src: `/icons/${modType.toLowerCase()}.png`
                 }) : null,
                 preferencesStore.modTypeDisplay === 'labelOnly' || preferencesStore.modTypeDisplay === 'full' ? h('span', {
                     class: ['font-base', getTypeClass(modType)]
