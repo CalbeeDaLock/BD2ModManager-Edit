@@ -32,6 +32,8 @@ let unlistenClose: (() => void) | null = null
 provideHeader()
 
 onMounted(async () => {
+  document.addEventListener("contextmenu", (event) => event.preventDefault())
+  
   const isFirstLaunch = await initialize()
   if (isFirstLaunch) isWelcomeModalVisible.value = true
 
