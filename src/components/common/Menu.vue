@@ -1,78 +1,59 @@
 <script lang="ts" setup>
 import { TransitionRoot } from '@headlessui/vue';
-import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
+import { ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { useFloating, autoUpdate, offset, flip, shift } from '@floating-ui/vue';
 
-const menuRef = useTemplateRef('menuRef')
-const triggerArea = useTemplateRef("triggerArea")
-const isVisible = ref(false)
+const containerRef = ref<HTMLElement | null>(null);
+const triggerArea = ref<HTMLElement | null>(null);
+const menuRef = ref<HTMLElement | null>(null);
+const isVisible = ref(false);
 
-const toggleMenu = async () => {
-    isVisible.value = !isVisible.value
-}
+const { floatingStyles } = useFloating(triggerArea, menuRef, {
+  placement: 'bottom',
+  strategy: 'fixed',
+  middleware: [offset(4), flip(), shift({ padding: 8 })],
+  whileElementsMounted: autoUpdate,
+});
 
-const handleClickOutside = (event: MouseEvent) => {
-  if (menuRef.value && !menuRef.value.contains(event.target as Node) && isVisible.value && !triggerArea.value?.contains(event.target as Node)) {
-    isVisible.value = false
-  }
-}
+const toggleMenu = () => {
+  isVisible.value = !isVisible.value;
+};
 
-// Track trigger position for absolute positioning
-const triggerRect = ref<DOMRect | null>(null)
-
-const updatePosition = () => {
-  if (triggerArea.value) {
-    triggerRect.value = triggerArea.value.getBoundingClientRect()
-  }
-}
-
-onMounted(() => {
-    document.addEventListener("click", handleClickOutside)
-    window.addEventListener("scroll", updatePosition, true)
-    window.addEventListener("resize", updatePosition)
-})
-
-onUnmounted(() => {
-    document.removeEventListener('click', handleClickOutside)
-    window.removeEventListener("scroll", updatePosition, true)
-    window.removeEventListener("resize", updatePosition)
-})
+onClickOutside(
+  containerRef,
+  () => { isVisible.value = false; },
+  { ignore: [menuRef, triggerArea] }
+);
 </script>
 
 <template>
-    <div class="flex relative">
-        <div ref="triggerArea" @click="updatePosition">
-            <slot name="trigger" :toggle="toggleMenu"></slot>
-        </div>
-        
-        <Teleport to="body">
-            <TransitionRoot
-                as="template"
-                :show="isVisible"
-                enter="transition ease-out duration-100"
-                enter-from="transform opacity-0 scale-95"
-                enter-to="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leave-from="transform opacity-100 scale-100"
-                leave-to="transform opacity-0 scale-95"
-            >
-                <div 
-                    ref="menuRef"
-                    class="
-                    fixed w-48 
-                    bg-bg-surface
-                    border-2 border-border rounded 
-                    shadow-lg 
-                    z-50
-                    "
-                    :style="{
-                        top: `${(triggerRect?.bottom || 0) + 4}px`,
-                        left: `${(triggerRect?.left || 0) + (triggerRect?.width || 0) / 2}px`,
-                        transform: 'translateX(-50%)'
-                    }"
-                >
-                    <slot name="content"></slot>
-                </div>
-            </TransitionRoot>
-        </Teleport>
+  <div ref="containerRef" class="flex relative">
+    <div ref="triggerArea">
+      <slot name="trigger" :toggle="toggleMenu"></slot>
     </div>
+
+    <Teleport to="body">
+      <div
+        ref="menuRef"
+        :style="floatingStyles"
+        class="z-50"
+        :class="{ 'pointer-events-none': !isVisible }"
+      >
+        <TransitionRoot
+          :show="isVisible"
+          enter="transition ease-out duration-100"
+          enter-from="transform opacity-0 scale-95"
+          enter-to="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leave-from="transform opacity-100 scale-100"
+          leave-to="transform opacity-0 scale-95"
+        >
+          <div class="w-48 bg-bg-surface border-2 border-border rounded shadow-lg">
+            <slot name="content"></slot>
+          </div>
+        </TransitionRoot>
+      </div>
+    </Teleport>
+  </div>
 </template>
