@@ -32,7 +32,9 @@ let unlistenClose: (() => void) | null = null
 provideHeader()
 
 onMounted(async () => {
-  document.addEventListener("contextmenu", (event) => event.preventDefault())
+  if (!import.meta.env.DEV) {
+    document.addEventListener("contextmenu", (event) => event.preventDefault())
+  }
   
   const isFirstLaunch = await initialize()
   if (isFirstLaunch) isWelcomeModalVisible.value = true
@@ -59,10 +61,10 @@ onMounted(async () => {
     }
 
     const result = await confirm.confirm({
-      title: t('app.exitConfirmationTitle'),
-      message: t('app.exitConfirmationMessage'),
-      acceptButton: { label: t('app.exitConfirmationAccept') },
-      rejectButton: { label: t('app.exitConfirmationReject') },
+      title: t('app.confirmations.exit.title'),
+      message: t('app.confirmations.exit.message'),
+      acceptButton: { label: t('app.confirmations.exit.actions.exit') },
+      rejectButton: { label: t('common.actions.cancel') },
     })
 
     if (result.confirmed) currentWindow.destroy()
