@@ -8,7 +8,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { SyncStatus, useSyncStateStore } from '../stores/syncState';
-import { SyncType } from '../composables/useSyncEvents';
+import { SyncError, SyncType } from '../composables/useSyncEvents';
 import RefinedGithub from '../assets/icons/github.svg';
 import SyncModal from './modals/SyncModal.vue';
 import LogsModal from './modals/LogsModal.vue';
@@ -85,16 +85,22 @@ const isLogsModalVisible = ref(false)
 const appVersion = ref('0.0.0')
 const { t } = useI18n()
 
-function getSyncError(error: any) {
-    if (!error) return null
+function getErrorMessage(t: (key: string, params?: any) => string, error: SyncError | null | undefined): string {
+    if (!error) return t('errors.unknownError')
+
     switch (error.type) {
-        case "SymlinkAdminRequired":
-            return t('modals.sync.errors.adminRequired', 'Administrator privileges are required to sync mods using symlinks.')
-        default:
-            return error.type
+        case 'SymlinkAdminRequired': return t('errors.symlinkAdminRequired')
+        case 'PermissionDenied': return t('errors.permissionDenied')
+        case 'DiskFull': return t('errors.diskFull')
+        case 'ModPathNotFound': return t('errors.modPathNotFound', { path: error.details })
+        case 'CopyFailed': return t('errors.copyFailed', { error: error.details })
+        case 'SymlinkFailed': return t('errors.symlinkFailed', { error: error.details })
+        case 'HardlinkFailed': return t('errors.hardlinkFailed', { error: error.details })
+        case 'DirectoryCreationFailed': return t('errors.directoryCreationFailed', { error: error.details })
+        case 'RemovalFailed': return t('errors.removalFailed', { error: error.details })
+        default: return t('errors.unknownError', { error: JSON.stringify(error) })
     }
 }
-
 async function openGithubUser() { await openUrl("https://github.com/bruhnn") }
 
 const loggingStore = useLoggingStore()
@@ -125,7 +131,6 @@ onMounted(async () => {
     }))
 
     unlistenFunctions.value.push(await listen('update:app:error', (e: any) => {
-        // no visual only log
         loggingStore.logError('Failed to check for updates: ' + e.payload.message)
     }))
 
@@ -134,7 +139,7 @@ onMounted(async () => {
         loggingStore.logInfo('Checking for Mod Preview updates...')
         modPreviewUpdate.value = { show: true, status: 'checking', version: null, progress: 0, error: null }
     }))
-    
+
     unlistenFunctions.value.push(await listen('update:modPreview:downloading', (e: any) => {
         loggingStore.logInfo(`Downloading Mod Preview v${e.payload.version}... Progress: ${e.payload.progress}%`)
         modPreviewUpdate.value = { show: true, status: 'downloading', version: e.payload.version, progress: e.payload.progress, error: null }
@@ -155,7 +160,7 @@ onMounted(async () => {
         gameDataUpdate.value = { show: true, status: 'checking', progress: 0, label: e.payload, error: null }
     }))
 
-        unlistenFunctions.value.push(await listen('update:gameData:updating', (e: any) => {
+    unlistenFunctions.value.push(await listen('update:gameData:updating', (e: any) => {
         loggingStore.logInfo(`Downloading game data... (${e.payload.label}) Progress: ${e.payload.progress}%`)
         gameDataUpdate.value = { show: true, status: 'downloading', progress: e.payload.progress, label: e.payload.label, error: null }
     }))
@@ -190,7 +195,7 @@ onUnmounted(() => {
             </span>
             <span class="text-xs font-semibold text-primary flex gap-2 items-center justify-center">
                 <Heart class="inline w-3.5 h-3.5 text-accent-primary" />
-                v{{ appVersion }}<span class="text-success font-bold">Testing</span> by    
+                v{{ appVersion }} by
                 <span class="font-mono cursor-pointer
                     bg-linear-to-r from-accent-primary via-accent-primary/60 to-accent-primary
                     bg-size-[200%_100%] bg-clip-text text-transparent
@@ -199,13 +204,12 @@ onUnmounted(() => {
                 </span>
             </span>
             <transition name="slide-fade">
-                <div v-if="appUpdate.show"
-                    class="group relative flex items-center gap-1.5 rounded-md shrink-0"
+                <div v-if="appUpdate.show" class="group relative flex items-center gap-1.5 rounded-md shrink-0"
                     :class="appUpdate.status === 'available' ? 'cursor-pointer' : ''"
                     @click="appUpdate.status === 'available' ? handleAppUpdateClick() : undefined">
 
                     <div v-if="appUpdate.status === 'available'"
-                        class="w-full h-full absolute inset-0 z-10 rounded-md  group-hover:underline transition-colors pointer-events-none" />
+                        class="w-full h-full absolute inset-0 z-10 rounded-md group-hover:underline transition-colors pointer-events-none" />
 
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
                         <RotateCw v-if="appUpdate.status === 'checking'"
@@ -215,13 +219,11 @@ onUnmounted(() => {
 
                         <span class="text-xs font-mono truncate max-w-40">
                             <span v-if="appUpdate.status === 'checking'" class="text-secondary hidden md:inline">
-                                {{ $t('titlebar.update.checking', 'Checking for updates...') }}
+                                {{ $t('titlebar.appUpdate.checking') }}
                             </span>
                             <span v-else-if="appUpdate.status === 'available'"
                                 class="text-accent-primary font-semibold group-hover:underline">
-                                <span class="">
-                                    {{ $t('titlebar.update.available', { version: appUpdate.newVersion }) }}
-                                </span>
+                                {{ $t('titlebar.appUpdate.available', { version: appUpdate.newVersion }) }}
                             </span>
                         </span>
                     </div>
@@ -231,24 +233,38 @@ onUnmounted(() => {
 
         <div class="flex gap-1 md:gap-2 min-w-0 overflow-hidden">
             <transition name="slide-fade">
-                <div v-if="modPreviewUpdate.show" class="relative flex items-center gap-1.5 px-2 my-1.5 rounded-md shrink-0">
+                <div v-if="modPreviewUpdate.show"
+                    class="relative flex items-center gap-1.5 px-2 my-1.5 rounded-md shrink-0">
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
                         <Puzzle v-if="modPreviewUpdate.status === 'downloading'"
                             class="w-4 h-4 shrink-0 text-accent-primary animate-pulse" />
-                        <Check v-else-if="modPreviewUpdate.status === 'downloaded'" class="w-4 h-4 shrink-0 text-success" />
+                        <Check v-else-if="modPreviewUpdate.status === 'downloaded'"
+                            class="w-4 h-4 shrink-0 text-success" />
 
                         <span class="text-xs font-mono truncate max-w-60">
                             <span v-if="modPreviewUpdate.status === 'downloading'">
-                                <span class="hidden sm:inline">Mod Preview v{{ modPreviewUpdate.version }}</span>
-                                <span class="sm:hidden">Mod Preview</span>
+                                <span class="hidden sm:inline">
+                                    {{ $t('titlebar.modPreview.downloading', { version: modPreviewUpdate.version }) }}
+                                </span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.modPreview.downloadingShort') }}
+                                </span>
                             </span>
                             <span v-else-if="modPreviewUpdate.status === 'error'" class="text-danger">
-                                <span class="hidden sm:inline">Failed to update Mod Preview</span>
-                                <span class="sm:hidden">MP update failed</span>
+                                <span class="hidden sm:inline">
+                                    {{ $t('titlebar.modPreview.updateFailed') }}
+                                </span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.modPreview.updateFailedShort') }}
+                                </span>
                             </span>
                             <span v-else-if="modPreviewUpdate.status === 'downloaded'" class="text-primary">
-                                <span class="hidden sm:inline">Mod Preview v{{ modPreviewUpdate.version }} updated!</span>
-                                <span class="sm:hidden">Mod Preview updated!</span>
+                                <span class="hidden sm:inline">
+                                    {{ $t('titlebar.modPreview.updated', { version: modPreviewUpdate.version }) }}
+                                </span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.modPreview.updatedShort') }}
+                                </span>
                             </span>
                         </span>
 
@@ -266,8 +282,7 @@ onUnmounted(() => {
                 </div>
             </transition>
 
-            <div v-if="modPreviewUpdate.show && (gameDataUpdate.show)"
-                class="w-px bg-border my-2.5 shrink-0" />
+            <div v-if="modPreviewUpdate.show && gameDataUpdate.show" class="w-px bg-border my-2.5 shrink-0" />
 
             <transition name="slide-fade">
                 <div v-if="gameDataUpdate.show"
@@ -276,23 +291,32 @@ onUnmounted(() => {
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
                         <Database v-if="gameDataUpdate.status === 'downloading'"
                             class="w-4 h-4 shrink-0 text-accent-primary animate-pulse" />
-                        <Check v-else-if="gameDataUpdate.status === 'updated'"
-                            class="w-4 h-4 shrink-0 text-success" />
+                        <Check v-else-if="gameDataUpdate.status === 'updated'" class="w-4 h-4 shrink-0 text-success" />
                         <AlertTriangle v-else-if="gameDataUpdate.status === 'error'"
                             class="w-4 h-4 shrink-0 text-danger" />
 
                         <span class="text-xs font-mono truncate max-w-40">
                             <span v-if="gameDataUpdate.status === 'downloading'">
-                                <span class="hidden sm:inline">{{ gameDataUpdate.label ?? 'Game data...' }}</span>
-                                <span class="sm:hidden">Data</span>
+                                <span class="hidden sm:inline">
+                                    {{ gameDataUpdate.label ?? $t('titlebar.gameData.downloading') }}
+                                </span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.gameData.downloadingShort') }}
+                                </span>
                             </span>
                             <span v-else-if="gameDataUpdate.status === 'checking'">
-                                <span class="hidden sm:inline">{{ gameDataUpdate.label ?? 'Checking game data...' }}</span>
-                                <span class="sm:hidden">Data</span>
+                                <span class="hidden sm:inline">
+                                    {{ gameDataUpdate.label ?? $t('titlebar.gameData.checking') }}
+                                </span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.gameData.downloadingShort') }}
+                                </span>
                             </span>
                             <span v-else-if="gameDataUpdate.status === 'updated'" class="text-primary">
                                 <span class="hidden sm:inline">{{ gameDataUpdate.label }}</span>
-                                <span class="sm:hidden">Data updated</span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.gameData.updatedShort') }}
+                                </span>
                             </span>
                         </span>
 
@@ -313,7 +337,6 @@ onUnmounted(() => {
             <div v-if="(modPreviewUpdate.show || gameDataUpdate.show) && showSyncBar"
                 class="w-px bg-border my-2.5 shrink-0" />
 
-
             <div v-show="showSyncBar"
                 class="group relative flex items-center justify-between gap-2 md:gap-3 mr-1 md:mr-2 py-0 px-2 my-1.5 transition-all rounded-md cursor-pointer shrink-0"
                 @click="handleSyncClick">
@@ -330,19 +353,18 @@ onUnmounted(() => {
 
                     <span v-if="syncStateStore.status === SyncStatus.FAILED"
                         class="flex-1 min-w-0 text-sm text-danger truncate">
-                        {{ getSyncError(syncStateStore.error) }}
+                        {{ getErrorMessage(t, syncStateStore.error) }}
                     </span>
                     <span v-else-if="syncStateStore.status === SyncStatus.SYNCING"
                         class="text-sm font-mono truncate max-w-30 md:max-w-50">
-                        <span class="hidden sm:inline">{{ $t('titlebar.sync.applying', 'Applying: ') }}</span>
-                        {{ syncStateStore.lastSyncedMod?.modName }}
+                        {{ $t('titlebar.sync.applying', { modName: syncStateStore.lastSyncedMod?.modName }) }}
                     </span>
                     <span v-else class="text-sm font-mono truncate max-w-25 md:max-w-50">
-                        <span v-if="syncStateStore.type === SyncType.Sync" class="sm:inline">
-                            {{ $t('titlebar.sync.syncSuccess', 'Mods Synced Successfully') }}
+                        <span v-if="syncStateStore.type === SyncType.Sync">
+                            {{ $t('titlebar.sync.syncSuccess') }}
                         </span>
-                        <span v-else class="sm:inline">
-                            {{ $t('titlebar.sync.unsyncSuccess', 'Mods Removed Successfully') }}
+                        <span v-else>
+                            {{ $t('titlebar.sync.unsyncSuccess') }}
                         </span>
                     </span>
                 </div>
@@ -367,13 +389,17 @@ onUnmounted(() => {
                     @click="handleGithubClick">
                     <RefinedGithub class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary transition-colors" />
                     <span
-                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">Github</span>
+                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
+                        {{ $t('titlebar.actions.github') }}
+                    </span>
                 </button>
                 <button class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
                     @click="handleLogsClick">
                     <ScrollText class="w-[1.25em] h-[1.25em] group-hover:text-accent-primary transition-colors" />
                     <span
-                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">Logs</span>
+                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
+                        {{ $t('titlebar.actions.logs') }}
+                    </span>
                 </button>
             </div>
 

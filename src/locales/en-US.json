@@ -29,6 +29,35 @@
             }
         }
     },
+    "titlebar": {
+        "appUpdate": {
+            "checking": "Checking for updates...",
+            "available": "Update available: v{version}"
+        },
+        "sync": {
+            "applying": "Applying: {modName}",
+            "syncSuccess": "Mods Synced Successfully",
+            "unsyncSuccess": "Mods Removed Successfully"
+        },
+        "modPreview": {
+            "downloading": "Mod Preview v{version}",
+            "downloadingShort": "Mod Preview",
+            "updateFailed": "Failed to update Mod Preview",
+            "updateFailedShort": "MP update failed",
+            "updated": "Mod Preview v{version} updated!",
+            "updatedShort": "Mod Preview updated!"
+        },
+        "gameData": {
+            "downloading": "Game data...",
+            "downloadingShort": "Data",
+            "checking": "Checking game data...",
+            "updatedShort": "Data updated"
+        },
+        "actions": {
+            "github": "Github",
+            "logs": "Logs"
+        }
+    },
     "sidebar": {
         "sections": {
             "navigation": "Navigation",
