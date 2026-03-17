@@ -77,4 +77,4 @@ jobs:
           releaseDraft: true
           args: --no-bundle --features portable
           uploadPlainBinary: true
-          assetNamePattern: '[name]-[version]-portable[ext]'
+          assetNamePattern: 'BD2ModManager-[version]-portable[ext]'
