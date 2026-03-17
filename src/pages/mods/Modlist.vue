@@ -126,7 +126,7 @@ const columns = [
                 ) : null
             ])
         },
-        header: () => h('span', { class: 'flex text-primary items-center' }, t('mods.header.modName')),
+        header: () => h('span', { class: 'flex text-primary items-center' }, t('modsTab.modlist.header.modName')),
         size: 300
     }),
     columnHelper.accessor('modType', {
@@ -145,7 +145,7 @@ const columns = [
                 }, modType ?? null) : null
             ])
         },
-        header: () => h('span', { class: 'flex text-primary' }, t('mods.header.modType')),
+        header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.modType')),
         // accessorFn: row => row.modType,
         sortUndefined: "last",
         sortDescFirst: false,
@@ -194,7 +194,7 @@ const columns = [
                 )
             }
         },
-        header: () => h('span', { class: 'flex text-primary' }, t('mods.header.character')),
+        header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.character')),
         sortingFn: (rowA, rowB, columnId) => {
             const charA: any = rowA.getValue(columnId);
             const charB: any = rowB.getValue(columnId);
@@ -212,7 +212,7 @@ const columns = [
         cell: info => {
             return h('span', { class: 'truncate text-sm text-primary' }, info.getValue())
         },
-        header: () => h('span', { class: 'flex text-primary' }, t('mods.header.author')),
+        header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.author')),
         size: 200
     }),
 ]
@@ -364,7 +364,7 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
 
     return [
         {
-            label: t('mods.contextMenu.refresh'),
+            label: t('modsTab.modlist.contextMenu.refreshMods'),
             key: 'refresh'
         } as ContextMenuItem,
         {
@@ -372,14 +372,14 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             key: 'd1'
         } as ContextMenuItem,
         {
-            label: t('mods.contextMenu.selectMods'),
+            label: t('modsTab.modlist.contextMenu.selectMods'),
             key: 'select-mods',
             children: [
-                { label: t('mods.contextMenu.selectAllMods'), key: 'select-all' },
-                { label: t('mods.contextMenu.selectEnabledMods'), key: 'select-enabled' },
-                { label: t('mods.contextMenu.selectDisabledMods'), key: 'select-disabled' },
+                { label: t('modsTab.modlist.contextMenu.selectAllMods'), key: 'select-all' },
+                { label: t('modsTab.modlist.contextMenu.selectEnabledMods'), key: 'select-enabled' },
+                { label: t('modsTab.modlist.contextMenu.selectDisabledMods'), key: 'select-disabled' },
                 { type: 'divider' as const, key: 'd-select' },
-                { label: t('mods.contextMenu.deselectAllMods'), key: 'deselect-all' },
+                { label: t('modsTab.modlist.contextMenu.deselectMods'), key: 'deselect-all' },
             ]
         } as ContextMenuItem,
         {
@@ -388,22 +388,22 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             show: hasSelection
         } as ContextMenuItem,
         {
-            label: isSingleSelection ? t('mods.contextMenu.enableMod') : t('mods.contextMenu.enableSelectedMods'),
+            label: isSingleSelection ? t('modsTab.modlist.contextMenu.enableMod') : t('modsTab.modlist.contextMenu.enableSelectedMods'),
             key: 'enable',
             show: hasSelection && selectedMods.value.some(mod => !mod.enabled && mod.errors.length === 0)
         } as ContextMenuItem,
         {
-            label: isSingleSelection ? t('mods.contextMenu.disableMod') : t('mods.contextMenu.disableSelectedMods'),
+            label: isSingleSelection ? t('modsTab.modlist.contextMenu.disableMod') : t('modsTab.modlist.contextMenu.disableSelectedMods'),
             key: 'disable',
             show: hasSelection && selectedMods.value.some(mod => mod.enabled && mod.errors.length === 0)
         } as ContextMenuItem,
         {
-            label: isSingleSelection ? t('mods.contextMenu.changeModAuthor') : t('mods.contextMenu.changeSelectedModsAuthor'),
+            label: isSingleSelection ? t('modsTab.modlist.contextMenu.changeModAuthor') : t('modsTab.modlist.contextMenu.changeSelectedModsAuthor'),
             key: 'change-author',
             show: hasSelection
         } as ContextMenuItem,
         // {
-        //     label: t('mods.contextMenu.editModFile'),
+        //     label: t('modsTab.modlist.contextMenu.editModFile'),
         //     key: 'edit-modfile',
         //     show: isSingleSelection
         // },
@@ -413,12 +413,12 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             show: hasSelection
         } as ContextMenuItem,
         {
-            label: t('mods.contextMenu.renameMod'),
+            label: t('modsTab.modlist.contextMenu.renameMod'),
             key: 'rename',
             show: isSingleSelection
         } as ContextMenuItem,
         {
-            label: isSingleSelection ? t('mods.contextMenu.deleteMod') : t('mods.contextMenu.deleteSelectedMods'),
+            label: isSingleSelection ? t('modsTab.modlist.contextMenu.deleteMod') : t('modsTab.modlist.contextMenu.deleteSelectedMods'),
             key: 'delete',
             show: hasSelection
         } as ContextMenuItem,
@@ -428,12 +428,12 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             show: isSingleSelection
         } as ContextMenuItem,
         {
-            label: t('mods.contextMenu.openModFolder'),
+            label: t('modsTab.modlist.contextMenu.openModFolder'),
             key: 'open-folder',
             show: isSingleSelection
         } as ContextMenuItem,
         {
-            label: t('mods.contextMenu.previewMod'),
+            label: t('modsTab.modlist.contextMenu.previewMod'),
             key: 'preview',
             show: isSingleSelection
         } as ContextMenuItem,

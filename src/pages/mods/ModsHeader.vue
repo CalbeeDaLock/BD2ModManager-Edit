@@ -49,39 +49,39 @@ function toggleModTypes(modType: string) {
             <div class="flex flex-1 gap-2 justify-start align-center h-9 items-stretch overflow-hidden">
                 <Popover placement="bottom-start" trigger="hover">
                     <template #trigger="{isOpen, open, close}">
-                        <Button :icon="Filter" label="Filters" @click="isOpen ? close() : open()" />
+                        <Button :icon="Filter" :label="$t('modsTab.header.actions.filters')" @click="isOpen ? close() : open()" />
                     </template>
 
                     <template #default>
                         <div
-                            class="flex flex-col w-[20rem] bg-bg-surface border-border border-2 text-primary p-4 py-0 pb-2 rounded-md shadow-lg">
+                            class="flex flex-col min-w-[20rem] bg-bg-surface border-border border-2 text-primary p-4 py-0 pb-2 rounded-md shadow-lg">
                             <div class="font-semibold text-lg text-left border-interactive-border py-2">
-                                {{ $t('mods.advancedFilters.title') }}
+                                {{ $t('modsTab.header.advancedFilters.title') }}
                             </div>
 
                             <div class="flex flex-col gap-1 text-md">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <Checkbox v-model="filters.onlyEnabled" />
-                                    {{ $t('mods.advancedFilters.actions.onlyEnabled') }}
+                                    {{ $t('modsTab.header.advancedFilters.actions.onlyEnabledMods') }}
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <Checkbox v-model="filters.onlyDisabled" />
-                                    {{ $t('mods.advancedFilters.actions.onlyDisabled') }}
+                                    {{ $t('modsTab.header.advancedFilters.actions.onlyDisabledMods') }}
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <Checkbox v-model="filters.onlyConflicts" />
-                                    {{ $t('mods.advancedFilters.actions.onlyConflicts') }}
+                                    {{ $t('modsTab.header.advancedFilters.actions.onlyConflictsMods') }}
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <Checkbox v-model="filters.onlyErrors" />
-                                    {{ $t('mods.advancedFilters.actions.onlyErrors') }}
+                                    {{ $t('modsTab.header.advancedFilters.actions.onlyErrorsMods') }}
                                 </label>
                             </div>
                         </div>
                     </template>
                 </Popover>
                 <div class="relative flex-1 flex gap-1.5">
-                    <Input v-model="filters.searchQuery" :placeholder="$t('mods.search.placeholder')" />
+                    <Input v-model="filters.searchQuery" :placeholder="$t('modsTab.header.searchPlaceholder')" />
                 </div>
 
             </div>
@@ -101,7 +101,7 @@ function toggleModTypes(modType: string) {
                         'text-minigame! bg-minigame-bg! border-minigame-bg! hover:bg-minigame-bg! ': modType == 'Minigame' && filters.modTypes.includes(modType),
                         'hover:bg-interactive-bg-hover!': !filters.modTypes.includes(modType)
                     }">
-                    {{ $t(`mods.types.${modType.toLowerCase()}`) }}
+                    {{ $t(`common.modTypes.${modType.toLowerCase()}`) }}
                 </button>
             </div>
         </div>

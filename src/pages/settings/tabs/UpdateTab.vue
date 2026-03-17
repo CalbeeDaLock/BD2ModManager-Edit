@@ -62,22 +62,22 @@ async function updateModPreview() {
 <template>
   <TabPanel>
     <div class="flex flex-col">
-      <Section title="Updates">
+      <Section :title="$t('settingsTab.updates.sections.updates.title')">
         <div class="flex flex-col gap-3 mb-2">
           <Checkbox
             inputId="checkForAppUpdates"
             :model-value="settings.checkForAppUpdates"
             @update:model-value="onCheckForAppUpdates"
-            :label="$t('settings.sections.updates.checkForAppUpdates.label')"
-            :description="$t('settings.sections.updates.checkForAppUpdates.description')"
+            :label="$t('settingsTab.updates.sections.updates.autoCheckForUpdates.label')"
+            :description="$t('settingsTab.updates.sections.updates.autoCheckForUpdates.description')"
           />
 
           <Checkbox
             inputId="autoUpdateModPreview"
             :model-value="settings.autoUpdateModPreview"
             @update:model-value="onAutoUpdateModPreview"
-            :label="$t('settings.sections.updates.autoUpdateModPreview.label')"
-            :description="$t('settings.sections.updates.autoUpdateModPreview.description')"
+            :label="$t('settingsTab.updates.sections.updates.autoUpdateModPreview.label')"
+            :description="$t('settingsTab.updates.sections.updates.autoUpdateModPreview.description')"
           />
         </div>
 
@@ -91,8 +91,8 @@ async function updateModPreview() {
           <div>
             <Button 
             v-if="modPreviewUpdatesAvailable && modPreviewUpdatesAvailable.downloadUrl" 
-            :label="$t('settings.sections.updates.actions.updateModPreview')" @click="updateModPreview" />
-            <Button v-else :label="isCheckingModPreviewUpdates ? $t('settings.sections.updates.actions.checkingForUpdates') : $t('settings.sections.updates.actions.checkForUpdates')" @click="checkModPreviewUpdates" :disabled="isCheckingModPreviewUpdates" />            
+            :label="$t('settingsTab.updates.sections.updates.actions.updateModPreview')" @click="updateModPreview" />
+            <Button v-else :label="isCheckingModPreviewUpdates ? $t('settingsTab.updates.sections.updates.actions.checkingForUpdates') : $t('settingsTab.updates.sections.updates.actions.checkForUpdates')" @click="checkModPreviewUpdates" :disabled="isCheckingModPreviewUpdates" />            
           </div>
 
         </div>

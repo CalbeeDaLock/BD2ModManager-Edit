@@ -1,17 +1,23 @@
 ﻿<script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
-import { useSettingsStore } from '../../stores/settings';
-import { invoke } from '@tauri-apps/api/core';
-import Button from '../../components/common/Button.vue';
 import { RefreshCcw, Github, Upload, Trash2, AlertTriangle, TriangleAlert } from 'lucide-vue-next';
-import { useHeader } from '../../composables/useHeader';
+
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { invoke } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
 import { listen } from '@tauri-apps/api/event';
+
+import { useSettingsStore } from '../../stores/settings';
 import { useBdxLogsStore } from '../../stores/BDXLogs';
-import { useI18n } from 'vue-i18n';
-import { Info } from 'lucide-vue-next';
-import BepInEx from './modals/BepInEx.vue';
+
+import { useHeader } from '../../composables/useHeader';
 import { useConfirm } from '../../plugins/ConfirmService';
+
+import BepInEx from './modals/BepInEx.vue';
+
+import Button from '../../components/common/Button.vue';
+import { useLoggingStore } from '../../stores/logging';
 
 enum BepInExStatus { INSTALLED = "INSTALLED", NOT_INSTALLED = "NOT_INSTALLED" }
 enum BrownDustXStatus { INSTALLED = "INSTALLED", NOT_INSTALLED = "NOT_INSTALLED", BEPINEX_MISSING = "BEPINEX_MISSING" }
@@ -26,6 +32,7 @@ const {
     logs
 } = useBdxLogsStore()
 
+const loggingStore = useLoggingStore()
 
 const bepInExState = ref<{
     status: BepInExStatus;
@@ -44,7 +51,6 @@ const configurationManagerState = ref<{
     can_configure?: boolean
 }>({ status: ConfigurationManagerStatus.NOT_INSTALLED, version: null, can_configure: false, can_remove: false })
 
-
 const isBepInExDialogOpen = ref(false)
 
 function openBepInExDialog() {
@@ -62,8 +68,6 @@ async function getBDXState(log: boolean = true) {
 
         brownDustXState.value = result
 
-        console.log(result);
-
         if (log) {
             logs.push({
                 level: 'info',
@@ -77,7 +81,7 @@ async function getBDXState(log: boolean = true) {
 
         // add reason why it was not installed?
     } catch (error) {
-        console.error('Error fetching BrownDustX version:', error)
+        loggingStore.logError('Error fetching BrownDustX version:', error)
 
         brownDustXState.value = { status: BrownDustXStatus.NOT_INSTALLED, version: null }
 
@@ -155,10 +159,6 @@ async function getConfigManagerState(log: boolean = true) {
             timestamp: new Date().toISOString(),
         })
     }
-}
-
-async function initialize(log: boolean = true) {
-    await Promise.all([getBDXState(log), getBepInExState(log), getConfigManagerState(log)])
 }
 
 async function installBepInExFromUrl(url: string) {
@@ -401,11 +401,12 @@ async function installConfigurationManagerFromArchive(filePath: string) {
 async function uninstallBrownDustX() {
     // confirmation fist
     const result = await confirm.confirm({
-        title: t('browndustx.confirmations.removeBrownDustX.title'),
-        message: t('browndustx.confirmations.removeBrownDustX.message'),
-        acceptButton: { label: t('browndustx.confirmations.removeBrownDustX.actions.removeBrownDustX') },
-        rejectButton: { label: t('browndustx.confirmations.removeBrownDustX.actions.cancel') },
+        title: t('browndustxTab.confirmations.removeBrownDustX.title'),
+        message: t('browndustxTab.confirmations.removeBrownDustX.message'),
+        acceptButton: { label: t('browndustxTab.confirmations.removeBrownDustX.actions.removeBrownDustX') },
+        rejectButton: { label: t('common.actions.cancel') },
     })
+
     if (result.confirmed) {
         await invoke('uninstall_browndustx')
         await initialize()
@@ -414,10 +415,10 @@ async function uninstallBrownDustX() {
 
 async function uninstallBepInEx() {
     const result = await confirm.confirm({
-        title: t('browndustx.confirmations.removeBepInEx.title'),
-        message: t('browndustx.confirmations.removeBepInEx.message'),
-        acceptButton: { label: t('browndustx.confirmations.removeBepInEx.actions.removeBepInEx') },
-        rejectButton: { label: t('browndustx.confirmations.removeBepInEx.actions.cancel') },
+        title: t('browndustxTab.confirmations.removeBepInEx.title'),
+        message: t('browndustxTab.confirmations.removeBepInEx.message'),
+        acceptButton: { label: t('browndustxTab.confirmations.removeBepInEx.actions.removeBepInEx') },
+        rejectButton: { label: t('common.actions.cancel') },
     })
     if (result.confirmed) {
         await invoke('uninstall_bepinex')
@@ -427,15 +428,20 @@ async function uninstallBepInEx() {
 
 async function uninstallConfigManager() {
     const result = await confirm.confirm({
-        title: t('browndustx.confirmations.removeConfigManager.title'),
-        message: t('browndustx.confirmations.removeConfigManager.message'),
-        acceptButton: { label: t('browndustx.confirmations.removeConfigManager.actions.removeConfigManager') },
-        rejectButton: { label: t('browndustx.confirmations.removeConfigManager.actions.cancel') },
+        title: t('browndustxTab.confirmations.removeConfigManager.title'),
+        message: t('browndustxTab.confirmations.removeConfigManager.message'),
+        acceptButton: { label: t('browndustxTab.confirmations.removeConfigManager.actions.removeConfigManager') },
+        rejectButton: { label: t('common.actions.cancel') },
     })
+
     if (result.confirmed) {
         await invoke('uninstall_configmanager')
         await initialize()
     }
+}
+
+async function initialize(log: boolean = true) {
+    await Promise.all([getBDXState(log), getBepInExState(log), getConfigManagerState(log)])
 }
 
 onMounted(async () => {
@@ -473,7 +479,7 @@ watch(() => settingsStore.settings.gameDirectory, async (newPath) => {
 })
 
 useHeader({
-    title: computed(() => t('browndustx.title')),
+    title: computed(() => t('browndustxTab.title')),
     buttons: [
         {
             label: computed(() => t('common.actions.refresh')),
@@ -493,7 +499,6 @@ async function setupDragAndDrop() {
         paths: string[]
     }>("tauri://drag-drop", async (event) => {
         const paths = event.payload?.paths as string[]
-        console.log('Files dropped:', paths)
 
         for (const path of paths) {
             if (path.toLowerCase().endsWith('.zip') || path.toLowerCase().endsWith('.rar') || path.toLowerCase().endsWith('.7z')) {
@@ -559,14 +564,14 @@ function getStatusMessage(status: BepInExStatus | BrownDustXStatus | Configurati
         case BepInExStatus.INSTALLED:
         case BrownDustXStatus.INSTALLED:
         case ConfigurationManagerStatus.INSTALLED:
-            return t("browndustx.status.installed")
+            return t("browndustxTab.status.installed")
         case BepInExStatus.NOT_INSTALLED:
         case BrownDustXStatus.NOT_INSTALLED:
         case ConfigurationManagerStatus.NOT_INSTALLED:
-            return t("browndustx.status.notInstalled")
+            return t("browndustxTab.status.notInstalled")
         case BrownDustXStatus.BEPINEX_MISSING:
         case ConfigurationManagerStatus.BEPINEX_MISSING:
-            return t("browndustx.status.bepinexMissing")
+            return t("browndustxTab.status.bepinexMissing")
         default:
             return status
     }
@@ -578,36 +583,40 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
 </script>
 
 <template>
-    <div class="text-primary h-full min-h-0 flex flex-col">
+    <div class="text-primary h-full min-h-0 flex flex-col overflow-x-auto">
         <BepInEx v-model:show="isBepInExDialogOpen" @close="isBepInExDialogOpen = false"
             @version-selected="installBepInExFromUrl" />
 
-        <div class="flex flex-col flex-1 p-4 min-h-0 gap-4">
-            <div class="text-secondary p-3 bg-bg-surface border flex gap-2 items-start border-border rounded text-sm">
-                <Info class="w-5 h-5 shrink-0 mt-0.5" />
-                <div>
-                    {{ $t('browndustx.messages.bannerWarning') }}
-                    <span class="font-semibold">{{ $t('browndustx.messages.bannerRisk') }}</span>
-                    <p class="font-bold mt-1">
-                        {{ $t('browndustx.messages.bannerDiscord') }}
-                    </p>
+        <div class="flex flex-col flex-1 p-4 min-h-0 gap-2">
+            <div class="flex gap-2.5 p-3 rounded bg-danger/10 text-sm">
+                <TriangleAlert class="w-4 h-4 shrink-0 mt-0.5 text-danger" />
+                <div class="flex flex-col gap-0.5">
+                    <p class="font-medium text-danger">{{ $t('browndustxTab.alerts.danger') }}</p>
+                    <p class="text-secondary">{{ $t('browndustxTab.alerts.dangerMessage') }}</p>
+                </div>
+            </div>
+            <div class="flex gap-2.5 p-3 rounded bg-warning/10 text-sm">
+                <TriangleAlert class="w-4 h-4 shrink-0 mt-0.5 text-warning" />
+                <div class="flex flex-col gap-0.5">
+                    <p class="font-medium text-warning">{{ $t('browndustxTab.alerts.caution') }}</p>
+                    <p class="text-secondary">{{ $t('browndustxTab.alerts.cautionMessage') }}</p>
                 </div>
             </div>
 
-            <section>
-                <p v-if="!settingsStore.settings.gameDirectory" class="text-error text-sm">
-                    {{ t("browndustx.messages.noGameDirectory") }}
-                </p>
-                <p v-else class="text-secondary text-xs flex items-center gap-1.5">
-                    <span>{{ t("browndustx.labels.gameDirectory") }}</span>
-                    <span class="text-primary font-mono">{{ settingsStore.settings.gameDirectory }}</span>
-                </p>
-            </section>
-
             <div>
-                <h3 class="text-secondary uppercase text-xs tracking-wider mb-3">
-                    {{ $t('browndustx.labels.frameworkAndPlugins') }}
+                <h3 class="text-secondary uppercase text-xs font-semibold tracking-wider mb-1">
+                    {{ $t('browndustxTab.labels.frameworkAndPlugins') }}
                 </h3>
+
+                <section class="mb-2">
+                    <p v-if="!settingsStore.settings.gameDirectory" class="text-error text-sm">
+                        {{ t("browndustx.messages.gameDirectoryNotSet") }}
+                    </p>
+                    <p v-else class="text-secondary text-xs flex items-center gap-1.5">
+                        <span>{{ t("browndustxTab.labels.gameDirectory") }}</span>
+                        <span class="text-primary font-mono">{{ settingsStore.settings.gameDirectory }}</span>
+                    </p>
+                </section>
 
                 <div class="flex flex-col">
                     <!-- BepInEx -->
@@ -620,8 +629,9 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                                     :class="bepInExState.version ? 'text-secondary' : 'text-secondary'">v{{
                                         bepInExState.version || '-' }}</span>
                             </div>
-                            <p class="text-xs text-secondary truncate" :title="$t('browndustx.descriptions.bepinex')">{{
-                                $t('browndustx.descriptions.bepinex') }}</p>
+                            <p class="text-xs text-secondary truncate"
+                                :title="$t('browndustxTab.descriptions.bepinex')">{{
+                                    $t('browndustxTab.descriptions.bepinex') }}</p>
                         </div>
                         <span class="hidden lg:inline text-sm"
                             :class="bepInExState.version ? 'text-primary' : 'text-secondary'">{{ bepInExState.version ||
@@ -633,15 +643,15 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                         </div>
                         <div class="flex gap-1 justify-end">
                             <Button v-if="bepInExState.status === BepInExStatus.NOT_INSTALLED" variant="text"
-                                :label="$t('browndustx.actions.installFromGithub')" :icon="Github"
+                                :label="$t('browndustxTab.actions.installFromGithub')" :icon="Github"
                                 label-class="hidden lg:inline" :disabled="!settingsStore.settings.gameDirectory"
                                 @click="openBepInExDialog" />
                             <Button v-if="bepInExState.status === BepInExStatus.NOT_INSTALLED" variant="text"
-                                :label="$t('browndustx.actions.selectFile')" :icon="Upload"
+                                :label="$t('browndustxTab.actions.selectFile')" :icon="Upload"
                                 label-class="hidden lg:inline" :disabled="!settingsStore.settings.gameDirectory"
                                 @click="promptForBepInExArchive" />
                             <Button v-if="bepInExState.status === BepInExStatus.INSTALLED && bepInExState.can_remove"
-                                variant="text" :label="$t('browndustx.actions.remove')" :icon="Trash2"
+                                variant="text" :label="$t('browndustxTab.actions.remove')" :icon="Trash2"
                                 label-class="hidden lg:inline" @click="uninstallBepInEx" />
                         </div>
                     </div>
@@ -659,10 +669,10 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                                         brownDustXState.version || '-' }}</span>
                             </div>
                             <p class="text-xs text-secondary truncate"
-                                :title="$t('browndustx.descriptions.browndustx')">{{
-                                    $t('browndustx.descriptions.browndustx') }}</p>
+                                :title="$t('browndustxTab.descriptions.browndustx')">{{
+                                    $t('browndustxTab.descriptions.browndustx') }}</p>
                         </div>
-                        <span  class="hidden lg:inline text-sm"
+                        <span class="hidden lg:inline text-sm"
                             :class="brownDustXState.version ? 'text-primary' : 'text-secondary'">{{
                                 brownDustXState.version || '-' }}</span>
                         <div class="hidden lg:flex items-center gap-1">
@@ -675,13 +685,13 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                         <div class="flex gap-1 justify-end">
                             <Button
                                 v-if="brownDustXState.status !== BrownDustXStatus.INSTALLED && bepInExState.status === BepInExStatus.INSTALLED"
-                                variant="text" :label="$t('browndustx.actions.selectFile')" :icon="Upload"
+                                variant="text" :label="$t('browndustxTab.actions.selectFile')" :icon="Upload"
                                 label-class="hidden lg:inline"
                                 :disabled="!settingsStore.settings.gameDirectory || brownDustXState.status === BrownDustXStatus.BEPINEX_MISSING"
                                 @click="promptForBrownDustXArchive" />
                             <Button
                                 v-if="brownDustXState.status === BrownDustXStatus.INSTALLED && brownDustXState.can_remove"
-                                variant="text" :label="$t('browndustx.actions.remove')" :icon="Trash2"
+                                variant="text" :label="$t('browndustxTab.actions.remove')" :icon="Trash2"
                                 label-class="hidden lg:inline" :disabled="!settingsStore.settings.gameDirectory"
                                 @click="uninstallBrownDustX" />
                         </div>
@@ -692,18 +702,18 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                         class="grid grid-cols-[1fr_auto] lg:grid-cols-[2fr_100px_120px_1fr] gap-2 lg:gap-4 items-center px-3 py-2.5 border-t border-border">
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5">
-                                <span class="text-sm text-primary">Configuration Manager</span>
                                 <TriangleAlert
                                     v-if="configurationManagerState.status === ConfigurationManagerStatus.BEPINEX_MISSING"
                                     class="w-3.5 h-3.5 text-warning" />
+                                <span class="text-sm text-primary">Configuration Manager</span>
                                 <span v-if="configurationManagerState.version" class="inline lg:hidden text-sm"
                                     :class="configurationManagerState.version ? 'text-secondary' : 'text-secondary'">v{{
                                         configurationManagerState.version || '-' }}
                                 </span>
                             </div>
                             <p class="text-xs text-secondary truncate"
-                                :title="$t('browndustx.descriptions.configurationManager')">{{
-                                    $t('browndustx.descriptions.configurationManager') }}</p>
+                                :title="$t('browndustxTab.descriptions.configurationManager')">{{
+                                    $t('browndustxTab.descriptions.configurationManager') }}</p>
                         </div>
                         <span class="hidden lg:inline text-sm"
                             :class="configurationManagerState.version ? 'text-primary' : 'text-secondary'">{{
@@ -718,13 +728,13 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                         <div class="flex gap-1 justify-end">
                             <Button
                                 v-if="configurationManagerState.status !== ConfigurationManagerStatus.INSTALLED && bepInExState.status === BepInExStatus.INSTALLED"
-                                variant="text" :label="$t('browndustx.actions.selectFile')" :icon="Upload"
+                                variant="text" :label="$t('browndustxTab.actions.selectFile')" :icon="Upload"
                                 label-class="hidden lg:inline"
                                 :disabled="!settingsStore.settings.gameDirectory || configurationManagerState.status === ConfigurationManagerStatus.BEPINEX_MISSING"
                                 @click="promptForConfigurationManagerArchive" />
                             <Button
                                 v-if="configurationManagerState.status === ConfigurationManagerStatus.INSTALLED && configurationManagerState.can_remove"
-                                variant="text" :label="$t('browndustx.actions.remove')" :icon="Trash2"
+                                variant="text" :label="$t('browndustxTab.actions.remove')" :icon="Trash2"
                                 label-class="hidden lg:inline" :disabled="!settingsStore.settings.gameDirectory"
                                 @click="uninstallConfigManager" />
                         </div>
@@ -733,44 +743,50 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
             </div>
 
             <div class="flex flex-col gap-1">
+                <p v-if="bepInExState.status === BepInExStatus.INSTALLED && brownDustXState.status === BrownDustXStatus.NOT_INSTALLED"
+                    class="text-warning flex gap-1.5 items-center text-xs">
+                    <AlertTriangle class="inline w-4 h-4 shrink-0" />
+                    {{ $t("browndustxTab.messages.brownDustXMissing") }}
+                </p>
                 <p v-if="configurationManagerState.status === ConfigurationManagerStatus.NOT_INSTALLED && brownDustXState.status === BrownDustXStatus.INSTALLED"
                     class="text-warning flex gap-1.5 items-center text-xs">
                     <AlertTriangle class="inline w-4 h-4 shrink-0" />
-                    {{ $t("browndustx.messages.configurationManagerNotInstalled") }}
+                    {{ $t("browndustxTab.messages.configurationManagerMissing") }}
                 </p>
                 <p v-if="brownDustXState.status === BrownDustXStatus.BEPINEX_MISSING"
                     class="text-warning flex gap-1.5 items-center text-xs">
                     <AlertTriangle class="inline w-4 h-4 shrink-0" />
-                    {{ $t("browndustx.messages.bepinexMissing") }}
+                    {{ $t("browndustxTab.messages.bepinexMissing") }}
                 </p>
             </div>
 
             <div v-if="settingsStore.settings.gameDirectory"
                 class="p-4 rounded border-2 border-dashed border-border text-center text-sm text-secondary">
-                {{ $t("browndustx.messages.dragDropInfo") }}
+                {{ $t("browndustxTab.messages.dragAndDrop") }}
             </div>
 
             <div class="flex-1 flex flex-col min-h-0">
-                <h3 class="text-secondary uppercase text-xs tracking-wider mb-2">{{ $t('browndustx.labels.logs') }}</h3>
+                <h3 class="text-secondary uppercase text-xs tracking-wider mb-2">{{ $t('browndustxTab.labels.logs') }}
+                </h3>
                 <div ref="logsContainer"
                     class="flex-1 flex flex-col text-secondary overflow-y-auto bg-bg-surface p-2 border border-border rounded min-h-0"
                     :class="{ 'items-center justify-center': logs.length === 0 }">
 
                     <template v-if="logs.length === 0">
                         <div class="text-xs font-mono text-secondary italic text-center py-2">
-                            {{ $t('browndustx.messages.noLogsYet') }}
+                            {{ $t('browndustxTab.messages.noLogsYet') }}
                         </div>
                     </template>
 
                     <template v-else>
                         <div v-for="(log, index) in logs" :key="index" class="text-xs  font-mono flex gap-1.5">
                             <span class="text-secondary/60 shrink-0">{{ new Date(log.timestamp).toLocaleTimeString()
-                            }}</span>
+                                }}</span>
                             <span class="shrink-0" :class="{
                                 'text-success': log.level === 'success',
                                 'text-info': log.level === 'info',
                                 'text-warning': log.level === 'warn',
-                                'text-error': log.level === 'error',
+                                'text-danger': log.level === 'error',
                             }">
                                 {{ log.level.toUpperCase() }}
                             </span>

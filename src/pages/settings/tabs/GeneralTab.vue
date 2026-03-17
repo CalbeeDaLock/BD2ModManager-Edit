@@ -27,11 +27,26 @@ const {
 } = useLoggingStore()
 
 const mappedLanguages = [
-    {
+    { // en
+        label: "English (United States)", value: "en_US",
+    },
+    { // cn, maybe add zh_HK?
+        label: "中文 (中国)", value: "zh_CN",
+    },
+    { // ja
+        label: "日本語 (日本)", value: "ja_JP",
+    },
+    { // ko
+        label: "한국어 (대한민국)", value: "ko_KR",
+    },
+    { // ru
+        label: "Русский (Россия)", value: "ru_RU",
+    },
+    { // pt
         label: "Português (Brasil)", value: "pt_BR",
     },
-    {
-        label: "English (United States)", value: "en_US",
+    { // es
+        label: "Español (España)", value: "es_ES",
     },
 ]
 
@@ -42,9 +57,9 @@ const availableLanguages = computed(() => {
 })
 
 const availableSyncMethods = computed(() => [
-    { value: 'copy', label: t('settings.sections.modManagement.syncMethod.options.copy') },
-    // { value: 'hardlink', label: t('settings.sections.modManagement.syncMethod.options.hardlink') },
-    { value: 'symlink', label: t('settings.sections.modManagement.syncMethod.options.symlink') },
+    { value: 'copy', label: t('settingsTab.general.sections.modManagement.syncMethod.options.copy') },
+    // { value: 'hardlink', label: t('settingsTab.general.sections.modManagement.syncMethod.options.hardlink') },
+    { value: 'symlink', label: t('settingsTab.general.sections.modManagement.syncMethod.options.symlink') },
 ])
 
 const settings = computed(() => {
@@ -177,33 +192,33 @@ async function handleGameDirectoryBrowse() {
 <template>
     <TabPanel>
         <div class="flex flex-col gap-8">
-            <Section :title="$t('settings.sections.application.title')">
+            <Section :title="$t('settingsTab.general.sections.application.title')">
                 <div class="flex flex-col gap-4">
                     <div class="grid grid-cols-3 items-center gap-4">
                         <label class="text-sm font-medium">
-                            {{ $t('settings.sections.application.theme.label') }}
+                            {{ $t('settingsTab.general.sections.application.theme.label') }}
                         </label>
                         <Select :model-value="settings.theme" :options="settingsStore.availableThemes"
-                            :placeholder="$t('settings.sections.application.theme.placeholder')" option-label="label"
+                            :placeholder="$t('settingsTab.general.sections.application.theme.placeholder')" option-label="label"
                             option-value="value" @update:model-value="onThemeChanged" class="col-span-2" />
                     </div>
 
                     <div class="grid grid-cols-3 items-center gap-4">
                         <label class="text-sm font-medium">
-                            {{ $t('settings.sections.application.language.label') }}
+                            {{ $t('settingsTab.general.sections.application.language.label') }}
                         </label>
                         <Select :model-value="settings.language" :options="availableLanguages"
-                            :placeholder="$t('settings.sections.application.language.placeholder')" option-label="label"
+                            :placeholder="$t('settingsTab.general.sections.application.language.placeholder')" option-label="label"
                             option-value="value" @update:model-value="onLanguageChanged" class="col-span-2" />
                     </div>
                 </div>
             </Section>
 
-            <Section :title="$t('settings.sections.directories.title')">
+            <Section :title="$t('settingsTab.general.sections.directories.title')">
                 <div class="flex flex-col gap-4">
                     <div class="grid grid-cols-3 items-center gap-4">
                         <label class="text-sm font-medium">
-                            {{ $t('settings.sections.directories.gameDirectory.label') }}
+                            {{ $t('settingsTab.general.sections.directories.gameDirectory.label') }}
                         </label>
                         <div class="flex w-full gap-2 items-stretch h-10 col-span-2">
                             <Input class="h-full w-full min-w-32" :model-value="settings.gameDirectory ?? ''"
@@ -219,7 +234,7 @@ async function handleGameDirectoryBrowse() {
 
                     <div class="grid grid-cols-3 items-center gap-4">
                         <label class="text-sm font-medium">
-                            {{ $t('settings.sections.directories.modsDirectory.label') }}
+                            {{ $t('settingsTab.general.sections.directories.modsDirectory.label') }}
                         </label>
                         <div class="flex col-span-2 gap-2 items-stretch h-10">
                             <Input class="h-full min-w-32" :model-value="settings.stagingDirectory ?? ''"
@@ -233,24 +248,24 @@ async function handleGameDirectoryBrowse() {
                 </div>
             </Section>
 
-            <Section :title="$t('settings.sections.modManagement.title')">
+            <Section :title="$t('settingsTab.general.sections.modManagement.title')">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <Checkbox inputId="searchModsRecursively" :model-value="settings.searchModsRecursively" :label="$t('settings.sections.modManagement.searchRecursively.label')"
-                            :description="$t('settings.sections.modManagement.searchRecursively.description')"
+                        <Checkbox inputId="searchModsRecursively" :model-value="settings.searchModsRecursively" :label="$t('settingsTab.general.sections.modManagement.searchRecursively.label')"
+                            :description="$t('settingsTab.general.sections.modManagement.searchRecursively.description')"
                             @update:model-value="onSearchModsRecursivelyChanged"  />
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <Checkbox :model-value="settings.autoSyncMods" :label="$t('settings.sections.modManagement.autoSyncMods.label')"
-                            :description="$t('settings.sections.modManagement.autoSyncMods.description')"
+                        <Checkbox :model-value="settings.autoSyncMods" :label="$t('settingsTab.general.sections.modManagement.autoSyncMods.label')"
+                            :description="$t('settingsTab.general.sections.modManagement.autoSyncMods.description')"
                             @update:model-value="onAutoSyncModsChanged" />
                     </div>
 
                     <div class="grid grid-cols-3 items-center gap-4">
                         <div class="flex flex-col">
-                            <span class="text-sm font-medium">{{ $t('settings.sections.modManagement.syncMethod.label') }}</span>
-                            <p class="text-xs text-secondary">{{ $t('settings.sections.modManagement.syncMethod.description') }}</p>
+                            <span class="text-sm font-medium">{{ $t('settingsTab.general.sections.modManagement.syncMethod.label') }}</span>
+                            <p class="text-xs text-secondary">{{ $t('settingsTab.general.sections.modManagement.syncMethod.description') }}</p>
                         </div>
                         <Select :model-value="settings.syncMethod" :options="availableSyncMethods"
                             @update:model-value="onSyncMethodChanged" class="col-span-2" />

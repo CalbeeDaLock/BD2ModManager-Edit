@@ -14,15 +14,19 @@ import { useConfirm } from "../../plugins/ConfirmService";
 
 import { BD2Mod, useModsStore } from "../../stores/mods";
 import { useSettingsStore } from "../../stores/settings";
+import { useLoggingStore } from "../../stores/logging";
+
 import { useHeader } from "../../composables/useHeader";
 
-import { useLoggingStore } from "../../stores/logging";
 import UpdateAuthorModal from "./modals/UpdateAuthorModal.vue";
 import RenameModModal from "./modals/RenameModModal.vue";
 import ModsHeader from "./ModsHeader.vue";
 import Modlist from "./Modlist.vue";
 import Button from "../../components/common/Button.vue";
 import Menu from "../../components/common/Menu.vue";
+import { getErrorMessage } from "../../utils/errors";
+import { invoke } from "@tauri-apps/api/core";
+import { useModInstall } from "../../composables/useModInstall";
 
 
 let unlistenFns: Array<() => void> = []
@@ -61,55 +65,6 @@ let filters = reactive({
   onlyConflicts: false,
   onlyErrors: false,
 });
-
-function getErrorMessage(error: any) {
-  if (!error) return t('errors.unknownError')
-
-  if (error === "GameDirectoryNotSet") {
-    return t('errors.gameDirectoryNotSet')
-  }
-
-  if (error.SyncMethodInvalid) {
-    return t('errors.syncMethodInvalid', { method: error.SyncMethodInvalid })
-  }
-
-  if (error.SyncFailed) {
-    const sync = error.SyncFailed
-
-    switch (sync.type) {
-      case "SymlinkAdminRequired":
-        return t('errors.symlinkAdminRequired')
-
-      case "ModPathNotFound":
-        return t('errors.modPathNotFound', { path: sync.details })
-
-      case "CopyFailed":
-        return t('errors.copyFailed', { error: sync.details })
-
-      case "SymlinkFailed":
-        return t('errors.symlinkFailed', { error: sync.details })
-
-      case "HardlinkFailed":
-        return t('errors.hardlinkFailed', { error: sync.details })
-
-      case "DirectoryCreationFailed":
-        return t('errors.directoryCreationFailed', { error: sync.details })
-
-      case "RemovalFailed":
-        return t('errors.removalFailed', { error: sync.details })
-
-      default:
-        return t('errors.unknownError', { error: JSON.stringify(sync) })
-    }
-  }
-
-  if (error.UnknownError) {
-    return t('errors.unknownError', { error: error.UnknownError })
-  }
-
-  return t('errors.unknownError', { error: JSON.stringify(error) })
-}
-
 const totalModsCount = computed(() => modsStore.mods.length)
 const enabledModsCount = computed(() => modsStore.mods.filter(mod => mod.enabled).length)
 
@@ -202,25 +157,23 @@ function handlePreviewMod(mod: BD2Mod) {
     toast.add({
       severity: "error",
       closable: true,
-      detail: t("errors.modPreviewContainsErrors"),
+      summary: t("modsTab.errors.modPreview.title"),
+      detail: t("modsTab.errors.modPreview.modContainErrors", { modName: mod.name }),
       life: 3000
     })
     return
   }
 
   modsStore.previewMod(mod.name).then(() => {
-    // loggingStore.logDebug("Mod previewed successfully:", mod.name);
-    // toast.add({
-    //   severity: "success",
-    //   closable: true,
-    //   detail: t("mods.messages.previewSuccess.description", { modName: mod.name }),
-    //   life: 3000
-    // })
+    loggingStore.logDebug("Mod previewed successfully:", mod.name);
   }).catch((error) => {
-    let errorMsg = getErrorMessage(error);
+    // errors that can happen: just some errors like no permission to open the file, or the file doesn't exist anymore, or the file is not a valid mod file
+    // no custom errors here
+    let errorMsg = getErrorMessage(t, error);
     toast.add({
       severity: "error",
       closable: true,
+      summary: t("modsTab.errors.modPreview.title"),
       detail: errorMsg,
       life: 5000
     })
@@ -231,14 +184,30 @@ function handlePreviewMod(mod: BD2Mod) {
 
 async function handleOpenModFolder(mod: BD2Mod) {
   loggingStore.logDebug("Opening mod folder:", mod.name);
+
   // [TODO] adds checks if folder exists
+  const folderExists = await invoke("path_exists", { path: mod.path }).catch((error) => {
+    loggingStore.logError(`An error occurred while checking if mod folder exists for "${mod.name}":`, error);
+    return false;
+  });
+
+  if (!folderExists) {
+    toast.add({
+      severity: 'error',
+      closable: true,
+      detail: t('modsTab.errors.modFolderNotFound', { modName: mod.name }),
+      life: 5000
+    })
+    return
+  }
+
   await openPath(mod.path) 
 }
 
-async function handleOpenModsFolder() {
+async function handleOpenStagingModsFolder() {
   let stagingDir = settingsStore.settings.stagingDirectory
 
-  loggingStore.logDebug("Opening mods folder: ", stagingDir);
+  loggingStore.logDebug("Opening staging mods folder: ", stagingDir);
 
   if (!stagingDir) {
     loggingStore.logError("Staging directory is not set.");
@@ -246,11 +215,25 @@ async function handleOpenModsFolder() {
     return toast.add({
       severity: "error",
       closable: true,
-      detail: t('errors.stagingDirectoryNotSet'),
+      detail: t('modsTab.errors.stagingDirectoryNotSet'),
       life: 5000
     });
   }
-  // [TODO] check if directory exists
+
+  const directoryExists = await invoke("path_exists", { path: stagingDir }).catch((error) => {
+    loggingStore.logError(`An error occurred while checking if staging directory exists:`, error);
+    return false;
+  });
+
+  if (!directoryExists) {
+    return toast.add({
+      severity: 'error',
+      closable: true,
+      detail: t('modsTab.errors.stagingDirectoryNotFound', { stagingDir }),
+      life: 5000
+    })
+  }
+
   await openPath(stagingDir);
 }
 
@@ -262,10 +245,10 @@ async function handleSyncMods() {
 
     if (hasConflicts) {
       const { confirmed } = await confirm.confirm({
-        title: t('mods.confirmations.syncModsWithConflicts.title'),
-        message: t('mods.confirmations.syncModsWithConflicts.message'),
+        title: t('modsTab.confirmations.syncMods.titleWithConflicts'),
+        message: t('modsTab.confirmations.syncMods.messageWithConflicts'),
         acceptButton: {
-          label: t('common.actions.continue'),
+          label: t('modsTab.confirmations.syncMods.actions.syncAnyway'),
         },
         rejectButton: {
           label: t('common.actions.cancel'),
@@ -278,12 +261,12 @@ async function handleSyncMods() {
       }
     }
 
-    if (!skipSyncConfirmation.value && false) {
+    if (!skipSyncConfirmation.value) {
       const { confirmed, rememberChoice } = await confirm.confirm({
-        title: t('mods.confirmations.syncModsConfirmation.title'),
-        message: t('mods.confirmations.syncModsConfirmation.message'),
+        title: t('modsTab.confirmations.syncMods.title'),
+        message: t('modsTab.confirmations.syncMods.message'),
         acceptButton: {
-          label: t('common.actions.continue'),
+          label: t('modsTab.confirmations.syncMods.actions.sync'),
         },
         rejectButton: {
           label: t('common.actions.cancel'),
@@ -316,8 +299,8 @@ async function handleSyncMods() {
 
     toast.add({
       closable: true,
-      summary: t('mods.messages.syncSuccess.title'),
-      detail: t('mods.messages.syncSuccess.description'),
+      summary: t('modsTab.notifications.syncSuccess.title'),
+      detail: t('modsTab.notifications.syncSuccess.description'),
       life: 3000,
     })
     // if (result) {
@@ -327,11 +310,37 @@ async function handleSyncMods() {
 
     console.log(typeof error, error instanceof Error, error.message);
 
-    let errorMessage = getErrorMessage(error)
+    let errorMessage = getErrorMessage(t, error)
+
+    // error that can happen syncing: 
+    // #[derive(Serialize, Clone, Debug)]
+    //     pub enum SyncCommandError {
+    //     GameDirectoryNotSet,
+    //     SyncMethodInvalid(String),
+    //     SyncFailed(SyncError), 
+    //     UnknownError(String),
+    // }
+
+    // impl From<SyncError> for SyncCommandError {
+    //     fn from(e: SyncError) -> Self {
+    //         SyncCommandError::SyncFailed(e)
+    //     }
+    // }
+    // #[derive(Debug, Clone, serde::Serialize)]
+    // #[serde(tag = "type", content = "details")]
+    // pub enum SyncError {
+    //     SymlinkAdminRequired,
+    //     ModPathNotFound(String),
+    //     CopyFailed(String),
+    //     SymlinkFailed(String),
+    //     HardlinkFailed(String),
+    //     DirectoryCreationFailed(String),
+    //     RemovalFailed(String)
+    // }
 
     toast.add({
       closable: true,
-      summary: t('errors.syncFailed'),
+      summary: t('modsTab.errors.syncFailed.title'),
       detail: errorMessage,
       life: 5000,
       severity: 'error'
@@ -345,10 +354,10 @@ async function handleUnsyncMods() {
   try {
     if (!skipUnsyncConfirmation.value) {
       const { confirmed, rememberChoice } = await confirm.confirm({
-        title: t('mods.confirmations.unsyncModsConfirmation.title'),
-        message: t('mods.confirmations.unsyncModsConfirmation.message'),
+        title: t('modsTab.confirmations.unsyncMods.title'),
+        message: t('modsTab.confirmations.unsyncMods.message'),
         acceptButton: {
-          label: t('common.actions.continue'),
+          label: t('modsTab.confirmations.unsyncMods.actions.unsync'),
         },
         rejectButton: {
           label: t('common.actions.cancel'),
@@ -375,14 +384,14 @@ async function handleUnsyncMods() {
 
     toast.add({
       closable: true,
-      summary: t('mods.messages.unsyncSuccess.title'),
-      detail: t('mods.messages.unsyncSuccess.description'),
+      summary: t('modsTab.notifications.unsyncSuccess.title'),
+      detail: t('modsTab.notifications.unsyncSuccess.description'),
       life: 3000,
     });
   } catch (error: any) {
     loggingStore.logError("Error unsyncing mods:", error);
 
-    let errorMessage = getErrorMessage(error)
+    let errorMessage = getErrorMessage(t, error)
 
     toast.add({
       closable: true,
@@ -399,7 +408,7 @@ async function handleUnsyncMods() {
 async function handleInstallFromZip() {
   const file = await open({
     multiple: false,
-    filters: [{ name: 'ZIP Files', extensions: ['zip'] }]
+    filters: [{ name: 'Archive Files', extensions: ['zip', 'rar', '7z', 'tar', 'gz'] }]
   });
 
   loggingStore.logDebug("Selected file for mod installation from zip:", file);
@@ -412,18 +421,27 @@ async function handleInstallFromZip() {
 
       toast.add({
         closable: true,
-        summary: t('mods.modInstalledSuccess'),
-        detail: modName,
+        summary: t('modsTab.notifications.modInstallSuccess.title'),
+        detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
         life: 3000,
       });
     } catch (error) {
       loggingStore.logError("Error installing mod from zip:", error);
 
-      let errorMsg = getErrorMessage(error instanceof Error ? error.message : String(error));
+      // errors:
+      // PathNotFound { path: String },
+      // InvalidName,
+      // InvalidFormat,
+      // ModAlreadyExists,
+      // InvalidMod,
+      // MultipleModsFound,
+      // UnsupportedFormat
+
+      let errorMsg = getErrorMessage(t, error instanceof Error ? error.message : String(error));
 
       toast.add({
         closable: true,
-        summary: t('errors.modInstallFailed'),
+        summary: t('errors.modInstallFailed.title'),
         detail: errorMsg,
         life: 5000,
         severity: 'error'
@@ -439,7 +457,8 @@ async function handleInstallFromFolder() {
   });
 
   loggingStore.logDebug("Selected folder for mod installation:", folder);
-
+  loggingStore.logError(typeof t, t)
+  console.log("getErrorMessage function:", getErrorMessage)
   if (folder && typeof folder === 'string') {
     try {
       let modName = await modsStore.installModFromFolder(folder);
@@ -448,17 +467,28 @@ async function handleInstallFromFolder() {
 
       toast.add({
         closable: true,
-        summary: t('mods.modInstalledSuccess'),
-        detail: modName,
+        summary: t('modsTab.notifications.modInstallSuccess.title'),
+        detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
         life: 3000,
       });
     } catch (error) {
-      loggingStore.logError("Error installing mod from folder:", error);
+      
+      loggingStore.logError("char: Error installing mod from folder:", error);
 
-      let errorMsg = getErrorMessage(error instanceof Error ? error.message : String(error))
+      // errors:
+      // PathNotFound { path: String },
+      // InvalidName,
+      // InvalidFormat,
+      // ModAlreadyExists,
+      // InvalidMod,
+      // MultipleModsFound,
+      // UnsupportedFormat
+
+      let errorMsg = getErrorMessage(t, error instanceof Error ? error.message : String(error));
+
       toast.add({
         closable: true,
-        summary: t('errors.modInstallFailed'),
+        summary: t('errors.modInstallFailed.title'),
         detail: errorMsg,
         life: 5000,
         severity: 'error'
@@ -492,10 +522,10 @@ async function handleDeleteMods(mods: BD2Mod[]) {
   }
 
   const result = await confirm.confirm({
-    title: mods.length === 1 ? t('mods.confirmations.deleteMod.title') : t('mods.confirmations.deleteSelectedMods.title'),
-    message: mods.length === 1 ? t('mods.confirmations.deleteMod.message', { modName: mods[0].name }) : t('mods.confirmations.deleteSelectedMods.message', { count: mods.length }),
+    title: mods.length === 1 ? t('modsTab.confirmations.deleteMod.title') : t('modsTab.confirmations.deleteMod.multipleTitle'),
+    message: mods.length === 1 ? t('modsTab.confirmations.deleteMod.message', { modName: mods[0].name }) : t('modsTab.confirmations.deleteMod.multipleMessage', { count: mods.length }),
     acceptButton: {
-      label: t('common.actions.delete'),
+      label: t('modsTab.confirmations.deleteMod.actions.delete'),
     },
     rejectButton: {
       label: t('common.actions.cancel'),
@@ -571,18 +601,18 @@ async function setupEventListeners() {
 
         toast.add({
           closable: true,
-          summary: t('mods.messages.modInstallSuccess.title'),
-          detail: t('mods.messages.modInstallSuccess.detail', { modName }),
+          summary: t('modsTab.notifications.modInstallSuccess.title'),
+          detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
           life: 3000,
         });
 
       } catch (error: any) {
-        let errorMsg = getErrorMessage(error)
+        let errorMsg = getErrorMessage(t, error)
 
         toast.add({
           closable: true,
-          summary: t('errors.modInstallFailed'),
-          detail: `Failed to install mod from ${path.split('/').pop()}: ${errorMsg}`,
+          summary: t('errors.modInstallFailed.title'),
+          detail: errorMsg,
           life: 5000,
           severity: 'error'
         });
@@ -662,26 +692,24 @@ watch(() => settingsStore.settings.searchModsRecursively, (newValue, oldValue) =
   }
 });
 
+const { installFromZip, installFromFolder } = useModInstall()
+
 const addModMenuItems = computed(() => [
-  {
-    label: t('mods.actions.installFromZip'), clicked: handleInstallFromZip
-  },
-  {
-    label: t('mods.actions.installFromFolder'), clicked: handleInstallFromFolder
-  }
-]);
+  { label: t('modsTab.actions.installFromZip'), clicked: installFromZip },
+  { label: t('modsTab.actions.installFromFolder'), clicked: installFromFolder }
+])
 
 useHeader({
-  title: t("mods.title"),
+  title: t("modsTab.title"),
   subtitle: computed(() =>
-    t('mods.subtitle', {
+    t('modsTab.subtitle', {
       enabledModsCount: enabledModsCount.value,
       totalModsCount: totalModsCount.value
     })
   ),
   buttons: [
     {
-      label: computed(() => t('mods.actions.refreshMods')),
+      label: computed(() => t('common.actions.refreshMods')),
       icon: RefreshCcw,
       action: async () => {
         await handleRefreshMods();
@@ -693,7 +721,7 @@ useHeader({
           h(Menu, {}, {
             trigger: ({ toggle }: any) =>
               h(Button, {
-                label: t('mods.actions.addMod'),
+                label: t('modsTab.actions.addMod'),
                 icon: FolderPlus,
                 variant: 'text',
                 onClick: toggle
@@ -720,10 +748,8 @@ useHeader({
           }),
         ])
     },
-
   ]
 })
-
 
 function handleRenameMod(mod: BD2Mod) {
   loggingStore.logDebug("Renaming mod:", mod.name);
@@ -769,25 +795,25 @@ function handleShowModConflicts(mod: BD2Mod) {
       <div class="flex flex-col">
         <span class="text-primary font-semibold">
           <template v-if="bdxVersion?.status == 'INSTALLED'">
-            BrownDustX v{{ bdxVersion.version }}
+            {{ $t("modsTab.browndustx.status.installed", { version: bdxVersion.version }) }}
           </template>
           <template v-else-if="bdxVersion?.status == 'GAME_NOT_FOUND'">
-            {{ $t("mods.browndustx.gamePathNotSet") }}
+            {{ $t("modsTab.browndustx.status.gameNotFound") }}
           </template>
           <template v-else>
-            {{ $t("mods.browndustx.notInstalled") }}
+            {{ $t("modsTab.browndustx.status.notInstalled") }}
           </template>
         </span>
         <RouterLink to="bdx" class="text-secondary text-xs hover:underline">
-          {{ $t("mods.browndustx.navigation") }}
+          {{ $t("modsTab.browndustx.navigation") }}
         </RouterLink>
       </div>
 
       <div class="flex gap-2 text-primary">
-        <Button variant="alt" :label="$t('mods.actions.openModsFolder')" :icon="Folder" @click="handleOpenModsFolder" />
-        <Button :disabled="isSyncing || isUnsyncing" variant="alt" :label="$t('mods.actions.unsyncMods')"
+        <Button variant="alt" :label="$t('modsTab.actions.openModsFolder')" :icon="Folder" @click="handleOpenStagingModsFolder" />
+        <Button :disabled="isSyncing || isUnsyncing" variant="alt" :label="$t('modsTab.actions.unsyncMods')"
           :icon="FolderMinus" @click="handleUnsyncMods" />
-        <Button :disabled="isSyncing || isUnsyncing" variant="alt" :label="$t('mods.actions.syncMods')"
+        <Button :disabled="isSyncing || isUnsyncing" variant="alt" :label="$t('modsTab.actions.syncMods')"
           :icon="FolderSync" @click="handleSyncMods" :class="{
             'bg-accent-primary! animate-pulse hover:animate-none hoverbg-accent-primary-hover!': false
           }" />

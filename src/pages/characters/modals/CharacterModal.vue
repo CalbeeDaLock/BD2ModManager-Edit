@@ -6,6 +6,7 @@ import { computed } from 'vue';
 import Button from '../../../components/common/Button.vue';
 import Image from '../../../components/common/Image.vue';
 import Modal from '../../../components/common/Modal.vue';
+import Checkbox from '../../../components/common/Checkbox.vue';
 
 const show = defineModel('show', {
     type: Boolean,
@@ -104,13 +105,13 @@ const enabledModsCount = computed(() =>
                         <div>
                             <p class="text-base font-semibold leading-none">{{ enabledModsCount }}</p>
                             <p class="text-xs text-secondary mt-0.5">
-                                {{ $t('characters.characterModal.enabledMods', 'Enabled Mods') }}
+                                {{ $t('charactersTab.characterModal.enabledMods') }}
                             </p>
                         </div>
                         <div>
                             <p class="text-base font-semibold leading-none">{{ installedMods.length }}</p>
                             <p class="text-xs text-secondary mt-0.5">
-                                {{ $t('characters.characterModal.totalMods', 'Total Mods') }}
+                                {{ $t('charactersTab.characterModal.totalMods') }}
                             </p>
                         </div>
                     </div>
@@ -120,15 +121,15 @@ const enabledModsCount = computed(() =>
             <div>
                 <div v-if="installedMods.length === 0"
                     class="text-center py-12 px-4 text-secondary">
-                    <p class="text-sm font-medium mb-1">{{ $t('characters.characterModal.noModsFound', 'No mods installed for this character') }}</p>
-                    <p class="text-xs text-secondary">{{ $t('characters.characterModal.noModsInfo', 'Visit the Mods tab to install mods') }}</p>
+                    <p class="text-sm font-medium mb-1">{{ $t('charactersTab.characterModal.noModsFound.title') }}</p>
+                    <p class="text-xs text-secondary">{{ $t('charactersTab.characterModal.noModsFound.description') }}</p>
                 </div>
 
                 <template v-else>
                     <div v-for="(mods, type) in modsByType" :key="type" v-show="mods.length > 0">
 
                         <div class="flex items-center justify-between px-4 py-2 bg-bg-surface border-b border-border sticky top-0 z-10">
-                            <span class="text-xs font-medium text-secondary uppercase tracking-wide">{{ $t(`characters.${type.toLowerCase()}`) }}</span>
+                            <span class="text-xs font-medium text-secondary uppercase tracking-wide">{{ $t(`charactersTab.modTypes.${type.toLowerCase()}`) }}</span>
                             <span class="text-xs text-secondary">
                                 {{ mods.filter(m => m.enabled).length }}/{{ mods.length }}
                             </span>
@@ -139,12 +140,7 @@ const enabledModsCount = computed(() =>
                             :key="mod.name"
                             class="flex items-center gap-3 px-4 py-2.5 border-b border-border cursor-pointer hover:bg-interactive-bg-hover transition-colors"
                             :class="{ 'bg-bg-surface': !mod.enabled }">
-                            <input
-                                type="checkbox"
-                                :checked="mod.enabled"
-                                @change="toggleMod(mod)"
-                                class="w-3.5 h-3.5 cursor-pointer accent-accent-primary shrink-0"
-                            />
+                            <Checkbox :model-value="mod.enabled" @update:model-value="toggleMod(mod)" class="shrink-0" />
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm truncate" :class="mod.enabled ? 'text-primary' : 'text-secondary'">
                                     {{ mod.name }}

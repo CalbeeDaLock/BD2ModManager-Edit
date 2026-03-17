@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import Button from '../common/Button.vue'
-import Modal from '../common/Modal.vue'
-import { ref, computed, watch, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { SyncStatus, useSyncStateStore } from '../../stores/syncState'
-import { SyncProgressStatus, SyncType } from '../../composables/useSyncEvents'
-import { refThrottled,  useVirtualList } from '@vueuse/core'
 import {
   ArrowLeftFromLine,
   ArrowRightFromLine,
@@ -14,6 +7,13 @@ import {
   TriangleAlert,
   X
 } from 'lucide-vue-next'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { refThrottled, useVirtualList } from '@vueuse/core'
+import Button from '../common/Button.vue'
+import Modal from '../common/Modal.vue'
+import { SyncStatus, useSyncStateStore } from '../../stores/syncState'
+import { SyncError, SyncProgressStatus, SyncType } from '../../composables/useSyncEvents'
 import { useModsStore } from '../../stores/mods'
 
 const { t } = useI18n()
@@ -31,10 +31,6 @@ const props = defineProps({
 function handleClose() {
   emit('close')
 }
-
-// function _handleCancel() {
-//   // [TODO]
-// }
 
 const getModStatusIcon = (status: SyncProgressStatus) => {
   switch (status) {
@@ -55,15 +51,22 @@ const getModStatusColor = (status: SyncProgressStatus) => {
   }
 }
 
-// const getModStatusLabel = (status: SyncProgressStatus) => {
-//   switch (status) {
-//     case SyncProgressStatus.Synced: return t('modals.sync.synced', 'Synced')
-//     case SyncProgressStatus.UpToDate: return t('modals.sync.upToDate', 'Up to Date')
-//     case SyncProgressStatus.Removed: return t('modals.sync.removed', 'Removed')
-//     case SyncProgressStatus.Failed: return t('modals.sync.failed', 'Failed')
-//     default: return ''
-//   }
-// }
+function getErrorMessage(t: (key: string, params?: any) => string, error: SyncError | null | undefined): string {
+  if (!error) return t('errors.unknownError')
+
+  switch (error.type) {
+    case 'SymlinkAdminRequired': return t('errors.symlinkAdminRequired')
+    case 'PermissionDenied': return t('errors.permissionDenied')
+    case 'DiskFull': return t('errors.diskFull')
+    case 'ModPathNotFound': return t('errors.modPathNotFound', { path: error.details })
+    case 'CopyFailed': return t('errors.copyFailed', { error: error.details })
+    case 'SymlinkFailed': return t('errors.symlinkFailed', { error: error.details })
+    case 'HardlinkFailed': return t('errors.hardlinkFailed', { error: error.details })
+    case 'DirectoryCreationFailed': return t('errors.directoryCreationFailed', { error: error.details })
+    case 'RemovalFailed': return t('errors.removalFailed', { error: error.details })
+    default: return t('errors.unknownError', { error: JSON.stringify(error) })
+  }
+}
 
 const formatTimestamp = (timestamp: string) => {
   return new Date(timestamp).toLocaleTimeString('en-US', {
@@ -77,35 +80,26 @@ const formatTimestamp = (timestamp: string) => {
 const title = computed(() => {
   if (syncStateStore.type === SyncType.Sync) {
     switch (syncStateStore.status) {
-      case SyncStatus.SYNCING:
-        return t('modals.sync.syncing', 'Syncing mods...')
-      case SyncStatus.COMPLETED:
-        return t('modals.sync.completed', 'Mods synced successfully')
-      case SyncStatus.FAILED:
-        return t('modals.sync.failed', 'Failed to sync mods')
-      case SyncStatus.IDLE:
-        return t('modals.sync.idle', 'Ready to sync mods')
+      case SyncStatus.SYNCING: return t('modals.sync.titles.syncing')
+      case SyncStatus.COMPLETED: return t('modals.sync.titles.completed')
+      case SyncStatus.FAILED: return t('modals.sync.titles.failed')
+      case SyncStatus.IDLE: return t('modals.sync.titles.idle')
     }
   } else {
     switch (syncStateStore.status) {
-      case SyncStatus.SYNCING:
-        return t('modals.sync.removing', 'Removing mods...')
-      case SyncStatus.COMPLETED:
-        return t('modals.sync.removed', 'Mods removed successfully')
-      case SyncStatus.FAILED:
-        return t('modals.sync.failedToRemove', 'Failed to remove mods')
-      case SyncStatus.IDLE:
-        return t('modals.sync.idleToRemove', 'Ready to remove mods')
+      case SyncStatus.SYNCING: return t('modals.sync.titles.removing')
+      case SyncStatus.COMPLETED: return t('modals.sync.titles.removed')
+      case SyncStatus.FAILED: return t('modals.sync.titles.failedToRemove')
+      case SyncStatus.IDLE: return t('modals.sync.titles.idleToRemove')
     }
   }
 })
 
 const errorMessage = computed(() => {
-  if (syncStateStore?.status === SyncStatus.FAILED) {
-    return syncStateStore.error?.type === "SymlinkAdminRequired"
-      ? "Administrator needed for mod sync"
-      : syncStateStore.error?.type
+  if (syncStateStore?.status === SyncStatus.FAILED && syncStateStore.error) {
+    return getErrorMessage(t, syncStateStore.error)
   }
+  return ''
 })
 
 const realProgress = computed(() => {
@@ -162,11 +156,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Modal
-    :show="visible"
-    @close="handleClose"
-    class="w-full min-w-xl max-w-2xl min-h-[80vh]"
-  >
+  <Modal :show="visible" @close="handleClose" class="w-full min-w-xl max-w-2xl min-h-[80vh]">
     <template #header>
       <div class="flex items-center justify-between gap-3 min-w-0 p-4">
         <div class="min-w-0 flex-1" data-tauri-drag-region>
@@ -174,14 +164,9 @@ onMounted(() => {
             {{ title }}
           </span>
 
-          <div
-            v-if="lastSyncedMod"
-            class="mt-0.5 text-xs text-secondary font-mono truncate"
-          >
-            <component
-              :is="getModStatusIcon(lastSyncedMod.status)"
-              :class="getModStatusColor(lastSyncedMod.status) + ' w-3.5 h-3.5 inline-block mr-1'"
-            />
+          <div v-if="lastSyncedMod" class="mt-0.5 text-xs text-secondary font-mono truncate">
+            <component :is="getModStatusIcon(lastSyncedMod.status)"
+              :class="getModStatusColor(lastSyncedMod.status) + ' w-3.5 h-3.5 inline-block mr-1'" />
             {{ lastSyncedMod.modName }}
           </div>
 
@@ -190,31 +175,22 @@ onMounted(() => {
           </div>
         </div>
 
-        <button v-if="isDev"
-          class="shrink-0 flex items-center justify-center p-1 rounded-full
+        <button v-if="isDev" class="shrink-0 flex items-center justify-center p-1 rounded-full
                  text-secondary hover:text-primary hover:bg-interactive-bg transition-colors cursor-pointer"
-          @click="sM()"
-        >
+          @click="sM()">
           <RefreshCcw class="w-4 h-4" />
         </button>
-        <button
-          class="shrink-0 flex items-center justify-center p-1 rounded-full
+        <button class="shrink-0 flex items-center justify-center p-1 rounded-full
                  text-secondary hover:text-primary hover:bg-interactive-bg transition-colors cursor-pointer"
-          @click="handleClose"
-        >
+          @click="handleClose">
           <X class="w-4 h-4" />
         </button>
       </div>
     </template>
 
-    
     <template #footer>
       <div class="flex justify-end shrink-0 p-2 px-4">
-        <Button
-          :label="t('modals.sync.close', 'Close')"
-          variant="default"
-          @click="handleClose"
-        />
+        <Button :label="t('modals.sync.actions.close')" variant="default" @click="handleClose" />
       </div>
     </template>
 
@@ -226,22 +202,17 @@ onMounted(() => {
             {{ progress }}%
           </span>
 
-          <span
-            v-if="syncStateStore.progress.current"
-            class="text-sm text-secondary font-mono opacity-50"
-          >
+          <span v-if="syncStateStore.progress.current" class="text-sm text-secondary font-mono opacity-50">
             {{ syncStateStore.progress.current }} /
             {{ syncStateStore.progress.total }}
-            {{ t('modals.sync.mods', 'mods') }}
+            {{ t('modals.sync.log.mods') }}
           </span>
         </div>
 
         <div class="h-2 bg-interactive-bg rounded-full overflow-hidden">
-          <div
-            class="h-full bg-accent-primary rounded-full"
+          <div class="h-full bg-accent-primary rounded-full"
             :class="progress === 0 ? 'transition-none' : 'transition-all duration-150 ease-out'"
-            :style="{ width: `${progress}%` }"
-          />
+            :style="{ width: `${progress}%` }" />
         </div>
       </div>
 
@@ -249,66 +220,41 @@ onMounted(() => {
 
         <div class="py-1.5 flex justify-between items-center bg-border/10 shrink-0">
           <span class="text-xs text-secondary">
-            {{ t('modals.sync.log', 'Sync Log') }}
+            {{ t('modals.sync.log.title') }}
           </span>
 
-          <span
-            v-if="syncedMods.length"
-            class="text-xs py-0.5 px-1 rounded-xl text-secondary"
-          >
+          <span v-if="syncedMods.length" class="text-xs py-0.5 px-1 rounded-xl text-secondary">
             {{ syncedMods.length }}
-            {{ t('modals.sync.mods', 'mods') }}
+            {{ t('modals.sync.log.mods') }}
           </span>
         </div>
 
-        <div
-          v-if="!syncedMods.length"
-          class="flex-1 flex items-center justify-center text-xs text-secondary italic"
-        >
-          {{ t('modals.sync.waitingToStart', 'Waiting for sync to start...') }}
+        <div v-if="!syncedMods.length" class="flex-1 flex items-center justify-center text-xs text-secondary italic">
+          {{ t('modals.sync.log.waitingToStart') }}
         </div>
 
-        <div
-          v-else
-          v-bind="containerProps"
-          class="flex-1 min-h-0"
-          style="height: 100%"
-        >
+        <div v-else v-bind="containerProps" class="flex-1 min-h-0" style="height: 100%">
           <div v-bind="wrapperProps">
-            <div
-              v-for="item in list"
-              :key="item.index"
+            <div v-for="item in list" :key="item.index"
               class="flex items-center gap-1 py-1 px-2 rounded text-xs hover:bg-interactive-bg/50 transition-colors"
-              style="height: 36px"
-            >
+              style="height: 36px">
               <span class="text-secondary opacity-50 shrink-0 w-14 tabular-nums">
                 {{ formatTimestamp(item.data.timestamp) }}
               </span>
 
-              <span
-                class="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full"
-                :class="getModStatusColor(item.data.status)"
-              >
-                <component
-                  :is="getModStatusIcon(item.data.status)"
-                  class="w-4 h-4"
-                />
+              <span class="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full"
+                :class="getModStatusColor(item.data.status)">
+                <component :is="getModStatusIcon(item.data.status)" class="w-4 h-4" />
               </span>
 
               <div class="flex-1 min-w-0 gap-2 flex">
-                <span
-                  class="text-primary truncate block"
-                  :title="item.data.modName"
-                >
+                <span class="text-primary truncate block" :title="item.data.modName">
                   {{ item.data.modName }}
                 </span>
 
-                <span
-                  v-if="item.data.error"
-                  class="text-danger text-xs mr-2"
-                  :title="'details' in item.data.error ? item.data.error.details : ''"
-                >
-                  {{ item.data.error.type }}
+                <span v-if="item.data.error" class="text-danger text-xs mr-2"
+                  :title="'details' in item.data.error ? item.data.error.details : ''">
+                  {{ getErrorMessage(t, item.data.error) }}
                 </span>
               </div>
             </div>
@@ -318,26 +264,26 @@ onMounted(() => {
         <div class="flex flex-wrap items-center py-2 gap-3 border-t border-border shrink-0">
           <div class="flex items-center gap-1.5 text-xs text-secondary">
             <ArrowRightFromLine class="w-3.5 h-3.5 text-success" />
-            <span>{{ t('modals.sync.synced', 'Synced') }}</span>
+            <span>{{ t('modals.sync.status.synced') }}</span>
           </div>
 
           <div class="flex items-center gap-1.5 text-xs text-secondary">
             <ArrowLeftFromLine class="w-3.5 h-3.5 text-warning" />
-            <span>{{ t('modals.sync.removed', 'Removed') }}</span>
+            <span>{{ t('modals.sync.status.removed') }}</span>
           </div>
+
           <div class="flex items-center gap-1.5 text-xs text-secondary">
             <ArrowRightLeft class="w-3.5 h-3.5 text-info" />
-            <span>{{ t('modals.sync.upToDate', 'Up to Date') }}</span>
+            <span>{{ t('modals.sync.status.upToDate') }}</span>
           </div>
 
           <div class="flex items-center gap-1.5 text-xs text-secondary">
             <TriangleAlert class="w-3.5 h-3.5 text-danger" />
-            <span>{{ t('modals.sync.failed', 'Failed') }}</span>
+            <span>{{ t('modals.sync.status.failed') }}</span>
           </div>
         </div>
 
       </div>
-
 
     </div>
   </Modal>

@@ -86,7 +86,7 @@ const measureElement = (el: Element | ComponentPublicInstance | null) => {
 <template>
     <div v-if="items.length === 0" class="text-center py-12 text-secondary">
         <p class="text-lg">
-            {{ $t('characters.messages.charactersEmpty') }}
+            {{ $t('charactersTab.charactersNotFound') }}
         </p>
     </div>
 

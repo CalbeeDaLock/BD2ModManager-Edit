@@ -4,6 +4,7 @@ import { ChevronDown, Download, ExternalLink } from 'lucide-vue-next';
 import Modal from '../../../components/common/Modal.vue';
 import Button from '../../../components/common/Button.vue';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
+import { openUrl } from '@tauri-apps/plugin-opener';
 
 const BEPINEX_RELEASES_URL = "https://api.github.com/repos/BepInEx/BepInEx/releases";
 
@@ -49,24 +50,25 @@ function handleVersionSelected(downloadUrl: string) {
     showBepInEx.value = false;
     emit('version-selected', downloadUrl);
 }
+
 </script>
 
 <template>
     <Modal v-model:show="showBepInEx" @close="showBepInEx = false" class="w-150 max-h-[80%]"
-        :title="$t('modals.bepinexModal.title')">
+        :title="$t('browndustxTab.modals.bepinexGithub.title')">
         <template #footer>
-            <div class="flex justify-center gap-2">
+            <div class="flex justify-center gap-2 p-2">
                 <Button label="Cancel" @click="$emit('close')" />
             </div>
         </template>
 
         <div class="p-4">
             <div v-if="loading" class="text-center py-8 text-secondary">
-                {{ $t('modals.bepinexModal.loading') }}
+                {{ $t('browndustxTab.modals.bepinexGithub.loading') }}
             </div>
 
             <div v-else-if="bepinexVersions.length > 0" class="space-y-2">
-                <Disclosure v-for="version in bepinexVersions.slice(0, 10)" :key="version.id" v-slot="{ open }">
+                <Disclosure v-for="version in bepinexVersions.slice(0, 20)" :key="version.id" v-slot="{ open }">
                     <DisclosureButton
                         class="w-full flex items-center gap-3 p-3 border border-border rounded hover:bg-bg-deep">
                         <ChevronDown :class="[
@@ -83,12 +85,14 @@ function handleVersionSelected(downloadUrl: string) {
                         </div>
 
                         <div class="flex gap-2 items-center">
-                            <a :href="version.html_url" target="_blank"
-                                class="px-3 py-1 items-center justify-center flex gap-1 border border-border rounded text-sm text-secondary hover:bg-bg-deep"
-                                @click.prevent>
+                            <span :href="version.html_url" target="_blank"
+                                class="px-3 py-1 cursor-pointer items-center justify-center flex gap-1 border border-border rounded text-sm text-secondary hover:bg-bg-deep"
+                                @click.stop="async () => {
+                                    await openUrl(version.html_url);
+                                }">
                                 <ExternalLink class="w-4 h-4 inline-block mr-1" />
-                                {{ $t('modals.bepinexModal.viewOnGithub') }}
-                            </a>
+                                {{ $t('browndustxTab.modals.bepinexGithub.actions.viewOnGithub') }}
+                        </span>
                         </div>
                     </DisclosureButton>
                     <DisclosurePanel class="rounded-lg border border-border bg-bg-deep p-3 space-y-2">
@@ -105,8 +109,8 @@ function handleVersionSelected(downloadUrl: string) {
 
                             <Button size="sm" class="px-3" @click="handleVersionSelected(asset.browser_download_url)">
                                 <Download class="w-4 h-4 inline-block mr-1" />
-                                {{ $t('modals.bepinexModal.actions.install') }} 
-                             </Button>
+                                {{ $t('browndustxTab.modals.bepinexGithub.actions.install') }}
+                            </Button>
                         </div>
                     </DisclosurePanel>
                 </Disclosure>
@@ -114,10 +118,10 @@ function handleVersionSelected(downloadUrl: string) {
             </div>
 
             <div v-else class="text-center py-8">
-                <p class="text-secondary mb-2">{{ $t('modals.bepinexModal.failedToLoadVersions') }}</p>
+                <p class="text-secondary mb-2">{{ $t('browndustxTab.modals.bepinexGithub.failedToLoadVersions') }}</p>
                 <button @click="fetchBepInExVersions"
                     class="px-3 py-1 bg-interactive-bg border border-interactive-border rounded text-primary">
-                    {{ $t('modals.bepinexModal.actions.retry') }}
+                    {{ $t('browndustxTab.modals.bepinexGithub.actions.retry') }}
                 </button>
             </div>
         </div>

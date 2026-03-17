@@ -62,12 +62,12 @@ const reject = () => {
                   </div>
                 </div>
                 <div v-else></div>
-                <div class="flex justify-end gap-2">
+                <div class="flex justify-end gap-2 overflow-hidden">
                   <button @click="reject"
-                    class="px-4 py-2 rounded bg-interactive-bg hover:bg-interactive-bg-hover! cursor-pointer">{{
+                    class="px-4 py-2 rounded bg-interactive-bg hover:bg-interactive-bg-hover! cursor-pointer truncate">{{
                       state.rejectButton?.label }}</button>
                   <button @click="accept"
-                    class="px-4 py-2 rounded bg-accent-primary hover:bg-accent-primary-hover! cursor-pointer">{{
+                    class="px-4 py-2 rounded bg-accent-primary hover:bg-accent-primary-hover! cursor-pointer truncate">{{
                       state.acceptButton?.label }}</button>
                 </div>
               </div>

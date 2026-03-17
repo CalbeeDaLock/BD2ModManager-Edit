@@ -45,8 +45,8 @@ function save() {
   <Modal
     v-model:show="visible"
     class="min-w-120 max-w-200 max-h-[80%]"
-    :title="$t('profiles.modals.editProfile.title')"
-    :subtitle="$t('profiles.modals.editProfile.description')"
+    :title="$t('profilesTab.modals.editProfile.title')"
+    :subtitle="$t('profilesTab.modals.editProfile.description')"
     @close="visible = false"
   >
     <div
@@ -56,13 +56,13 @@ function save() {
 
       <div class="flex flex-col gap-1">
         <label for="edit-name" class="font-semibold">
-          {{ $t('profiles.modals.editProfile.placeholders.profileName') }}
+          {{ $t('profilesTab.modals.editProfile.nameField.label') }}
         </label>
         <div class="h-10">
           <Input
             id="edit-name"
             class="flex-auto"
-            :placeholder="$t('profiles.modals.editProfile.placeholders.profileName')"
+            :placeholder="$t('profilesTab.modals.editProfile.nameField.placeholder')"
             :model-value="profileSelected.name ?? ''"
             @update:model-value="val => { if (profileSelected) profileSelected.name = val }"
           />
@@ -71,14 +71,14 @@ function save() {
 
       <div class="flex flex-col gap-1">
         <label for="edit-description" class="font-semibold">
-          {{ $t('profiles.modals.editProfile.placeholders.profileDescription') }}
+          {{ $t('profilesTab.modals.editProfile.descriptionField.label') }}
         </label>
         <div class="h-10">
           <Input
             id="edit-description"
             class="flex-auto"
             autocomplete="off"
-            :placeholder="$t('profiles.modals.editProfile.placeholders.profileDescription')"
+            :placeholder="$t('profilesTab.modals.editProfile.descriptionField.placeholder')"
             :model-value="profileSelected.description ?? ''"
             @update:model-value="val => { if (profileSelected) profileSelected.description = val }"
           />
@@ -88,15 +88,15 @@ function save() {
     </div>
 
     <template #footer>
-      <div class="flex justify-end gap-2">
+      <div class="flex justify-end gap-2 p-2">
         <Button
           type="button"
-          :label="$t('profiles.modals.editProfile.actions.cancel')"
+          :label="$t('common.actions.cancel')"
           @click="visible = false"
         />
         <Button
           type="button"
-          :label="$t('profiles.modals.editProfile.actions.save')"
+          :label="$t('profilesTab.modals.editProfile.actions.saveChanges')"
           @click="save"
         />
       </div>

@@ -45,18 +45,18 @@ const filteredLogs = computed(() => {
         <div class="flex flex-col h-full min-h-0 p-4">
             <Select v-model="selectedLogLevel" :options="logLevels" class="w-40 mb-4 shrink-0" />
             <div class="flex-1 min-h-0 bg-interactive-bg overflow-y-auto p-4 rounded border border-interactive-border">
-                <p v-if="filteredLogs.length === 0" class="text-sm text-secondary whitespace-pre-wrap">{{
+                <p v-if="filteredLogs.length === 0" class="text-sm text-secondary whitespace-pre-wrap flex-1 h-full flex">{{
                     t('modals.logs.noLogs') }}
                 </p>
                 <div v-else class="flex flex-col">
                     <div v-for="log in filteredLogs" :key="log.timestamp.getTime()" class="flex flex-col ">
                         <div class="flex gap-2">
                             <span :class="{
-                                'text-green-400': log.level === 'Success',
-                                'text-blue-400': log.level === 'Info',
-                                'text-yellow-400': log.level === 'Warning',
-                                'text-red-400': log.level === 'Error',
-                                'text-gray-400': log.level === 'Debug',
+                                'text-success': log.level === 'Success',
+                                'text-info': log.level === 'Info',
+                                'text-warning': log.level === 'Warning',
+                                'text-danger': log.level === 'Error',
+                                'text-secondary': log.level === 'Debug',
                             }" class="font-mono font-semibold uppercase">
                                 {{ log.level }}
                             </span>
@@ -65,7 +65,7 @@ const filteredLogs = computed(() => {
                             </span>
                         </div>
                         <span class="flex-1 text-primary break-all" :class="{
-                            'text-red-300': log.level === 'Error'
+                            'text-danger': log.level === 'Error'
                         }">
                             {{ log.message }}
                         </span>

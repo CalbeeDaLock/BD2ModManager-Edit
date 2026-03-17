@@ -47,11 +47,11 @@ async function deleteSelected() {
   // const _profile = profilesStore.getProfileById(profileSelectedId.value)
 
   const result = await confirm.confirm({
-    title: t('profiles.deleteConfirmation.title'),
-    message: t('profiles.deleteConfirmation.message'),
+    title: t('profilesTab.confirmations.deleteProfile.title'),
+    message: t('profilesTab.confirmations.deleteProfile.message', { profileName: selectedProfile.value?.name }),
     icon: TriangleAlert,
     acceptButton: {
-      label: t('common.actions.delete'),
+      label: t('profilesTab.confirmations.deleteProfile.actions.deleteProfile'),
       position: 'right'
     },
     rejectButton: {
@@ -68,8 +68,8 @@ async function deleteSelected() {
 
   toast.add({
     severity: 'success',
-    summary: t('common.success'),
-    detail: t('profiles.messages.deleted'),
+    summary: t('profilesTab.notifications.profileDeleted.title'),
+    detail: t('profilesTab.notifications.profileDeleted.description', { profileName: selectedProfile.value?.name }),
     life: 3000
   })
 }
@@ -78,8 +78,8 @@ function onProfileEdit(id: string, name: string, description: string | null) {
 
   toast.add({
     severity: 'success',
-    summary: t('common.success'),
-    detail: t('profiles.messages.updated'),
+    summary: t('profilesTab.notifications.profileUpdated.title'),
+    detail: t('profilesTab.notifications.profileUpdated.description', { profileName: name }),
     life: 3000
   })
 }
@@ -93,17 +93,22 @@ function onProfileCreate(
 
   toast.add({
     severity: 'success',
-    summary: t('common.success'),
-    detail: t('profiles.messages.created'),
+    summary: t('profilesTab.notifications.profileCreated.title'),
+    detail: t('profilesTab.notifications.profileCreated.description', { profileName: name }),
     life: 3000
   })
 }
 
+function onProfileSwitch(id: string) {
+  profilesStore.switchProfile(id)
+}
+
 useHeader({
-  title: t('profiles.title'),
+  title: t('profilesTab.title'),
+  subtitle: t('profilesTab.subtitle'),
   buttons: [
     {
-      label: t('profiles.actions.createProfile'),
+      label: t('profilesTab.actions.createProfile'),
       icon: PlusCircle,
       action: createNewProfile
     }
@@ -129,18 +134,18 @@ useHeader({
               <div class="flex flex-col min-w-0 overflow-hidden">
                 <span class="font-medium">{{ profile.name }}</span>
                 <span class="text-sm text-secondary mt-1 truncate">
-                  {{ profile.description === "d3f4ult" ? $t('profiles.defaultProfile') : profile.description ||
-                    $t('profiles.messages.emptyDescription') }}
+                  {{ profile.description === "d3f4ult" ? $t('profilesTab.defaultProfile') : profile.description ||
+                    $t('profilesTab.emptyDescription') }}
                 </span>
               </div>
 
               <div>
                 <span class="font-medium text-success" v-if="profilesStore.activeProfileId == profile.id">
-                  {{ $t('profiles.actions.active') }}
+                  {{ $t('profilesTab.activeProfile') }}
                 </span>
-                <span v-else @click.stop="profilesStore.switchProfile(profile.id)"
+                <span v-else @click.stop="onProfileSwitch(profile.id)"
                   class="font-medium text-primary whitespace-nowrap hover:text-accent-primary! transition-colors duration-150 cursor-pointer">
-                  {{ $t('profiles.actions.switch') }}
+                  {{ $t('profilesTab.actions.setAsCurrent') }}
                 </span>
               </div>
             </div>
@@ -156,23 +161,23 @@ useHeader({
                 </h3>
 
                 <p class="text-secondary text-sm truncate">
-                  {{ selectedProfile.description === "d3f4ult" ? $t('profiles.defaultProfile') :
-                    selectedProfile.description || $t('profiles.messages.emptyDescription') }}
+                  {{ selectedProfile.description === "d3f4ult" ? $t('profilesTab.defaultProfile') :
+                    selectedProfile.description || $t('profilesTab.emptyDescription') }}
                 </p>
               </div>
 
               <div class="flex gap-2">
-                <Button variant="text" :label="$t('profiles.actions.edit', 'Edit')" :icon="Edit"
+                <Button variant="text" :label="$t('profilesTab.actions.editProfile')" :icon="Edit"
                   :disabled="selectedProfile.id === 'default'" @click="editSelected" />
 
-                <Button variant="text" :label="$t('profiles.actions.delete', 'Delete')" :icon="Trash2"
+                <Button variant="text" :label="$t('profilesTab.actions.deleteProfile')" :icon="Trash2"
                   :disabled="selectedProfile.id === 'default'" @click="deleteSelected" />
               </div>
             </div>
 
             <div class="flex flex-col gap-1 h-full flex-1">
               <h4 class="font-semibold text-md text-primary">
-                {{ $t('profiles.messages.enabledMods', { count: selectedProfile.enabledMods?.length || 0 }) }}
+                {{ $t('profilesTab.enabledMods', { count: selectedProfile.enabledMods?.length || 0 }) }}
               </h4>
 
               <div class="flex flex-col gap-1 bg-bg-deep rounded p-2 flex-1 h-full overflow-y-auto">
@@ -184,14 +189,14 @@ useHeader({
                   !selectedProfile.enabledMods ||
                   selectedProfile.enabledMods.length === 0
                 " class="text-sm text-secondary italic">
-                  {{ $t('profiles.messages.noModsEnabled') }}
+                  {{ $t('profilesTab.noModsEnabled') }}
                 </div>
               </div>
             </div>
           </div>
 
           <div v-else class="text-secondary text-center mt-8">
-            {{ $t('profiles.messages.selectProfile') }}
+            {{ $t('profilesTab.noProfileSelected') }}
           </div>
         </div>
       </div>

@@ -13,21 +13,22 @@ import { useI18n } from 'vue-i18n';
 import { useConfirm } from '../../plugins/ConfirmService';
 import { useLoggingStore } from '../../stores/logging';
 
+const { t } = useI18n()
 const toast = useToast()
 const confirm = useConfirm()
 const loggingStore = useLoggingStore()
 
-const {t} = useI18n()
+const settingsStore = useSettingsStore()
+// const profilesStore = useProfilesStore()
 
 const gameVersion = ref<string | null>(null)
 
 const {
     isSyncNeeded
 } = useModsStore()
-const settingsStore = useSettingsStore()
+
 
 const { getGameVersion } = useSettingsStore()
-
 
 onMounted(async () => {
     gameVersion.value = await getGameVersion()
@@ -36,10 +37,10 @@ onMounted(async () => {
 async function launchGame() {
     if (await isSyncNeeded()) {
         const result = await confirm.confirm({
-            title: t('sidebar.messages.unsyncedModsTitle'),
-            message: t('sidebar.messages.unsyncedModsMessage'),
+            title: t('sidebar.confirmations.unsyncedMods.title'),
+            message: t('sidebar.confirmations.unsyncedMods.message'),
             acceptButton: {
-                label: t('sidebar.actions.launchAnyway')
+                label: t('sidebar.confirmations.unsyncedMods.actions.launchAnyway')
             },
             rejectButton: {
                 label: t('common.actions.cancel')
@@ -50,10 +51,10 @@ async function launchGame() {
         }
     } else {
         await invoke("launch_game").then(() => {
-            toast.add({ severity: 'success', summary: t('sidebar.messages.gameLaunched.title'), detail: t('sidebar.messages.gameLaunched.description'), life: 3000 })
+            toast.add({ severity: 'success', summary: t('sidebar.notifications.gameLaunched.title'), detail: t('sidebar.notifications.gameLaunched.description'), life: 3000 })
         }).catch((error) => {
-            loggingStore.logError('Failed to launch game', error)
-            toast.add({ severity: 'error', summary: t('sidebar.messages.gameLaunchError.title'), detail: t('sidebar.messages.gameLaunchError.description'), life: 5000 })
+            loggingStore.logError('Faile d to launch game', error)
+            toast.add({ severity: 'error', summary: t('sidebar.notifications.gameLaunchError.title'), detail: t('sidebar.notifications.gameLaunchError.description'), life: 5000 })
         })
     }
 }
@@ -79,8 +80,7 @@ watch(() => settingsStore.settings.gameDirectory, (gameDir) => {
         class="flex flex-col min-h-0 h-full bg-bg-surface gap-0 overflow-y-auto min-w-70 max-w-70 border-r border-border">
         <!-- header -->
         <div class="h-32 flex items-center flex-col justify-center gap-1 relative overflow-hidden">
-            <span
-                class="font-cinzel font-bold text-xl text-primary">
+            <span class="font-cinzel font-bold text-xl text-primary">
                 BROWNDUST II
             </span>
 
@@ -141,4 +141,5 @@ watch(() => settingsStore.settings.gameDirectory, (gameDir) => {
         </div>
     </div>
 </template>
-<style scoped></style>
+<style scoped>
+</style>

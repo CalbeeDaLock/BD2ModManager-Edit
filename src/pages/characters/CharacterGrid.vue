@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Character } from '../../stores/characters';
+import { Character, isCostumeNew } from '../../stores/characters';
 import { Check, X } from 'lucide-vue-next';
 import Image from '../../components/common/Image.vue';
 
@@ -14,26 +14,15 @@ const props = defineProps<{
     items: CostumeWithMods[];
 }>();
 
-function isCostumeNew(costume: Character): boolean {
-    if (!costume.release_date) return false;
-
-    const daysCount = 31;
-    const releaseDate = new Date(costume.release_date).getTime();
-    const daysAgo = Date.now() - daysCount * 24 * 60 * 60 * 1000;
-
-    return releaseDate > daysAgo;
-}
-
 defineEmits<{
     'open-mod-details': [costume: Character];
 }>();
 </script>
 
-
 <template>
         <div v-if="items.length === 0" class="text-center py-12 text-secondary">
         <p class="text-lg">
-            {{ $t('characters.messages.charactersEmpty') }}
+            {{ $t('charactersTab.charactersNotFound') }}
         </p>
     </div>
     <div v-else
@@ -55,11 +44,11 @@ defineEmits<{
                     <div class="absolute top-2.5 left-2.5 flex gap-1">
                         <div v-if="costume.modsCount > 0"
                             class="  bg-accent-primary/75 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full font-medium">
-                            {{ $t('characters.tags.modsCount', {count: costume.modsCount}) }}
+                            {{ $t('charactersTab.tags.modsCount', {count: costume.modsCount}) }}
                         </div>
                         <div v-if="costume.is_collab"
                             class=" bg-yellow-500/75 backdrop-blur-sm text-yellow-100 text-xs px-2 py-1 rounded-full font-medium">
-                            {{ $t('characters.tags.collab') }}
+                            {{ $t('charactersTab.tags.collab') }}
                         </div>
 
                     </div>
@@ -71,19 +60,19 @@ defineEmits<{
                             :title="costume.character + ' - ' + costume.costume">
                             <div v-if="isCostumeNew(costume)"
                                 class=" bg-red-500/75 backdrop-blur-sm text-red-100 text-xs px-2 py-0.5 rounded-sm font-medium">
-                                {{ $t('characters.tags.new') }}
+                                {{ $t('charactersTab.tags.new') }}
                             </div>
                             {{ costume.character }} - {{ costume.costume }}
                         </div>
                         <div class="text-secondary text-xs">
-                            ID: {{ costume.id }}
+                            {{ $t('charactersTab.id', { id: costume.id }) }}
                         </div>
                     </div>
 
                     <div class="flex justify-around items-center gap-1 text-xs text-primary font-mono overflow-x-auto">
                         <div class="text-center p-1">
                             <div class="mb-1">
-                                {{ $t('characters.cutscene') }}
+                                {{ $t('charactersTab.modTypes.cutscene') }}
                             </div>
                             <div class="flex items-center justify-center"
                                 :class="costume.hasCutscene ? 'text-success font-bold' : 'text-danger'">
@@ -93,7 +82,7 @@ defineEmits<{
                         </div>
 
                         <div class="text-center p-1">
-                            <div class=" mb-1">{{ $t('characters.standing') }}</div>
+                            <div class=" mb-1">{{ $t('charactersTab.modTypes.standing') }}</div>
                             <div class="flex justify-center"
                                 :class="costume.hasStanding ? 'text-success font-bold' : 'text-danger'">
                                 <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasStanding" />
@@ -102,7 +91,7 @@ defineEmits<{
                         </div>
 
                         <div class="text-center p-1" v-if="costume.dating_id">
-                            <div class=" mb-1">{{ $t('characters.dating') }}</div>
+                            <div class=" mb-1">{{ $t('charactersTab.modTypes.dating') }}</div>
                             <div class="flex justify-center"
                                 :class="costume.hasDating ? 'text-success font-bold' : 'text-danger'">
                                 <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasDating" />
@@ -110,10 +99,6 @@ defineEmits<{
                             </div>
                         </div>
                     </div>
-                    <!-- <div v-else
-                        class="flex flex-1 align-center justify-center items-center text-xs text-primary font-mono">
-                        Not available
-                    </div> -->
                 </div>
             </div>
         </template>

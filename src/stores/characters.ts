@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { timeOperation } from "../utils/timeOp";
 import { invoke } from "@tauri-apps/api/core";
 
+
 export interface Character {
   id: string;
   character: string;
@@ -23,6 +24,16 @@ interface CharactersJson {
 }
 
 type DatingMap = Record<string, string>;
+
+export function isCostumeNew(costume: Character): boolean {
+    if (!costume.release_date) return false;
+
+    const daysCount = 7;
+    const releaseDate = new Date(costume.release_date).getTime();
+    const daysAgo = Date.now() - daysCount * 24 * 60 * 60 * 1000;
+
+    return releaseDate > daysAgo;
+}
 
 export const useCharactersStore = defineStore("characters", () => {
   const characters = shallowRef<Character[]>([]);

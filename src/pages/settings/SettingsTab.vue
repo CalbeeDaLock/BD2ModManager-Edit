@@ -1,35 +1,30 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList, TabPanels } from '@headlessui/vue';
-import {  CircleArrowUp, Monitor, Settings } from 'lucide-vue-next';
-import { computed} from 'vue';
+import { CircleArrowUp, Monitor, Settings } from 'lucide-vue-next';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import GeneralTab from './tabs/GeneralTab.vue';
 import InterfaceTab from './tabs/InterfaceTab.vue';
 import UpdateTab from './tabs/UpdateTab.vue';
+import { useHeader } from '../../composables/useHeader';
 
 
 const { t } = useI18n()
 
 const tabs = computed(() => [{
-    label: t(`settings.navigation.tabs.general`),
+    label: t(`settingsTab.general.label`),
     value: 'general',
     icon: Settings,
 }, {
-    label: t('settings.navigation.tabs.interface'),
+    label: t('settingsTab.interface.label'),
     value: 'interface',
     icon: Monitor
 }, {
-    label: t('settings.navigation.tabs.updates'),
+    label: t('settingsTab.updates.label'),
     value: 'updates',
     icon: CircleArrowUp
-}, 
-// {
-//     label: t('settings.navigation.tabs.experimental'),
-//     value: 'experimental',
-//     icon: FlaskConical
-// }
+}
 ])
-    
 </script>
 
 <template>
@@ -49,8 +44,7 @@ const tabs = computed(() => [{
                         hover:bg-interactive-bg-hover
                         flex gap-1.5 items-center"
                             :class="{ 'bg-interactive-bg text-primary font-medium': selected, 'text-secondary': !selected }">
-                            <component v-if="tab.icon" :is="tab.icon"
-                                :class="['w-[1.25em] h-[1.25em] text-primary']" />
+                            <component v-if="tab.icon" :is="tab.icon" :class="['w-[1.25em] h-[1.25em] text-primary']" />
                             {{ tab.label }}
                         </button>
                     </Tab>
