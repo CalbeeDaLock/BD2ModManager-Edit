@@ -7,7 +7,6 @@ import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 
 import { listen } from "@tauri-apps/api/event";
-import { open } from "@tauri-apps/plugin-dialog";
 import { openPath } from "@tauri-apps/plugin-opener";
 
 import { useConfirm } from "../../plugins/ConfirmService";
@@ -402,98 +401,6 @@ async function handleUnsyncMods() {
     });
 
     isUnsyncing.value = false
-  }
-}
-
-async function handleInstallFromZip() {
-  const file = await open({
-    multiple: false,
-    filters: [{ name: 'Archive Files', extensions: ['zip', 'rar', '7z', 'tar', 'gz'] }]
-  });
-
-  loggingStore.logDebug("Selected file for mod installation from zip:", file);
-
-  if (file && typeof file === 'string') {
-    try {
-      let modName = await modsStore.installModFromZip(file);
-
-      loggingStore.logDebug(`Mod "${modName}" installed successfully from zip: ${file}`);
-
-      toast.add({
-        closable: true,
-        summary: t('modsTab.notifications.modInstallSuccess.title'),
-        detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
-        life: 3000,
-      });
-    } catch (error) {
-      loggingStore.logError("Error installing mod from zip:", error);
-
-      // errors:
-      // PathNotFound { path: String },
-      // InvalidName,
-      // InvalidFormat,
-      // ModAlreadyExists,
-      // InvalidMod,
-      // MultipleModsFound,
-      // UnsupportedFormat
-
-      let errorMsg = getErrorMessage(t, error instanceof Error ? error.message : String(error));
-
-      toast.add({
-        closable: true,
-        summary: t('errors.modInstallFailed.title'),
-        detail: errorMsg,
-        life: 5000,
-        severity: 'error'
-      });
-    }
-  }
-}
-
-async function handleInstallFromFolder() {
-  const folder = await open({
-    directory: true,
-    multiple: false
-  });
-
-  loggingStore.logDebug("Selected folder for mod installation:", folder);
-  loggingStore.logError(typeof t, t)
-  console.log("getErrorMessage function:", getErrorMessage)
-  if (folder && typeof folder === 'string') {
-    try {
-      let modName = await modsStore.installModFromFolder(folder);
-
-      loggingStore.logDebug(`Mod "${modName}" installed successfully from folder: ${folder}`);
-
-      toast.add({
-        closable: true,
-        summary: t('modsTab.notifications.modInstallSuccess.title'),
-        detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
-        life: 3000,
-      });
-    } catch (error) {
-      
-      loggingStore.logError("char: Error installing mod from folder:", error);
-
-      // errors:
-      // PathNotFound { path: String },
-      // InvalidName,
-      // InvalidFormat,
-      // ModAlreadyExists,
-      // InvalidMod,
-      // MultipleModsFound,
-      // UnsupportedFormat
-
-      let errorMsg = getErrorMessage(t, error instanceof Error ? error.message : String(error));
-
-      toast.add({
-        closable: true,
-        summary: t('errors.modInstallFailed.title'),
-        detail: errorMsg,
-        life: 5000,
-        severity: 'error'
-      });
-    }
   }
 }
 

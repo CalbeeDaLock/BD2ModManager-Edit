@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n';
 import GeneralTab from './tabs/GeneralTab.vue';
 import InterfaceTab from './tabs/InterfaceTab.vue';
 import UpdateTab from './tabs/UpdateTab.vue';
-import { useHeader } from '../../composables/useHeader';
 
 
 const { t } = useI18n()

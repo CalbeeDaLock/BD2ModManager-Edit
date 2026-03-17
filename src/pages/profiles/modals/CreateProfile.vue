@@ -96,7 +96,7 @@ function onClose() {
                         :placeholder="$t('profilesTab.modals.createProfile.templateField.placeholder')"
                         :options="templateProfiles.map(p => ({ label: p.name, value: p.id }))"
                         :model-value="profileSelected.templateId ?? null"
-                        @update:model-value="val => { if (profileSelected) profileSelected.templateId = val }" />
+                        @update:model-value="(val: string | null) => { if (profileSelected) profileSelected.templateId = val }" />
                 </div>
             </div>
 
