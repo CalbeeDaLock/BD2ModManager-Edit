@@ -642,6 +642,7 @@
             "title": "安装模组失败"
         },
         "invalidMod": "所选文件或文件夹不是有效的 BrownDustX 模组。",
-        "invalidFormat": "不支持的模组格式，请选择有效的模组文件或文件夹。"
+        "invalidFormat": "不支持的模组格式，请选择有效的模组文件或文件夹。",
+        "unsupportedFormat": "不支持的文件格式，请选择有效的模组文件或文件夹。"
     }
 }

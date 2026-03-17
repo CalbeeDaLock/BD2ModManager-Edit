@@ -642,6 +642,7 @@
             "title": "Failed to install mod"
         },
         "invalidMod": "The selected file or folder is not a valid BrownDustX mod.",
-        "invalidFormat": "Unsupported mod format. Please select a valid mod file or folder."
+        "invalidFormat": "Unsupported mod format. Please select a valid mod file or folder.",
+        "unsupportedFormat": "Unsupported file format. Please select a valid mod file or folder."
     }
 }

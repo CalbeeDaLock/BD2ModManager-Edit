@@ -642,6 +642,7 @@
             "title": "Falha ao instalar mod"
         },
         "invalidMod": "O arquivo ou pasta selecionado não é um mod BrownDustX válido.",
-        "invalidFormat": "Formato de mod não suportado. Por favor, selecione um arquivo ou pasta de mod válido."
+        "invalidFormat": "Formato de mod não suportado. Por favor, selecione um arquivo ou pasta de mod válido.",
+        "unsupportedFormat": "Formato de arquivo não suportado. Por favor, selecione um arquivo ou pasta de mod válido."
     }
 }
