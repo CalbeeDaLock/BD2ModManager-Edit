@@ -60,6 +60,9 @@ jobs:
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+      
+      - name: download bundled tools
+        run: pnpm download:modpreview
 
       - name: install frontend dependencies
         run: pnpm install
