@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "bd2modmanager",
+  "productName": "BD2ModManager",
   "version": "4.0.0",
   "identifier": "com.bruhnn.BD2ModManager",
   "build": {
