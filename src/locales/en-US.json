@@ -104,8 +104,8 @@
         "browndustx": {
             "status": {
                 "installed": "BrownDustX v{version}",
-                "gameNotFound": "Game path not set",
-                "notInstalled": "Not installed"
+                "gameNotFound": "Game directory not set",
+                "notInstalled": "BrownDustX not installed"
             },
             "navigation": "Go to BrownDustX"
         },
