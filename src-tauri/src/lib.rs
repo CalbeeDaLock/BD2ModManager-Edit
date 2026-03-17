@@ -181,16 +181,7 @@ impl BD2ModManager {
         path: PathBuf,
         staging_dir: &PathBuf,
     ) -> Result<String, mods::install::ModInstallError> {
-    let mod_path = if path.is_dir() {
-        mods::install::install_folder_mod(&path, staging_dir)
-    } else {
-        match path.extension().and_then(|e| e.to_str()) {
-            Some("zip") => mods::install::install_zip_mod(&path, staging_dir),
-            Some("rar") => mods::install::install_rar_mod(&path, staging_dir),
-            Some("7z") | Some("tar") => mods::install::install_archive_mod(&path, staging_dir),
-            _ => Err(mods::install::ModInstallError::InvalidFormat),
-        }
-    }?;
+        let mod_path = mods::install::install_mod(&path, staging_dir)?;
 
         let (is_mod, error) = mods::discover::analyze_mod_path(&mod_path);
         if is_mod {

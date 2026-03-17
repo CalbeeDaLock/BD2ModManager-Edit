@@ -179,14 +179,11 @@ pub fn install_folder_mod(
 
     Ok(final_mod_folder)
 }
-
-use compress_tools::{uncompress_archive, Ownership};
-
-pub fn install_archive_mod(
+pub fn install_7z_mod(
     path: &PathBuf,
     staging_directory: &PathBuf,
 ) -> Result<PathBuf, ModInstallError> {
-    info!("Installing mod from archive: {:?}", path);
+    info!("Installing mod from 7z: {:?}", path);
 
     let mod_name = path
         .file_stem()
@@ -199,22 +196,15 @@ pub fn install_archive_mod(
         return Err(ModInstallError::ModAlreadyExists);
     }
 
-    let file = File::open(path).map_err(|_| ModInstallError::PathNotFound {
-        path: path.to_string_lossy().to_string(),
-    })?;
-
-    // Extract to a temp dir first so we can find the mod root
     let temp_dir = staging_directory.join(format!(".tmp_{}", mod_name));
     std::fs::create_dir_all(&temp_dir).map_err(|_| ModInstallError::InvalidFormat)?;
 
-    info!("Extracting archive to temp dir: {:?}", temp_dir);
-    uncompress_archive(file, &temp_dir, Ownership::Ignore).map_err(|e| {
-        log::error!("Archive extraction failed: {:?}", e);
+    sevenz_rust2::decompress_file(path, &temp_dir).map_err(|e| {
+        log::error!("7z extraction failed: {:?}", e);
         let _ = std::fs::remove_dir_all(&temp_dir);
         ModInstallError::InvalidFormat
     })?;
 
-    // Find the actual mod root inside the extracted temp dir
     let mod_root = match find_mod_root_in_dir(&temp_dir) {
         Ok(root) => root,
         Err(e) => {
@@ -223,7 +213,6 @@ pub fn install_archive_mod(
         }
     };
 
-    // Copy contents of the mod root into the final destination
     std::fs::create_dir_all(&final_mod_folder).map_err(|_| {
         let _ = std::fs::remove_dir_all(&temp_dir);
         ModInstallError::InvalidFormat
@@ -259,27 +248,6 @@ pub fn install_archive_mod(
 
     let _ = std::fs::remove_dir_all(&temp_dir);
     Ok(final_mod_folder)
-}
-
-pub fn install_mod(
-    path: &PathBuf,
-    staging_directory: &PathBuf,
-) -> Result<PathBuf, ModInstallError> {
-    if path.is_dir() {
-        return install_folder_mod(path, staging_directory);
-    }
-
-    let ext = path
-        .extension()
-        .map(|e| e.to_string_lossy().to_lowercase())
-        .unwrap_or_default();
-
-    match ext.as_str() {
-        "rar" => install_rar_mod(path, staging_directory),
-        "zip" => install_zip_mod(path, staging_directory),
-        "7z" | "tar" | "gz" | "bz2" | "xz" | "tgz" => install_archive_mod(path, staging_directory),
-        _ => Err(ModInstallError::UnsupportedFormat),
-    }
 }
 
 pub fn install_rar_mod(
@@ -377,4 +345,25 @@ pub fn install_rar_mod(
 
     let _ = std::fs::remove_dir_all(&temp_dir);
     Ok(final_mod_folder)
+}
+
+pub fn install_mod(
+    path: &PathBuf,
+    staging_directory: &PathBuf,
+) -> Result<PathBuf, ModInstallError> {
+    if path.is_dir() {
+        return install_folder_mod(path, staging_directory);
+    }
+
+    let ext = path
+        .extension()
+        .map(|e| e.to_string_lossy().to_lowercase())
+        .unwrap_or_default();
+
+    match ext.as_str() {
+        "rar" => install_rar_mod(path, staging_directory),
+        "zip" => install_zip_mod(path, staging_directory),
+        "7z" => install_7z_mod(path, staging_directory),
+        _ => Err(ModInstallError::UnsupportedFormat),
+    }
 }
