@@ -31,6 +31,7 @@ src-tauri/2
 /mods to test
 /mods_backup
 /scripts
-/src-tauri/bundled_tools
+/src-tauri/tools
 /target
 /.vscode
+/src-tauri/resources

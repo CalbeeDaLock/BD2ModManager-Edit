@@ -12,9 +12,9 @@ use bd2modmanager_lib::{
     mods::metadata::ModMetadataStore,
     profiles::ProfileManager,
     utils::{
-        bundled_tools, data,
+        data,
         path::{
-            ensure_dir_exists, get_default_profiles_dir, get_default_staging_dir, get_temp_dir,
+            ensure_dir_exists, get_default_profiles_dir, get_default_staging_dir
         },
     },
     BD2ModManager,
@@ -62,7 +62,7 @@ pub fn main() {
             config.load_config();
 
             let profiles_dir: PathBuf = get_default_profiles_dir(app_handle, false);
-            let temp_dir = get_temp_dir();
+            // let temp_dir = get_temp_dir();
 
             let staging_dir = match &config.staging_directory {
                 Some(path) => PathBuf::from(path),
@@ -80,7 +80,7 @@ pub fn main() {
                 }
             };
 
-            ensure_dir_exists(&temp_dir).expect("Failed to create temp directory");
+            // ensure_dir_exists(&temp_dir).expect("Failed to create temp directory");
             ensure_dir_exists(&profiles_dir).expect("Failed to get profiles dir");
             ensure_dir_exists(&staging_dir).expect("Failed to create mods directory");
 
@@ -106,9 +106,6 @@ pub fn main() {
             };
 
             app.manage(app_state);
-
-            // move bundled tools to appdata
-            bundled_tools::move_bundled_tools(&app_handle).expect("Failed to move bundled tools");
 
             // move data to appdata
             data::move_data_to_appdata(&app_handle).expect("Failed to move data to appdata");

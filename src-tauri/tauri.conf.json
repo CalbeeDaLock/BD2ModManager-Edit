@@ -43,8 +43,12 @@
       "icons/256x256.ico"
     ],
     "resources": {
-      "bundled_tools/": "bundled_tools/",
-      "data/": "data/"
+      "resources/BD2ModPreview.exe": "resources/BD2ModPreview.exe"
+    },
+    "windows": {
+      "nsis": {
+        "installerHooks": "./windows/hooks.nsh"
+      }
     }
   }
 }
