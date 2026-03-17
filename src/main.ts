@@ -13,6 +13,7 @@ import {createI18n} from 'vue-i18n'
 
 import en_US from './locales/en-US.json'
 import pt_BR from './locales/pt-BR.json'
+import zh_CN from './locales/zh-CN.json'
 import ConfirmPlugin from "./plugins/ConfirmPlugin";
 
 const pinia = createPinia()
@@ -23,6 +24,7 @@ const i18n = createI18n({
     fallbackLocale: 'en_US',
     messages: {
         en_US,
+        zh_CN,
         pt_BR
     }
 })
