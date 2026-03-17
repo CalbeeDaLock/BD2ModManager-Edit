@@ -3,6 +3,7 @@ pub mod game;
 pub mod mods;
 pub mod profiles;
 pub mod updater;
+pub mod utils;
 
 pub use config::*;
 pub use game::*;

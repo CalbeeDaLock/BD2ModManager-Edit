@@ -161,7 +161,8 @@ pub fn main() {
             delete_mods,
             rename_mod,
             set_mod_author,
-            launch_game
+            launch_game,
+            utils::path_exists,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

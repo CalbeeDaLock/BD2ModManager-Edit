@@ -67,19 +67,15 @@ struct SyncEndEvent {
 pub enum SyncError {
     SymlinkAdminRequired,
     ModPathNotFound(String),
-    CopyFailed(String), // Include the underlying error
+    CopyFailed(String),
     SymlinkFailed(String),
     HardlinkFailed(String),
     DirectoryCreationFailed(String),
-    RemovalFailed(String),
-    // PermissionDenied,
-    // DiskFull,
+    RemovalFailed(String)
 }
 
 #[derive(Serialize, Deserialize, Clone)]
 enum SyncStatus {
-    // Syncing,
-    // Removing,
     Synced,
     Removed,
     UpToDate, // no need to do anything

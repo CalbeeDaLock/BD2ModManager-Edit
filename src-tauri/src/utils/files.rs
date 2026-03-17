@@ -1,11 +1,12 @@
 use std::{
-    fs::{copy, create_dir_all, read, read_dir},
+    fs::{copy, create_dir_all, read, read_dir, remove_dir_all, remove_file},
     io,
     path::Path,
 };
 
 use sha2::{Digest, Sha256};
 use walkdir::WalkDir;
+use std::time::SystemTime;
 
 pub fn has_extension(path: &Path, extensions: &[&str]) -> bool {
     if let Some(ext) = path.extension() {
@@ -63,19 +64,18 @@ pub fn copy_dir_all(src: &Path, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
-use std::fs;
-use std::time::SystemTime;
+
 
 pub fn sync_dirs(src: &Path, dst: &Path) -> io::Result<bool> {
     let mut updated = false;
 
     if !dst.exists() {
-        fs::create_dir_all(dst)?;
+        create_dir_all(dst)?;
         updated = true;
     }
 
     // Copy/update files from src too dst
-    for entry in fs::read_dir(src)? {
+    for entry in read_dir(src)? {
         let entry = entry?;
         let src_path = entry.path();
         let dst_path = dst.join(entry.file_name());
@@ -97,23 +97,23 @@ pub fn sync_dirs(src: &Path, dst: &Path) -> io::Result<bool> {
             };
 
             if needs_copy {
-                fs::copy(&src_path, &dst_path)?;
+                copy(&src_path, &dst_path)?;
                 updated = true;
             }
         }
     }
 
     //  Remove files from dst that don’t exist in src
-    for entry in fs::read_dir(dst)? {
+    for entry in read_dir(dst)? {
         let entry = entry?;
         let dst_path = entry.path();
         let src_path = src.join(entry.file_name());
 
         if !src_path.exists() {
             if dst_path.is_dir() {
-                fs::remove_dir_all(&dst_path)?;
+                remove_dir_all(&dst_path)?;
             } else {
-                fs::remove_file(&dst_path)?;
+                remove_file(&dst_path)?;
             }
             updated = true;
         }
