@@ -15,14 +15,38 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 ---
 
-## ✨ New UPDATE 4.0.0 ✨
-* Remade the entire mod manager in another language (from pyside to tauri)
-* Mod manager 3.5x smaller
-* New UI Design
-* Multiplatform (Windows, Linux)
-* Much faster
-* Characters Tab with grid, list view
-* Install bepinex, browndustx inside the mod manager
+## ✨ What's New in v4.0.0+
+
+### General
+- Complete UI overhaul
+- Added `.rar` and `.7z` mod installation support
+- Much smaller file size (from ~164MB → ~60MB)
+- Much faster performance (sync, unsync, and other operations)
+
+### Mods Tab
+- Conflict indicator (flags mods that edit the same character/files)
+- Mod type icons
+- Character icons (head)
+- Context menu: select all, enabled, or disabled mods
+
+### Characters Tab
+- Grid view
+- Filters by name, mod types (cutscene, dating, standing, etc.)
+- Sort by name, release date, or number of mods
+- Filter by release period (last week, 2 weeks, month, etc.)
+- View and enable/disable a character's mods directly
+
+### BrownDustX Tab *(new)*
+- Detect BepInEx and BrownDustX plugin installation
+- Install BepInEx and BrownDustX directly from the app
+
+### Settings Tab
+- Auto sync mods on enable/disable
+- Show/hide columns (mod name, character, mod type, author)
+- Mod name display: name only or with subfolders
+- Character column: icon only, name only, or both
+- Mod type column: icon only, name only, or both
+- Optional color coding for mod types
 
 
 ---
@@ -45,7 +69,7 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 Choose how mods are synced to your BrownDust X `mods` folder:
 
-#### 📁 Copy  
+#### 📁 Copy
 Copies all enabled mods into the folder.  
 
 - ✅ No admin rights needed  
@@ -61,24 +85,18 @@ Creates shortcuts instead of copying files.
 - ❌ Drag & Drop not available (Windows restrictions)  
 
 
-### Example Comparison with 359 mods
-
-| Copy | Symlink |
-|--------|-------|
-| ![](./screenshots/sync_copy_v322.gif) | ![](./screenshots/sync_symlink_v322.gif) |
-
 
 ---
 
 ## 📸 Screenshots
 
-### Mods Page (v3.1.0)
-![Mods Page](./screenshots/mods_page_v31.png)
+### Mods Page (v4.0.1)
+![Mods Page](./screenshots/mods_page_v401.png)
 
-### Characters Page (v3.1.0)
-![Characters Page](./screenshots/characters_page_v31.png)
+### Characters Page (v4.0.1)
+![Characters Page](./screenshots/characters_page_v401.png)
 
-### Mod Preview (BD2ModPreview v0.4.1)
+### Mod Preview (BD2ModPreview)
 ![Mod Preview](./screenshots/bd2modpreview.png)
 
 ---
@@ -86,6 +104,7 @@ Creates shortcuts instead of copying files.
 
 - [**Brown Dust II Mod Manager (by kxdekxde)**](https://codeberg.org/kxdekxde/browndust2-mod-manager) – An alternative mod manager for Brown Dust 2
 - [**BD2 Live2D Viewer (by jelosus2)**](https://jelosus2.github.io/BD2-L2D-Viewer) – Website to preview character animations
+- [**BDroid_X (by Ark-Repoleved)**](https://github.com/Ark-Repoleved/BDroid_X) - Brown Dust II Mod Manager for Android
 
 ## ❓ FAQ
 
