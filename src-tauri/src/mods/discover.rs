@@ -270,7 +270,7 @@ pub fn discover_staging_mods(staging_directory: &Path, recursive: bool) -> Vec<B
             Ok(entries) => entries
                 .par_bridge()
                 .filter_map(Result::ok)
-                .filter(|entry| entry.path().is_dir())
+                // .filter(|entry| entry.path().is_dir())
                 .filter_map(|entry| {
                     let path = entry.path();
                     let (is_mod, error) = analyze_mod_path(&path);
