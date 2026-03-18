@@ -625,7 +625,7 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                         <div class="min-w-0">
                             <div class="flex gap-2">
                                 <span class="text-sm text-primary">BepInEx</span>
-                                <span v-if="bepInExState.version" class="inline hidden:inline text-sm"
+                                <span v-if="bepInExState.version" class="inline lg:hidden text-sm"
                                     :class="bepInExState.version ? 'text-secondary' : 'text-secondary'">v{{
                                         bepInExState.version || '-' }}</span>
                             </div>
