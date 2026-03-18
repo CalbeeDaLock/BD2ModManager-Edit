@@ -1,4 +1,3 @@
-use bd2modmanager_lib::utils::path::is_dir_empty;
 use pelite::pe32::Pe;
 use pelite::FileMap;
 use regex::Regex;
@@ -28,7 +27,7 @@ fn cleanup_empty_dirs(game_path: &PathBuf, file_list: &[String]) {
 
     for dir in &dirs {
         if dir.exists() && dir.is_dir() {
-            let _ = fs::remove_dir(dir); // only succeeds if empty
+            let _ = fs::remove_dir(dir);
         }
     }
 }
@@ -63,20 +62,6 @@ pub fn validate_game_path(path: String) -> bool {
     exe_path.exists() && data_path.exists()
 }
 
-// #[derive(Serialize, Deserialize)]
-// enum BDXStatus {
-//     Installed,
-//     NotInstalled,
-//     BepinexMissing,
-//     GameDirectoryNotSet,
-// }
-
-// #[derive(Serialize, Deserialize)]
-// struct BDXVersion {
-//     status: BDXStatus,
-//     version: Option<String>,
-// }
-
 #[derive(Serialize, Deserialize)]
 pub struct BDXVersionResult {
     status: String,
@@ -106,14 +91,6 @@ fn get_dll_version(dll_path: &PathBuf) -> Option<String> {
 
     None
 }
-
-// #[derive(Serialize, Deserialize, Clone)]
-// pub struct LogMessage {
-//     level: String,
-//     scope: String,
-//     message: String,
-//     timestamp: String,
-// }
 
 #[tauri::command]
 pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult {
@@ -211,16 +188,6 @@ pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult
     }
 }
 
-// #[derive(Serialize, Deserialize)]
-// enum BepInExStatus {
-//     INSTALLED,
-//     FolderMissing,
-//     CoreDllMissing,
-//     WinhttpDllMISSING,
-//     MultipleFilesMissing,
-//     GameDirectoryNotSet,
-// }
-
 #[derive(Serialize, Deserialize)]
 pub struct BepInExVersionResult {
     status: String,
@@ -275,7 +242,6 @@ pub fn get_bepinex_version(state: tauri::State<AppState>) -> BepInExVersionResul
         }
     }
 
-    // Block removal if plugins are still installed
     if can_remove {
         let bdx_dll = PathBuf::from(game_path)
             .join("BepInEx")
@@ -476,7 +442,9 @@ fn is_bdx_archive<R: std::io::Read + std::io::Seek>(archive: &mut zip::ZipArchiv
         .all(|file| archive.by_name(file).is_ok())
 }
 
-fn is_configmanager_archive<R: std::io::Read + std::io::Seek>(archive: &mut zip::ZipArchive<R>) -> bool {
+fn is_configmanager_archive<R: std::io::Read + std::io::Seek>(
+    archive: &mut zip::ZipArchive<R>,
+) -> bool {
     CONFIGMANAGER_COMMON_FILES
         .iter()
         .all(|file| archive.by_name(file).is_ok())
@@ -568,7 +536,8 @@ pub async fn install_bepinex_from_archive(
     }
 
     let bepinex_dir = game_path.join("BepInEx");
-    if bepinex_dir.exists() && !is_dir_empty(&bepinex_dir) {
+    let bepinex_dll = bepinex_dir.join("core").join("BepInEx.dll");
+    if bepinex_dll.exists() {
         return Err(InstallBepInExError::BepInExAlreadyInstalled);
     }
 
@@ -618,7 +587,8 @@ pub async fn install_bepinex_from_url(
     };
 
     let bepinex_dir = game_path.join("BepInEx");
-    if bepinex_dir.exists() && !is_dir_empty(&bepinex_dir) {
+    let bepinex_dll = bepinex_dir.join("core").join("BepInEx.dll");
+    if bepinex_dll.exists() {
         return Err(InstallBepInExError::BepInExAlreadyInstalled);
     }
 
@@ -830,7 +800,6 @@ pub async fn uninstall_bepinex(state: tauri::State<'_, AppState>) -> Result<(), 
         return Err("BepInEx is not installed".to_string());
     }
 
-    // Block if plugins are still installed
     let bdx_dll = game_path
         .join("BepInEx")
         .join("plugins")
@@ -865,8 +834,8 @@ pub async fn uninstall_bepinex(state: tauri::State<'_, AppState>) -> Result<(), 
         .collect();
     files_to_remove.reverse();
 
-    for file_str in files_to_remove {
-        let file_path = game_path.join(&file_str);
+    for file_str in &files_to_remove {
+        let file_path = game_path.join(file_str);
 
         if !file_path.exists() {
             continue;
@@ -896,10 +865,13 @@ pub async fn uninstall_bepinex(state: tauri::State<'_, AppState>) -> Result<(), 
         fs::remove_file(&manifest_path).map_err(|e| e.to_string())?;
     }
 
-    cleanup_empty_dirs(&game_path, &installed_files
-        .iter()
-        .filter_map(|v| v.as_str().map(String::from))
-        .collect::<Vec<_>>());
+    cleanup_empty_dirs(
+        &game_path,
+        &installed_files
+            .iter()
+            .filter_map(|v| v.as_str().map(String::from))
+            .collect::<Vec<_>>(),
+    );
 
     Ok(())
 }
@@ -947,11 +919,17 @@ pub async fn uninstall_browndustx(state: tauri::State<'_, AppState>) -> Result<(
     let mut files_to_remove: Vec<String> = installed_files
         .iter()
         .filter_map(|v| v.as_str().map(String::from))
+        .filter(|f| {
+            let f = f.trim_end_matches('/');
+            f != "BepInEx"
+                && f != "BepInEx/plugins"
+                && !f.starts_with("BepInEx/plugins/BrownDustX/mods")
+        })
         .collect();
     files_to_remove.reverse();
 
-    for file_str in files_to_remove {
-        let file_path = game_path.join(&file_str);
+    for file_str in &files_to_remove {
+        let file_path = game_path.join(file_str);
 
         if !file_path.exists() {
             continue;
@@ -976,14 +954,18 @@ pub async fn uninstall_browndustx(state: tauri::State<'_, AppState>) -> Result<(
             }
         }
     }
+
     if manifest_path.exists() {
         fs::remove_file(&manifest_path).map_err(|e| e.to_string())?;
     }
 
-    cleanup_empty_dirs(&game_path, &installed_files
-        .iter()
-        .filter_map(|v| v.as_str().map(String::from))
-        .collect::<Vec<_>>());
+    cleanup_empty_dirs(
+        &game_path,
+        &installed_files
+            .iter()
+            .filter_map(|v| v.as_str().map(String::from))
+            .collect::<Vec<_>>(),
+    );
 
     Ok(())
 }
@@ -1035,8 +1017,8 @@ fn extract_configmanager_from_path(
 ) -> Result<Vec<String>, InstallConfigManagerError> {
     let file = fs::File::open(&archive_path)
         .map_err(|e| InstallConfigManagerError::ArchiveNotFound(e.to_string()))?;
-    let mut archive =
-        zip::ZipArchive::new(file).map_err(|_| InstallConfigManagerError::InvalidConfigManagerArchive)?;
+    let mut archive = zip::ZipArchive::new(file)
+        .map_err(|_| InstallConfigManagerError::InvalidConfigManagerArchive)?;
 
     extract_configmanager_files(&mut archive, game_path)
 }
@@ -1153,11 +1135,15 @@ pub async fn uninstall_configmanager(state: tauri::State<'_, AppState>) -> Resul
     let mut files_to_remove: Vec<String> = installed_files
         .iter()
         .filter_map(|v| v.as_str().map(String::from))
+        .filter(|f| {
+            let f = f.trim_end_matches('/');
+            f != "BepInEx" && f != "BepInEx/plugins"
+        })
         .collect();
     files_to_remove.reverse();
 
-    for file_str in files_to_remove {
-        let file_path = game_path.join(&file_str);
+    for file_str in &files_to_remove {
+        let file_path = game_path.join(file_str);
 
         if !file_path.exists() {
             continue;
@@ -1187,10 +1173,13 @@ pub async fn uninstall_configmanager(state: tauri::State<'_, AppState>) -> Resul
         fs::remove_file(&manifest_path).map_err(|e| e.to_string())?;
     }
 
-    cleanup_empty_dirs(&game_path, &installed_files
-        .iter()
-        .filter_map(|v| v.as_str().map(String::from))
-        .collect::<Vec<_>>());
+    cleanup_empty_dirs(
+        &game_path,
+        &installed_files
+            .iter()
+            .filter_map(|v| v.as_str().map(String::from))
+            .collect::<Vec<_>>(),
+    );
 
     Ok(())
 }
@@ -1237,11 +1226,13 @@ pub fn get_characters(app_handle: tauri::AppHandle) -> Result<serde_json::Value,
     serde_json::from_str(&content).map_err(|e| e.to_string())
 }
 
-
 #[tauri::command]
 pub fn launch_game(state: tauri::State<AppState>) -> Result<(), String> {
     let config = state.config.lock().map_err(|e| e.to_string())?;
-    let game_path = config.game_directory.as_ref().ok_or("Game path not set".to_string())?;
+    let game_path = config
+        .game_directory
+        .as_ref()
+        .ok_or("Game path not set".to_string())?;
 
     let exe_path = PathBuf::from(game_path).join("BrownDust II.exe");
 
