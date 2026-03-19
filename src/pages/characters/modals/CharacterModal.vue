@@ -22,12 +22,17 @@ const modsStore = useModsStore();
 
 const installedMods = computed(() => {
     if (!props.selectedCostume) return [];
-    return modsStore.mods.filter(mod =>
-        mod.modType &&
-        ['Cutscene', 'Standing', 'Dating'].includes(mod.modType.type) &&
-        'id' in mod.modType &&
-        (mod.modType as { id: string }).id === props.selectedCostume?.id
-    );
+    return modsStore.mods.filter(mod => {
+        if (!mod.modType) return false;
+        const { type } = mod.modType;
+        if (['Cutscene', 'Standing'].includes(type)) {
+            return mod.modType.id === props.selectedCostume?.id;
+        }
+        if (type === 'Dating') {
+            return mod.modType.id === props.selectedCostume?.dating_id;
+        }
+        return false;
+    });
 });
 
 const modsByType = computed(() => {
