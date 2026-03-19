@@ -7,7 +7,8 @@
             "refresh": "Atualizar",
             "continue": "Continuar",
             "confirm": "Confirmar",
-            "browse": "Procurar"
+            "browse": "Procurar",
+            "save": "Salvar"
         },
         "modTypes": {
             "cutscene": "Cutscene",
@@ -205,6 +206,7 @@
                 "title": "Falha na Dessincronização"
             },
             "modFolderNotFound": "Pasta do mod \"{modName}\" não encontrada.",
+            "modNotDirectory": "O caminho do mod '{modName}' não é um diretório.",
             "stagingDirectoryNotSet": "O diretório de staging não está definido.",
             "stagingDirectoryNotFound": "Diretório de staging não encontrado em \"{stagingDir}\". Verifique suas configurações."
         }
@@ -619,6 +621,30 @@
                 "beta": "versão beta",
                 "github": "GitHub Issues"
             }
+        },
+        "changeModAuthor": {
+            "title": "Alterar Autor do Mod",
+            "description": "Digite um novo nome de autor para o mod \"{modName}\".",
+            "placeholder": "Digite o novo nome do autor",
+            "labels": {
+                "modName": "Nome do Mod",
+                "newAuthor": "Novo Nome do Autor"
+            },
+            "actions": {
+                "save": "Salvar"
+            }
+        },
+        "changeModName": {
+            "title": "Renomear Mod",
+            "description": "Digite um novo nome para o mod \"{modName}\".",
+            "placeholder": "Digite o novo nome do mod",
+            "labels": {
+                "modName": "Nome do Mod",
+                "newModName": "Novo Nome do Mod"
+            },
+            "actions": {
+                "save": "Salvar"
+            }
         }
     },
     "errors": {
@@ -644,5 +670,13 @@
         "invalidMod": "O arquivo ou pasta selecionado não é um mod BrownDustX válido.",
         "invalidFormat": "Formato de mod não suportado. Por favor, selecione um arquivo ou pasta de mod válido.",
         "unsupportedFormat": "Formato de arquivo não suportado. Por favor, selecione um arquivo ou pasta de mod válido."
+    },
+    "modErrors": {
+        "missingTextures": "É necessário criar uma pasta chamada 'textures' dentro da pasta do mod.",
+        "missingModfile": "É necessário criar um arquivo .modfile dentro desta pasta do mod.",
+        "archiveNotExtracted": "Este mod é um arquivo comprimido que ainda não foi extraído. Por favor, extraia-o antes de tentar ativá-lo.",
+        "shouldBeInFolder": "Este mod deve estar dentro de uma pasta. Por favor, crie uma pasta com o mesmo nome do mod e mova o arquivo do mod para dentro dela.",
+        "missingAtlasFile": "Este mod está sem o arquivo atlas.",
+        "noDescription": "Nenhuma descrição fornecida."
     }
 }

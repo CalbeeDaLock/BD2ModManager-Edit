@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { X } from 'lucide-vue-next';
 import Modal from '../../../components/common/Modal.vue';
 import Button from '../../../components/common/Button.vue';
 
@@ -43,20 +42,11 @@ function cancel() {
 }
 </script>
 <template>
-    <Modal v-model:show="visible" @close="visible = false">
-        <template #header>
-            <div class="flex flex-col gap-0.5">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-semibold">{{ $t('modals.changeModAuthor.title') }}</h2>
-                    <X class="w-5 h-5 cursor-pointer" @click="cancel" />
-                </div>
-                <p class="text-sm text-secondary">{{ $t('modals.changeModAuthor.description') }}</p>
-            </div>
-        </template>
+    <Modal v-model:show="visible" @close="visible = false" :title="$t('modals.changeModAuthor.title')" :subtitle="$t('modals.changeModAuthor.description', {modName: modName})">
         <template #footer>
-            <div class="flex justify-end space-x-2">
-                <Button variant="default" @click="cancel">Cancel</Button>
-                <Button variant="default" @click="saveChanges">Save Changes</Button>
+            <div class="flex justify-end space-x-2 p-2">
+                <Button variant="default" @click="cancel">{{ $t('common.actions.cancel') }}</Button>
+                <Button variant="default" @click="saveChanges">{{ $t('common.actions.save') }}</Button>
             </div>
         </template>
 
@@ -70,7 +60,7 @@ function cancel() {
                 <label for="newModAuthor" class="block text-sm font-medium text-primary">{{
                     $t('modals.changeModAuthor.labels.newAuthor') }}</label>
                 <input v-model="newModAuthor" id="newModAuthor"
-                    :placeholder="$t('modals.changeModAuthor.placeholders.modAuthor')"
+                    :placeholder="$t('modals.changeModAuthor.placeholder')"
                     class="mt-2 p-2 border bg-interactive-bg-hover border-interactive-border rounded w-full" />
             </div>
         </div>

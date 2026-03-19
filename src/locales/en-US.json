@@ -7,7 +7,8 @@
             "refresh": "Refresh",
             "continue": "Continue",
             "confirm": "Confirm",
-            "browse": "Browse"
+            "browse": "Browse",
+            "save": "Save"
         },
         "modTypes": {
             "cutscene": "Cutscene",
@@ -205,6 +206,7 @@
                 "title": "Unsync Failed"
             },
             "modFolderNotFound": "Mod folder for '{modName}' not found.",
+            "modNotDirectory": "Mod path for '{modName}' is not a directory.",
             "stagingDirectoryNotSet": "Staging directory is not set.",
             "stagingDirectoryNotFound": "Staging directory not found at '{stagingDir}'. Please check your settings."
         }
@@ -619,6 +621,30 @@
                 "beta": "beta version",
                 "github": "GitHub Issues"
             }
+        },
+        "changeModAuthor": {
+            "title": "Change Mod Author",
+            "description": "Enter a new author name for the mod \"{modName}\".",
+            "placeholder": "Enter new author name",
+            "labels": {
+                "modName": "Mod Name",
+                "newAuthor": "New Author Name"
+            },
+            "actions": {
+                "save": "Save"
+            }
+        },
+        "changeModName": {
+            "title": "Rename Mod",
+            "description": "Enter a new name for the mod \"{modName}\".",
+            "placeholder": "Enter new mod name",
+            "labels": {
+                "modName": "Mod Name",
+                "newModName": "New Mod Name"
+            },
+            "actions": {
+                "save": "Save"
+            }
         }
     },
     "errors": {
@@ -644,5 +670,13 @@
         "invalidMod": "The selected file or folder is not a valid BrownDustX mod.",
         "invalidFormat": "Unsupported mod format. Please select a valid mod file or folder.",
         "unsupportedFormat": "Unsupported file format. Please select a valid mod file or folder."
+    },
+    "modErrors": {
+        "missingTextures": "You need to create a folder inside the mod folder named 'textures'.",
+        "missingModfile": "You need to create a .modfile inside this mod folder.",
+        "archiveNotExtracted": "This mod is a compressed file that has not been extracted yet. Please extract it before trying to enable it.",
+        "shouldBeInFolder": "This mod should be inside a folder. Please create a folder with the same name as the mod and move the mod file inside it.",
+        "missingAtlasFile": "This mod is missing the atlas file.",
+        "noDescription": "No description provided."
     }
 }

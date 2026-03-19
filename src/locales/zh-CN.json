@@ -7,7 +7,8 @@
             "refresh": "刷新",
             "continue": "继续",
             "confirm": "确认",
-            "browse": "浏览"
+            "browse": "浏览",
+            "save": "保存"
         },
         "modTypes": {
             "cutscene": "过场动画",
@@ -205,6 +206,7 @@
                 "title": "取消同步失败"
             },
             "modFolderNotFound": "未找到\"{modName}\"的模组文件夹。",
+            "modNotDirectory": "Mod \"{modName}\" 的路径不是一个目录。",
             "stagingDirectoryNotSet": "暂存目录未设置。",
             "stagingDirectoryNotFound": "在\"{stagingDir}\"处未找到暂存目录，请检查您的设置。"
         }
@@ -619,6 +621,30 @@
                 "beta": "测试版本",
                 "github": "GitHub Issues"
             }
+        },
+        "changeModAuthor": {
+            "title": "更改 Mod 作者",
+            "description": "为 Mod \"{modName}\" 输入新的作者名称。",
+            "placeholder": "输入新作者名称",
+            "labels": {
+                "modName": "Mod 名称",
+                "newAuthor": "新作者名称"
+            },
+            "actions": {
+                "save": "保存"
+            }
+        },
+        "changeModName": {
+            "title": "重命名 Mod",
+            "description": "为 Mod \"{modName}\" 输入新名称。",
+            "placeholder": "输入新 Mod 名称",
+            "labels": {
+                "modName": "Mod 名称",
+                "newModName": "新 Mod 名称"
+            },
+            "actions": {
+                "save": "保存"
+            }
         }
     },
     "errors": {
@@ -644,5 +670,13 @@
         "invalidMod": "所选文件或文件夹不是有效的 BrownDustX 模组。",
         "invalidFormat": "不支持的模组格式，请选择有效的模组文件或文件夹。",
         "unsupportedFormat": "不支持的文件格式，请选择有效的模组文件或文件夹。"
+    },
+    "modErrors": {
+        "missingTextures": "需要在 Mod 文件夹内创建一个名为 \"textures\" 的文件夹。",
+        "missingModfile": "需要在此 Mod 文件夹内创建一个 .modfile 文件。",
+        "archiveNotExtracted": "此 Mod 是一个尚未解压的压缩文件，请解压后再尝试启用。",
+        "shouldBeInFolder": "此 Mod 应放置在文件夹内。请创建一个与 Mod 同名的文件夹，并将 Mod 文件移入其中。",
+        "missingAtlasFile": "此 Mod 缺少 Atlas 文件。",
+        "noDescription": "暂无描述。"
     }
 }
