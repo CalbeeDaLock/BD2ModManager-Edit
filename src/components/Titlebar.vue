@@ -114,24 +114,28 @@ onMounted(async () => {
 
     appVersion.value = await getVersion()
 
+    const appUpdateCheckStart = ref<number | null>(null)
+
     unlistenFunctions.value.push(await listen('update:app:checking', () => {
         loggingStore.logInfo('Checking for app updates...')
+        appUpdateCheckStart.value = Date.now()  
         appUpdate.value = { show: true, status: 'checking', newVersion: null, error: null }
-    }))
-    unlistenFunctions.value.push(await listen('update:app:available', (e: any) => {
-        loggingStore.logInfo(`A new update is available v${e.payload.version}`)
-        appUpdate.value.status = 'available'
-        appUpdate.value.newVersion = e.payload.version
-        appUpdate.value.url = e.payload.download_url
     }))
 
     unlistenFunctions.value.push(await listen('update:app:uptodate', () => {
         loggingStore.logInfo('No updates available, app is up to date.')
-        appUpdate.value.show = false
+        const elapsed = Date.now() - (appUpdateCheckStart.value ?? Date.now())
+        const remaining = Math.max(0, 1000 - elapsed)
+        setTimeout(() => { appUpdate.value.show = false }, remaining) 
     }))
 
     unlistenFunctions.value.push(await listen('update:app:error', (e: any) => {
-        loggingStore.logError('Failed to check for updates: ' + e.payload.message)
+        const elapsed = Date.now() - (appUpdateCheckStart.value ?? Date.now())
+        const remaining = Math.max(0, 1000 - elapsed)
+        setTimeout(() => {
+            appUpdate.value.show = false
+            loggingStore.logError('Failed to check for updates: ' + e.payload.message)
+        }, remaining)
     }))
 
 
