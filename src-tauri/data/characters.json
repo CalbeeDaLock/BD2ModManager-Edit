@@ -1,5 +1,5 @@
 {
-    "version": "0.0.4",
+    "version": "0.0.5",
     "characters": [
         {
             "id": "000708",
@@ -866,7 +866,7 @@
             "is_collab": false,
             "cutscene": true,
             "standing": true,
-            "dating_id": null,
+            "dating_id": "10",
             "character_image": "illust_inven_char066403_96.png",
             "skill_preview_image": "illust_skill_char066403_96.png",
             "release_date": "2023-09-21",
@@ -879,7 +879,7 @@
             "is_collab": false,
             "cutscene": true,
             "standing": true,
-            "dating_id": null,
+            "dating_id": "11",
             "character_image": "illust_inven_char000706_106.png",
             "skill_preview_image": "illust_skill_char000706_106.png",
             "release_date": "2023-12-21",
@@ -1178,7 +1178,7 @@
             "is_collab": false,
             "cutscene": true,
             "standing": true,
-            "dating_id": null,
+            "dating_id": "15",
             "character_image": "illust_inven_char067004_157.png",
             "skill_preview_image": "illust_skill_char067004_157.png",
             "release_date": "2025-01-16",
@@ -2127,7 +2127,7 @@
             "is_collab": false,
             "cutscene": true,
             "standing": true,
-            "dating_id": null,
+            "dating_id": "16",
             "character_image": "illust_inven_char003604_196.png",
             "skill_preview_image": "illust_skill_char003604.png",
             "release_date": "2026-02-26",
@@ -2179,7 +2179,7 @@
             "is_collab": false,
             "cutscene": true,
             "standing": true,
-            "dating_id": null,
+            "dating_id": "13",
             "character_image": "illust_inven_char004102_186.png",
             "skill_preview_image": "illust_skill_char004102.png",
             "release_date": "2025-09-25",
@@ -2249,6 +2249,32 @@
             "skill_preview_image": "illust_skill_char067702.png",
             "release_date": "2026-01-15",
             "gender": "female"
+        },
+        {
+            "id": "003892",
+            "character": "Liberta",
+            "costume": "Hedonist",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": "14",
+            "character_image": "illust_inven_char003892_190.png",
+            "skill_preview_image": "illust_skill_char003892_190.png",
+            "release_date": null,
+            "gender": "female"
+        },
+        {
+            "id": "061492",
+            "character": "Zenith",
+            "costume": "Stranger Bunny",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": "12",
+            "character_image": "illust_inven_char061492_188.png",
+            "skill_preview_image": "illust_skill_char061492_188.png",
+            "release_date": null,
+            "gender": "female"
         }
     ],
     "dating": {
@@ -2260,6 +2286,13 @@
         "6": "067603",
         "7": "000296",
         "8": "001006",
-        "9": "001197"
+        "9": "001197",
+        "10": "066403",
+        "11": "000706",
+        "12": "061492",
+        "13": "004102",
+        "14": "003892",
+        "15": "067004",
+        "16": "003604"
     }
 }
