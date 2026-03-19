@@ -61,27 +61,3 @@ pub fn get_mod_preview_path(app: &AppHandle) -> Option<PathBuf> {
         None
     }
 }
-
-pub fn get_7zip_path(app: &AppHandle) -> Option<PathBuf> {
-    if let Ok(path) = app
-        .app_handle()
-        .path()
-        .resolve("tools", BaseDirectory::AppData)
-    {
-        Some(path.join("7z.exe").to_path_buf())
-    } else {
-        None
-    }
-}
-
-pub fn get_temp_dir() -> PathBuf {
-    let exec_dir = get_executable_dir();
-    exec_dir.join("temp").to_path_buf()
-}
-
-pub fn is_dir_empty(path: &Path) -> bool {
-    match std::fs::read_dir(path) {
-        Ok(mut entries) => entries.next().is_none(),
-        Err(_) => true, 
-    }
-}
