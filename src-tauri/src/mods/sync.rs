@@ -12,7 +12,7 @@ use tempfile::NamedTempFile;
 
 use crate::{
     mods::BD2Mod,
-    utils::{files::sync_dirs, misc::is_elevated, path::ensure_dir_exists},
+    utils::{files::{ensure_dir_exists, sync_dirs}, misc::is_elevated},
 };
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]

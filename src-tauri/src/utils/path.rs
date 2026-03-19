@@ -1,15 +1,8 @@
-use std::{env, path::{Path, PathBuf}};
+use std::{env, path::{PathBuf}};
 
 use tauri::{path::BaseDirectory, AppHandle, Manager};
 
 use crate::config::BD2Config;
-
-pub fn ensure_dir_exists(path: &PathBuf) -> Result<(), std::io::Error> {
-    if !path.exists() {
-        std::fs::create_dir_all(path)?;
-    }
-    Ok(())
-}
 
 fn get_executable_dir() -> PathBuf {
     env::current_exe()
@@ -17,12 +10,6 @@ fn get_executable_dir() -> PathBuf {
         .parent()
         .unwrap()
         .to_path_buf()
-}
-
-pub fn get_default_staging_dir() -> PathBuf {
-    println!("returning default");
-    let exec_dir = get_executable_dir();
-    exec_dir.join("mods").to_path_buf()
 }
 
 pub fn get_default_profiles_dir(app: &AppHandle, on_executable_dir: bool) -> PathBuf {
@@ -49,6 +36,11 @@ pub fn get_default_profiles_dir(app: &AppHandle, on_executable_dir: bool) -> Pat
 pub fn get_config_file_path() -> PathBuf {
     let exec_dir = get_executable_dir();
     exec_dir.join("config.json").to_path_buf()
+}
+
+pub fn get_default_staging_dir() -> PathBuf {
+    let exec_dir = get_executable_dir();
+    exec_dir.join("mods").to_path_buf()
 }
 
 pub fn get_staging_dir(config: &BD2Config) -> PathBuf {

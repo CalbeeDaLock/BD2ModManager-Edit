@@ -8,23 +8,18 @@ use std::{
 };
 
 use bd2modmanager_lib::{
-    config::{config::PartialAppConfig, BD2Config},
-    mods::metadata::ModMetadataStore,
-    profiles::ProfileManager,
-    utils::{
-        data,
-        path::{
-            ensure_dir_exists, get_default_profiles_dir, get_default_staging_dir
-        },
-    },
-    BD2ModManager,
+    BD2ModManager, config::{BD2Config, config::PartialAppConfig}, mods::metadata::ModMetadataStore, profiles::ProfileManager, utils::{
+        data, files::ensure_dir_exists, path::{
+            get_default_profiles_dir, get_default_staging_dir
+        }
+    }
 };
 use tauri::Manager;
 
 mod commands;
-mod updater;
-
 use commands::*;
+
+mod update;
 
 pub struct AppState {
     pub mod_manager: Arc<Mutex<BD2ModManager>>,
@@ -114,51 +109,58 @@ pub fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             // mods
-            discover_mods,
-            get_mods,
-            enable_mods,
-            disable_mods,
-            install_mod_from_zip,
-            install_mod_from_folder,
-            sync_mods,
-            unsync_mods,
-            is_sync_needed,
+            mods::discover_mods,
+            mods::get_mods,
+            mods::enable_mods,
+            mods::disable_mods,
+            mods::delete_mods,
+            mods::rename_mod,
+            mods::set_mod_author,
+            mods::install_mod_from_zip,
+            mods::install_mod_from_folder,
+            mods::sync_mods,
+            mods::unsync_mods,
+            mods::is_sync_needed,
+            mods::preview_mod,
+
             // profiles
-            get_profiles,
-            switch_profile,
-            edit_profile,
-            create_profile,
-            delete_profile,
+            profiles::get_profiles,
+            profiles::switch_profile,
+            profiles::edit_profile,
+            profiles::create_profile,
+            profiles::delete_profile,
+
             // config
-            get_settings,
-            set_settings,
+            config::get_settings,
+            config::set_settings,
+            
             // game
-            locate_game,
-            validate_game_path,
-            get_browndustx_version,
-            get_bepinex_version,
-            get_configmanager_version,
-            install_bepinex_from_archive,
-            install_bepinex_from_url,
-            install_browndustx_from_archive,
-            uninstall_bepinex,
-            uninstall_browndustx,
-            install_configmanager_from_archive,
-            uninstall_configmanager,
-            determine_archive_type,
-            get_game_version,
-            // preview
-            preview_mod,
-            get_mod_preview_version,
-            check_for_app_update,
-            check_for_mod_preview_update,
-            update_mod_preview,
-            update_game_data,
-            get_characters,
-            delete_mods,
-            rename_mod,
-            set_mod_author,
-            launch_game,
+            game::locate_game,
+            game::validate_game_path,
+            game::launch_game,
+            game::get_game_version,
+            game::get_browndustx_version,
+            game::get_bepinex_version,
+            game::get_configmanager_version,
+            game::install_bepinex_from_archive,
+            game::install_bepinex_from_url,
+            game::install_browndustx_from_archive,
+            game::install_configmanager_from_archive,
+            game::uninstall_bepinex,
+            game::uninstall_browndustx,
+            game::uninstall_configmanager,
+            game::determine_archive_type,
+            game::get_characters,
+
+            // updater
+            updater::get_mod_preview_version,
+            updater::check_for_app_update,
+            updater::check_for_mod_preview_update,
+            updater::update_mod_preview,
+            updater::update_game_data,
+
+            // utils
+            utils::is_folder,
             utils::path_exists,
         ])
         .run(tauri::generate_context!())

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{fs::File, path::PathBuf};
 use zip::ZipArchive;
 
-use crate::utils::path::ensure_dir_exists;
+use crate::utils::files::ensure_dir_exists;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum ModInstallError {

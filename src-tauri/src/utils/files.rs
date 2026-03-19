@@ -1,7 +1,7 @@
 use std::{
     fs::{copy, create_dir_all, read, read_dir, remove_dir_all, remove_file},
     io,
-    path::Path,
+    path::{Path, PathBuf},
 };
 
 use sha2::{Digest, Sha256};
@@ -63,8 +63,6 @@ pub fn copy_dir_all(src: &Path, dst: &Path) -> io::Result<()> {
 
     Ok(())
 }
-
-
 
 pub fn sync_dirs(src: &Path, dst: &Path) -> io::Result<bool> {
     let mut updated = false;
@@ -143,4 +141,11 @@ pub fn hash_directory<P: AsRef<Path>>(dir: P) -> io::Result<String> {
     }
 
     Ok(format!("{:x}", hasher.finalize()))
+}
+
+pub fn ensure_dir_exists(path: &PathBuf) -> Result<(), std::io::Error> {
+    if !path.exists() {
+        std::fs::create_dir_all(path)?;
+    }
+    Ok(())
 }
