@@ -1,15 +1,7 @@
-use std::path::PathBuf;
-
 use bd2modmanager_lib::utils::path::get_mod_preview_path;
 use pelite::{FileMap, PeFile};
 use semver::Version;
 use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-struct GitHubAsset {
-    name: String,
-    browser_download_url: String,
-}
 
 #[derive(Debug, Deserialize)]
 struct GitHubRelease {
@@ -17,24 +9,25 @@ struct GitHubRelease {
     assets: Vec<GitHubAsset>,
 }
 
+#[derive(Debug, Deserialize)]
+struct GitHubAsset {
+    name: String,
+    browser_download_url: String,
+}
+
 const RELEASES_URL: &str = "https://api.github.com/repos/bruhnn/BD2ModPreview/releases/latest";
 
 pub fn get_mod_preview_version(app_handle: tauri::AppHandle) -> Option<String> {
     let exe_path = get_mod_preview_path(&app_handle)?;
 
-    let exe_path = PathBuf::from(exe_path);
-
     if !exe_path.exists() {
-        println!("path doesnt exist");
+        log::warn!("Mod preview executable not found at {:?}", exe_path);
         return None;
     }
 
     let file_map = FileMap::open(&exe_path).ok()?;
-
     let pe = PeFile::from_bytes(&file_map).ok()?;
-
     let resources = pe.resources().ok()?;
-
     let version_info = resources.version_info().ok()?;
 
     let file_info = version_info.file_info();
@@ -46,6 +39,7 @@ pub fn get_mod_preview_version(app_handle: tauri::AppHandle) -> Option<String> {
         }
     }
 
+    log::warn!("Version not found in mod preview executable at {:?}", exe_path);
     None
 }
 
@@ -55,6 +49,7 @@ async fn get_latest_mod_preview_version() -> Result<(Version, String), String> {
     let release: GitHubRelease = client
         .get(RELEASES_URL)
         .header("User-Agent", "BD2ModManager")
+        .timeout(std::time::Duration::from_secs(10))
         .send()
         .await
         .map_err(|e| format!("Request failed: {e}"))?
@@ -80,19 +75,25 @@ pub async fn check_for_update(
     app_handle: tauri::AppHandle,
 ) -> Result<(Option<String>, Option<String>), String> {
     let local_version = get_mod_preview_version(app_handle.clone());
-
     let (latest_version, download_url) = get_latest_mod_preview_version().await?;
 
-    println!("Local: {:?}, Remote: {}", local_version, latest_version);
+    log::info!(
+        "Mod preview update check; local: {}, latest: {}",
+        local_version.as_deref().unwrap_or("not installed"),
+        latest_version
+    );
 
     if let Some(local) = local_version {
         let local_ver =
             Version::parse(&local).map_err(|e| format!("Invalid local version: {e}"))?;
 
         if latest_version <= local_ver {
-            return Ok((None, None)); // Up-to-date
+            log::info!("Mod preview is up to date");
+            return Ok((None, None));
         }
     }
 
+    log::info!("Mod preview update available: {}", latest_version);
+    
     Ok((Some(latest_version.to_string()), Some(download_url)))
 }

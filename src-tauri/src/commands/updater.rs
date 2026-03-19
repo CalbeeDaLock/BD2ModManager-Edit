@@ -1,8 +1,9 @@
-use crate::updater::{self};
 use bd2modmanager_lib::utils::path::get_mod_preview_path;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
 use tokio::io::AsyncWriteExt;
+
+use crate::update;
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
 struct UpdateInfo {
@@ -13,9 +14,9 @@ struct UpdateInfo {
 #[tauri::command]
 pub async fn check_for_app_update(app_handle: AppHandle) {
     app_handle.emit("update:app:checking", ()).ok();
-    match updater::app::get_app_latest_version(&app_handle).await {
+    match update::app::get_app_latest_version(&app_handle).await {
         Ok((latest_version, download_url)) => {
-            let local_version = updater::app::get_app_version(&app_handle);
+            let local_version = update::app::get_app_version(&app_handle);
 
             let local_ver = match semver::Version::parse(&local_version) {
                 Ok(v) => v,
@@ -50,7 +51,7 @@ pub async fn check_for_app_update(app_handle: AppHandle) {
 
 #[tauri::command]
 pub fn get_mod_preview_version(app_handle: tauri::AppHandle) -> Option<String> {
-    updater::mod_preview::get_mod_preview_version(app_handle)
+    update::mod_preview::get_mod_preview_version(app_handle)
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -65,7 +66,7 @@ pub async fn check_for_mod_preview_update(
     app_handle: AppHandle,
 ) -> Result<UpdateAvailablePayload, String> {
     let (latest_version, _download_url) =
-        updater::mod_preview::check_for_update(app_handle).await?;
+        update::mod_preview::check_for_update(app_handle).await?;
     if let Some(download_url) = _download_url {
         Ok(UpdateAvailablePayload {
             latest_version: latest_version.unwrap_or_default(),
@@ -86,7 +87,7 @@ struct ProgressPayload {
 pub async fn update_mod_preview(app_handle: AppHandle) {
     app_handle.emit("update:modPreview:checking", ()).ok();
 
-    let result = updater::mod_preview::check_for_update(app_handle.clone()).await;
+    let result = update::mod_preview::check_for_update(app_handle.clone()).await;
 
     match result {
         Ok((Some(latest_version), Some(download_url))) => {
@@ -230,7 +231,7 @@ pub async fn update_mod_preview(app_handle: AppHandle) {
 
 #[tauri::command]
 pub async fn update_game_data(app_handle: AppHandle) -> Result<(), String> {
-    updater::game_data::update_characters(app_handle).await
+    update::game_data::update_characters(app_handle).await
     // app_handle.emit("update:gameData:checking", ()).ok();
     // println!("Checking for game data updates...");
 

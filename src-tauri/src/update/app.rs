@@ -1,6 +1,8 @@
 use semver::Version;
 use serde::Deserialize;
 
+// [TODO] remove this and use the tauri auto updater plugin
+
 const RELEASES_URL: &str = "https://shy-waterfall-2797.bruhnn.workers.dev/";
 
 #[derive(Debug, Deserialize)]
@@ -14,11 +16,6 @@ pub fn get_app_version(app: &tauri::AppHandle) -> String {
 }
 
 pub async fn get_app_latest_version(app: &tauri::AppHandle) -> Result<(Version, String), String> {
-    // if cfg!(debug_assertions) {
-    //     // sleep
-    //     std::thread::sleep(std::time::Duration::from_secs(4));
-    //     return Ok((Version::parse("4.1.0").unwrap(), String::new()));
-    // }
     let current_version = get_app_version(&app);
 
     let client = reqwest::Client::builder()
