@@ -138,12 +138,10 @@ onMounted(async () => {
         }, remaining)
     }))
 
-
     unlistenFunctions.value.push(await listen('update:modPreview:checking', () => {
         loggingStore.logInfo('Checking for Mod Preview updates...')
         modPreviewUpdate.value = { show: true, status: 'checking', version: null, progress: 0, error: null }
     }))
-
     unlistenFunctions.value.push(await listen('update:modPreview:downloading', (e: any) => {
         loggingStore.logInfo(`Downloading Mod Preview v${e.payload.version}... Progress: ${e.payload.progress}%`)
         modPreviewUpdate.value = { show: true, status: 'downloading', version: e.payload.version, progress: e.payload.progress, error: null }
@@ -158,29 +156,24 @@ onMounted(async () => {
         modPreviewUpdate.value.status = 'error'; modPreviewUpdate.value.error = e.payload.message
     }))
 
-
     unlistenFunctions.value.push(await listen('update:gameData:checking', (e: any) => {
         loggingStore.logInfo(`Checking for game data updates... (${e.payload})`)
         gameDataUpdate.value = { show: true, status: 'checking', progress: 0, label: e.payload, error: null }
     }))
-
     unlistenFunctions.value.push(await listen('update:gameData:updating', (e: any) => {
         loggingStore.logInfo(`Downloading game data... (${e.payload.label}) Progress: ${e.payload.progress}%`)
         gameDataUpdate.value = { show: true, status: 'downloading', progress: e.payload.progress, label: e.payload.label, error: null }
     }))
-
-    unlistenFunctions.value.push(await listen('update:gameData:downloadingAssets', (e: any) => {
-        loggingStore.logInfo(`Downloading game data... (${e.payload.label}) Progress: ${e.payload.progress}%`)
-        gameDataUpdate.value = { show: true, status: 'downloading', progress: e.payload.progress, label: e.payload.label, error: null }
-    }))
-
     unlistenFunctions.value.push(await listen('update:gameData:updated', () => {
         loggingStore.logInfo('Game data updated successfully!')
-        gameDataUpdate.value.status = 'updated'; gameDataUpdate.value.label = 'Game data up to date'
+        gameDataUpdate.value.status = 'updated'
+        gameDataUpdate.value.label = 'Game data up to date'
         setTimeout(() => { gameDataUpdate.value.show = false }, 4000)
     }))
     unlistenFunctions.value.push(await listen('update:gameData:error', (e: any) => {
-        gameDataUpdate.value.status = 'error'; gameDataUpdate.value.error = e.payload.message
+        loggingStore.logError('Failed to update game data: ' + e.payload.message)
+        gameDataUpdate.value.status = 'error'
+        gameDataUpdate.value.error = e.payload.message
     }))
 })
 
@@ -219,9 +212,9 @@ onUnmounted(() => {
                         <RotateCw v-if="appUpdate.status === 'checking'"
                             class="w-3.5 h-3.5 shrink-0 animate-spin text-primary/40" />
                         <Sparkles v-else-if="appUpdate.status === 'available'"
-                            class="w-3.5 h-3.5 shrink-0 text-accent-primary" />
+                            class="w-3.5 h-3.5 shrink-0 text-accent-primary " />
 
-                        <span class="text-xs font-mono truncate max-w-40">
+                        <span class="text-xs font-mono truncate">
                             <span v-if="appUpdate.status === 'checking'" class="text-secondary hidden md:inline">
                                 {{ $t('titlebar.appUpdate.checking') }}
                             </span>
@@ -295,6 +288,8 @@ onUnmounted(() => {
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
                         <Database v-if="gameDataUpdate.status === 'downloading'"
                             class="w-4 h-4 shrink-0 text-accent-primary animate-pulse" />
+                        <RotateCw v-else-if="gameDataUpdate.status === 'checking'"
+                            class="w-4 h-4 shrink-0 text-primary/40 animate-spin" />
                         <Check v-else-if="gameDataUpdate.status === 'updated'" class="w-4 h-4 shrink-0 text-success" />
                         <AlertTriangle v-else-if="gameDataUpdate.status === 'error'"
                             class="w-4 h-4 shrink-0 text-danger" />
@@ -320,6 +315,14 @@ onUnmounted(() => {
                                 <span class="hidden sm:inline">{{ gameDataUpdate.label }}</span>
                                 <span class="sm:hidden">
                                     {{ $t('titlebar.gameData.updatedShort') }}
+                                </span>
+                            </span>
+                            <span v-else-if="gameDataUpdate.status === 'error'" class="text-danger">
+                                <span class="hidden sm:inline">
+                                    {{ gameDataUpdate.error ?? $t('titlebar.gameData.error') }}
+                                </span>
+                                <span class="sm:hidden">
+                                    {{ $t('titlebar.gameData.errorShort') }}
                                 </span>
                             </span>
                         </span>
