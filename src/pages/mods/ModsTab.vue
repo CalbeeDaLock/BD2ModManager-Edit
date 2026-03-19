@@ -200,6 +200,22 @@ async function handleOpenModFolder(mod: BD2Mod) {
     return
   }
 
+  // check if is a folder
+  const isFolder = await invoke("is_folder", { path: mod.path }).catch((error) => {
+    loggingStore.logError(`An error occurred while checking if mod path is a folder for "${mod.name}":`, error);
+    return false;
+  });
+
+  if (!isFolder) {
+    toast.add({
+      severity: 'error',
+      closable: true,
+      detail: t('modsTab.errors.modNotDirectory', { modName: mod.name }),
+      life: 5000
+    })
+    return
+  }
+
   await openPath(mod.path) 
 }
 
