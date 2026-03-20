@@ -88,21 +88,30 @@ const scrollContainer = ref<HTMLElement | null>(null);
 const modIndex = computed(() => {
     type Mod = typeof modsStore.mods[number];
     const index = new Map<string, { enabledTypes: Set<string>; mods: Mod[] }>();
+    
     for (const mod of modsStore.mods) {
         if (!mod.modType || !('id' in mod.modType)) continue;
-        const id = mod.modType.id;
+        if (!['Cutscene', 'Standing', 'Dating'].includes(mod.modType.type)) continue;
+
+        let id = mod.modType.id;
+        if (mod.modType.type === 'Dating') {
+            const characterId = charactersStore.getCharacterIdByDatingId(id);
+            if (!characterId) continue;
+            id = characterId;
+        }
+
         let entry = index.get(id);
         if (!entry) {
             entry = { enabledTypes: new Set(), mods: [] };
             index.set(id, entry);
         }
-        if (['Cutscene', 'Standing', 'Dating'].includes(mod.modType.type)) {
-            entry.mods.push(mod);
-        }
+
+        entry.mods.push(mod);
         if (mod.enabled) {
             entry.enabledTypes.add(mod.modType.type);
         }
     }
+    
     return index;
 });
 
@@ -324,6 +333,8 @@ onMounted(() => {
             showCostumeModal.value = true;
         }
     }
+
+    console.log(modIndex)
 })
 
 // [TODO] use {{ route.query.characterId }}
@@ -346,7 +357,6 @@ watch(() => route.query.characterId, (newCharacterId) => {
 
 <template>
     <div class="flex flex-row w-full p-4 py-2 gap-4 bg-bg-deep overflow-hidden">
-        <!-- {{ charactersGrid }} -->
         <div class="flex-1 overflow-y-auto" ref="scrollContainer">
             <CharacterList v-if="viewMode == 'list'" :items="charactersList" @openModDetails="openCostumeDetails" />
             <CharacterGrid v-else :items="charactersGrid" @openModDetails="openCostumeDetails" />
