@@ -44,6 +44,7 @@ pub fn main() {
                         file_name: Some("logs".to_string()),
                     }),
                 ])
+                .max_file_size(10_000_000) // 10mb
                 .level(log::LevelFilter::Debug)
                 .build(),
         )
