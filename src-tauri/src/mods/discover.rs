@@ -26,6 +26,13 @@ struct ModAnalysis {
     has_textures_folder: bool,
 }
 
+fn is_textures_folder(path: &Path) -> bool {
+    path.file_name()
+        .and_then(OsStr::to_str)
+        .map(|name| name.to_ascii_lowercase() == "textures")
+        .unwrap_or(false)
+}
+
 impl ModAnalysis {
     fn analyze_entry(&mut self, entry: &fs::DirEntry) {
         let path = entry.path();
@@ -41,7 +48,7 @@ impl ModAnalysis {
                 }
             }
         } else if path.is_dir() {
-            if path.file_name() == Some(OsStr::new("textures")) {
+            if is_textures_folder(&path) {
                 self.has_textures_folder = true;
             }
         }
@@ -59,7 +66,7 @@ impl ModAnalysis {
             (false, true, true, _, _) => (true, Some(BD2ModError::MissingModfile)),
             (false, true, false, _, _) => (true, Some(BD2ModError::MissingAtlasFile)),
             (false, false, _, true, _) => (true, Some(BD2ModError::MissingModfile)),
-            (false, false, _, false, true) => (true, Some(BD2ModError::IncompleteMod)),
+            // (false, false, _, false, true) => (true, Some(BD2ModError::IncompleteMod)),
             _ => (false, None),
         }
     }
@@ -78,10 +85,18 @@ pub fn analyze_mod_path(path: &Path) -> (bool, Option<BD2ModError>) {
 
     let mut analysis = ModAnalysis::default();
 
-    if let Ok(entries) = read_dir(path) {
-        entries
-            .filter_map(Result::ok)
-            .for_each(|entry| analysis.analyze_entry(&entry));
+    match read_dir(path) {
+        Ok(entries) => {
+            entries
+                .filter_map(|e| {
+                    e.map_err(|err| warn!("Failed to read entry in {:?}: {}", path, err))
+                        .ok()
+                })
+                .for_each(|entry| analysis.analyze_entry(&entry));
+        }
+        Err(e) => {
+            warn!("Failed to read directory {:?}: {}", path, e);
+        }
     }
 
     analysis.determine_mod_status()
@@ -229,6 +244,10 @@ pub fn create_mod(staging_directory: &Path, path: &Path, error: Option<BD2ModErr
 
 fn discover_mods_recursive(dir: &Path, staging_directory: &Path, depth: usize) -> Vec<BD2Mod> {
     if depth >= MAX_DEPTH {
+        warn!(
+            "Max depth ({}) reached at {:?}, stopping recursion",
+            MAX_DEPTH, dir
+        );
         return Vec::new();
     }
 
@@ -236,27 +255,30 @@ fn discover_mods_recursive(dir: &Path, staging_directory: &Path, depth: usize) -
 
     match fs::read_dir(dir) {
         Ok(entries) => entries
-            .filter_map(Result::ok)
+            .filter_map(|e| {
+                e.map_err(|err| warn!("Failed to read entry in {:?}: {}", dir, err))
+                    .ok()
+            })
             .par_bridge()
-            // .filter(|entry| entry.path().is_dir())
-            .filter(|entry| entry.file_name() != OsStr::new("textures"))
+            .filter(|entry| !is_textures_folder(&entry.path()))
             .flat_map(|entry| {
                 let path = entry.path();
                 let (is_mod, error) = analyze_mod_path(&path);
                 info!("({:?}) {:?} -> {:?}", is_mod, path, error);
                 if is_mod {
                     vec![create_mod(&staging_dir, &path, error)]
+                } else if path.is_dir() {
+                    discover_mods_recursive(&path, &staging_dir, depth + 1)
                 } else {
-                    if path.is_dir() {
-                        discover_mods_recursive(&path, &staging_dir, depth + 1)
-                    } else {
-                        warn!("Path {:?} not valid! {:?}", path, error);
-                        Vec::new()
-                    }
+                    warn!("Path {:?} not valid! {:?}", path, error);
+                    Vec::new()
                 }
             })
             .collect(),
-        Err(_) => Vec::new(),
+        Err(e) => {
+            warn!("Failed to read directory {:?}: {}", dir, e);
+            Vec::new()
+        }
     }
 }
 
@@ -268,9 +290,13 @@ pub fn discover_staging_mods(staging_directory: &Path, recursive: bool) -> Vec<B
     } else {
         match fs::read_dir(staging_directory) {
             Ok(entries) => entries
+                .filter_map(|e| {
+                    e.map_err(|err| {
+                        warn!("Failed to read entry in {:?}: {}", staging_directory, err)
+                    })
+                    .ok()
+                })
                 .par_bridge()
-                .filter_map(Result::ok)
-                // .filter(|entry| entry.path().is_dir())
                 .filter_map(|entry| {
                     let path = entry.path();
                     let (is_mod, error) = analyze_mod_path(&path);
@@ -281,7 +307,13 @@ pub fn discover_staging_mods(staging_directory: &Path, recursive: bool) -> Vec<B
                     }
                 })
                 .collect(),
-            Err(_) => Vec::new(),
+            Err(e) => {
+                warn!(
+                    "Failed to read staging directory {:?}: {}",
+                    staging_directory, e
+                );
+                Vec::new()
+            }
         }
     };
 
