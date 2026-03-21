@@ -328,14 +328,15 @@ impl BD2ModManager {
     pub fn set_mod_author(
         &mut self,
         app_handle: &AppHandle,
-        mod_name: String,
+        mod_names: Vec<String>,
         author: Option<String>,
     ) {
-        self.metadata_store
-            .set_author(mod_name.clone(), author.clone());
+        self.metadata_store.set_authors(&mod_names, author.clone());
 
-        if let Some(mod_info) = self.cached_mods.get_mut(&mod_name) {
-            mod_info.author = author;
+        for mod_name in &mod_names {
+            if let Some(mod_info) = self.cached_mods.get_mut(mod_name) {
+                mod_info.author = author.clone();
+            }
         }
 
         let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();

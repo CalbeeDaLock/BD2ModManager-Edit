@@ -625,6 +625,7 @@
         "changeModAuthor": {
             "title": "Alterar Autor do Mod",
             "description": "Digite um novo nome de autor para o mod \"{modName}\".",
+            "descriptionMultiple": "Digite um novo nome de autor para os mods selecionados.",
             "placeholder": "Digite o novo nome do autor",
             "labels": {
                 "modName": "Nome do Mod",

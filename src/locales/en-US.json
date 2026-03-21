@@ -625,6 +625,7 @@
         "changeModAuthor": {
             "title": "Change Mod Author",
             "description": "Enter a new author name for the mod \"{modName}\".",
+            "descriptionMultiple": "Enter a new author name for the selected mods.",
             "placeholder": "Enter new author name",
             "labels": {
                 "modName": "Mod Name",

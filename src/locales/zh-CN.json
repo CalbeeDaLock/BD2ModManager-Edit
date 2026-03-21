@@ -625,6 +625,7 @@
         "changeModAuthor": {
             "title": "更改 Mod 作者",
             "description": "为 Mod \"{modName}\" 输入新的作者名称。",
+            "descriptionMultiple": "为所选 Mod 输入新的作者名称。",
             "placeholder": "输入新作者名称",
             "labels": {
                 "modName": "Mod 名称",

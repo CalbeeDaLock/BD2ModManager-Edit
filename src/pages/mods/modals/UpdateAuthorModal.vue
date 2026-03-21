@@ -1,48 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Modal from '../../../components/common/Modal.vue';
 import Button from '../../../components/common/Button.vue';
 
 const visible = ref(false)
-
-const modName = ref('')
-const modAuthor = ref('')
+const mods = ref<{ name: string; author: string }[]>([])
 const on_save = ref<((newAuthor: string) => void) | undefined>(undefined)
-
 const newModAuthor = ref('')
+
+const isMultiple = computed(() => mods.value.length > 1)
 
 defineExpose({
     open(payload: {
-        modName: string;
-        modAuthor: string;
+        mods: { name: string; author: string }[];
         onSave?: (newAuthor: string) => void;
     }) {
         visible.value = true;
-        modName.value = payload.modName;
-        modAuthor.value = payload.modAuthor;
-        newModAuthor.value = payload.modAuthor;
+        mods.value = payload.mods;
+        newModAuthor.value = !isMultiple.value ? payload.mods[0].author : '';
         on_save.value = payload.onSave;
     }
 });
 
-
-
 function saveChanges() {
-    if (on_save.value) {
-        on_save.value(newModAuthor.value);
-    }
+    on_save.value?.(newModAuthor.value);
     visible.value = false;
 }
 
 function cancel() {
     visible.value = false;
-    modAuthor.value = '';
+    mods.value = [];
     newModAuthor.value = '';
-    modName.value = '';
 }
 </script>
+
 <template>
-    <Modal v-model:show="visible" @close="visible = false" :title="$t('modals.changeModAuthor.title')" :subtitle="$t('modals.changeModAuthor.description', {modName: modName})">
+    <Modal v-model:show="visible" @close="visible = false"
+        :title="$t('modals.changeModAuthor.title')"
+        :subtitle="isMultiple
+            ? $t('modals.changeModAuthor.descriptionMultiple', { count: mods.length })
+            : $t('modals.changeModAuthor.description', { modName: mods[0]?.name })">
         <template #footer>
             <div class="flex justify-end space-x-2 p-2">
                 <Button variant="default" @click="cancel">{{ $t('common.actions.cancel') }}</Button>
@@ -51,9 +48,9 @@ function cancel() {
         </template>
 
         <div class="p-4 flex flex-col gap-4">
-            <div>
+            <div v-if="!isMultiple">
                 <p class="text-md text-primary mb-1 font-bold">{{ $t('modals.changeModAuthor.labels.modName') }}</p>
-                <p class="font-medium text-sm truncate text-primary">{{ modName }}</p>
+                <p class="font-medium text-sm truncate text-primary">{{ mods[0]?.name }}</p>
             </div>
 
             <div>

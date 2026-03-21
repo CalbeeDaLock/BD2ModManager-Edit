@@ -488,7 +488,7 @@ function handleSelect(key: string) {
         'enable': () => emit('enable-mods', selectedMods.value),
         'disable': () => emit('disable-mods', selectedMods.value),
         'change-author': () => {
-            emit('change-mod-author', selectedMods.value[0])
+            emit('change-mod-author', selectedMods.value)
         },
         // 'edit-modfile': () => {
         //     emit('edit-modfile', selectedMods.value[0])

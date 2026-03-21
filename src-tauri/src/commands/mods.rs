@@ -306,9 +306,9 @@ pub async fn rename_mod(
 pub fn set_mod_author(
     app_handle: tauri::AppHandle,
     state: tauri::State<AppState>,
-    mod_name: String,
+    mod_names: Vec<String>,
     author: Option<String>,
 ) {
     let mut mod_manager = state.mod_manager.lock().unwrap();
-    mod_manager.set_mod_author(&app_handle, mod_name, author);
+    mod_manager.set_mod_author(&app_handle, mod_names, author);
 }

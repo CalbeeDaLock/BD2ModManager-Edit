@@ -66,6 +66,14 @@ impl ModMetadataStore {
         self.save();
     }
 
+    pub fn set_authors(&mut self, mod_names: &[String], author: Option<String>) {
+        for mod_name in mod_names {
+            let entry = self.data.entry(mod_name.clone()).or_default();
+            entry.author = author.clone();
+        }
+        self.save();
+    }
+
     pub fn apply_to_mods(&self, mods: &mut HashMap<String, super::BD2Mod>) {
         for (name, metadata) in &self.data {
             if let Some(bd2mod) = mods.get_mut(name) {

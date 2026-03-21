@@ -420,14 +420,13 @@ async function handleUnsyncMods() {
   }
 }
 
-function handleChangeModAuthor(mod: BD2Mod) {
-  loggingStore.logDebug("Changing author for mod:", mod.name, "Current author:", mod.author);
+function handleChangeModAuthor(mods: BD2Mod[]) {
+  loggingStore.logDebug("Changing author for mods:", mods.map(m => m.name), "Current authors:", mods.map(m => m.author));
   updateAuthorModal.value?.open({
-    modName: mod.name,
-    modAuthor: mod.author || '',
+    mods: mods.map(m => ({ name: m.name, author: m.author || '' })),
     onSave: (newAuthor: string) => {
-      loggingStore.logDebug(`Change author of mod "${mod.name}" to "${newAuthor}"`);
-      modsStore.setModAuthor(mod.name, newAuthor);
+      loggingStore.logDebug(`Changing author for ${mods.length} mod(s) to "${newAuthor}"`);
+      modsStore.setModAuthor(mods.map(m => m.name), newAuthor);
     }
   });
 }

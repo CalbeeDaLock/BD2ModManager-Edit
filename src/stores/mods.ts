@@ -18,15 +18,15 @@ export interface BD2Mod {
     name: string,
     displayName: string,
     modType: BD2ModType,
-    errors: readonly string[],       
-    conflictsWith: readonly string[], 
+    errors: readonly string[],
+    conflictsWith: readonly string[],
     enabled: boolean,
     author?: string,
 }
 
 export interface BD2ModExtended extends BD2Mod {
     character?: Character
-    conflictingMods: readonly BD2Mod[] 
+    conflictingMods: readonly BD2Mod[]
 }
 export const useModsStore = defineStore('mods', () => {
     const charactersStore = useCharactersStore()
@@ -37,7 +37,7 @@ export const useModsStore = defineStore('mods', () => {
 
     const extendedMods = computed(() => {
         return mods.value.map((mod) => {
-            let character : Character | undefined = undefined;
+            let character: Character | undefined = undefined;
 
             if (mod.modType && (mod.modType.type == "Cutscene" || mod.modType.type == "Standing")) {
                 character = charactersStore.getCharacterById(mod.modType.id) ?? undefined
@@ -107,7 +107,7 @@ export const useModsStore = defineStore('mods', () => {
     async function deleteMods(mod_names: String[]) {
         return invoke("delete_mods", { modNames: mod_names })
     }
-    
+
     async function renameMod(oldName: string, newName: string) {
         const mod = getModByName(oldName);
         if (!mod) {
@@ -117,8 +117,14 @@ export const useModsStore = defineStore('mods', () => {
 
         return invoke("rename_mod", { oldName, newName })
     }
-    async function setModAuthor(modName: string, author: string | null) {
-        return invoke("set_mod_author", { modName, author: author || null })
+
+    // async function setModAuthor(modName: string, author: string | null) {
+    //     return invoke("set_mod_author", { modName, author: author || null })
+    // }
+
+    async function setModAuthor(modNames: string | string[], author: string | null) {
+        const names = Array.isArray(modNames) ? modNames : [modNames];
+        return invoke("set_mod_author", { modNames: names, author: author || null });
     }
 
     async function isSyncNeeded(): Promise<boolean> {
