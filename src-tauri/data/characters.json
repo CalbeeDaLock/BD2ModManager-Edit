@@ -2273,7 +2273,7 @@
             "dating_id": "14",
             "character_image": "illust_inven_char003892_190.png",
             "skill_preview_image": "illust_skill_char003892_190.png",
-            "release_date": null,
+            "release_date": "2026-02-08",
             "gender": "female"
         },
         {
@@ -2286,7 +2286,7 @@
             "dating_id": "12",
             "character_image": "illust_inven_char061492_188.png",
             "skill_preview_image": "illust_skill_char061492_188.png",
-            "release_date": null,
+            "release_date": "2025-12-16",
             "gender": "female"
         }
     ],
