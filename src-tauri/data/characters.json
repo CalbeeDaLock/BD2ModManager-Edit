@@ -1,5 +1,5 @@
 {
-    "version": "0.0.5",
+    "version": "0.0.6",
     "characters": [
         {
             "id": "000708",
@@ -1903,6 +1903,19 @@
             "id": "101601",
             "character": "Celia",
             "costume": "The Curse",
+            "is_collab": false,
+            "cutscene": false,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char101601_78.png",
+            "skill_preview_image": "illust_skill_char101601_78.png",
+            "release_date": "2023-06-22",
+            "gender": "female"
+        },
+        {
+            "id": "060401",
+            "character": "Celia",
+            "costume": "The Curse (NPC)",
             "is_collab": false,
             "cutscene": false,
             "standing": true,
