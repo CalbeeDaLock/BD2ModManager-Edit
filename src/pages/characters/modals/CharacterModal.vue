@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { X, Calendar, Tag, Gem } from 'lucide-vue-next';
+import { X, Calendar, Tag, Gem, Eye } from 'lucide-vue-next';
 import { Character } from '../../../stores/characters';
 import { BD2Mod, useModsStore } from '../../../stores/mods';
 import { computed } from 'vue';
@@ -7,6 +7,14 @@ import Button from '../../../components/common/Button.vue';
 import Image from '../../../components/common/Image.vue';
 import Modal from '../../../components/common/Modal.vue';
 import Checkbox from '../../../components/common/Checkbox.vue';
+import { useLoggingStore } from '../../../stores/logging';
+import { getErrorMessage } from '../../../utils/errors';
+import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
+
+const loggingStore = useLoggingStore();
+const toast = useToast()
+const { t } = useI18n()
 
 const show = defineModel('show', {
     type: Boolean,
@@ -30,7 +38,7 @@ const installedMods = computed(() => {
         }
         if (type === 'Dating') {
             return 'id' in mod.modType && mod.modType.id === props.selectedCostume?.dating_id;
-        }   
+        }
         return false;
     });
 });
@@ -54,6 +62,23 @@ const modsByType = computed(() => {
 const enabledModsCount = computed(() =>
     installedMods.value.filter(mod => mod.enabled).length
 );
+
+async function openPreviewMod(mod: BD2Mod) {
+    modsStore.previewMod(mod.name).then(() => {
+        loggingStore.logDebug("Mod previewed successfully:", mod.name);
+    }).catch((error) => {
+        let errorMsg = getErrorMessage(t, error);
+        toast.add({
+            severity: "error",
+            closable: true,
+            summary: t("modsTab.errors.modPreview.title"),
+            detail: errorMsg,
+            life: 5000
+        })
+
+        loggingStore.logError("Error previewing mod:", error);
+    })
+}
 </script>
 
 <template>
@@ -68,12 +93,10 @@ const enabledModsCount = computed(() =>
         <div v-if="selectedCostume" class="overflow-y-auto min-h-0 text-primary">
 
             <div class="flex items-stretch border-b border-border">
-                <Image
-                    :src="`characters/standing/${selectedCostume.id}.png`"
+                <Image :src="`characters/standing/${selectedCostume.id}.png`"
                     :alt="`${selectedCostume?.character} - ${selectedCostume.costume}`"
                     class="w-40 h-40 object-cover shrink-0 border-r border-border"
-                    error-src="/characters/standing/placeholder_character.png"
-                />
+                    error-src="/characters/standing/placeholder_character.png" />
 
                 <div class="flex-1 px-4 py-3">
                     <div class="flex items-start justify-between gap-2">
@@ -98,8 +121,7 @@ const enabledModsCount = computed(() =>
                             </div>
                         </div>
 
-                        <button
-                            @click="show = false"
+                        <button @click="show = false"
                             class="text-secondary cursor-pointer hover:text-primary transition-colors p-1 rounded hover:bg-interactive-bg-hover"
                             :aria-label="$t('common.actions.close')">
                             <X class="w-4 h-4" />
@@ -124,28 +146,33 @@ const enabledModsCount = computed(() =>
             </div>
 
             <div>
-                <div v-if="installedMods.length === 0"
-                    class="text-center py-12 px-4 text-secondary">
+                <div v-if="installedMods.length === 0" class="text-center py-12 px-4 text-secondary">
                     <p class="text-sm font-medium mb-1">{{ $t('charactersTab.characterModal.noModsFound.title') }}</p>
-                    <p class="text-xs text-secondary">{{ $t('charactersTab.characterModal.noModsFound.description') }}</p>
+                    <p class="text-xs text-secondary">{{ $t('charactersTab.characterModal.noModsFound.description') }}
+                    </p>
                 </div>
 
                 <template v-else>
                     <div v-for="(mods, type) in modsByType" :key="type" v-show="mods.length > 0">
-
-                        <div class="flex items-center justify-between px-4 py-2 bg-bg-surface border-b border-border sticky top-0 z-10">
-                            <span class="text-xs font-medium text-secondary uppercase tracking-wide">{{ $t(`charactersTab.modTypes.${type.toLowerCase()}`) }}</span>
+                        <div
+                            class="flex items-center justify-between px-4 py-2 bg-bg-surface border-b border-border sticky top-0 z-10">
+                            <span class="text-xs font-medium text-secondary uppercase tracking-wide">{{
+                                $t(`charactersTab.modTypes.${type.toLowerCase()}`) }}</span>
                             <span class="text-xs text-secondary">
-                                {{ mods.filter(m => m.enabled).length }}/{{ mods.length }}
+                                {{mods.filter(m => m.enabled).length}}/{{ mods.length }}
                             </span>
                         </div>
 
-                        <label
-                            v-for="mod in mods"
-                            :key="mod.name"
+                        <label v-for="mod in mods" :key="mod.name"
                             class="flex items-center gap-3 px-4 py-2.5 border-b border-border cursor-pointer hover:bg-interactive-bg-hover transition-colors"
                             :class="{ 'bg-bg-surface': !mod.enabled }">
-                            <Checkbox :model-value="mod.enabled" @update:model-value="toggleMod(mod)" class="shrink-0" />
+                            <Checkbox :model-value="mod.enabled" @update:model-value="toggleMod(mod)"
+                                class="shrink-0" />
+                            <button @click.stop="openPreviewMod(mod)"
+                                :aria-label="$t('charactersTab.characterModal.previewMod')">
+                                <Eye
+                                    class="w-6 h-6 cursor-pointer hover:text-primary! transition-colors active:scale-95 text-secondary" />
+                            </button>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm truncate" :class="mod.enabled ? 'text-primary' : 'text-secondary'">
                                     {{ mod.name }}
