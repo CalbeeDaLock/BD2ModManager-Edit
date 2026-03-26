@@ -83,7 +83,7 @@ export const useSettingsStore = defineStore("settings", () => {
 
     // it will stay on settings for now
     function getBrowndustxVersion(): Promise<{
-        status: "INSTALLED" | "NOT_INSTALLED" | "GAME_NOT_FOUND",
+        status: "INSTALLED" | "NOT_INSTALLED" | "GAME_NOT_FOUND" | "INSTALLED_BUT_OUTDATED",
         version: string
     } | null> {
         return invoke('get_browndustx_version')

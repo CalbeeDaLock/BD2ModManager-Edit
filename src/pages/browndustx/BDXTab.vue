@@ -20,7 +20,7 @@ import Button from '../../components/common/Button.vue';
 import { useLoggingStore } from '../../stores/logging';
 
 enum BepInExStatus { INSTALLED = "INSTALLED", NOT_INSTALLED = "NOT_INSTALLED" }
-enum BrownDustXStatus { INSTALLED = "INSTALLED", NOT_INSTALLED = "NOT_INSTALLED", BEPINEX_MISSING = "BEPINEX_MISSING" }
+enum BrownDustXStatus { INSTALLED = "INSTALLED", NOT_INSTALLED = "NOT_INSTALLED", BEPINEX_MISSING = "BEPINEX_MISSING", INSTALLED_BUT_OUTDATED = "INSTALLED_BUT_OUTDATED" }
 enum ConfigurationManagerStatus { INSTALLED = "INSTALLED", NOT_INSTALLED = "NOT_INSTALLED", BEPINEX_MISSING = "BEPINEX_MISSING" }
 
 const { t } = useI18n()
@@ -72,7 +72,7 @@ async function getBDXState(log: boolean = true) {
             logs.push({
                 level: 'info',
                 scope: 'BrownDustX',
-                message: result.status === BrownDustXStatus.INSTALLED
+                message: result.status === BrownDustXStatus.INSTALLED || result.status === BrownDustXStatus.INSTALLED_BUT_OUTDATED
                     ? `BrownDustX version ${result.version} is installed.`
                     : 'BrownDustX is not installed.',
                 timestamp: new Date().toISOString(),
@@ -565,6 +565,8 @@ function getStatusMessage(status: BepInExStatus | BrownDustXStatus | Configurati
         case BrownDustXStatus.INSTALLED:
         case ConfigurationManagerStatus.INSTALLED:
             return t("browndustxTab.status.installed")
+        case BrownDustXStatus.INSTALLED_BUT_OUTDATED:
+            return t("browndustxTab.status.installedButOutdated")
         case BepInExStatus.NOT_INSTALLED:
         case BrownDustXStatus.NOT_INSTALLED:
         case ConfigurationManagerStatus.NOT_INSTALLED:
@@ -678,19 +680,20 @@ function isInstalled(status: BepInExStatus | BrownDustXStatus | ConfigurationMan
                         <div class="hidden lg:flex items-center gap-1">
                             <span class="text-xs" :class="{
                                 'text-success': isInstalled(brownDustXState.status),
-                                'text-warning': brownDustXState.status === BrownDustXStatus.BEPINEX_MISSING,
+                                'text-warning':brownDustXState.status === BrownDustXStatus.BEPINEX_MISSING || brownDustXState.status === BrownDustXStatus.INSTALLED_BUT_OUTDATED,
                                 'text-secondary': brownDustXState.status === BrownDustXStatus.NOT_INSTALLED
                             }">{{ getStatusMessage(brownDustXState.status) }}</span>
                         </div>
                         <div class="flex gap-1 justify-end">
                             <Button
-                                v-if="brownDustXState.status !== BrownDustXStatus.INSTALLED && bepInExState.status === BepInExStatus.INSTALLED"
+                                v-if="
+                                brownDustXState.status !== BrownDustXStatus.INSTALLED && bepInExState.status === BepInExStatus.INSTALLED && brownDustXState.status !== BrownDustXStatus.INSTALLED_BUT_OUTDATED"
                                 variant="text" :label="$t('browndustxTab.actions.selectFile')" :icon="Upload"
                                 label-class="hidden lg:inline"
                                 :disabled="!settingsStore.settings.gameDirectory || brownDustXState.status === BrownDustXStatus.BEPINEX_MISSING"
                                 @click="promptForBrownDustXArchive" />
                             <Button
-                                v-if="brownDustXState.status === BrownDustXStatus.INSTALLED && brownDustXState.can_remove"
+                                v-if="brownDustXState.status === BrownDustXStatus.INSTALLED && brownDustXState.can_remove || brownDustXState.status === BrownDustXStatus.INSTALLED_BUT_OUTDATED && brownDustXState.can_remove"
                                 variant="text" :label="$t('browndustxTab.actions.remove')" :icon="Trash2"
                                 label-class="hidden lg:inline" :disabled="!settingsStore.settings.gameDirectory"
                                 @click="uninstallBrownDustX" />

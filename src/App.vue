@@ -16,6 +16,7 @@ import { useConfirm } from "./plugins/ConfirmService"
 import { useModsStore } from "./stores/mods"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import Sidebar from "./components/sidebar/Sidebar.vue"
+import { useToast } from "primevue/usetoast"
 
 const { t, locale } = useI18n()
 
@@ -27,6 +28,8 @@ const isWelcomeModalVisible = ref(false)
 const confirm = useConfirm()
 const modsStore = useModsStore()
 
+const toast = useToast()
+
 let unlistenClose: (() => void) | null = null
 
 provideHeader()
@@ -36,8 +39,17 @@ onMounted(async () => {
     document.addEventListener("contextmenu", (event) => event.preventDefault())
   }
   
-  const isFirstLaunch = await initialize()
+  const {isFirstLaunch, isBrownDustXOutdated} = await initialize()
+
   if (isFirstLaunch) isWelcomeModalVisible.value = true
+  if (isBrownDustXOutdated) {
+    toast.add({
+      severity: "warn",
+      summary: t('app.notifications.brownDustXOutdated.title'),
+      detail: t('app.notifications.brownDustXOutdated.message'),
+      life: 10000,
+    })
+  }
 
   watch(
     () => settings.value.theme,

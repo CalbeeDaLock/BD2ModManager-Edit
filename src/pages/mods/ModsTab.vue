@@ -47,7 +47,7 @@ const isSyncing = ref(false);
 const isUnsyncing = ref(false);
 
 const bdxVersion = ref<{
-  status: "INSTALLED" | "NOT_INSTALLED" | "GAME_NOT_FOUND",
+  status: "INSTALLED" | "INSTALLED_BUT_OUTDATED" | "NOT_INSTALLED" | "GAME_NOT_FOUND",
   version: string
 } | null>(null);
 
@@ -216,7 +216,7 @@ async function handleOpenModFolder(mod: BD2Mod) {
     return
   }
 
-  await openPath(mod.path) 
+  await openPath(mod.path)
 }
 
 async function handleOpenStagingModsFolder() {
@@ -494,11 +494,7 @@ async function updateBDXVersion() {
 const SUPPORTED_FORMATS = [
   "rar",
   "zip",
-  "7z",
-  "gz",
-  "bz2",
-  "xz",
-  "tgz"
+  "7z"
 ]
 
 async function setupEventListeners() {
@@ -718,6 +714,9 @@ function handleShowModConflicts(mod: BD2Mod) {
         <span class="text-primary font-semibold">
           <template v-if="bdxVersion?.status == 'INSTALLED'">
             {{ $t("modsTab.browndustx.status.installed", { version: bdxVersion.version }) }}
+          </template>
+          <template v-else-if="bdxVersion?.status == 'INSTALLED_BUT_OUTDATED'">
+            {{ $t("modsTab.browndustx.status.installedButOutdated", { version: bdxVersion.version }) }}
           </template>
           <template v-else-if="bdxVersion?.status == 'GAME_NOT_FOUND'">
             {{ $t("modsTab.browndustx.status.gameNotFound") }}

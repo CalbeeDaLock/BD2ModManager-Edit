@@ -28,6 +28,12 @@
                     "exit": "Exit"
                 }
             }
+        },
+        "notifications": {
+            "brownDustXOutdated": {
+                "title": "BrownDustX Outdated",
+                "message": "BrownDustX is out of date. Mods will not work until it is updated."
+            }
         }
     },
     "titlebar": {
@@ -105,6 +111,7 @@
         "browndustx": {
             "status": {
                 "installed": "BrownDustX v{version}",
+                "installedButOutdated": "BrownDustX v{version} (Outdated)",
                 "gameNotFound": "Game directory not set",
                 "notInstalled": "BrownDustX not installed"
             },
@@ -367,6 +374,7 @@
         "title": "BrownDustX",
         "status": {
             "installed": "Installed",
+            "installedButOutdated": "Installed (Outdated)",
             "notInstalled": "Not Installed",
             "gameNotFound": "Game path is not set.",
             "bepinexMissing": "BepInEx is missing."

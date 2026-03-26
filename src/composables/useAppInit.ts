@@ -10,10 +10,10 @@ export function useAppInitializer() {
   const modsStore = useModsStore();
 
   async function initializeGamePath() {
-        // validate saved game dir, if is not valid show the game dir selection
+    // validate saved game dir, if is not valid show the game dir selection
     // [TODO] move to rust backend, there it can set the game dir
     // [TODO] what to do if the saved game directory is not valid? show the select game directory modal? or just show an error and let the user open the select game directory modal from settings?
-    
+
     if (!settingsStore.settings.gameDirectory) {
       loggingStore.logDebug("No saved game directory found.");
       return;
@@ -32,7 +32,7 @@ export function useAppInitializer() {
     }
   }
 
-  async function initialize() {
+  async function initialize(): Promise<{ isFirstLaunch: boolean, isBrownDustXOutdated: boolean }> {
     loggingStore.logDebug("Starting BD2ModManager");
 
     await Promise.all([
@@ -54,7 +54,12 @@ export function useAppInitializer() {
     if (settingsStore.settings.autoUpdateModPreview) settingsStore.updateModPreview();
     if (settingsStore.settings.checkForAppUpdates) settingsStore.checkForAppUpdate();
 
-    return settingsStore.settings.isFirstLaunch;
+    const brownDustXVersion = await settingsStore.getBrowndustxVersion();
+
+    return {
+      isFirstLaunch: settingsStore.settings.isFirstLaunch,
+      isBrownDustXOutdated: brownDustXVersion.status === "INSTALLED_BUT_OUTDATED"
+    }
   }
 
   return { initialize };

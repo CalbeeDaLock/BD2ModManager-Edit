@@ -1,5 +1,4 @@
-use pelite::pe32::Pe;
-use pelite::FileMap;
+use bd2modmanager_lib::utils::{misc::{compare_versions, get_dll_version}};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
@@ -32,6 +31,14 @@ fn cleanup_empty_dirs(game_path: &PathBuf, file_list: &[String]) {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct BDXVersionResult {
+    status: String,
+    version: Option<String>,
+    can_remove: Option<bool>,
+    can_configure: Option<bool>,
+}
+
 #[tauri::command]
 pub fn locate_game() -> Option<Vec<String>> {
     let hkcu = RegKey::predef(HKEY_CURRENT_USER);
@@ -62,54 +69,26 @@ pub fn validate_game_path(path: String) -> bool {
     exe_path.exists() && data_path.exists()
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct BDXVersionResult {
-    status: String,
-    version: Option<String>,
-    can_remove: Option<bool>,
-    can_configure: Option<bool>,
-}
-
-fn get_dll_version(dll_path: &PathBuf) -> Option<String> {
-    if !dll_path.exists() {
-        return None;
-    }
-
-    let file_map = FileMap::open(dll_path).ok()?;
-    let pe = pelite::pe32::PeFile::from_bytes(&file_map).ok()?;
-    let resources = pe.resources().ok()?;
-    let version_info = resources.version_info().ok()?;
-    let file_info = version_info.file_info();
-
-    for (_lang, strings) in file_info.strings {
-        for (key, value) in strings {
-            if key == "FileVersion" {
-                return Some(value.to_string());
-            }
-        }
-    }
-
-    None
-}
-
 #[tauri::command]
 pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult {
-    let config = state.config.lock().unwrap();
-    let game_path = match &config.game_directory {
-        Some(p) => p,
-        None => {
-            return BDXVersionResult {
-                status: "GAME_PATH_NOT_SET".to_string(),
-                version: None,
-                can_configure: None,
-                can_remove: None,
-            };
+    let game_path = {
+        let config = state.config.lock().unwrap();
+        match config.game_directory.clone() {
+            Some(path) => path,
+            None => {
+                return BDXVersionResult {
+                    status: "GAME_PATH_NOT_SET".to_string(),
+                    version: None,
+                    can_configure: None,
+                    can_remove: None,
+                };
+            }
         }
     };
 
-    let bepinex_path = PathBuf::from(game_path).join("BepInEx");
+    let bepinex_path = PathBuf::from(&game_path).join("BepInEx");
     let bepinex_dll_path = bepinex_path.join("core").join("BepInEx.dll");
-    let bepinex_winhttp_dll_path = PathBuf::from(game_path).join("winhttp.dll");
+    let bepinex_winhttp_dll_path = PathBuf::from(&game_path).join("winhttp.dll");
 
     if !bepinex_path.exists() || !bepinex_dll_path.exists() || !bepinex_winhttp_dll_path.exists() {
         return BDXVersionResult {
@@ -120,7 +99,7 @@ pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult
         };
     }
 
-    let bdx_dll_path = PathBuf::from(game_path)
+    let bdx_dll_path = PathBuf::from(&game_path)
         .join("BepInEx")
         .join("plugins")
         .join("BrownDustX")
@@ -133,7 +112,7 @@ pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult
             return false;
         }
 
-        let manifest_path = PathBuf::from(game_path)
+        let manifest_path = PathBuf::from(&game_path)
             .join("BepInEx")
             .join("plugins")
             .join("BrownDustX")
@@ -163,7 +142,7 @@ pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult
     })();
 
     let can_configure = if bdx_dll_path.exists() {
-        let config_path = PathBuf::from(game_path)
+        let config_path = PathBuf::from(&game_path)
             .join("BepInEx")
             .join("config")
             .join("BrownDustX.cfg");
@@ -173,12 +152,25 @@ pub fn get_browndustx_version(state: tauri::State<AppState>) -> BDXVersionResult
     };
 
     match bdx_version {
-        Some(v) => BDXVersionResult {
-            status: "INSTALLED".to_string(),
-            version: Some(v),
-            can_remove: Some(can_remove),
-            can_configure: Some(can_configure),
-        },
+        Some(version) => {
+            if let Some(gv) = get_game_version(state) {
+                log::debug!("game version: {}, bdx version: {}", gv, version);
+                if compare_versions(gv.as_str(), version.as_str()) == std::cmp::Ordering::Greater {
+                    return BDXVersionResult {
+                        status: "INSTALLED_BUT_OUTDATED".to_string(),
+                        version: Some(version.clone()),
+                        can_remove: Some(can_remove),
+                        can_configure: Some(can_configure),
+                    };
+                }
+            }
+            BDXVersionResult {
+                status: "INSTALLED".to_string(),
+                version: Some(version.clone()),
+                can_remove: Some(can_remove),
+                can_configure: Some(can_configure),
+            }
+        }
         None => BDXVersionResult {
             status: "NOT_INSTALLED".to_string(),
             version: None,
