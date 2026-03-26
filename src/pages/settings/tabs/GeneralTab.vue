@@ -33,6 +33,9 @@ const mappedLanguages = [
     { // cn, maybe add zh_HK?
         label: "中文 (中国)", value: "zh_CN",
     },
+    { // zh-TW
+        label: "中文 (台湾)", value: "zh_TW",
+    },
     { // ja
         label: "日本語 (日本)", value: "ja_JP",
     },

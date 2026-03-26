@@ -47,12 +47,12 @@
             "unsyncSuccess": "Mods Removed Successfully"
         },
         "modPreview": {
-            "downloading": "Mod Preview v{version}",
-            "downloadingShort": "Mod Preview",
-            "updateFailed": "Failed to update Mod Preview",
-            "updateFailedShort": "MP update failed",
-            "updated": "Mod Preview v{version} updated!",
-            "updatedShort": "Mod Preview updated!"
+            "downloading": "BD2ModPreview v{version}",
+            "downloadingShort": "BD2ModPreview",
+            "updateFailed": "Failed to update BD2ModPreview",
+            "updateFailedShort": "BD2ModPreview update failed",
+            "updated": "BD2ModPreview v{version} updated!",
+            "updatedShort": "BD2ModPreview updated!"
         },
         "gameData": {
             "downloading": "Game data...",

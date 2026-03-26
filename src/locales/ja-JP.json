@@ -1,0 +1,691 @@
+{
+    "common": {
+        "actions": {
+            "refreshMods": "MODを更新",
+            "cancel": "キャンセル",
+            "close": "閉じる",
+            "refresh": "更新",
+            "continue": "続行",
+            "confirm": "確認",
+            "browse": "参照",
+            "save": "保存"
+        },
+        "modTypes": {
+            "cutscene": "カットシーン",
+            "standing": "立ち絵",
+            "scene": "シーン",
+            "dating": "デート",
+            "npc": "NPC",
+            "minigame": "ミニゲーム"
+        }
+    },
+    "app": {
+        "confirmations": {
+            "exit": {
+                "title": "MODマネージャーを終了しますか？",
+                "message": "未同期のMODがあります。これらはゲームに反映されません。本当に終了しますか？",
+                "actions": {
+                    "exit": "終了"
+                }
+            }
+        },
+        "notifications": {
+            "brownDustXOutdated": {
+                "title": "BrownDustXが古いバージョンです",
+                "message": "BrownDustXが最新ではありません。更新するまでMODは動作しません。"
+            }
+        }
+    },
+    "titlebar": {
+        "appUpdate": {
+            "checking": "更新を確認中...",
+            "available": "アップデートあり：v{version}"
+        },
+        "sync": {
+            "applying": "適用中：{modName}",
+            "syncSuccess": "MODの同期に成功しました",
+            "unsyncSuccess": "MODを正常に削除しました"
+        },
+        "modPreview": {
+            "downloading": "BD2ModPreview v{version}",
+            "downloadingShort": "BD2ModPreview",
+            "updateFailed": "BD2ModPreviewの更新に失敗しました",
+            "updateFailedShort": "BD2ModPreview更新失敗",
+            "updated": "BD2ModPreview v{version} を更新しました！",
+            "updatedShort": "BD2ModPreviewを更新しました！"
+        },
+        "gameData": {
+            "downloading": "ゲームデータをダウンロード中...",
+            "downloadingShort": "データ",
+            "checking": "ゲームデータを確認中...",
+            "updatedShort": "データを更新しました"
+        },
+        "actions": {
+            "github": "GitHub",
+            "logs": "ログ"
+        }
+    },
+    "sidebar": {
+        "sections": {
+            "navigation": "ナビゲーション",
+            "settings": "設定",
+            "currentProfile": "現在のプロファイル"
+        },
+        "tabs": {
+            "mods": "MOD",
+            "characters": "キャラクター",
+            "profiles": "プロファイル",
+            "browndustx": "BrownDustX",
+            "settings": "設定"
+        },
+        "notifications": {
+            "gameLaunched": {
+                "title": "ゲームを起動しました",
+                "description": "ゲームが正常に起動されました。"
+            }
+        },
+        "confirmations": {
+            "unsyncedMods": {
+                "title": "未同期のMODが検出されました",
+                "message": "未同期のMODがあります。これらはゲームに反映されません。このままゲームを起動しますか？",
+                "actions": {
+                    "launchAnyway": "このまま起動"
+                }
+            }
+        },
+        "actions": {
+            "launchGame": "ゲームを起動"
+        }
+    },
+    "modsTab": {
+        "title": "MOD",
+        "subtitle": "{totalModsCount} 個中 {enabledModsCount} 個のMODが有効",
+        "actions": {
+            "addMod": "MODを追加",
+            "installFromZip": "ZIPからインストール",
+            "installFromFolder": "フォルダからインストール",
+            "openModsFolder": "MODフォルダを開く",
+            "syncMods": "MODを同期",
+            "unsyncMods": "MODの同期を解除"
+        },
+        "browndustx": {
+            "status": {
+                "installed": "BrownDustX v{version}",
+                "installedButOutdated": "BrownDustX v{version}（古いバージョン）",
+                "gameNotFound": "ゲームディレクトリが設定されていません",
+                "notInstalled": "BrownDustXがインストールされていません"
+            },
+            "navigation": "BrownDustXへ移動"
+        },
+        "header": {
+            "searchPlaceholder": "MOD、キャラクター、作者を検索...",
+            "actions": {
+                "filters": "フィルター"
+            },
+            "advancedFilters": {
+                "title": "詳細フィルター",
+                "actions": {
+                    "onlyEnabledMods": "有効なMODのみ表示",
+                    "onlyDisabledMods": "無効なMODのみ表示",
+                    "onlyConflictsMods": "競合するMODのみ表示",
+                    "onlyErrorsMods": "エラーのあるMODのみ表示"
+                }
+            }
+        },
+        "modlist": {
+            "header": {
+                "modName": "MOD名",
+                "modType": "MODタイプ",
+                "character": "キャラクター",
+                "author": "作者"
+            },
+            "contextMenu": {
+                "refreshMods": "MODを更新",
+                "selectMods": "MODを選択",
+                "selectAllMods": "すべてのMODを選択",
+                "selectEnabledMods": "有効なMODを選択",
+                "selectDisabledMods": "無効なMODを選択",
+                "deselectMods": "選択を解除",
+                "enableMod": "MODを有効化",
+                "enableSelectedMods": "選択したMODを有効化",
+                "disableMod": "MODを無効化",
+                "disableSelectedMods": "選択したMODを無効化",
+                "changeModAuthor": "MODの作者を変更",
+                "changeSelectedModsAuthor": "選択したMODの作者を変更",
+                "renameMod": "MODの名前を変更",
+                "deleteMod": "MODを削除",
+                "deleteSelectedMods": "選択したMODを削除",
+                "openModFolder": "MODフォルダを開く",
+                "previewMod": "MODをプレビュー"
+            }
+        },
+        "confirmations": {
+            "syncMods": {
+                "title": "MODを同期しますか？",
+                "titleWithConflicts": "競合があるMODを同期",
+                "message": "この操作はゲームフォルダ内のMODを上書きします。この操作は元に戻せません。",
+                "messageWithConflicts": "一部のMODが互いに競合しています。競合が解決されるまでゲームが起動しない場合があります。",
+                "actions": {
+                    "sync": "同期",
+                    "syncAnyway": "このまま同期"
+                }
+            },
+            "unsyncMods": {
+                "title": "MODの同期を解除しますか？",
+                "message": "この操作はゲームフォルダからすべてのMODを削除します。この操作は元に戻せません。",
+                "actions": {
+                    "unsync": "同期を解除"
+                }
+            },
+            "deleteMod": {
+                "title": "MODを削除しますか？",
+                "multipleTitle": "選択したMODを削除しますか？",
+                "message": "MOD「{modName}」を削除してもよろしいですか？この操作は元に戻せません。",
+                "multipleMessage": "これら {count} 個のMODを削除してもよろしいですか？この操作は元に戻せません。",
+                "actions": {
+                    "delete": "削除"
+                }
+            }
+        },
+        "notifications": {
+            "syncSuccess": {
+                "title": "MODを同期しました",
+                "description": "MODがゲームフォルダに正常に同期されました。"
+            },
+            "unsyncSuccess": {
+                "title": "MODの同期を解除しました",
+                "description": "MODがゲームフォルダから正常に削除されました。"
+            },
+            "modInstallSuccess": {
+                "title": "MODをインストールしました",
+                "description": "MOD「{modName}」が正常にインストールされました。"
+            }
+        },
+        "errors": {
+            "modPreview": {
+                "title": "MODをプレビューできません",
+                "modContainErrors": "MOD「{modName}」にエラーが含まれています。プレビューを開けません。"
+            },
+            "syncFailed": {
+                "title": "同期に失敗しました"
+            },
+            "unsyncFailed": {
+                "title": "同期解除に失敗しました"
+            },
+            "modFolderNotFound": "MOD「{modName}」のフォルダが見つかりません。",
+            "modNotDirectory": "MOD「{modName}」のパスはディレクトリではありません。",
+            "stagingDirectoryNotSet": "ステージングディレクトリが設定されていません。",
+            "stagingDirectoryNotFound": "「{stagingDir}」にステージングディレクトリが見つかりません。設定を確認してください。"
+        }
+    },
+    "charactersTab": {
+        "title": "キャラクター",
+        "subtitle": "{totalModsCount} 個中 {enabledModsCount} 個のMODが有効",
+        "charactersNotFound": "キャラクターが見つかりません。",
+        "id": "ID：{id}",
+        "filters": {
+            "title": "フィルター",
+            "searchPlaceholder": "キャラクターを検索...",
+            "sortBy": {
+                "title": "並び替え",
+                "options": {
+                    "nameAsc": "名前（A-Z）",
+                    "nameDesc": "名前（Z-A）",
+                    "releaseAsc": "リリース日（新しい順）",
+                    "releaseDesc": "リリース日（古い順）",
+                    "modsAsc": "MOD数（少ない順）",
+                    "modsDesc": "MOD数（多い順）"
+                }
+            },
+            "modStatus": {
+                "title": "MODの状態",
+                "hasCutscene": "カットシーンMODあり",
+                "hasStanding": "立ち絵MODあり",
+                "hasDating": "デートMODあり",
+                "options": {
+                    "any": "すべて",
+                    "enabled": "有効",
+                    "disabled": "無効"
+                }
+            },
+            "extraFilters": {
+                "title": "追加フィルター",
+                "hideMenCharacters": "男性キャラクターを非表示",
+                "hideWomenCharacters": "女性キャラクターを非表示",
+                "onlyCharactersWithMods": "MODがあるキャラクターのみ表示",
+                "onlyCharactersWithoutMods": "MODがないキャラクターのみ表示"
+            },
+            "releasePeriod": {
+                "title": "リリース期間",
+                "options": {
+                    "all": "すべての期間",
+                    "lastWeek": "直近1週間",
+                    "lastTwoWeeks": "直近2週間",
+                    "lastMonth": "直近1ヶ月",
+                    "lastThreeMonths": "直近3ヶ月",
+                    "lastSixMonths": "直近6ヶ月",
+                    "lastYear": "直近1年"
+                }
+            }
+        },
+        "actions": {
+            "addMod": "MODを追加",
+            "installFromZip": "ZIPからインストール",
+            "installFromFolder": "フォルダからインストール"
+        },
+        "tags": {
+            "new": "新キャラ",
+            "collab": "コラボ",
+            "modsCount": "{count} 個のMOD"
+        },
+        "modTypes": {
+            "cutscene": "カットシーン",
+            "standing": "立ち絵",
+            "dating": "デート",
+            "states": {
+                "enabled": "有効",
+                "disabled": "無効"
+            }
+        },
+        "characterModal": {
+            "enabledMods": "有効なMOD",
+            "totalMods": "MOD合計",
+            "noModsFound": {
+                "title": "MODが見つかりません",
+                "description": "MODタブからこのキャラクターのMODをインストールしてください。"
+            }
+        }
+    },
+    "profilesTab": {
+        "title": "プロファイル",
+        "subtitle": "MODプロファイルを管理して、異なるMOD構成を簡単に切り替えましょう。",
+        "defaultProfile": "デフォルトプロファイル",
+        "emptyDescription": "説明はありません。",
+        "activeProfile": "使用中のプロファイル",
+        "enabledMods": "{count} 個の有効なMOD",
+        "noModsEnabled": "有効なMODはありません。",
+        "noProfileSelected": "プロファイルが選択されていません。詳細を確認するにはプロファイルを選択してください。",
+        "actions": {
+            "createProfile": "プロファイルを作成",
+            "editProfile": "プロファイルを編集",
+            "deleteProfile": "プロファイルを削除",
+            "setAsCurrent": "現在のプロファイルに設定"
+        },
+        "notifications": {
+            "profileCreated": {
+                "title": "プロファイルを作成しました",
+                "description": "プロファイル「{profileName}」が正常に作成されました。"
+            },
+            "profileUpdated": {
+                "title": "プロファイルを更新しました",
+                "description": "プロファイル「{profileName}」が正常に更新されました。"
+            },
+            "profileDeleted": {
+                "title": "プロファイルを削除しました",
+                "description": "プロファイル「{profileName}」が正常に削除されました。"
+            }
+        },
+        "confirmations": {
+            "deleteProfile": {
+                "title": "プロファイルを削除しますか？",
+                "message": "プロファイル「{profileName}」を削除してもよろしいですか？この操作は元に戻せません。",
+                "actions": {
+                    "deleteProfile": "プロファイルを削除"
+                }
+            }
+        },
+        "modals": {
+            "createProfile": {
+                "title": "新しいプロファイルを作成",
+                "description": "新しいプロファイルの名前と任意の説明を入力してください。",
+                "nameField": {
+                    "label": "プロファイル名",
+                    "placeholder": "プロファイル名を入力"
+                },
+                "descriptionField": {
+                    "label": "プロファイルの説明（任意）",
+                    "placeholder": "プロファイルの説明を入力"
+                },
+                "templateField": {
+                    "label": "テンプレートプロファイル（任意）",
+                    "placeholder": "テンプレートプロファイルを選択"
+                },
+                "actions": {
+                    "createProfile": "プロファイルを作成"
+                }
+            },
+            "editProfile": {
+                "title": "プロファイルを編集",
+                "nameField": {
+                    "label": "プロファイル名",
+                    "placeholder": "プロファイル名を入力"
+                },
+                "descriptionField": {
+                    "label": "プロファイルの説明（任意）",
+                    "placeholder": "プロファイルの説明を入力"
+                },
+                "actions": {
+                    "saveChanges": "変更を保存"
+                }
+            }
+        }
+    },
+    "browndustxTab": {
+        "title": "BrownDustX",
+        "status": {
+            "installed": "インストール済み",
+            "installedButOutdated": "インストール済み（古いバージョン）",
+            "notInstalled": "未インストール",
+            "gameNotFound": "ゲームパスが設定されていません。",
+            "bepinexMissing": "BepInExがありません。"
+        },
+        "labels": {
+            "gameDirectory": "ゲームディレクトリ：",
+            "frameworkAndPlugins": "フレームワークとプラグイン",
+            "logs": "ログ"
+        },
+        "descriptions": {
+            "bepinex": "BepInExはMODフレームワークです。BrownDustXの動作に必要です。",
+            "browndustx": "BrownDustXはBepInExのプラグインで、様々な利便性向上機能を提供し、ブラウンダスト IIでMODを使用できるようにします。",
+            "configurationManager": "Configuration ManagerはBepInExのプラグインで、ゲーム内でBrownDustXの設定を変更できます。"
+        },
+        "messages": {
+            "bepinexMissing": "BrownDustXの実行にはBepInExが必要です。先にBepInExをインストールしてください。",
+            "configurationManagerMissing": "Configuration Managerがインストールされていません。ゲーム内でBrownDustXの設定を変更できません。",
+            "brownDustXMissing": "BrownDustXがインストールされていません。インストールなしにMODは読み込まれません。",
+            "noLogsYet": "まだログはありません。",
+            "dragAndDrop": "BepInExまたはBrownDustXのアーカイブをここにドラッグ＆ドロップしてインストールすることもできます",
+            "gameDirectoryNotSet": "ゲームディレクトリが設定されていません。BrownDustXをインストールするには設定で指定してください。"
+        },
+        "actions": {
+            "installFromGithub": "GitHubからインストール",
+            "selectFile": "ファイルを選択",
+            "remove": "削除"
+        },
+        "notifications": {
+            "installSuccess": {
+                "title": "BrownDustXをインストールしました",
+                "description": "BrownDustXが正常にインストールされました。"
+            },
+            "uninstallSuccess": {
+                "title": "BrownDustXをアンインストールしました",
+                "description": "BrownDustXが正常にアンインストールされました。"
+            }
+        },
+        "confirmations": {
+            "removeBepInEx": {
+                "title": "BepInExを削除しますか？",
+                "message": "BepInExを削除してもよろしいですか？この操作はゲームディレクトリからすべてのBepInExファイルを削除します。この操作は元に戻せません。",
+                "actions": {
+                    "removeBepInEx": "BepInExを削除"
+                }
+            },
+            "removeBrownDustX": {
+                "title": "BrownDustXを削除しますか？",
+                "message": "BrownDustXを削除してもよろしいですか？この操作はゲームディレクトリからすべてのBrownDustXファイルとMODを削除します。この操作は元に戻せません。",
+                "actions": {
+                    "removeBrownDustX": "BrownDustXを削除"
+                }
+            }
+        },
+        "alerts": {
+            "caution": "注意",
+            "cautionMessage": "手動インストールを推奨します。すでにBepInExまたはBrownDustXをインストール済みの場合、インストーラーが既存ファイルを正しく削除できない場合があります。GitHubからインストールしたBepInExで問題が発生した場合は、バグ報告の前にBrownDustX Discordのバージョンをお試しください。",
+            "danger": "この機能は自己責任でご使用ください",
+            "dangerMessage": "この機能は実験的なものです。ゲームのインストールに生じた問題について一切責任を負いません。"
+        },
+        "modals": {
+            "bepinexGithub": {
+                "title": "GitHubからBepInExをインストール",
+                "loading": "GitHubからBepInExのリリースを読み込み中...",
+                "failedToLoadVersions": "バージョンの読み込みに失敗しました",
+                "actions": {
+                    "viewOnGithub": "GitHubで確認",
+                    "install": "インストール",
+                    "retry": "再試行"
+                }
+            }
+        }
+    },
+    "settingsTab": {
+        "title": "設定",
+        "subtitle": "MODマネージャーの設定を構成します。",
+        "general": {
+            "label": "一般",
+            "sections": {
+                "application": {
+                    "title": "アプリケーション",
+                    "theme": {
+                        "label": "テーマ",
+                        "placeholder": "テーマを選択"
+                    },
+                    "language": {
+                        "label": "言語",
+                        "placeholder": "言語を選択"
+                    }
+                },
+                "directories": {
+                    "title": "ディレクトリ",
+                    "gameDirectory": {
+                        "label": "ゲームディレクトリ",
+                        "placeholder": "ゲームディレクトリを選択"
+                    },
+                    "modsDirectory": {
+                        "label": "MODステージングディレクトリ",
+                        "placeholder": "同期前にMODを保存するディレクトリを選択"
+                    }
+                },
+                "modManagement": {
+                    "title": "MOD管理",
+                    "searchRecursively": {
+                        "label": "MODを再帰的に検索",
+                        "description": "MODステージングディレクトリのサブフォルダ内のMODも検索します。"
+                    },
+                    "autoSyncMods": {
+                        "label": "MODを自動同期",
+                        "description": "MODを有効・無効にした際にゲームフォルダへ自動的に同期します。"
+                    },
+                    "syncMethod": {
+                        "label": "同期方式",
+                        "description": "MODをゲームフォルダにインストールする方式。",
+                        "options": {
+                            "copy": "コピー",
+                            "symlink": "シンボリックリンク（管理者権限が必要）"
+                        }
+                    }
+                }
+            }
+        },
+        "interface": {
+            "label": "インターフェース",
+            "sections": {
+                "columns": {
+                    "title": "MODリストの列",
+                    "visibleColumns": {
+                        "label": "表示する列",
+                        "description": "MODリストに表示する列を選択します。",
+                        "options": {
+                            "modName": "MOD名",
+                            "character": "キャラクター",
+                            "modType": "MODタイプ",
+                            "author": "作者"
+                        }
+                    }
+                },
+                "modNameColumn": {
+                    "label": "MOD名の列",
+                    "description": "サブフォルダの有無でMOD名の表示を切り替えます。",
+                    "options": {
+                        "short": "MOD名",
+                        "full": "MOD名（サブフォルダあり）"
+                    }
+                },
+                "characterColumn": {
+                    "label": "キャラクターの列",
+                    "description": "キャラクターのアイコン、名前、またはその両方を表示します。",
+                    "options": {
+                        "full": "アイコンと名前",
+                        "iconOnly": "アイコンのみ",
+                        "nameOnly": "名前のみ"
+                    }
+                },
+                "modTypeColumn": {
+                    "label": "MODタイプの列",
+                    "description": "MODタイプのアイコン、ラベル、またはその両方を表示します。",
+                    "options": {
+                        "full": "ラベルとアイコン",
+                        "iconOnly": "アイコンのみ",
+                        "labelOnly": "ラベルのみ"
+                    },
+                    "enableColors": {
+                        "label": "MODタイプのカラー表示を有効化",
+                        "description": "MODタイプごとに色を適用します（立ち絵、カットシーン、デートなど）。"
+                    }
+                }
+            }
+        },
+        "updates": {
+            "label": "アップデート",
+            "sections": {
+                "updates": {
+                    "title": "アプリケーションのアップデート",
+                    "autoCheckForUpdates": {
+                        "label": "起動時に自動で更新を確認",
+                        "description": "起動時にアプリケーションの更新を自動で確認します。"
+                    },
+                    "autoUpdateModPreview": {
+                        "label": "MODプレビューを自動更新",
+                        "description": "起動時にBD2ModPreviewの更新を自動で確認し、新バージョンがあれば更新します。"
+                    },
+                    "actions": {
+                        "checkForUpdates": "更新を確認",
+                        "checkingForUpdates": "更新を確認中...",
+                        "updateModPreview": "BD2ModPreviewを更新"
+                    }
+                }
+            }
+        }
+    },
+    "modals": {
+        "logs": {
+            "title": "アプリケーションログ",
+            "noLogs": "利用可能なログはありません。"
+        },
+        "sync": {
+            "titles": {
+                "syncing": "MODを同期中...",
+                "completed": "同期完了",
+                "failed": "同期失敗",
+                "idle": "MODを同期",
+                "removing": "MODを削除中...",
+                "removed": "MODを削除しました",
+                "failedToRemove": "MODの削除に失敗しました",
+                "idleToRemove": "MODを削除"
+            },
+            "actions": {
+                "close": "閉じる"
+            },
+            "log": {
+                "title": "同期ログ",
+                "waitingToStart": "同期の開始を待機中...",
+                "mods": "個のMOD"
+            },
+            "status": {
+                "synced": "同期済み",
+                "upToDate": "最新",
+                "removed": "削除済み",
+                "failed": "失敗"
+            }
+        },
+        "welcome": {
+            "title": "BD2ModManagerへようこそ！",
+            "subtitle": "初めてアプリを起動したようです。今すぐゲームディレクトリを設定するか、スキップして後から設定することもできます。",
+            "chips": {
+                "github": "GitHubを見る",
+                "discord": "BrownDustX Discord",
+                "suggestFeatures": "機能を提案",
+                "reportIssues": "問題を報告"
+            },
+            "selectGameDirectory": {
+                "title": "ゲームディレクトリ",
+                "description": "「BrownDust II.exe」が含まれるフォルダを選択してください。",
+                "placeholders": {
+                    "gamePath": "ブラウンダスト IIのゲームディレクトリのパス"
+                },
+                "labels": {
+                    "foundPaths": "見つかったパス："
+                },
+                "validPath": "ゲームディレクトリを設定しました。",
+                "invalidPath": "続行するには有効なゲームディレクトリを選択してください。",
+                "errors": {
+                    "invalidGameExecutable": "選択したファイルはブラウンダスト IIの実行ファイルではありません。",
+                    "invalidDirectory": "選択したディレクトリには有効なブラウンダスト IIのインストールが含まれていません。",
+                    "unknownError": "不明なエラーが発生しました：{error}",
+                    "noGamePathSelected": "ゲームパスが選択されていません。有効なゲームディレクトリを選択してください。"
+                }
+            },
+            "betaBanner": {
+                "message": "これはMODマネージャーの{beta}です。バグや予期しない動作が発生する場合があります。問題を発見した場合は {github} でご報告ください。",
+                "beta": "ベータ版",
+                "github": "GitHub Issues"
+            }
+        },
+        "changeModAuthor": {
+            "title": "MODの作者を変更",
+            "description": "MOD「{modName}」の新しい作者名を入力してください。",
+            "descriptionMultiple": "選択したMODの新しい作者名を入力してください。",
+            "placeholder": "新しい作者名を入力",
+            "labels": {
+                "modName": "MOD名",
+                "newAuthor": "新しい作者名"
+            },
+            "actions": {
+                "save": "保存"
+            }
+        },
+        "changeModName": {
+            "title": "MODの名前を変更",
+            "description": "MOD「{modName}」の新しい名前を入力してください。",
+            "placeholder": "新しいMOD名を入力",
+            "labels": {
+                "modName": "MOD名",
+                "newModName": "新しいMOD名"
+            },
+            "actions": {
+                "save": "保存"
+            }
+        }
+    },
+    "errors": {
+        "syncFailed": "MODの同期に失敗しました",
+        "unsyncFailed": "MODの同期解除に失敗しました",
+        "modAlreadyExists": "同じ名前のMODがすでに存在します。",
+        "multipleModsFound": "複数のMODが見つかりました。MODが1つだけ存在することを確認してください。",
+        "modPreviewContainsErrors": "このMODにはエラーが含まれているため、プレビューできません。",
+        "gameDirectoryNotSet": "ゲームディレクトリが設定されていません。設定で指定してください。",
+        "stagingDirectoryNotSet": "MODステージングディレクトリが設定されていません。設定で指定してください。",
+        "syncMethodInvalid": "無効な同期方式：{method}",
+        "symlinkAdminRequired": "シンボリックリンクの作成には管理者権限が必要です。",
+        "modPathNotFound": "MODパスが見つかりません：{path}",
+        "copyFailed": "MODファイルのコピーに失敗しました：{error}",
+        "symlinkFailed": "シンボリックリンクの作成に失敗しました：{error}",
+        "hardlinkFailed": "ハードリンクの作成に失敗しました：{error}",
+        "directoryCreationFailed": "ディレクトリの作成に失敗しました：{error}",
+        "removalFailed": "ファイルまたはディレクトリの削除に失敗しました：{error}",
+        "unknownError": "不明なエラーが発生しました：{error}",
+        "modInstallFailed": {
+            "title": "MODのインストールに失敗しました"
+        },
+        "invalidMod": "選択したファイルまたはフォルダは有効なBrownDustX MODではありません。",
+        "invalidFormat": "サポートされていないMOD形式です。有効なMODファイルまたはフォルダを選択してください。",
+        "unsupportedFormat": "サポートされていないファイル形式です。有効なMODファイルまたはフォルダを選択してください。"
+    },
+    "modErrors": {
+        "missingTextures": "MODフォルダ内に「textures」という名前のフォルダを作成する必要があります。",
+        "missingModfile": "このMODフォルダ内に .modfile を作成する必要があります。",
+        "archiveNotExtracted": "このMODはまだ解凍されていない圧縮ファイルです。有効化する前に解凍してください。",
+        "shouldBeInFolder": "このMODはフォルダ内に配置する必要があります。MODと同じ名前のフォルダを作成し、MODファイルをその中に移動してください。",
+        "missingAtlasFile": "このMODにはアトラスファイルがありません。",
+        "noDescription": "説明はありません。"
+    }
+}

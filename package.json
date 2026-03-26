@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "type-check": "vue-tsc --noEmit",
-    "download:modpreview": "node scripts/download_modpreview.mjs"
+    "download:modpreview": "node scripts/download_modpreview.mjs",
+    "i18n:check": "i18n-check --locales src/locales -s en-US"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.10",
@@ -38,6 +39,7 @@
     "vue-router": "^5.0.3"
   },
   "devDependencies": {
+    "@lingual/i18n-check": "^0.9.3",
     "@tauri-apps/cli": "^2.10.0",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/devtools": "^8.0.6",
