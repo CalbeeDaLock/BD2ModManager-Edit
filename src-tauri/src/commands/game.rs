@@ -1,4 +1,4 @@
-use bd2modmanager_lib::utils::{misc::{compare_versions, get_dll_version}};
+use bd2modmanager_lib::utils::{files::cleanup_empty_dirs, misc::{compare_versions, get_dll_version}};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
@@ -6,30 +6,6 @@ use tauri::Manager;
 use winreg::{enums::HKEY_CURRENT_USER, RegKey};
 
 use crate::AppState;
-
-fn cleanup_empty_dirs(game_path: &PathBuf, file_list: &[String]) {
-    let mut dirs: Vec<PathBuf> = Vec::new();
-    for f in file_list {
-        let full = game_path.join(f);
-        let mut current = full.parent().map(|p| p.to_path_buf());
-        while let Some(dir) = current {
-            if !dir.starts_with(game_path) || dir == *game_path {
-                break;
-            }
-            dirs.push(dir.clone());
-            current = dir.parent().map(|p| p.to_path_buf());
-        }
-    }
-    dirs.sort();
-    dirs.dedup();
-    dirs.sort_by(|a, b| b.components().count().cmp(&a.components().count()));
-
-    for dir in &dirs {
-        if dir.exists() && dir.is_dir() {
-            let _ = fs::remove_dir(dir);
-        }
-    }
-}
 
 #[derive(Serialize, Deserialize)]
 pub struct BDXVersionResult {

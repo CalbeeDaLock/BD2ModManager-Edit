@@ -1,5 +1,5 @@
 use std::{
-    fs::{copy, create_dir_all, read, read_dir, remove_dir_all, remove_file},
+    fs::{self, copy, create_dir_all, read, read_dir, remove_dir_all, remove_file},
     io,
     path::{Path, PathBuf},
 };
@@ -148,4 +148,28 @@ pub fn ensure_dir_exists(path: &PathBuf) -> Result<(), std::io::Error> {
         std::fs::create_dir_all(path)?;
     }
     Ok(())
+}
+
+pub fn cleanup_empty_dirs(game_path: &PathBuf, file_list: &[String]) {
+    let mut dirs: Vec<PathBuf> = Vec::new();
+    for f in file_list {
+        let full = game_path.join(f);
+        let mut current = full.parent().map(|p| p.to_path_buf());
+        while let Some(dir) = current {
+            if !dir.starts_with(game_path) || dir == *game_path {
+                break;
+            }
+            dirs.push(dir.clone());
+            current = dir.parent().map(|p| p.to_path_buf());
+        }
+    }
+    dirs.sort();
+    dirs.dedup();
+    dirs.sort_by(|a, b| b.components().count().cmp(&a.components().count()));
+
+    for dir in &dirs {
+        if dir.exists() && dir.is_dir() {
+            let _ = fs::remove_dir(dir);
+        }
+    }
 }
