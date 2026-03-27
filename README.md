@@ -20,7 +20,7 @@ If you have suggestions or run into any problems with the app, feel free to open
 ### General
 - Complete UI overhaul
 - Added `.rar` and `.7z` mod installation support
-- Much smaller file size (from ~164MB → ~60MB)
+- Much smaller file size (from ~164MB → ~50MB)
 - Much faster performance (sync, unsync, and other operations)
 
 ### Mods Tab
@@ -57,7 +57,7 @@ If you have suggestions or run into any problems with the app, feel free to open
 2. **Select your Brown Dust 2 directory** (where `BrownDust II.exe` is located)
    - Example: F:\Neowiz\Browndust2\Browndust2_10000001
 3. **Add your mods** by:
-   - Noving them into the `mods/` folder  
+   - Moving them into the `mods/` folder  
      ⚠️ **Note:** This is *not* the BrownDustX `mods` directory. It's a separate folder used by this manager
 4. **Enable or disable mods**.
 5. **Sync your mods** to apply changes:
@@ -115,6 +115,8 @@ You can find mods on the BrownDustX Discord server: [https://discord.gg/B3Aqz6tD
 
 - Character assets by [myssal/Brown-Dust-2-Asset](https://github.com/myssal/Brown-Dust-2-Asset)
 - Thanks to **Synae** for *Brown Dust X*
+
+![Alt](https://repobeats.axiom.co/api/embed/ed16651a70e0b4d1937e8e346f394c6b78c9a231.svg "Repobeats analytics image")
 
 ## Star History
 
