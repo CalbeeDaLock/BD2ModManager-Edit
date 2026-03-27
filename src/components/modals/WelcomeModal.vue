@@ -8,9 +8,14 @@ import { useLoggingStore } from '../../stores/logging';
 import { useSettingsStore } from '../../stores/settings';
 import { useI18n } from 'vue-i18n';
 
+import RefinedGithub from '../../assets/icons/github.svg';
+import { openUrl } from '@tauri-apps/plugin-opener';
+import DiscordIcon from '../icons/DiscordIcon.vue';
+
 import Button from '../common/Button.vue';
 import Input from '../common/Input.vue';
 import Modal from '../common/Modal.vue';
+import KofiIcon from '../icons/KofiIcon.vue';
 
 const loggingStore = useLoggingStore()
 const settingsStore = useSettingsStore()
@@ -89,12 +94,9 @@ watch(visible, async (isVisible) => {
     }
 })
 
-import RefinedGithub from '../../assets/icons/github.svg';
-import { openUrl } from '@tauri-apps/plugin-opener';
-import Discord from '../icons/Discord.vue';
-
 const GITHUB_URL = 'https://github.com/bruhnn/BD2ModManager'
 const DISCORD_URL = 'https://discord.gg/B3Aqz6tDG2'
+const KOFI_URL = 'https://ko-fi.com/bruhnn'
 
 </script>
 
@@ -103,19 +105,15 @@ const DISCORD_URL = 'https://discord.gg/B3Aqz6tDG2'
         :title="$t('modals.welcome.title')" :subtitle="$t('modals.welcome.subtitle')">
         <div class="w-full h-full flex flex-col gap-5 p-4">
 
-            <div class="flex items-start gap-3 p-3 rounded-md border border-red-500/30 bg-red-500/10">
-                <AlertOctagon class="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <i18n-t keypath="modals.welcome.betaBanner.message" tag="p" class="text-xs text-red-200">
-                    <template #beta>
-                        <span class="font-semibold">{{ $t('modals.welcome.betaBanner.beta') }}</span>
-                    </template>
-                    <template #github>
-                        <span class="underline cursor-pointer hover:text-red-100" @click="openUrl(GITHUB_URL)">
-                            {{ $t('modals.welcome.betaBanner.github') }}
-                        </span>
-                    </template>
-                </i18n-t>
+            <div class="flex items-center gap-3 p-3 rounded-md border border-orange-500/30 bg-orange-500/10 cursor-pointer hover:bg-orange-500/20 transition-colors"
+                @click="openUrl(KOFI_URL)">
+                <KofiIcon class="w-4 h-4 fill-orange-400 shrink-0" />
+                <div class="flex flex-col gap-0.5">
+                    <p class="text-xs font-semibold text-orange-300">{{ $t('modals.welcome.supportBanner.title') }}</p>
+                    <p class="text-xs text-orange-200/80">{{ $t('modals.welcome.supportBanner.message') }}</p>
+                </div>
             </div>
+
             <div class="flex items-center justify-ceter gap-2">
                 <span @click="openUrl(GITHUB_URL)"
                     class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
@@ -124,8 +122,13 @@ const DISCORD_URL = 'https://discord.gg/B3Aqz6tDG2'
                 </span>
                 <span @click="openUrl(DISCORD_URL)"
                     class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
-                    <Discord class="w-4 h-4 fill-secondary" />
+                    <DiscordIcon class="w-4 h-4 fill-secondary" />
                     {{ $t('modals.welcome.chips.discord') }}
+                </span>
+                <span @click="openUrl(KOFI_URL)"
+                    class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
+                    <KofiIcon class="w-4 h-4 fill-secondary" />
+                    {{ $t('modals.welcome.chips.kofi') }}
                 </span>
             </div>
 

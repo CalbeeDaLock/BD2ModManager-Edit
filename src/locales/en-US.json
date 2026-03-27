@@ -603,6 +603,7 @@
             "chips": {
                 "github": "Visit our Github",
                 "discord": "BrownDustX Discord",
+                "kofi": "Support on Ko-Fi",
                 "suggestFeatures": "Suggest Features",
                 "reportIssues": "Report Issues"
             },
@@ -628,6 +629,10 @@
                 "message": "This is a {beta} of the mod manager. Bugs or unexpected behavior may occur. If you find any issues, please report them on {github}.",
                 "beta": "beta version",
                 "github": "GitHub Issues"
+            },
+            "supportBanner": {
+                "title": "Support the project ❤️",
+                "message": "BD2ModManager is free and open source. If it has been helpful, consider supporting me on Ko-Fi!"
             }
         },
         "changeModAuthor": {
