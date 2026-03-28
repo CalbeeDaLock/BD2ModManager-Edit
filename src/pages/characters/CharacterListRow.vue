@@ -2,6 +2,10 @@
 import Image from '../../components/common/Image.vue';
 import { Character, isCostumeNew } from '../../stores/characters';
 import { CharacterListItem } from './CharacterList.vue';
+import { convertFileSrc } from '@tauri-apps/api/core';
+import { useAppDir } from '../../composables/useAppDir';
+
+const baseDir = useAppDir()
 
 const props = defineProps<{
     item: CharacterListItem
@@ -27,7 +31,10 @@ const emit = defineEmits<{
                 :src="`characters/standing/${item.data.id}.png`"
                 :alt="`${item.data.character} - ${item.data.costume}`"
                 class="w-42 h-42 object-cover"
-                error-src="/characters/standing/placeholder_character.png"
+                :fallback-sources="[
+                    convertFileSrc(`${baseDir}/assets/standing/${item.data.id}.png`),
+                    '/characters/standing/placeholder_character.png'
+                ]"                
             />
         </div>
 

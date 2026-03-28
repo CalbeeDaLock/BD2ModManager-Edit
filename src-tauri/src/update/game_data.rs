@@ -55,7 +55,7 @@ async fn download_missing_assets(
     characters: &serde_json::Value,
 ) -> Result<(), String> {
     let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(10))
+        .timeout(std::time::Duration::from_secs(15))
         .build()
         .map_err(|e| format!("Failed to build HTTP client: {e}"))?;
 
@@ -63,14 +63,14 @@ async fn download_missing_assets(
         .path()
         .app_data_dir()
         .map_err(|_| "Failed to get app data dir")?
-        .join("characters")
+        .join("assets")
         .join("standing");
 
     let heads_characters_dir = app_handle
         .path()
         .app_data_dir()
         .map_err(|_| "Failed to get app data dir")?
-        .join("characters")
+        .join("assets")
         .join("heads");
 
     tokio::fs::create_dir_all(&standing_characters_dir)
@@ -81,7 +81,7 @@ async fn download_missing_assets(
         .await
         .map_err(|e| format!("Failed creating dir: {e}"))?;
 
-    let characters_w_missing_assets: Vec<String> = characters["characters"]
+    let characters_w_missing_assets: Vec<(String, bool, bool)> = characters["characters"]
         .as_array()
         .ok_or("Invalid characters format")?
         .iter()
@@ -97,14 +97,13 @@ async fn download_missing_assets(
                 .is_some();
 
             // check if is bundled and not already download
-            let is_standing_downloaded =
-                standing_characters_dir.join(format!("{}.png", id)).exists();
+            let is_standing_downloaded = standing_characters_dir.join(format!("{}.png", id)).exists();
             let is_head_downloaded = heads_characters_dir.join(format!("{}.png", id)).exists();
 
             if (!is_standing_bundled && !is_standing_downloaded)
                 || (!is_head_bundled && !is_head_downloaded)
             {
-                Some(id.to_string())
+                Some((id.to_string(), is_standing_bundled, is_head_bundled))
             } else {
                 None
             }
@@ -120,18 +119,7 @@ async fn download_missing_assets(
 
     info!("Found {total} characters with missing assets, downloading...");
 
-    for (index, character_id) in characters_w_missing_assets.iter().enumerate() {
-        let is_standing_downloaded = standing_characters_dir.join(format!("{}.png", character_id)).exists();
-        let is_head_downloaded = heads_characters_dir.join(format!("{}.png", character_id)).exists();
-        let is_standing_bundled = app_handle
-            .asset_resolver()
-            .get(format!("characters/standing/{}.png", character_id))
-            .is_some();
-        let is_head_bundled = app_handle
-            .asset_resolver()
-            .get(format!("characters/heads/{}.png", character_id))
-            .is_some();
-        
+    for (index, (character_id, is_standing_bundled, is_head_bundled)) in characters_w_missing_assets.iter().enumerate() {
         info!("Downloading missing assets for {character_id}; standing bundled: {is_standing_bundled}, head bundled: {is_head_bundled}");
 
         app_handle

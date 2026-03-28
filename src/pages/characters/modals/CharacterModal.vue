@@ -11,6 +11,8 @@ import { useLoggingStore } from '../../../stores/logging';
 import { getErrorMessage } from '../../../utils/errors';
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';
+import { convertFileSrc } from '@tauri-apps/api/core';
+import { useAppDir } from '../../../composables/useAppDir';
 
 const loggingStore = useLoggingStore();
 const toast = useToast()
@@ -79,6 +81,8 @@ async function openPreviewMod(mod: BD2Mod) {
         loggingStore.logError("Error previewing mod:", error);
     })
 }
+
+const baseDir = useAppDir()
 </script>
 
 <template>
@@ -96,7 +100,10 @@ async function openPreviewMod(mod: BD2Mod) {
                 <Image :src="`characters/standing/${selectedCostume.id}.png`"
                     :alt="`${selectedCostume?.character} - ${selectedCostume.costume}`"
                     class="w-40 h-40 object-cover shrink-0 border-r border-border"
-                    error-src="/characters/standing/placeholder_character.png" />
+                    :fallback-sources="[
+                        convertFileSrc(`${baseDir}/assets/standing/${selectedCostume?.id}.png`),
+                        '/characters/standing/placeholder_character.png'
+                    ]" />
 
                 <div class="flex-1 px-4 py-3">
                     <div class="flex items-start justify-between gap-2">

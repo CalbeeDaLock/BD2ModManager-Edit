@@ -2,6 +2,10 @@
 import { Character, isCostumeNew } from '../../stores/characters';
 import { Check, X } from 'lucide-vue-next';
 import Image from '../../components/common/Image.vue';
+import { convertFileSrc } from '@tauri-apps/api/core';
+import { useAppDir } from '../../composables/useAppDir';
+
+const baseDir = useAppDir()
 
 export interface CostumeWithMods extends Character {
     hasCutscene?: boolean;
@@ -20,7 +24,7 @@ defineEmits<{
 </script>
 
 <template>
-        <div v-if="items.length === 0" class="text-center py-12 text-secondary">
+    <div v-if="items.length === 0" class="text-center py-12 text-secondary">
         <p class="text-lg">
             {{ $t('charactersTab.charactersNotFound') }}
         </p>
@@ -39,12 +43,15 @@ defineEmits<{
                                 flex-col
                                 ">
                 <div class="relative">
-                    <Image loading="lazy" :src="`characters/standing/${costume.id}.png`" :alt="`${costume.character} - ${costume.costume}`"
-                        class="w-full h-full rounded-md" error-src="characters/standing/placeholder_character.png" />
+                    <Image loading="lazy" :src="`characters/standing/${costume.id}.png`"
+                        :alt="`${costume.character} - ${costume.costume}`" class="w-full h-full rounded-md" :fallback-sources="[
+                            convertFileSrc(`${baseDir}/assets/standing/${costume.id}.png`),
+                            '/characters/standing/placeholder_character.png'
+                        ]" />
                     <div class="absolute top-2.5 left-2.5 flex gap-1">
                         <div v-if="costume.modsCount > 0"
                             class="  bg-accent-primary/75 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full font-medium">
-                            {{ $t('charactersTab.tags.modsCount', {count: costume.modsCount}) }}
+                            {{ $t('charactersTab.tags.modsCount', { count: costume.modsCount }) }}
                         </div>
                         <div v-if="costume.is_collab"
                             class=" bg-yellow-500/75 backdrop-blur-sm text-yellow-100 text-xs px-2 py-1 rounded-full font-medium">
@@ -55,14 +62,16 @@ defineEmits<{
                 </div>
 
                 <div class="px-2 py-2 flex flex-col flex-1">
-                    <div class="mb-3">
-                        <div class="font-semibold truncate text-md flex gap-2 items-center"
+                    <div class="mb-3 flex-1">
+                        <div class="font-semibold text-md min-w-0 flex gap-2 items-center"
                             :title="costume.character + ' - ' + costume.costume">
                             <div v-if="isCostumeNew(costume)"
                                 class=" bg-red-500/75 backdrop-blur-sm text-red-100 text-xs px-2 py-0.5 rounded-sm font-medium">
                                 {{ $t('charactersTab.tags.new') }}
                             </div>
-                            {{ costume.character }} - {{ costume.costume }}
+                            <span>
+                                {{ costume.character }} - {{ costume.costume }}
+                            </span>
                         </div>
                         <div class="text-secondary text-xs">
                             {{ $t('charactersTab.id', { id: costume.id }) }}

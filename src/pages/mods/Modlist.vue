@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref, computed, onActivated, onDeactivated, nextTick } from 'vue'
+import { h, ref, computed, onActivated, onDeactivated, nextTick, onMounted, watch } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { BD2ModExtended } from '../../stores/mods'
 import {
@@ -21,6 +21,10 @@ import { useI18n } from 'vue-i18n'
 import { useLocalStorage, useStorageAsync } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import Image from '../../components/common/Image.vue'
+import { convertFileSrc } from '@tauri-apps/api/core'
+import { useAppDir } from '../../composables/useAppDir'
+
+const baseDir = useAppDir()
 
 const router = useRouter()
 
@@ -179,14 +183,17 @@ const columns = [
                     },
                     [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
-                            src: `characters/heads/${char.id}.png`,
+                            src: `/characters/heads/${char.id}.png`,
                             loading: 'lazy',
                             class: 'w-[2rem] h-[2rem] object-cover scale-150 cursor-pointer hover:scale-165 transition-transform',
-                            errorSrc: "characters/heads/050001.png",
+                            fallbackSources: [
+                                convertFileSrc(`${baseDir.value}/assets/heads/${char.id}.png`),
+                                '/characters/heads/050001.png'
+                            ],
                             onClick: (event: Event) => {
+                                event.stopPropagation()
                                 // redirects to character page
                                 router.push({ name: 'characters', query: { characterId: char.id } })
-                                event.stopPropagation()
                             }
                         }) : null,
                         preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, `${char.character} - ${char.costume}`) : null
