@@ -293,6 +293,15 @@
             "noModsFound": {
                 "title": "No Mods Found",
                 "description": "Visit the Mods tab to install mods for this character."
+            },
+            "discoverModsDescription": "Here you can explore all mods available for this character. Note: the list may not include the newest mods. Last updated: {latestUpdate}",
+            "modsTab": "Your Mods",
+            "discoverModsTab": "Discover Mods",
+            "paidMod": "Paid",
+            "freeMod": "Free",
+            "noIndexModsFound": {
+                "title": "No Mods Found",
+                "description": "There are no mods available in the index for this character."
             }
         }
     },

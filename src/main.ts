@@ -18,6 +18,7 @@ import zh_TW from './locales/zh-TW.json'
 import ja_JP from './locales/ja-JP.json'
 import ko_KR from './locales/ko-KR.json'
 import ConfirmPlugin from "./plugins/ConfirmPlugin";
+import { useModsIndexStore } from "./stores/modsIndex";
 
 const pinia = createPinia()
 
@@ -46,5 +47,8 @@ app.use(router)
 .use(i18n)
 .use(ToastService)
 .use(ConfirmPlugin)
+
+const modsIndexStore =useModsIndexStore()
+modsIndexStore.fetchModsIndex()
 
 app.mount("#app");
