@@ -1,5 +1,5 @@
 {
-    "version": "0.0.6",
+    "version": "0.0.7",
     "characters": [
         {
             "id": "000708",
@@ -2287,6 +2287,32 @@
             "character_image": "illust_inven_char061492_188.png",
             "skill_preview_image": "illust_skill_char061492_188.png",
             "release_date": "2025-12-16",
+            "gender": "female"
+        },
+        {
+            "id": "067801",
+            "character": "Mamonir",
+            "costume": "Night of Death",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char067801_192.png",
+            "skill_preview_image": "illust_skill_char067801_192.png",
+            "release_date": "2026-03-26",
+            "gender": "female"
+        },
+        {
+            "id": "061092",
+            "character": "Helena",
+            "costume": "Rising Star",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char061092_203.png",
+            "skill_preview_image": "illust_skill_char061092_203.png",
+            "release_date": "2026-03-26",
             "gender": "female"
         }
     ],
