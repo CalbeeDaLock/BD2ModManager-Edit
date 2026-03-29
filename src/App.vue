@@ -17,9 +17,6 @@ import { useModsStore } from "./stores/mods"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import Sidebar from "./components/sidebar/Sidebar.vue"
 import { useToast } from "primevue/usetoast"
-import { check } from "@tauri-apps/plugin-updater"
-import { relaunch } from '@tauri-apps/plugin-process';
-import { useLoggingStore } from "./stores/logging"
 
 
 const { t, locale } = useI18n()
@@ -66,8 +63,6 @@ onMounted(async () => {
     (newLanguage) => (locale.value = newLanguage || "en_US"),
     { immediate: true }
   )
-
-  const loggingStore = useLoggingStore()
 
   const currentWindow = getCurrentWindow()
   unlistenClose = await currentWindow.listen("tauri://close-requested", async () => {

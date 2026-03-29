@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref, computed, onActivated, onDeactivated, nextTick, onMounted, watch } from 'vue'
+import { h, ref, computed, onActivated, onDeactivated, nextTick } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { BD2ModExtended } from '../../stores/mods'
 import {

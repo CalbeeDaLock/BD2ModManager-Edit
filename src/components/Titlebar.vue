@@ -32,14 +32,6 @@ function toggleMaximizeWindow() {
 
 type UpdateStatus = 'checking' | 'available' | 'downloading' | 'downloaded' | 'updated' | 'error' | null
 
-const appUpdate = ref<{
-    show: boolean
-    status: UpdateStatus
-    newVersion: string | null
-    url?: string | null
-    error: string | null
-}>({ show: false, status: null, newVersion: null, error: null, url: null })
-
 const modPreviewUpdate = ref<{
     show: boolean
     status: UpdateStatus
