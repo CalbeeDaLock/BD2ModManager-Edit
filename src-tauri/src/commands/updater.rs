@@ -2,6 +2,9 @@ use bd2modmanager_lib::utils::path::get_mod_preview_path;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
 use tokio::io::AsyncWriteExt;
+use std::sync::Mutex;
+use tauri::{State};
+use tauri_plugin_updater::{Update, UpdaterExt};
 
 use crate::update;
 
@@ -9,44 +12,6 @@ use crate::update;
 struct UpdateInfo {
     version: String,
     download_url: String,
-}
-
-#[tauri::command]
-pub async fn check_for_app_update(app_handle: AppHandle) {
-    app_handle.emit("update:app:checking", ()).ok();
-    match update::app::get_app_latest_version(&app_handle).await {
-        Ok((latest_version, download_url)) => {
-            let local_version = update::app::get_app_version(&app_handle);
-
-            let local_ver = match semver::Version::parse(&local_version) {
-                Ok(v) => v,
-                Err(e) => {
-                    app_handle.emit("update:app:error", e.to_string()).ok();
-                    log::error!("Invalid local version: {e}");
-                    return;
-                }
-            };
-
-            if latest_version <= local_ver {
-                app_handle.emit("update:app:uptodate", ()).ok();
-                return;
-            }
-
-            let update_info = UpdateInfo {
-                version: latest_version.to_string(),
-                download_url,
-            };
-
-            if let Err(e) = app_handle.emit("update:app:available", update_info) {
-                app_handle.emit("update:app:error", e.to_string()).ok();
-                log::error!("Emit failed: {e}");
-            }
-        }
-        Err(e) => {
-            log::error!("Failed to check update: {e}");
-            app_handle.emit("update:app:error", e.to_string()).ok();
-        }
-    }
 }
 
 #[tauri::command]
@@ -232,18 +197,80 @@ pub async fn update_mod_preview(app_handle: AppHandle) {
 #[tauri::command]
 pub async fn update_game_data(app_handle: AppHandle) -> Result<(), String> {
     update::game_data::update_characters(app_handle).await
-    // app_handle.emit("update:gameData:checking", ()).ok();
-    // println!("Checking for game data updates...");
+}
 
-    // match updater::game_data::update_characters().await {
-    //     Ok(_) => {
-    //         app_handle.emit("update:gameData:updated", ()).ok();
-    //         Ok(())
-    //     }
-    //     Err(e) => {
-    //         log::error!("Game data update failed: {e}");
-    //         app_handle.emit("update:gameData:error", e.clone()).ok();
-    //         Err(e)
-    //     }
-    // }
+
+
+#[derive(Debug, thiserror::Error)]
+pub enum Error {
+    #[error(transparent)]
+    Updater(#[from] tauri_plugin_updater::Error),
+    #[error("there is no pending update")]
+    NoPendingUpdate,
+}
+
+impl Serialize for Error {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(self.to_string().as_str())
+    }
+}
+
+type ResultUpdate<T> = std::result::Result<T, Error>;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateMetadata {
+    version: String,
+    current_version: String,
+}
+
+pub struct PendingUpdate(pub Mutex<Option<(Update, Vec<u8>)>>);
+
+#[tauri::command]
+pub async fn check_for_app_update(
+    app_handle: AppHandle,
+    pending_update: State<'_, PendingUpdate>,
+) -> ResultUpdate<Option<UpdateMetadata>> {
+    if cfg!(debug_assertions) {
+        return Ok(Some(UpdateMetadata {
+            version: "4.0.6".to_string(),
+            current_version: "4.0.5".to_string(),
+        }));
+    }
+
+    let update = app_handle.updater()?.check().await?;
+
+    match update {
+        None => Ok(None),
+        Some(update) => {
+            let metadata = UpdateMetadata {
+                version: update.version.clone(),
+                current_version: update.current_version.clone(),
+            };
+
+            let bytes = update.download(|_, _| {}, || {}).await?;
+
+            *pending_update.0.lock().unwrap() = Some((update, bytes));
+
+            Ok(Some(metadata))
+        }
+    }
+}
+
+#[tauri::command]
+pub async fn install_app_update(
+    app_handle: AppHandle,
+    pending_update: State<'_, PendingUpdate>,
+) -> ResultUpdate<()> {
+    let Some((update, bytes)) = pending_update.0.lock().unwrap().take() else {
+        return Err(Error::NoPendingUpdate);
+    };
+
+    update.install(bytes)?;
+    app_handle.restart();
+
+    Ok(())
 }

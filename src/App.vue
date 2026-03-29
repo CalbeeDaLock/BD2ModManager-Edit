@@ -17,6 +17,10 @@ import { useModsStore } from "./stores/mods"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import Sidebar from "./components/sidebar/Sidebar.vue"
 import { useToast } from "primevue/usetoast"
+import { check } from "@tauri-apps/plugin-updater"
+import { relaunch } from '@tauri-apps/plugin-process';
+import { useLoggingStore } from "./stores/logging"
+
 
 const { t, locale } = useI18n()
 
@@ -38,8 +42,8 @@ onMounted(async () => {
   if (!import.meta.env.DEV) {
     document.addEventListener("contextmenu", (event) => event.preventDefault())
   }
-  
-  const {isFirstLaunch, isBrownDustXOutdated} = await initialize()
+
+  const { isFirstLaunch, isBrownDustXOutdated } = await initialize()
 
   if (isFirstLaunch) isWelcomeModalVisible.value = true
   if (isBrownDustXOutdated) {
@@ -60,8 +64,10 @@ onMounted(async () => {
   watch(
     () => settings.value.language,
     (newLanguage) => (locale.value = newLanguage || "en_US"),
-    { immediate: true}
+    { immediate: true }
   )
+
+  const loggingStore = useLoggingStore()
 
   const currentWindow = getCurrentWindow()
   unlistenClose = await currentWindow.listen("tauri://close-requested", async () => {

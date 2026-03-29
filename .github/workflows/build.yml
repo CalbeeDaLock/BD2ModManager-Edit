@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/auto-updater]
   pull_request:
-    branches: [main]
+    branches: [main, feat/auto-updater]
 
 jobs:
   build:
@@ -15,6 +15,7 @@ jobs:
       matrix:
         include:
           - name: installer
+            args: --no-sign
           - name: portable
             args: --no-bundle --features portable
 

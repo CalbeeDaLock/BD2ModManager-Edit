@@ -15,9 +15,14 @@ import LogsModal from './modals/LogsModal.vue';
 import { getVersion } from '@tauri-apps/api/app';
 import { useI18n } from 'vue-i18n';
 import { useLoggingStore } from '../stores/logging';
+import { useSettingsStore } from '../stores/settings';
+import { useToast } from 'primevue/usetoast';
+
 
 const isMaximized = ref(false)
 const appWindow = getCurrentWindow()
+
+const settingsStore = useSettingsStore()
 
 function closeWindow() { appWindow.close() }
 function minimizeWindow() { appWindow.minimize() }
@@ -57,8 +62,18 @@ const rawGameDataProgress = computed(() => gameDataUpdate.value.progress)
 const modPreviewProgress = refThrottled(rawmodPreviewProgress, 50, false, true)
 const gameDataProgress = refThrottled(rawGameDataProgress, 50, false, true)
 
+const toast = useToast()
+
 async function handleAppUpdateClick() {
-    await openUrl(appUpdate.value.url!)
+    // if (settingsStore.isPortable()) {
+    //     return await openUrl(appUpdate.value.url!)
+    // } 
+    try {
+        await settingsStore.installAppUpdate()
+    } catch (error) {
+        loggingStore.logError("Failed to install app update", error)
+        toast.add({ severity: 'error', summary: 'Update Error', detail: 'Failed to install update. Please try downloading it manually from GitHub.', life: 5000 })
+    }
 }
 
 const unlistenFunctions = ref<UnlistenFn[]>([])
@@ -113,30 +128,6 @@ onMounted(async () => {
     unlistenFunctions.value.push(unlistenResize)
 
     appVersion.value = await getVersion()
-
-    const appUpdateCheckStart = ref<number | null>(null)
-
-    unlistenFunctions.value.push(await listen('update:app:checking', () => {
-        loggingStore.logInfo('Checking for app updates...')
-        appUpdateCheckStart.value = Date.now()  
-        appUpdate.value = { show: true, status: 'checking', newVersion: null, error: null }
-    }))
-
-    unlistenFunctions.value.push(await listen('update:app:uptodate', () => {
-        loggingStore.logInfo('No updates available, app is up to date.')
-        const elapsed = Date.now() - (appUpdateCheckStart.value ?? Date.now())
-        const remaining = Math.max(0, 1000 - elapsed)
-        setTimeout(() => { appUpdate.value.show = false }, remaining) 
-    }))
-
-    unlistenFunctions.value.push(await listen('update:app:error', (e: any) => {
-        const elapsed = Date.now() - (appUpdateCheckStart.value ?? Date.now())
-        const remaining = Math.max(0, 1000 - elapsed)
-        setTimeout(() => {
-            appUpdate.value.show = false
-            loggingStore.logError('Failed to check for updates: ' + e.payload.message)
-        }, remaining)
-    }))
 
     unlistenFunctions.value.push(await listen('update:modPreview:checking', () => {
         loggingStore.logInfo('Checking for Mod Preview updates...')
@@ -201,26 +192,26 @@ onUnmounted(() => {
                 </span>
             </span>
             <transition name="slide-fade">
-                <div v-if="appUpdate.show" class="group relative flex items-center gap-1.5 rounded-md shrink-0"
-                    :class="appUpdate.status === 'available' ? 'cursor-pointer' : ''"
-                    @click="appUpdate.status === 'available' ? handleAppUpdateClick() : undefined">
+                <div class="group relative flex items-center gap-1.5 rounded-md shrink-0"
+                    :class="settingsStore.updateStatus?.version ? 'cursor-pointer' : ''"
+                    @click="settingsStore.updateStatus?.version ? handleAppUpdateClick() : undefined">
 
-                    <div v-if="appUpdate.status === 'available'"
+                    <div v-if="settingsStore.updateStatus?.version"
                         class="w-full h-full absolute inset-0 z-10 rounded-md group-hover:underline transition-colors pointer-events-none" />
 
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
-                        <RotateCw v-if="appUpdate.status === 'checking'"
+                        <RotateCw v-if="settingsStore.updateStatus?.checking"
                             class="w-3.5 h-3.5 shrink-0 animate-spin text-primary/40" />
-                        <Sparkles v-else-if="appUpdate.status === 'available'"
+                        <Sparkles v-else-if="settingsStore.updateStatus?.version"
                             class="w-3.5 h-3.5 shrink-0 text-accent-primary " />
 
                         <span class="text-xs font-mono truncate">
-                            <span v-if="appUpdate.status === 'checking'" class="text-secondary hidden md:inline">
+                            <span v-if="settingsStore.updateStatus?.checking" class="text-secondary hidden md:inline">
                                 {{ $t('titlebar.appUpdate.checking') }}
                             </span>
-                            <span v-else-if="appUpdate.status === 'available'"
+                            <span v-else-if="settingsStore.updateStatus?.version"
                                 class="text-accent-primary font-semibold group-hover:underline">
-                                {{ $t('titlebar.appUpdate.available', { version: appUpdate.newVersion }) }}
+                                {{ $t('titlebar.appUpdate.available', { version: settingsStore.updateStatus.version }) }}
                             </span>
                         </span>
                     </div>

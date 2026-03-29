@@ -1,6 +1,7 @@
 import { readonly, ref } from "vue";
 import { defineStore } from "pinia";
 import { invoke } from "@tauri-apps/api/core"
+import { useLoggingStore } from "./logging";
 
 interface Settings {
     theme?: string,
@@ -21,6 +22,12 @@ interface Settings {
 
 export const useSettingsStore = defineStore("settings", () => {
     const settings = ref<Settings>({} as Settings)
+    const updateStatus = ref<{
+        checking: boolean,
+        version: string,
+        currentVersion: string,
+    } | null>(null)
+    const loggingStore = useLoggingStore()
 
     async function loadSettings() {
         settings.value = await invoke<Settings>("get_settings");
@@ -46,7 +53,7 @@ export const useSettingsStore = defineStore("settings", () => {
             const paths = await invoke<string[]>("locate_game");
             return paths;
         } catch (err) {
-            console.error("Failed to locate game path", err);
+            loggingStore.logError("Failed to locate game path", err);
             return null;
         }
     }
@@ -63,8 +70,36 @@ export const useSettingsStore = defineStore("settings", () => {
         return invoke('get_mod_preview_version')
     }
 
-    function checkForAppUpdate() {
-        return invoke('check_for_app_update')
+    async function checkForAppUpdate() {
+        updateStatus.value = {
+            checking: true,
+            version: '',
+            currentVersion: '',
+        }
+
+        try {
+            // it will block untils downloades finisih
+            await invoke<{ version: string, currentVersion: string }>('check_for_app_update').then((result) => {
+                if (result) {
+                    updateStatus.value = {
+                        checking: false,
+                        version: result.version,
+                        currentVersion: result.currentVersion,
+                    }
+                }
+            })
+        } catch (err) {
+            loggingStore.logError("Failed to check for app update", err)
+            updateStatus.value = null
+        } finally {
+            updateStatus.value!.checking = false
+        }
+
+        return updateStatus.value
+    }
+
+    async function installAppUpdate() {
+        await invoke('install_app_update')
     }
 
     function checkForModPreviewUpdate() {
@@ -121,6 +156,8 @@ export const useSettingsStore = defineStore("settings", () => {
         // BrownDustX
         locateGamePath,
         validateGamePath,
+        updateStatus: readonly(updateStatus),
+        installAppUpdate,
 
         availableThemes: availableThemes,
     }
