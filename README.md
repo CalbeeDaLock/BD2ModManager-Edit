@@ -15,7 +15,10 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 ---
 
-## ✨ What's New in v4.0.0+
+## ✨ Major Update (v4.0.0)
+
+<details>
+<summary>See full changes in v4.0.0</summary>
 
 ### General
 - Complete UI overhaul
@@ -48,6 +51,7 @@ If you have suggestions or run into any problems with the app, feel free to open
 - Mod type column: icon only, name only, or both
 - Optional color coding for mod types
 
+</details>
 
 ---
 
@@ -72,19 +76,22 @@ Choose how mods are synced to your BrownDust X `mods` folder:
 #### 📁 Copy
 Copies all enabled mods into the folder.  
 
-- ✅ No admin rights needed  
-- ❌ Slower  
-- ❌ Uses more disk space  
+- ✅ No admin rights needed
+- ❌ Slower
+- ❌ Uses more disk space
 
 #### 🔗 Symlink  
 Creates shortcuts instead of copying files.  
 
-- ✅ Much faster  
-- ✅ Saves disk space  
-- ❌ Requires admin rights  
-- ❌ Drag & Drop not available (Windows restrictions)  
+- ✅ Much faster
+- ✅ Saves disk space
+- ❌ Requires admin rights
 
+#### Example Comparison (383 mods)
 
+| Copy | Symlink |
+|------|---------|
+| <img src="./screenshots/sync_copy_v405.gif" width="260" /> | <img src="./screenshots/sync_symlink_v405.gif" width="260" /> |
 
 ---
 
@@ -100,6 +107,15 @@ Creates shortcuts instead of copying files.
 ![Mod Preview](./screenshots/bd2modpreview.png)
 
 ---
+
+## ❤️ Support the Project
+
+If you enjoy the mod manager and want to support development, you can support me here:
+
+- Ko-Fi: https://ko-fi.com/bruhnn
+- 🇨🇳: https://afdian.com/a/bruhnn
+
+---
 ## 🧰 Community & Related Projects  
 
 - [**Brown Dust II Mod Manager (by kxdekxde)**](https://codeberg.org/kxdekxde/browndust2-mod-manager) – An alternative mod manager for Brown Dust 2
@@ -111,14 +127,15 @@ Creates shortcuts instead of copying files.
 ### Where can I get mods?
 You can find mods on the BrownDustX Discord server: [https://discord.gg/B3Aqz6tDG2](https://discord.gg/B3Aqz6tDG2)
 
-## 🤝 Credits
+## 🤝 Credits & Thanks
 
 - Character assets by [myssal/Brown-Dust-2-Asset](https://github.com/myssal/Brown-Dust-2-Asset)
-- Thanks to **Synae** for *Brown Dust X*
+- Thanks to **Synae** for *BrownDustX*
+   
+   ![Alt](https://repobeats.axiom.co/api/embed/ed16651a70e0b4d1937e8e346f394c6b78c9a231.svg "Repobeats analytics image")
 
-![Alt](https://repobeats.axiom.co/api/embed/ed16651a70e0b4d1937e8e346f394c6b78c9a231.svg "Repobeats analytics image")
 
-## Star History
+## ✨ Star History
 
 <a href="https://www.star-history.com/#bruhnn/BD2ModManager&Date">
  <picture>
