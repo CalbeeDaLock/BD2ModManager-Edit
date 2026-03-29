@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { getVersion } from '@tauri-apps/api/app';
+import { openUrl } from '@tauri-apps/plugin-opener';
+import { storeToRefs } from 'pinia';
+import Modal from '../common/Modal.vue';
+import Button from '../common/Button.vue';
+import Checkbox from '../common/Checkbox.vue';
+import { useSettingsStore } from '../../stores/settings';
+import { useLocalStorage } from '@vueuse/core';
+
+// this will only show on portable
+
+const visible = defineModel('visible', {
+    type: Boolean,
+    required: true,
+    default: false
+})
+
+const settingsStore = useSettingsStore()
+const { updateStatus } = storeToRefs(settingsStore)
+
+const skipUpdateVersion = useLocalStorage('skipUpdateVersion', '')
+const checkboxSkipVersion = ref(false)
+
+const appVersion = ref('0.0.0')
+
+onMounted(async () => {
+    appVersion.value = await getVersion()
+})
+
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
+</script>
+
+<template>
+    <Modal v-model:show="visible" class="w-120 max-h-[85vh]" @close="$emit('close')"
+        :title="$t('modals.updateAvailable.title', 'Update Available')"
+        :subtitle="$t('modals.updateAvailable.subtitle', `A new version is available v${updateStatus?.version}.`)">
+        <div class="flex flex-col gap-1 p-4">
+            <p class="text-sm font-medium flex items-center gap-2 text-secondary uppercase tracking-wide mb-2">
+                {{ $t('modals.updateAvailable.changelogLabel', "What's new") }}
+            </p>
+            <div class="flex flex-col gap-1">
+                <div v-for="(item, index) in updateStatus?.changelog" :key="index"
+                    class="flex items-start gap-3 px-1.5 py-1.5 text-sm">
+                    <span class="text-secondary font-mono text-xs mt-0.5 shrink-0">{{ String(index + 1).padStart(2, '0')
+                        }}</span>
+                    <span class="text-primary">{{ item }}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <template #footer>
+            <div class="flex items-center gap-2 p-3 border-t border-border">
+                <div class="flex-1">
+                    <Checkbox v-model="checkboxSkipVersion" @update:model-value="(value) => {
+                        if (value) {
+                            skipUpdateVersion = updateStatus?.version ?? ''
+                        } else {
+                            skipUpdateVersion = ''
+                        }
+                    }"
+                        :label="$t('modals.updateAvailable.skipLabel', `Don't show again`)" />
+                </div>
+                <Button @click="$emit('close')">
+                    {{ $t('modals.updateAvailable.actions.later', 'Later') }}
+                </Button>
+                <Button @click="openUrl(updateStatus?.downloadUrl??'')">
+                    {{ $t('modals.updateAvailable.actions.goToReleases', 'Go to Releases') }}
+                </Button>
+            </div>
+        </template>
+    </Modal>
+</template>

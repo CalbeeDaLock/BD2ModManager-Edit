@@ -1,4 +1,5 @@
 use bd2modmanager_lib::utils::path::get_mod_preview_path;
+use semver::Version;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
 use tokio::io::AsyncWriteExt;
@@ -7,6 +8,19 @@ use tauri::{State};
 use tauri_plugin_updater::{Update, UpdaterExt};
 
 use crate::update;
+
+const RELEASES_URL: &str = "https://shy-waterfall-2797.bruhnn.workers.dev/";
+
+fn get_app_version(app: &tauri::AppHandle) -> String {
+    app.package_info().version.to_string()
+}
+
+#[derive(Debug, Deserialize)]
+struct GitHubRelease {
+    tag_name: String,
+    html_url: String,
+    changelog: Option<Vec<String>>,
+}
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
 struct UpdateInfo {
@@ -199,17 +213,18 @@ pub async fn update_game_data(app_handle: AppHandle) -> Result<(), String> {
     update::game_data::update_characters(app_handle).await
 }
 
-
-
 #[derive(Debug, thiserror::Error)]
-pub enum Error {
+pub enum UpdateError {
     #[error(transparent)]
     Updater(#[from] tauri_plugin_updater::Error),
     #[error("there is no pending update")]
     NoPendingUpdate,
+    #[cfg(feature = "portable")]
+    #[error("update check failed: {0}")]
+    CheckFailed(String),
 }
 
-impl Serialize for Error {
+impl Serialize for UpdateError {
     fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
@@ -218,29 +233,92 @@ impl Serialize for Error {
     }
 }
 
-type ResultUpdate<T> = std::result::Result<T, Error>;
+type ResultUpdate<T> = std::result::Result<T, UpdateError>;
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateMetadata {
     version: String,
     current_version: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    download_url: Option<String>,
+    changelog: Option<Vec<String>>,
+
 }
 
 pub struct PendingUpdate(pub Mutex<Option<(Update, Vec<u8>)>>);
 
+
+#[cfg(feature = "portable")]
+async fn fetch_latest_version(app: &tauri::AppHandle) -> Result<(Version, String, Vec<String>), String> {
+    let current_version = get_app_version(&app);
+
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(25))
+        .build()
+        .map_err(|e| format!("Failed to build HTTP client: {e}"))?;
+
+    let release: GitHubRelease = client
+        .get(RELEASES_URL)
+        // .header("User-Agent", "BD2ModManager")
+        .header("Accept", "application/json")
+        .header("X-Manager-Version", current_version)
+        .header("X-Manager-Platform", std::env::consts::OS)
+        .header("X-Manager-Portable", "true")
+        .send()
+        .await
+        .map_err(|e| format!("Request failed: {e}"))?
+        .json()
+        .await
+        .map_err(|e| format!("Invalid JSON: {e}"))?;
+
+    let latest_version = release.tag_name.trim_start_matches('v');
+
+    let html_url = release.html_url.clone();
+
+    println!("Latest version: {latest_version}, URL: {html_url}");
+
+    let version = Version::parse(latest_version).map_err(|e| format!("Invalid remote version: {e}"))?;
+
+    let changelog = release.changelog.unwrap_or_default();
+
+    Ok((version, html_url, changelog))
+}
+
+#[cfg(feature = "portable")]
+#[tauri::command]
+pub async fn check_for_app_update(app_handle: AppHandle) -> ResultUpdate<Option<UpdateMetadata>> {
+    match fetch_latest_version(&app_handle).await {
+        Ok((latest_version, download_url, changelog)) => {
+            let local_version = get_app_version(&app_handle);
+
+            let local_ver = semver::Version::parse(&local_version)
+                .map_err(|e| UpdateError::CheckFailed(format!("Invalid local version: {e}")))?;
+
+            if latest_version <= local_ver {
+                return Ok(None);
+            }
+
+            println!("changelog: {changelog:#?}");
+
+            Ok(Some(UpdateMetadata {
+                version: latest_version.to_string(),
+                current_version: local_version,
+                download_url: Some(download_url),
+                changelog: Some(changelog),
+            }))
+        }
+        Err(e) => Err(UpdateError::CheckFailed(e)),
+    }
+}
+
+
+#[cfg(not(feature = "portable"))]
 #[tauri::command]
 pub async fn check_for_app_update(
     app_handle: AppHandle,
     pending_update: State<'_, PendingUpdate>,
 ) -> ResultUpdate<Option<UpdateMetadata>> {
-    if cfg!(debug_assertions) {
-        return Ok(Some(UpdateMetadata {
-            version: "4.0.6".to_string(),
-            current_version: "4.0.5".to_string(),
-        }));
-    }
-
     let update = app_handle.updater()?.check().await?;
 
     match update {
@@ -249,6 +327,8 @@ pub async fn check_for_app_update(
             let metadata = UpdateMetadata {
                 version: update.version.clone(),
                 current_version: update.current_version.clone(),
+                download_url: None,
+                changelog: None, 
             };
 
             let bytes = update.download(|_, _| {}, || {}).await?;
@@ -266,11 +346,10 @@ pub async fn install_app_update(
     pending_update: State<'_, PendingUpdate>,
 ) -> ResultUpdate<()> {
     let Some((update, bytes)) = pending_update.0.lock().unwrap().take() else {
-        return Err(Error::NoPendingUpdate);
+        return Err(UpdateError::NoPendingUpdate);
     };
 
     update.install(bytes)?;
     app_handle.restart();
-
     Ok(())
 }

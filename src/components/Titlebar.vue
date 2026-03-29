@@ -9,7 +9,6 @@ import { listen, UnlistenFn } from '@tauri-apps/api/event';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { SyncStatus, useSyncStateStore } from '../stores/syncState';
 import { SyncError, SyncType } from '../composables/useSyncEvents';
-import RefinedGithub from '../assets/icons/github.svg';
 import SyncModal from './modals/SyncModal.vue';
 import LogsModal from './modals/LogsModal.vue';
 import { getVersion } from '@tauri-apps/api/app';
@@ -17,6 +16,10 @@ import { useI18n } from 'vue-i18n';
 import { useLoggingStore } from '../stores/logging';
 import { useSettingsStore } from '../stores/settings';
 import { useToast } from 'primevue/usetoast';
+import { usePortable } from '../composables/usePortable';
+import GithubIcon from './icons/GithubIcon.vue';
+
+const { isPortable } = usePortable()
 
 
 const isMaximized = ref(false)
@@ -57,9 +60,10 @@ const gameDataProgress = refThrottled(rawGameDataProgress, 50, false, true)
 const toast = useToast()
 
 async function handleAppUpdateClick() {
-    // if (settingsStore.isPortable()) {
-    //     return await openUrl(appUpdate.value.url!)
-    // } 
+    if (isPortable.value) {
+        return await openUrl("https://github.com/bruhnn/BD2ModManager/releases/latest")
+    }
+
     try {
         await settingsStore.installAppUpdate()
     } catch (error) {
@@ -113,13 +117,13 @@ async function openGithubUser() { await openUrl("https://github.com/bruhnn") }
 const loggingStore = useLoggingStore()
 
 onMounted(async () => {
+    appVersion.value = await getVersion()
+
     isMaximized.value = await appWindow.isMaximized()
     const unlistenResize = await listen("tauri://resize", async () => {
         isMaximized.value = await appWindow.isMaximized()
     })
     unlistenFunctions.value.push(unlistenResize)
-
-    appVersion.value = await getVersion()
 
     unlistenFunctions.value.push(await listen('update:modPreview:checking', () => {
         loggingStore.logInfo('Checking for Mod Preview updates...')
@@ -203,7 +207,13 @@ onUnmounted(() => {
                             </span>
                             <span v-else-if="settingsStore.updateStatus?.version"
                                 class="text-accent-primary font-semibold group-hover:underline">
-                                {{ $t('titlebar.appUpdate.available', { version: settingsStore.updateStatus.version }) }}
+                                {{ !isPortable ? $t('titlebar.appUpdate.downloaded', {
+                                    version:
+                                        settingsStore.updateStatus.version
+                                }) : $t('titlebar.appUpdate.available', {
+                                    version:
+                                        settingsStore.updateStatus.version
+                                }) }}
                             </span>
                         </span>
                     </div>
@@ -377,7 +387,7 @@ onUnmounted(() => {
             <div class="flex items-center shrink-0 gap-2 md:gap-4">
                 <button class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
                     @click="handleGithubClick">
-                    <RefinedGithub class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary transition-colors" />
+                    <GithubIcon class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary! transition-colors" />
                     <span
                         class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
                         {{ $t('titlebar.actions.github') }}
