@@ -52,6 +52,7 @@ export function useAppInitializer() {
     settingsStore.updateGameData();
 
     if (settingsStore.settings.autoUpdateModPreview) settingsStore.updateModPreview();
+    
     if (settingsStore.settings.checkForAppUpdates) settingsStore.checkForAppUpdate();
 
     const brownDustXVersion = await settingsStore.getBrowndustxVersion();

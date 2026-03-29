@@ -39,7 +39,8 @@
     "titlebar": {
         "appUpdate": {
             "checking": "Checking for updates...",
-            "available": "Update available: v{version}"
+            "available": "Update available: v{version}",
+            "downloaded": "v{version} is ready! Click to apply the update"
         },
         "sync": {
             "applying": "Applying: {modName}",

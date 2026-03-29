@@ -17,6 +17,7 @@ import { useModsStore } from "./stores/mods"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import Sidebar from "./components/sidebar/Sidebar.vue"
 import { useToast } from "primevue/usetoast"
+import UpdateAvailableModal from "./components/modals/UpdateAvailableModal.vue"
 
 const { t, locale } = useI18n()
 
@@ -24,24 +25,44 @@ const settingsStore = useSettingsStore()
 const { settings } = storeToRefs(settingsStore)
 
 const { initialize } = useAppInitializer()
-const isWelcomeModalVisible = ref(false)
+
 const confirm = useConfirm()
 const modsStore = useModsStore()
-
 const toast = useToast()
 
 let unlistenClose: (() => void) | null = null
 
 provideHeader()
 
+const modalQueue = ref<string[]>([])
+const currentModalVisible = ref('')
+
+function openModal(modalName: string) {
+  if (!modalQueue.value.includes(modalName)) {
+    modalQueue.value.push(modalName)
+  }
+  if (!currentModalVisible.value) {
+    currentModalVisible.value = modalQueue.value[0]
+  }
+}
+
+function closeModal(modalName: string) {
+  const index = modalQueue.value.indexOf(modalName)
+  if (index !== -1) modalQueue.value.splice(index, 1)
+  currentModalVisible.value = modalQueue.value[0] ?? ''
+}
+
 onMounted(async () => {
   if (!import.meta.env.DEV) {
     document.addEventListener("contextmenu", (event) => event.preventDefault())
   }
-  
-  const {isFirstLaunch, isBrownDustXOutdated} = await initialize()
 
-  if (isFirstLaunch) isWelcomeModalVisible.value = true
+  const { isFirstLaunch, isBrownDustXOutdated } = await initialize()
+
+  if (isFirstLaunch) {
+    openModal('welcomeModal')
+  }
+
   if (isBrownDustXOutdated) {
     toast.add({
       severity: "warn",
@@ -60,7 +81,7 @@ onMounted(async () => {
   watch(
     () => settings.value.language,
     (newLanguage) => (locale.value = newLanguage || "en_US"),
-    { immediate: true}
+    { immediate: true }
   )
 
   const currentWindow = getCurrentWindow()
@@ -94,14 +115,19 @@ onUnmounted(() => {
   unlistenClose?.()
 })
 
-
+watch(() => settingsStore.updateStatus, (newStatus) => {
+  const skipVersion = localStorage.getItem('skipUpdateVersion')
+  if (newStatus?.version && newStatus.version !== skipVersion) {
+    openModal('updateAvailableModal')
+  }
+})
 </script>
 
 <template>
   <div class="w-full h-full bg-bg-deep overflow-hidden transition-colors text-sm select-none flex flex-col">
-    <WelcomeModal :visible="isWelcomeModalVisible" />
-    <Toast position="bottom-center" />
-    <ConfirmationDialog />
+    <WelcomeModal :visible="currentModalVisible === 'welcomeModal'" @close="closeModal('welcomeModal')" />
+    <UpdateAvailableModal :visible="currentModalVisible === 'updateAvailableModal'" @close="closeModal('updateAvailableModal')" />
+    
     <Titlebar />
 
     <main class="flex-1 flex overflow-hidden min-h-0">
@@ -120,7 +146,8 @@ onUnmounted(() => {
         </div>
       </div>
     </main>
+
+    <ConfirmationDialog />
+    <Toast position="bottom-center" />
   </div>
-
-
 </template>

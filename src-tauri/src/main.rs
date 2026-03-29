@@ -19,6 +19,8 @@ use tauri::Manager;
 mod commands;
 use commands::*;
 
+use crate::commands::updater::PendingUpdate;
+
 mod update;
 
 pub struct AppState {
@@ -29,6 +31,8 @@ pub struct AppState {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
@@ -51,8 +55,10 @@ pub fn main() {
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             log::info!("Starting app...");
+            
 
             let app_handle = app.app_handle();
+
 
             let mut config = BD2Config::new(app_handle.clone());
             config.load_config();
@@ -102,6 +108,7 @@ pub fn main() {
             };
 
             app.manage(app_state);
+            app.manage(PendingUpdate(std::sync::Mutex::new(None)));
 
             // move data to appdata
             data::move_data_to_appdata(&app_handle).expect("Failed to move data to appdata");
@@ -156,6 +163,7 @@ pub fn main() {
             // updater
             updater::get_mod_preview_version,
             updater::check_for_app_update,
+            updater::install_app_update,
             updater::check_for_mod_preview_update,
             updater::update_mod_preview,
             updater::update_game_data,
@@ -163,6 +171,7 @@ pub fn main() {
             // utils
             utils::is_folder,
             utils::path_exists,
+            utils::is_portable
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
