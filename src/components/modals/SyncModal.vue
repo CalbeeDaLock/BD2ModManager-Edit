@@ -7,7 +7,7 @@ import {
   TriangleAlert,
   X
 } from 'lucide-vue-next'
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { refThrottled, useVirtualList } from '@vueuse/core'
 import Button from '../common/Button.vue'
@@ -86,14 +86,16 @@ const title = computed(() => {
       case SyncStatus.FAILED: return t('modals.sync.titles.failed')
       case SyncStatus.IDLE: return t('modals.sync.titles.idle')
     }
-  } else {
+  } else if (syncStateStore.type === SyncType.Unsync) {
     switch (syncStateStore.status) {
       case SyncStatus.SYNCING: return t('modals.sync.titles.removing')
       case SyncStatus.COMPLETED: return t('modals.sync.titles.removed')
       case SyncStatus.FAILED: return t('modals.sync.titles.failedToRemove')
       case SyncStatus.IDLE: return t('modals.sync.titles.idleToRemove')
     }
-  }
+  } else {
+    return t('modals.sync.titles.waitingForAction')
+    }
 })
 
 const errorMessage = computed(() => {

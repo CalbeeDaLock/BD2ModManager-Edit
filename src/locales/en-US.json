@@ -592,14 +592,15 @@
                 "removing": "Removing Mods...",
                 "removed": "Mods Removed",
                 "failedToRemove": "Failed to Remove Mods",
-                "idleToRemove": "Remove Mods"
+                "idleToRemove": "Remove Mods",
+                "waitingForAction": "Waiting for Action"
             },
             "actions": {
                 "close": "Close"
             },
             "log": {
                 "title": "Sync Log",
-                "waitingToStart": "Waiting for sync to start...",
+                "waitingToStart": "Waiting for sync/unsync to start...",
                 "mods": "mods"
             },
             "status": {
