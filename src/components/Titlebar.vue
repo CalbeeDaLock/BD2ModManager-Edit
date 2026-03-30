@@ -191,6 +191,23 @@ function handleKofiClick() {
 
 const { isDev } = useDev()
 
+const isCheckingForUpdates = ref(false)
+const isCheckingDisplay = ref(false)
+
+watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
+    if (checking) {
+        isCheckingDisplay.value = true
+        isCheckingForUpdates.value = true
+        return
+    }
+
+    if (!settingsStore.appUpdateStatus.version) {
+        setTimeout(() => { isCheckingForUpdates.value = false }, 1000)
+    } else {
+        isCheckingForUpdates.value = false
+    }
+
+})
 </script>
 
 <template>
@@ -211,33 +228,28 @@ const { isDev } = useDev()
                     @bruhnn
                 </span>
             </span>
-            <transition name="slide-fade">
-                <div class="group relative flex items-center gap-1.5 rounded-md shrink-0"
-                    :class="settingsStore.updateStatus?.version ? 'cursor-pointer' : ''"
-                    @click="settingsStore.updateStatus?.version ? handleAppUpdateClick() : undefined">
 
-                    <div v-if="settingsStore.updateStatus?.version"
+            <transition name="slide-fade" @after-leave="() => isCheckingDisplay = false">
+                <div v-show="isCheckingForUpdates || settingsStore.appUpdateStatus?.version"
+                    class="group relative flex items-center gap-1.5 rounded-md shrink-0"
+                    :class="settingsStore.appUpdateStatus?.version ? 'cursor-pointer' : ''"
+                    @click="settingsStore.appUpdateStatus?.version ? handleAppUpdateClick() : undefined">
+
+                    <div v-if="settingsStore.appUpdateStatus?.version"
                         class="w-full h-full absolute inset-0 z-10 rounded-md group-hover:underline transition-colors pointer-events-none" />
 
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
-                        <RotateCw v-if="settingsStore.updateStatus?.checking"
-                            class="w-3.5 h-3.5 shrink-0 animate-spin text-primary/40" />
-                        <Sparkles v-else-if="settingsStore.updateStatus?.version"
+                        <RotateCw v-if="isCheckingDisplay" class="w-3.5 h-3.5 shrink-0 animate-spin text-primary/40" />
+                        <Sparkles v-else-if="settingsStore.appUpdateStatus?.version"
                             class="w-3.5 h-3.5 shrink-0 text-accent-primary " />
 
                         <span class="text-xs font-mono truncate">
-                            <span v-if="settingsStore.updateStatus?.checking" class="text-secondary hidden md:inline">
+                            <span v-if="isCheckingDisplay" class="text-secondary hidden md:inline">
                                 {{ $t('titlebar.appUpdate.checking') }}
                             </span>
-                            <span v-else-if="settingsStore.updateStatus?.version"
+                            <span v-else-if="settingsStore.appUpdateStatus?.version"
                                 class="text-accent-primary font-semibold group-hover:underline">
-                                {{ !isPortable ? $t('titlebar.appUpdate.downloaded', {
-                                    version:
-                                        settingsStore.updateStatus.version
-                                }) : $t('titlebar.appUpdate.available', {
-                                    version:
-                                        settingsStore.updateStatus.version
-                                }) }}
+                                {{ !isPortable ? $t('titlebar.appUpdate.downloaded', {version: settingsStore.appUpdateStatus.version}) : $t('titlebar.appUpdate.available', {version: settingsStore.appUpdateStatus.version}) }}
                             </span>
                         </span>
                     </div>

@@ -115,7 +115,7 @@ onUnmounted(() => {
   unlistenClose?.()
 })
 
-watch(() => settingsStore.updateStatus, (newStatus) => {
+watch(() => settingsStore.appUpdateStatus, (newStatus) => {
   const skipVersion = localStorage.getItem('skipUpdateVersion')
   if (newStatus?.version && newStatus.version !== skipVersion) {
     openModal('updateAvailableModal')

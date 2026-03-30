@@ -18,7 +18,7 @@ const visible = defineModel('visible', {
 })
 
 const settingsStore = useSettingsStore()
-const { updateStatus } = storeToRefs(settingsStore)
+const { appUpdateStatus } = storeToRefs(settingsStore)
 
 const skipUpdateVersion = useLocalStorage('skipUpdateVersion', '')
 const checkboxSkipVersion = ref(false)
@@ -37,13 +37,13 @@ const emit = defineEmits<{
 <template>
     <Modal v-model:show="visible" class="w-120 max-h-[85vh]" @close="$emit('close')"
         :title="$t('modals.updateAvailable.title', 'Update Available')"
-        :subtitle="$t('modals.updateAvailable.subtitle', `A new version is available v${updateStatus?.version}.`)">
+        :subtitle="$t('modals.updateAvailable.subtitle', `A new version is available v${appUpdateStatus?.version}.`)">
         <div class="flex flex-col gap-1 p-4">
             <p class="text-sm font-medium flex items-center gap-2 text-secondary uppercase tracking-wide mb-2">
                 {{ $t('modals.updateAvailable.changelogLabel', "What's new") }}
             </p>
             <div class="flex flex-col gap-1">
-                <div v-for="(item, index) in updateStatus?.changelog" :key="index"
+                <div v-for="(item, index) in appUpdateStatus?.changelog" :key="index"
                     class="flex items-start gap-3 px-1.5 py-1.5 text-sm">
                     <span class="text-secondary font-mono text-xs mt-0.5 shrink-0">{{ String(index + 1).padStart(2, '0')
                         }}</span>
@@ -58,7 +58,7 @@ const emit = defineEmits<{
                 <div class="flex-1">
                     <Checkbox v-model="checkboxSkipVersion" @update:model-value="(value) => {
                         if (value) {
-                            skipUpdateVersion = updateStatus?.version ?? ''
+                            skipUpdateVersion = appUpdateStatus?.version ?? ''
                         } else {
                             skipUpdateVersion = ''
                         }
@@ -68,7 +68,7 @@ const emit = defineEmits<{
                 <Button @click="$emit('close')">
                     {{ $t('modals.updateAvailable.actions.later', 'Later') }}
                 </Button>
-                <Button @click="openUrl(updateStatus?.downloadUrl??'')">
+                <Button @click="openUrl(appUpdateStatus?.downloadUrl??'')">
                     {{ $t('modals.updateAvailable.actions.goToReleases', 'Go to Releases') }}
                 </Button>
             </div>

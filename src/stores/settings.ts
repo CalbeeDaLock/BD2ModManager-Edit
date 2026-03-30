@@ -1,4 +1,4 @@
-import { readonly, ref } from "vue";
+import { computed, readonly, ref } from "vue";
 import { defineStore } from "pinia";
 import { invoke } from "@tauri-apps/api/core"
 import { useLoggingStore } from "./logging";
@@ -18,18 +18,20 @@ interface Settings {
     isFirstLaunch: boolean,          
 }
 
-// [TODO]: REMOVE ALL THESE SET FUNCTIONS AND JUST USE A GENERIC SETTER FUNCTION
-
 export const useSettingsStore = defineStore("settings", () => {
     const settings = ref<Settings>({} as Settings)
-    const updateStatus = ref<{
+    const loggingStore = useLoggingStore()
+
+    const checkingForAppUpdates = ref(false)
+    const appUpdateStatus = ref<{
         checking: boolean,
-        version: string,
-        currentVersion: string,
+        version?: string,
+        currentVersion?: string,
         downloadUrl?: string,
         changelog?: string[],
-    } | null>(null)
-    const loggingStore = useLoggingStore()
+    } | null>({
+        checking: false,
+    })
 
     async function loadSettings() {
         settings.value = await invoke<Settings>("get_settings");
@@ -73,17 +75,14 @@ export const useSettingsStore = defineStore("settings", () => {
     }
 
     async function checkForAppUpdate() {
-        updateStatus.value = {
-            checking: true,
-            version: '',
-            currentVersion: '',
-        }
+        checkingForAppUpdates.value = true
+        appUpdateStatus.value = null
 
         try {
             // it will block untils downloades finisih
             await invoke<{ version: string, currentVersion: string, changelog?: string[] }>('check_for_app_update').then((result) => {
                 if (result) {
-                    updateStatus.value = {
+                    appUpdateStatus.value = {
                         checking: false,
                         version: result.version,
                         currentVersion: result.currentVersion,
@@ -92,13 +91,13 @@ export const useSettingsStore = defineStore("settings", () => {
                 }
             })
         } catch (err) {
+            appUpdateStatus.value = null
             loggingStore.logError("Failed to check for app update", err)
-            updateStatus.value = null
         } finally {
-            updateStatus.value!.checking = false
+            checkingForAppUpdates.value = false
         }
 
-        return updateStatus.value
+        return appUpdateStatus.value
     }
 
     async function installAppUpdate() {
@@ -116,8 +115,6 @@ export const useSettingsStore = defineStore("settings", () => {
     function updateGameData() {
         return invoke('update_game_data')
     }
-
-    
 
     // it will stay on settings for now
     function getBrowndustxVersion(): Promise<{
@@ -139,8 +136,12 @@ export const useSettingsStore = defineStore("settings", () => {
 
     return {
         settings: readonly(settings),
-        loadSettings,
+        appUpdateStatus: readonly(computed(() => ({
+            checking: checkingForAppUpdates.value,
+            ...(appUpdateStatus.value ?? {}),
+        }))),
         
+        loadSettings,
         getSettings,
         saveSettings,
         
@@ -149,19 +150,17 @@ export const useSettingsStore = defineStore("settings", () => {
         getModPreviewVersion,
         getBrowndustxVersion,
         getGameVersion,
-        
         checkForAppUpdate,
         checkForModPreviewUpdate,
         updateModPreview,
         updateGameData,
-        // checkForDataUpdate,
+        installAppUpdate,
         
         // BrownDustX
         locateGamePath,
         validateGamePath,
-        updateStatus: readonly(updateStatus),
-        installAppUpdate,
 
+        // themes
         availableThemes: availableThemes,
     }
 })
