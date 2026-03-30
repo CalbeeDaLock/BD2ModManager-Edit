@@ -15,6 +15,7 @@ import Modal from '../common/Modal.vue'
 import { SyncStatus, useSyncStateStore } from '../../stores/syncState'
 import { SyncError, SyncProgressStatus, SyncType } from '../../composables/useSyncEvents'
 import { useModsStore } from '../../stores/mods'
+import { useDev } from '../../composables/useDev'
 
 const { t } = useI18n()
 const syncStateStore = useSyncStateStore()
@@ -149,10 +150,7 @@ function sM() {
   modsStore.syncMods()
 }
 
-const isDev = ref(false)
-onMounted(() => {
-  isDev.value = import.meta.env.DEV
-})
+const {isDev} = useDev()
 </script>
 
 <template>

@@ -19,6 +19,7 @@ import { useToast } from 'primevue/usetoast';
 import { usePortable } from '../composables/usePortable';
 import GithubIcon from './icons/GithubIcon.vue';
 import KofiIcon from './icons/KofiIcon.vue';
+import { useDev } from '../composables/useDev';
 import { invoke } from '@tauri-apps/api/core';
 import AfDianIcon from './icons/AfDianIcon.vue';
 
@@ -187,6 +188,8 @@ function handleAfdianClick() {
 function handleKofiClick() {
     openUrl("https://ko-fi.com/bruhnn")
 }
+
+const { isDev } = useDev()
 
 </script>
 
@@ -431,7 +434,8 @@ function handleKofiClick() {
                         {{ $t('titlebar.actions.github') }}
                     </span>
                 </button>
-                <button class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
+                <button v-if="isDev"
+                    class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
                     @click="handleLogsClick">
                     <ScrollText class="w-[1.25em] h-[1.25em] group-hover:text-accent-primary transition-colors" />
                     <span
