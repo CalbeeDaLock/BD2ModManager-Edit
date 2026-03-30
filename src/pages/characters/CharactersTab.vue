@@ -50,8 +50,8 @@ const userFilters = reactive({
 const { installFromZip, installFromFolder } = useModInstall()
 
 const addModMenuItems = computed(() => [
-  { label: t('charactersTab.actions.installFromZip'), clicked: installFromZip },
-  { label: t('charactersTab.actions.installFromFolder'), clicked: installFromFolder }
+    { label: t('charactersTab.actions.installFromZip'), clicked: installFromZip },
+    { label: t('charactersTab.actions.installFromFolder'), clicked: installFromFolder }
 ])
 
 const sortOptions = computed(() => [
@@ -88,7 +88,7 @@ const scrollContainer = ref<HTMLElement | null>(null);
 const modIndex = computed(() => {
     type Mod = typeof modsStore.mods[number];
     const index = new Map<string, { enabledTypes: Set<string>; mods: Mod[] }>();
-    
+
     for (const mod of modsStore.mods) {
         if (!mod.modType || !('id' in mod.modType)) continue;
         if (!['Cutscene', 'Standing', 'Dating'].includes(mod.modType.type)) continue;
@@ -111,7 +111,7 @@ const modIndex = computed(() => {
             entry.enabledTypes.add(mod.modType.type);
         }
     }
-    
+
     return index;
 });
 
@@ -337,7 +337,6 @@ onMounted(() => {
     console.log(modIndex)
 })
 
-// [TODO] use {{ route.query.characterId }}
 watch(() => route.query.characterId, (newCharacterId) => {
     nextTick(() => {
         if (newCharacterId) {
@@ -352,12 +351,11 @@ watch(() => route.query.characterId, (newCharacterId) => {
         }
     })
 })
-
 </script>
 
 <template>
-    <div class="flex flex-row w-full p-4 py-2 gap-4 bg-bg-deep overflow-hidden">
-        <div class="flex-1 overflow-y-auto" ref="scrollContainer">
+    <div class="flex flex-row w-full h-full p-4 py-2 gap-4 bg-bg-deep overflow-hidden">
+        <div class="flex-1 min-h-0 overflow-hidden">
             <CharacterList v-if="viewMode == 'list'" :items="charactersList" @openModDetails="openCostumeDetails" />
             <CharacterGrid v-else :items="charactersGrid" @openModDetails="openCostumeDetails" />
         </div>
@@ -382,17 +380,19 @@ watch(() => route.query.characterId, (newCharacterId) => {
 
             <div class="flex flex-col gap-4 w-full">
                 <div class="min-h-10 w-full">
-                    <Input v-model="userFilters.searchQuery"
-                        :placeholder="t('charactersTab.filters.searchPlaceholder')" class="w-64" />
+                    <Input v-model="userFilters.searchQuery" :placeholder="t('charactersTab.filters.searchPlaceholder')"
+                        class="w-64" />
                 </div>
 
                 <div class="flex flex-col gap-1.5">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.sortBy.title') }}</label>
+                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.sortBy.title')
+                        }}</label>
                     <Select v-model="userFilters.sortBy" :options="sortOptions" />
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.modStatus.title') }}</label>
+                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.modStatus.title')
+                        }}</label>
                     <div class="flex flex-col gap-2">
                         <div class="flex flex-col gap-1">
                             <label for="cutscene" class="text-xs font-medium text-secondary">{{
@@ -413,7 +413,8 @@ watch(() => route.query.characterId, (newCharacterId) => {
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.extraFilters.title') }}</label>
+                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.extraFilters.title')
+                        }}</label>
                     <div class="flex flex-col gap-1.5">
                         <Checkbox v-model="userFilters.hideMenCharacters"
                             :label="t('charactersTab.filters.extraFilters.hideMenCharacters')" />
@@ -427,7 +428,8 @@ watch(() => route.query.characterId, (newCharacterId) => {
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.releasePeriod.title') }}</label>
+                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.releasePeriod.title')
+                        }}</label>
                     <Select v-model="userFilters.releasePeriod" :options="releasePeriodOptions" />
                 </div>
             </div>

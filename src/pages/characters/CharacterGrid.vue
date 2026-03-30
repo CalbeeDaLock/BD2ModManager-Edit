@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Character, isCostumeNew } from '../../stores/characters';
-import { Check, X } from 'lucide-vue-next';
-import Image from '../../components/common/Image.vue';
-import { convertFileSrc } from '@tauri-apps/api/core';
-import { useAppDir } from '../../composables/useAppDir';
-
-const baseDir = useAppDir()
+import { computed, ref, watch, ComponentPublicInstance } from 'vue';
+import { useVirtualizer } from '@tanstack/vue-virtual';
+import { useResizeObserver } from '@vueuse/core';
+import { Character } from '../../stores/characters';
+import CharacterGridItem from './CharacterGridItem.vue';
+import { useSaveScroll } from '../../composables/useSaveScroll';
 
 export interface CostumeWithMods extends Character {
     hasCutscene?: boolean;
@@ -14,102 +13,90 @@ export interface CostumeWithMods extends Character {
     modsCount: number;
 }
 
-const props = defineProps<{
-    items: CostumeWithMods[];
-}>();
+const props = defineProps<{ items: CostumeWithMods[] }>();
+defineEmits<{ 'open-mod-details': [costume: Character] }>();
 
-defineEmits<{
-    'open-mod-details': [costume: Character];
-}>();
+const parentRef = ref<HTMLElement | null>(null);
+const columnCount = ref(4);
+
+function getColumnCount(width: number) {
+    if (width >= 940) return 5;
+    if (width >= 740) return 4;
+    if (width >= 480) return 3;
+    if (width >= 440) return 2;
+    return 1;
+}
+
+useResizeObserver(parentRef, ([entry]) => {
+    columnCount.value = getColumnCount(entry.contentRect.width);
+});
+
+const rows = computed(() => {
+    const result: CostumeWithMods[][] = [];
+    for (let i = 0; i < props.items.length; i += columnCount.value) {
+        result.push(props.items.slice(i, i + columnCount.value));
+    }
+    return result;
+});
+
+const rowVirtualizer = useVirtualizer({
+    get count() { return rows.value.length; },
+    getScrollElement: () => parentRef.value,
+    estimateSize: () => 340,
+    overscan: 4,
+    measureElement: (element, _entry, instance) => {
+        const index = Number(element.getAttribute('data-index'));
+        const cached = instance.measurementsCache[index]?.size;
+        if (cached !== undefined) return cached;
+        return element.getBoundingClientRect().height;
+    },
+});
+
+watch(columnCount, () => {
+    rowVirtualizer.value.measure();
+});
+
+const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems());
+const totalSize = computed(() => rowVirtualizer.value.getTotalSize());
+
+const measureElement = (el: Element | ComponentPublicInstance | null) => {
+    if (!el || !(el instanceof Element)) return;
+    rowVirtualizer.value.measureElement(el);
+};
+
+useSaveScroll(rowVirtualizer)
 </script>
 
 <template>
     <div v-if="items.length === 0" class="text-center py-12 text-secondary">
-        <p class="text-lg">
-            {{ $t('charactersTab.charactersNotFound') }}
-        </p>
+        <p class="text-lg">{{ $t('charactersTab.charactersNotFound') }}</p>
     </div>
-    <div v-else
-        class="bg-bg-deep overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        <template v-for="costume in items" :key="costume.id">
-            <div @click="$emit('open-mod-details', costume)" class="
-                                rounded-lg
-                                cursor-pointer 
-                                transition-all 
-                                bg-interactive-bg
-                                text-primary
-                                hover:bg-interactive-bg-hover/40
-                                flex
-                                flex-col
-                                ">
-                <div class="relative">
-                    <Image loading="lazy" :src="`characters/standing/${costume.id}.png`"
-                        :alt="`${costume.character} - ${costume.costume}`" class="w-full h-full rounded-md" :fallback-sources="[
-                            convertFileSrc(`${baseDir}/assets/standing/${costume.id}.png`),
-                            '/characters/standing/placeholder_character.png'
-                        ]" />
-                    <div class="absolute top-2.5 left-2.5 flex gap-1">
-                        <div v-if="costume.modsCount > 0"
-                            class="  bg-accent-primary/75 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full font-medium">
-                            {{ $t('charactersTab.tags.modsCount', { count: costume.modsCount }) }}
-                        </div>
-                        <div v-if="costume.is_collab"
-                            class=" bg-yellow-500/75 backdrop-blur-sm text-yellow-100 text-xs px-2 py-1 rounded-full font-medium">
-                            {{ $t('charactersTab.tags.collab') }}
-                        </div>
 
-                    </div>
-                </div>
-
-                <div class="px-2 py-2 flex flex-col flex-1">
-                    <div class="mb-3 flex-1">
-                        <div class="font-semibold text-md min-w-0 flex gap-2 items-center"
-                            :title="costume.character + ' - ' + costume.costume">
-                            <div v-if="isCostumeNew(costume)"
-                                class=" bg-red-500/75 backdrop-blur-sm text-red-100 text-xs px-2 py-0.5 rounded-sm font-medium">
-                                {{ $t('charactersTab.tags.new') }}
-                            </div>
-                            <span>
-                                {{ costume.character }} - {{ costume.costume }}
-                            </span>
-                        </div>
-                        <div class="text-secondary text-xs">
-                            {{ $t('charactersTab.id', { id: costume.id }) }}
-                        </div>
-                    </div>
-
-                    <div class="flex justify-around items-center gap-1 text-xs text-primary font-mono overflow-x-auto">
-                        <div class="text-center p-1">
-                            <div class="mb-1">
-                                {{ $t('charactersTab.modTypes.cutscene') }}
-                            </div>
-                            <div class="flex items-center justify-center"
-                                :class="costume.hasCutscene ? 'text-success font-bold' : 'text-danger'">
-                                <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasCutscene" />
-                                <X v-else class="w-[1.25em] h-[1.25em]" />
-                            </div>
-                        </div>
-
-                        <div class="text-center p-1">
-                            <div class=" mb-1">{{ $t('charactersTab.modTypes.standing') }}</div>
-                            <div class="flex justify-center"
-                                :class="costume.hasStanding ? 'text-success font-bold' : 'text-danger'">
-                                <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasStanding" />
-                                <X v-else class="w-[1.25em] h-[1.25em]" />
-                            </div>
-                        </div>
-
-                        <div class="text-center p-1" v-if="costume.dating_id">
-                            <div class=" mb-1">{{ $t('charactersTab.modTypes.dating') }}</div>
-                            <div class="flex justify-center"
-                                :class="costume.hasDating ? 'text-success font-bold' : 'text-danger'">
-                                <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasDating" />
-                                <X v-else class="w-[1.25em] h-[1.25em]" />
-                            </div>
-                        </div>
-                    </div>
+    <div v-else ref="parentRef" class="h-full overflow-y-auto bg-bg-deep" style="contain: strict">
+        <div :style="{ height: `${totalSize}px`, width: '100%', position: 'relative' }">
+            <div :style="{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: `translateY(${virtualRows[0]?.start ?? 0}px)`,
+            }">
+                <div
+                    v-for="virtualRow in virtualRows"
+                    :key="String(virtualRow.key)"
+                    :ref="measureElement"
+                    :data-index="virtualRow.index"
+                    class="grid gap-4 pb-4"
+                    :style="{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }"
+                >
+                    <CharacterGridItem
+                        v-for="costume in rows[virtualRow.index]"
+                        :key="costume.id"
+                        :costume="costume"
+                        @open-mod-details="$emit('open-mod-details', costume)"
+                    />
                 </div>
             </div>
-        </template>
+        </div>
     </div>
 </template>

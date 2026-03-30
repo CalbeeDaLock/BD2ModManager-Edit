@@ -3,6 +3,7 @@ import { ComponentPublicInstance, computed, ref } from 'vue';
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import { Character } from '../../stores/characters';
 import CharacterListRow from './CharacterListRow.vue';
+import { useSaveScroll } from '../../composables/useSaveScroll';
 
 export interface CharacterGroup {
     name: string;
@@ -46,7 +47,7 @@ const allCharacters = computed<CharacterListItem[]>(() => {
 
         return acc;
     }, [] as CharacterListItem[]);
-});
+})
 
 const parentRef = ref<HTMLElement | null>(null);
 
@@ -56,21 +57,12 @@ const rowVirtualizer = useVirtualizer({
     },
     getScrollElement: () => parentRef.value,
     estimateSize: (index) => {
-        const items = allCharacters.value;
-        if (index >= items.length) return 168;
-        const item = items[index];
-        return item?.type === 'header' ? 28 : 168;
+        const item = allCharacters.value[index]
+        return item?.type === 'header' ? 28 : 168
     },
-    overscan: 20,
-    measureElement: (element, _entry, instance) => {
-        const indexKey = Number(element.getAttribute('data-index'));
-        const cachedMeasurement = instance.measurementsCache[indexKey]?.size;
-
-        if (cachedMeasurement !== undefined) {
-            return cachedMeasurement;
-        }
-
-        return element.getBoundingClientRect().height;
+    overscan: 10,
+    measureElement: (element) => {
+        return element.getBoundingClientRect().height
     },
 })
 
@@ -81,6 +73,8 @@ const measureElement = (el: Element | ComponentPublicInstance | null) => {
     if (!el || !(el instanceof Element)) return;
     rowVirtualizer.value.measureElement(el);
 };
+
+useSaveScroll(rowVirtualizer)
 </script>
 
 <template>
@@ -90,7 +84,7 @@ const measureElement = (el: Element | ComponentPublicInstance | null) => {
         </p>
     </div>
 
-    <div v-else ref="parentRef" class="flex flex-col text-primary bg-bg-deep overflow-y-auto"
+    <div v-else ref="parentRef" class="text-primary bg-bg-deep overflow-y-auto"
         style="height: 100%; contain: strict">
         <div :style="{
             height: `${totalSize}px`,
