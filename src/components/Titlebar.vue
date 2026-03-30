@@ -18,6 +18,9 @@ import { useSettingsStore } from '../stores/settings';
 import { useToast } from 'primevue/usetoast';
 import { usePortable } from '../composables/usePortable';
 import GithubIcon from './icons/GithubIcon.vue';
+import KofiIcon from './icons/KofiIcon.vue';
+import { invoke } from '@tauri-apps/api/core';
+import AfDianIcon from './icons/AfDianIcon.vue';
 
 const { isPortable } = usePortable()
 
@@ -96,6 +99,9 @@ const isLogsModalVisible = ref(false)
 const appVersion = ref('0.0.0')
 const { t } = useI18n()
 
+const locale = ref('unknown')
+const isChineseLanguage = computed(() => locale.value.startsWith('zh'))
+
 function getErrorMessage(t: (key: string, params?: any) => string, error: SyncError | null | undefined): string {
     if (!error) return t('errors.unknownError')
 
@@ -118,6 +124,12 @@ const loggingStore = useLoggingStore()
 
 onMounted(async () => {
     appVersion.value = await getVersion()
+
+    try {
+        locale.value = await invoke('get_user_locale')
+    } catch (error) {
+        loggingStore.logError('Failed to get user locale', error)
+    }
 
     isMaximized.value = await appWindow.isMaximized()
     const unlistenResize = await listen("tauri://resize", async () => {
@@ -167,6 +179,15 @@ onMounted(async () => {
 onUnmounted(() => {
     unlistenFunctions.value.forEach(fn => fn())
 })
+
+function handleAfdianClick() {
+    openUrl("https://afdian.com/a/Bruhnn")
+}
+
+function handleKofiClick() {
+    openUrl("https://ko-fi.com/bruhnn")
+}
+
 </script>
 
 <template>
@@ -385,6 +406,23 @@ onUnmounted(() => {
             </div>
 
             <div class="flex items-center shrink-0 gap-2 md:gap-4">
+                <button v-if="isChineseLanguage"
+                    class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
+                    @click="handleAfdianClick">
+                    <AfDianIcon class="w-[1.5em] h-[1.5em] group-hover:fill-accent-primary! transition-colors" />
+                    <span
+                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
+                        {{ $t('titlebar.actions.afdian', 'Support me on AfDian!') }}
+                    </span>
+                </button>
+                <button v-else class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
+                    @click="handleKofiClick">
+                    <KofiIcon class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary! transition-colors" />
+                    <span
+                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
+                        {{ $t('titlebar.actions.kofi', 'Support me on Ko-fi!') }}
+                    </span>
+                </button>
                 <button class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
                     @click="handleGithubClick">
                     <GithubIcon class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary! transition-colors" />

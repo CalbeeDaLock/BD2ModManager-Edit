@@ -21,3 +21,8 @@ pub fn is_portable() -> bool {
         false
     }
 }
+
+#[tauri::command]
+pub fn get_user_locale() -> String {
+    std::env::var("LANG").unwrap_or_else(|_| "unknown".into())
+}

@@ -63,7 +63,9 @@
         },
         "actions": {
             "github": "Github",
-            "logs": "Logs"
+            "logs": "Logs",
+            "kofi":"Support on Ko-Fi",
+            "afdian": "Support on Afdian"
         }
     },
     "sidebar": {

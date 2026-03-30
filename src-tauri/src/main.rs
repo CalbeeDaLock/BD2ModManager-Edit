@@ -171,7 +171,8 @@ pub fn main() {
             // utils
             utils::is_folder,
             utils::path_exists,
-            utils::is_portable
+            utils::is_portable,
+            utils::get_user_locale,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
