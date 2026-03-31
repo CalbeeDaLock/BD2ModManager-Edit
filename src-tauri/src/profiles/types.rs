@@ -42,16 +42,17 @@ impl Profile {
     }
 
     pub fn get_mod_state(&self, mod_name: &String) -> bool {
-        self.enabled_mods.contains(mod_name)
+        // some mods was stored with '\\' instead of '/' in the name, so we need to check both, but now all mods are stored with '/'
+        self.enabled_mods.contains(mod_name) || self.enabled_mods.contains(&mod_name.replace("/", "\\"))
     }
 
     pub fn set_mod_state(&mut self, mod_name: &String, enabled: bool) {
         if enabled {
-            if !self.enabled_mods.contains(mod_name) {
-                self.enabled_mods.push(mod_name.clone());
+            if !self.get_mod_state(mod_name) {
+                self.enabled_mods.push(mod_name.to_string());
             }
         } else {
-            self.enabled_mods.retain(|m| m != mod_name);
+            self.enabled_mods.retain(|m| m != mod_name && m != &mod_name.replace("/", "\\"));
         }
     }
 }

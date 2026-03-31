@@ -103,16 +103,18 @@ pub fn analyze_mod_path(path: &Path) -> (bool, Option<BD2ModError>) {
 }
 
 pub fn create_mod(staging_directory: &Path, path: &Path, error: Option<BD2ModError>) -> BD2Mod {
+    // normalize names from 'parent\mod' to 'parent/mod'
     let full_name = path
         .strip_prefix(staging_directory)
         .unwrap_or(path)
         .to_string_lossy()
-        .into_owned();
+        .replace("\\", "/");
 
     let display_name = path
         .file_name()
         .map(|name| name.to_string_lossy().into_owned())
         .unwrap_or_else(|| "unknown".to_string());
+
 
     BD2Mod {
         path: path.to_path_buf(),

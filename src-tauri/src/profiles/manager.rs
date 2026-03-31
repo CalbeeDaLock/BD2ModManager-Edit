@@ -105,8 +105,15 @@ impl ProfileManager {
 
                     if let Ok(data) = read_to_string(&path) {
                         match serde_json::from_str::<Profile>(&data) {
-                            Ok(profile) => {
+                            Ok(mut profile) => {
                                 info!("Profile {} ({}) was loaded.", profile.name, profile.id);
+
+                                // mod names backward compatibility all mod names uses / instea of \\
+                                profile.enabled_mods = profile
+                                    .enabled_mods
+                                    .into_iter()
+                                    .map(|m| m.replace("\\", "/"))
+                                    .collect();
 
                                 if profile.active {
                                     self.active_profile_id = Some(profile.id.clone());
