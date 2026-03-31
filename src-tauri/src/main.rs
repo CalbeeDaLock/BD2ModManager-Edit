@@ -7,12 +7,18 @@ use std::{
     sync::{Arc, Mutex},
 };
 
+use log::{warn, debug};
+
 use bd2modmanager_lib::{
-    BD2ModManager, config::{BD2Config, config::PartialAppConfig}, mods::metadata::ModMetadataStore, profiles::ProfileManager, utils::{
-        data, files::ensure_dir_exists, path::{
-            get_default_profiles_dir, get_default_staging_dir
-        }
-    }
+    config::{config::PartialAppConfig, BD2Config},
+    mods::metadata::ModMetadataStore,
+    profiles::ProfileManager,
+    utils::{
+        data,
+        files::ensure_dir_exists,
+        path::{get_default_profiles_dir, get_default_staging_dir},
+    },
+    BD2ModManager,
 };
 use tauri::Manager;
 
@@ -21,16 +27,76 @@ use commands::*;
 
 use crate::commands::updater::PendingUpdate;
 
-mod update;
 mod migrate;
+mod update;
 
 pub struct AppState {
     pub mod_manager: Arc<Mutex<BD2ModManager>>,
     pub config: Arc<Mutex<BD2Config>>,
 }
 
+fn rotate_logs(logs_dir: &PathBuf) {
+    if !logs_dir.exists() {
+        return;
+    }
+
+    // this function will only keep2 logs; will move logs.log to logs-<timestamp>.log, and delete the previous logs-<timestamp>.log if it exists
+
+    let log_file = logs_dir.join("logs.log");
+    if !log_file.exists() {
+        return;
+    }
+
+    let timestamp = std::fs::metadata(&log_file)
+        .and_then(|m| m.modified())
+        .map(|t| {
+            let dt: chrono::DateTime<chrono::Local> = t.into();
+            dt.format("%Y-%m-%d_%H-%M-%S").to_string()
+        })
+        .unwrap_or_else(|_| chrono::Local::now().format("%Y-%m-%d_%H-%M-%S").to_string());
+
+    let rotated_log_file = logs_dir.join(format!("logs-{}.log", timestamp));
+    if let Err(e) = std::fs::rename(&log_file, &rotated_log_file) {
+        eprintln!("Failed to rename log file: {e}");
+        return;
+    }
+
+    let entries = match std::fs::read_dir(logs_dir) {
+        Ok(e) => e,
+        Err(e) => { eprintln!("Failed to read logs dir: {e}"); return; }
+    };
+
+    let old_logs: Vec<_> = entries
+        .filter_map(|entry| {
+            let entry = entry.ok()?;
+            let file_name = entry.file_name().into_string().ok()?;
+            if file_name.starts_with("logs-")
+                && file_name.ends_with(".log")
+                && entry.path() != rotated_log_file
+            {
+                Some(entry.path())
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    for old_log in old_logs {
+        if let Err(e) = std::fs::remove_file(&old_log) {
+            eprintln!("Failed to remove old log file: {e}");
+        }
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn main() {
+    let context: tauri::Context = tauri::generate_context!();
+    let bundle_id = context.config().identifier.clone();
+    if let Some(data_dir) = dirs::data_local_dir() {
+        let logs_dir = data_dir.join(&bundle_id).join("logs");
+        rotate_logs(&logs_dir);
+    }
+    
     tauri::Builder::default()
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
@@ -42,7 +108,6 @@ pub fn main() {
         .plugin(
             tauri_plugin_log::Builder::new()
                 .clear_targets()
-                .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepSome(2))
                 .targets([
                     tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout),
                     tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir {
@@ -56,10 +121,8 @@ pub fn main() {
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             log::info!("Starting app...");
-            
 
             let app_handle = app.app_handle();
-
 
             let mut config = BD2Config::new(app_handle.clone());
             config.load_config();
@@ -131,18 +194,15 @@ pub fn main() {
             mods::unsync_mods,
             mods::is_sync_needed,
             mods::preview_mod,
-
             // profiles
             profiles::get_profiles,
             profiles::switch_profile,
             profiles::edit_profile,
             profiles::create_profile,
             profiles::delete_profile,
-
             // config
             config::get_settings,
             config::set_settings,
-            
             // game
             game::locate_game,
             game::validate_game_path,
@@ -160,7 +220,6 @@ pub fn main() {
             game::uninstall_configmanager,
             game::determine_archive_type,
             game::get_characters,
-
             // updater
             updater::get_mod_preview_version,
             updater::check_for_app_update,
@@ -168,12 +227,10 @@ pub fn main() {
             updater::check_for_mod_preview_update,
             updater::update_mod_preview,
             updater::update_game_data,
-
             // migration
             commands::migrate::get_legacy_profiles,
             commands::migrate::import_legacy_profiles,
             commands::migrate::import_legacy_mod_authors,
-
             // utils
             utils::is_folder,
             utils::path_exists,

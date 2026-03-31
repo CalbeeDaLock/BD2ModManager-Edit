@@ -1,4 +1,4 @@
-use log::{info, warn};
+use log::{debug, info, warn};
 use rayon::prelude::*;
 use std::{
     ffi::OsStr,
@@ -266,7 +266,7 @@ fn discover_mods_recursive(dir: &Path, staging_directory: &Path, depth: usize) -
             .flat_map(|entry| {
                 let path = entry.path();
                 let (is_mod, error) = analyze_mod_path(&path);
-                info!("({:?}) {:?} -> {:?}", is_mod, path, error);
+                debug!("(is_mod = {:?}) {:?} -> error = {:?}", is_mod, path, error);
                 if is_mod {
                     vec![create_mod(&staging_dir, &path, error)]
                 } else if path.is_dir() {
@@ -302,6 +302,7 @@ pub fn discover_staging_mods(staging_directory: &Path, recursive: bool) -> Vec<B
                 .filter_map(|entry| {
                     let path = entry.path();
                     let (is_mod, error) = analyze_mod_path(&path);
+                    debug!("(is_mod = {:?}) {:?} -> error = {:?}", is_mod, path, error);
                     if is_mod {
                         Some(create_mod(staging_directory, &path, error))
                     } else {
