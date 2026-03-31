@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { AlertOctagon, Check } from 'lucide-vue-next';
 import { open } from '@tauri-apps/plugin-dialog';
@@ -16,6 +16,8 @@ import Button from '../common/Button.vue';
 import Input from '../common/Input.vue';
 import Modal from '../common/Modal.vue';
 import KofiIcon from '../icons/KofiIcon.vue';
+import AfDianIcon from '../icons/AfDianIcon.vue';
+import { invoke } from '@tauri-apps/api/core';
 
 const loggingStore = useLoggingStore()
 const settingsStore = useSettingsStore()
@@ -81,10 +83,17 @@ async function findGamePaths() {
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
     loggingStore.logDebug('WelcomeModal mounted.')
+
     if (visible.value) {
-        findGamePaths()
+        await findGamePaths()
+    }
+
+    try {
+        locale.value =  await invoke('get_user_locale')
+    } catch (error) {
+        loggingStore.logError('Failed to get user locale', error)
     }
 })
 
@@ -97,7 +106,10 @@ watch(visible, async (isVisible) => {
 const GITHUB_URL = 'https://github.com/bruhnn/BD2ModManager'
 const DISCORD_URL = 'https://discord.gg/B3Aqz6tDG2'
 const KOFI_URL = 'https://ko-fi.com/bruhnn'
+const AFDIAN_URL = 'https://afdian.com/a/bruhnn'
 
+const locale = ref('unknown')
+const isChineseLanguage = computed(() => locale.value.startsWith('zh'))
 </script>
 
 <template>
@@ -105,12 +117,23 @@ const KOFI_URL = 'https://ko-fi.com/bruhnn'
         :title="$t('modals.welcome.title')" :subtitle="$t('modals.welcome.subtitle')">
         <div class="w-full h-full flex flex-col gap-5 p-4">
 
-            <div class="flex items-center gap-3 p-3 rounded-md border border-orange-500/30 bg-orange-500/10 cursor-pointer hover:bg-orange-500/20 transition-colors"
+            <div v-if="!isChineseLanguage"
+                class="flex items-center gap-3 p-3 rounded-md border border-orange-500/30 bg-orange-500/10 cursor-pointer hover:bg-orange-500/20 transition-colors"
                 @click="openUrl(KOFI_URL)">
                 <KofiIcon class="w-4 h-4 fill-orange-400 shrink-0" />
                 <div class="flex flex-col gap-0.5">
                     <p class="text-xs font-semibold text-orange-300">{{ $t('modals.welcome.supportBanner.title') }}</p>
-                    <p class="text-xs text-orange-200/80">{{ $t('modals.welcome.supportBanner.message') }}</p>
+                    <p class="text-xs text-orange-200/80">{{ $t('modals.welcome.supportBanner.messageKofi') }}</p>
+                </div>
+            </div>
+
+            <div v-else
+                class="flex items-center gap-3 p-3 rounded-md border border-purple-500/30 bg-purple-500/10 cursor-pointer hover:bg-purple-500/20 transition-colors"
+                @click="openUrl(AFDIAN_URL)">
+                <AfDianIcon class="w-4 h-4 fill-purple-400 shrink-0" />
+                <div class="flex flex-col gap-0.5">
+                    <p class="text-xs font-semibold text-purple-300">{{ $t('modals.welcome.supportBanner.title') }}</p>
+                    <p class="text-xs text-purple-200/80">{{ $t('modals.welcome.supportBanner.messageAfdian') }}</p>
                 </div>
             </div>
 
@@ -124,11 +147,6 @@ const KOFI_URL = 'https://ko-fi.com/bruhnn'
                     class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
                     <DiscordIcon class="w-4 h-4 fill-secondary" />
                     {{ $t('modals.welcome.chips.discord') }}
-                </span>
-                <span @click="openUrl(KOFI_URL)"
-                    class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
-                    <KofiIcon class="w-4 h-4 fill-secondary" />
-                    {{ $t('modals.welcome.chips.kofi') }}
                 </span>
             </div>
 

@@ -699,7 +699,8 @@
             },
             "supportBanner": {
                 "title": "Support the project ❤️",
-                "message": "BD2ModManager is free and open source. If it has been helpful, consider supporting me on Ko-Fi!"
+                "messageKofi": "BD2ModManager is free and open source. If it has been helpful, consider supporting me on Ko-Fi!",
+                "messageAfdian": "BD2ModManager is free and open source. If it has been helpful, consider supporting me on AfDian!"
             }
         },
         "changeModAuthor": {
