@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main, feat/auto-updater]
+    branches: [main]
   pull_request:
-    branches: [main, feat/auto-updater]
+    branches: [main]
 
 jobs:
   build:
@@ -16,6 +16,7 @@ jobs:
         include:
           - name: installer
             args: --no-sign
+            argsWithoutMsi: --no-sign --no-bundle --bundles nsis
           - name: portable
             args: --no-bundle --features portable
 
@@ -41,8 +42,26 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Get version
+        id: get_version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Build
-        run: pnpm tauri build ${{ matrix.args }}
+        shell: bash
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          MATRIX_NAME="${{ matrix.name }}"
+
+          if [[ "$MATRIX_NAME" == "installer" && ( "$VERSION" == *"-dev"* || "$VERSION" == *"-beta"* ) ]]; then
+            echo "Dev/Beta installer build detected: $VERSION"
+            pnpm tauri build ${{ matrix.argsWithoutMsi }}
+          else
+            echo "Normal build: $VERSION ($MATRIX_NAME)"
+            pnpm tauri build ${{ matrix.args }}
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
