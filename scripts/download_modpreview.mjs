@@ -7,11 +7,27 @@ const OUT = 'src-tauri/resources/BD2ModPreview.exe'
 
 mkdirSync('src-tauri/resources', { recursive: true })
 
-get(URL, { headers: { 'User-Agent': 'BD2ModManager' } }, async res => {
-  if (res.statusCode === 302 || res.statusCode === 301) {
-    get(res.headers.location, async res2 => {
-      await pipeline(res2, createWriteStream(OUT))
-      console.log('Downloaded BD2ModPreview.exe')
-    })
-  }
-})
+function download(url) {
+  get(url, { headers: { 'User-Agent': 'BD2ModManager' } }, async res => {
+    if (res.statusCode === 301 || res.statusCode === 302) {
+      download(res.headers.location)
+    } else if (res.statusCode === 200) {
+      try {
+        await pipeline(res, createWriteStream(OUT))
+        console.log('Download completed successfully')
+        process.exit(0)
+      } catch (err) {
+        console.error(`Failed to save file: ${err.message}`)
+        process.exit(1)
+      }
+    } else {
+      console.error(`Unexpected status: ${res.statusCode}`)
+      process.exit(1)
+    }
+  }).on('error', err => {
+    console.error(`Download failed: ${err.message}`)
+    process.exit(1)
+  })
+}
+
+download(URL)
