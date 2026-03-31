@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList, TabPanels } from '@headlessui/vue';
-import { CircleArrowUp, Monitor, Settings } from 'lucide-vue-next';
+import { CircleArrowUp, FlaskConical, Monitor, Settings } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import GeneralTab from './tabs/GeneralTab.vue';
 import InterfaceTab from './tabs/InterfaceTab.vue';
 import UpdateTab from './tabs/UpdateTab.vue';
+import ExperimentalTab from './tabs/ExperimentalTab.vue';
 
 
 const { t } = useI18n()
@@ -22,6 +23,10 @@ const tabs = computed(() => [{
     label: t('settingsTab.updates.label'),
     value: 'updates',
     icon: CircleArrowUp
+}, {
+    label: t('settingsTab.experimental.label'),
+    value: 'experimental',
+    icon: FlaskConical
 }
 ])
 </script>
@@ -53,7 +58,7 @@ const tabs = computed(() => [{
                 <GeneralTab />
                 <InterfaceTab />
                 <UpdateTab />
-                <!-- <ExperimentalTab /> -->
+                <ExperimentalTab />
             </TabPanels>
         </TabGroup>
     </div>

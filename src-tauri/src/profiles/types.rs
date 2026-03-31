@@ -30,14 +30,14 @@ pub struct Profile {
 }
 
 impl Profile {
-    pub fn new(name: String, description: String) -> Self {
+    pub fn new(name: String, description: String, enabled_mods: Vec<String>, created_at: Option<String>) -> Self {
         Self {
             id: Uuid::new_v4().to_string(),
             name: name,
             description: description,
-            created_at: Utc::now().to_rfc3339(),
+            created_at: created_at.unwrap_or_else(|| Utc::now().to_rfc3339()),
+            enabled_mods,
             active: false,
-            enabled_mods: Vec::new(),
         }
     }
 

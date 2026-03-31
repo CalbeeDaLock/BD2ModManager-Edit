@@ -156,7 +156,7 @@ impl BD2ModManager {
         template_id: Option<String>,
     ) -> Result<String, ProfileError> {
         self.profile_manager
-            .create_profile(name, description, template_id)
+            .create_profile(name, description, None, None, template_id)
     }
 
     pub fn edit_profile(
@@ -341,5 +341,15 @@ impl BD2ModManager {
 
         let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
         app_handle.emit("mods-changed", all_mods).unwrap();
+    }
+
+    pub fn refresh_mods_authors(&mut self, app_handle: &AppHandle) -> Result<(), String> {
+        for mod_info in self.cached_mods.values_mut() {
+            let author = self.metadata_store.get_author(&mod_info.name);
+            mod_info.author = author;
+        }
+        let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
+        app_handle.emit("mods-changed", all_mods).unwrap();
+        Ok(())
     }
 }

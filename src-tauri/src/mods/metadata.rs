@@ -88,4 +88,19 @@ impl ModMetadataStore {
             self.save();
         }
     }
+
+    pub fn import_from_legacy(&mut self, legacy_mods: &HashMap<String, HashMap<String, serde_json::Value>>) {
+        for (mod_name, mod_info) in legacy_mods {
+            if let Some(author) = mod_info.get("author").and_then(|a| a.as_str()) {
+                let entry = self.data.entry(mod_name.clone()).or_default();
+                if entry.author.is_some() {
+                    info!("Overwriting author for mod '{}' from legacy data: '{}' -> '{}'", mod_name, entry.author.as_ref().unwrap(), author);
+                } else {
+                    info!("Setting author for mod '{}' from legacy data: '{}'", mod_name, author);
+                }
+                entry.author = Some(author.to_string());
+            }
+        }
+        self.save();
+    }
 }

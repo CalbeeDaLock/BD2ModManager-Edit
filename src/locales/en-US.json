@@ -64,7 +64,7 @@
         "actions": {
             "github": "Github",
             "logs": "Logs",
-            "kofi":"Support on Ko-Fi",
+            "kofi": "Support on Ko-Fi",
             "afdian": "Support on Afdian"
         }
     },
@@ -573,6 +573,60 @@
                         "checkForUpdates": "Check for Updates",
                         "checkingForUpdates": "Checking for Updates...",
                         "updateModPreview": "Update BD2ModPreview"
+                    }
+                }
+            }
+        },
+        "experimental": {
+            "label": "Experimental",
+            "sections": {
+                "migration": {
+                    "title": "Import from Legacy Version",
+                    "description": "Import profiles and mod authors from v3.2.4 or earlier.",
+                    "profiles": {
+                        "title": "Profiles",
+                        "description": "Select the profiles you want to import from v3.2.4 or earlier.",
+                        "selectPlaceholder": "Select a profile to import"
+                    },
+                    "modAuthors": {
+                        "title": "Mod Authors",
+                        "description": "Import mod authors from v3.2.4 or earlier."
+                    },
+                    "actions": {
+                        "importProfiles": "Import Profiles",
+                        "importModAuthors": "Import Mod Authors"
+                    },
+                    "confirmations": {
+                        "importModAuthors": {
+                            "title": "Import Mod Authors?",
+                            "message": "Are you sure you want to import mod authors from the legacy version? This will overwrite the author names of your existing mods with the ones from the legacy version. This action cannot be undone.",
+                            "actions": {
+                                "importModAuthors": "Import Mod Authors",
+                                "cancel": "Cancel"
+                            }
+                        }
+                    },
+                    "notifications": {
+                        "importProfilesSuccess": {
+                            "title": "Profiles Imported",
+                            "description": "Profiles have been successfully imported from the legacy version."
+                        },
+                        "importModAuthorsSuccess": {
+                            "title": "Mod Authors Imported",
+                            "description": "Mod authors have been successfully imported from the legacy version."
+                        },
+                        "importFailed": {
+                            "title": "Import Failed",
+                            "description": "An error occurred while importing data: {error}"
+                        },
+                        "errorFetchingProfiles": {
+                            "title": "Failed to Fetch Profiles",
+                            "description": "An error occurred while fetching profiles from the legacy version: {error}"
+                        },
+                        "noProfilesToImport": {
+                            "title": "No Profiles to Import",
+                            "description": "No profiles were found in the legacy version to import."
+                        }
                     }
                 }
             }

@@ -22,6 +22,7 @@ use commands::*;
 use crate::commands::updater::PendingUpdate;
 
 mod update;
+mod migrate;
 
 pub struct AppState {
     pub mod_manager: Arc<Mutex<BD2ModManager>>,
@@ -167,6 +168,11 @@ pub fn main() {
             updater::check_for_mod_preview_update,
             updater::update_mod_preview,
             updater::update_game_data,
+
+            // migration
+            commands::migrate::get_legacy_profiles,
+            commands::migrate::import_legacy_profiles,
+            commands::migrate::import_legacy_mod_authors,
 
             // utils
             utils::is_folder,

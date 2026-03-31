@@ -147,11 +147,29 @@ impl ProfileManager {
         &mut self,
         name: String,
         description: Option<String>,
-        _template_id: Option<String>,
+        enabled_mods: Option<Vec<String>>,
+        created_at: Option<String>,
+        template_id: Option<String>,
     ) -> Result<String, ProfileError> {
         let desc = description.unwrap_or_default();
+        let created = Some(created_at.unwrap_or_else(|| chrono::Utc::now().to_rfc3339()));
+        let enabled_mods = enabled_mods.unwrap_or_default();
 
-        let profile = Profile::new(name, desc);
+        let profile: Profile;
+
+        if let Some(template_id) = template_id {
+            if let Some(template_profile) = self.profiles.get(&template_id) {
+                profile = Profile::new(name, desc, template_profile.enabled_mods.clone(), created);
+            } else {
+                warn!(
+                    "Template profile with id '{}' not found. Creating profile without template.",
+                    template_id
+                );
+                profile = Profile::new(name, desc, enabled_mods, created);
+            }
+        } else {
+            profile = Profile::new(name, desc, enabled_mods, created);
+        }
 
         match self.save_profile(&profile) {
             Ok(()) => {
