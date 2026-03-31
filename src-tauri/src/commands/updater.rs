@@ -1,36 +1,66 @@
-use bd2modmanager_lib::utils::path::get_mod_preview_path;
-use semver::Version;
-use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter};
-use tokio::io::AsyncWriteExt;
-use std::sync::Mutex;
-use tauri::{State};
-use tauri_plugin_updater::{Update, UpdaterExt};
-
 use crate::update;
+use bd2modmanager_lib::utils::path::get_mod_preview_path;
+use log::{debug, info};
+use serde::{Deserialize, Serialize};
+use std::sync::Mutex;
+use tauri::{AppHandle, Emitter, State};
+use tauri_plugin_updater::{Update};
+use tokio::io::AsyncWriteExt;
 
-const RELEASES_URL: &str = "https://shy-waterfall-2797.bruhnn.workers.dev/";
+#[cfg(feature = "portable")]
+mod portable {
+    use log::info;
+    use semver::Version;
+    use serde::{Deserialize, Serialize};
+    use tauri::AppHandle;
 
-fn get_app_version(app: &tauri::AppHandle) -> String {
-    app.package_info().version.to_string()
-}
+    use crate::commands::updater::get_app_version;
 
-#[derive(Debug, Deserialize)]
-struct GitHubRelease {
-    tag_name: String,
-    html_url: String,
-    changelog: Option<Vec<String>>,
-}
+    const RELEASES_URL: &str = "https://shy-waterfall-2797.bruhnn.workers.dev/";
 
-#[derive(Debug, Deserialize, Clone, Serialize)]
-struct UpdateInfo {
-    version: String,
-    download_url: String,
-}
+    #[derive(Debug, Deserialize)]
+    struct GitHubRelease {
+        tag_name: String,
+        html_url: String,
+        changelog: Option<Vec<String>>,
+    }
 
-#[tauri::command]
-pub fn get_mod_preview_version(app_handle: tauri::AppHandle) -> Option<String> {
-    update::mod_preview::get_mod_preview_version(app_handle)
+    #[derive(Debug, Deserialize, Clone, Serialize)]
+    struct UpdateInfo {
+        version: String,
+        download_url: String,
+    }
+
+    pub(super) async fn fetch_app_latest_version(
+        app: &AppHandle,
+    ) -> Result<(Version, String, Vec<String>), String> {
+        let current_version = get_app_version(&app);
+        let client = reqwest::Client::builder()
+            .timeout(std::time::Duration::from_secs(30))
+            .build()
+            .map_err(|e| format!("Failed to build HTTP client: {e}"))?;
+
+        let release: GitHubRelease = client
+            .get(RELEASES_URL)
+            .header("Accept", "application/json")
+            .header("X-Manager-Version", current_version)
+            .header("X-Manager-Platform", std::env::consts::OS)
+            .header("X-Manager-Portable", "true")
+            .send()
+            .await
+            .map_err(|e| format!("Request failed: {e}"))?
+            .json()
+            .await
+            .map_err(|e| format!("Invalid JSON: {e}"))?;
+
+        let latest_version = release.tag_name.trim_start_matches('v');
+        let html_url = release.html_url.clone();
+        info!("Latest version: {latest_version}, URL: {html_url}");
+        let version =
+            Version::parse(latest_version).map_err(|e| format!("Invalid remote version: {e}"))?;
+        let changelog = release.changelog.unwrap_or_default();
+        Ok((version, html_url, changelog))
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -40,13 +70,72 @@ pub struct UpdateAvailablePayload {
     download_url: String,
 }
 
+#[derive(Debug, Deserialize, Serialize, Clone)]
+struct ProgressPayload {
+    version: String,
+    progress: u8,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateMetadata {
+    version: String,
+    current_version: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    download_url: Option<String>,
+    changelog: Option<Vec<String>>,
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum UpdateError {
+    #[error(transparent)]
+    Updater(#[from] tauri_plugin_updater::Error),
+    #[error("there is no pending update")]
+    NoPendingUpdate,
+    #[cfg(feature = "portable")]
+    #[error("update check failed: {0}")]
+    CheckFailed(String),
+}
+
+impl Serialize for UpdateError {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(self.to_string().as_str())
+    }
+}
+
+pub struct PendingUpdate(pub Mutex<Option<(Update, Vec<u8>)>>);
+pub type ResultUpdate<T> = std::result::Result<T, UpdateError>;
+
+pub fn get_app_version(app: &AppHandle) -> String {
+    app.package_info().version.to_string()
+}
+
+#[tauri::command]
+pub fn get_mod_preview_version(app_handle: AppHandle) -> Option<String> {
+    update::mod_preview::get_mod_preview_version(app_handle)
+}
+
 #[tauri::command]
 pub async fn check_for_mod_preview_update(
     app_handle: AppHandle,
 ) -> Result<UpdateAvailablePayload, String> {
-    let (latest_version, _download_url) =
-        update::mod_preview::check_for_update(app_handle).await?;
+    let (latest_version, _download_url) = update::mod_preview::check_for_update(app_handle).await?;
+
+    debug!(
+        "Checked for mod preview update: latest version {}, download URL: {}",
+        latest_version.as_deref().unwrap_or_default(),
+        _download_url.as_deref().unwrap_or_default()
+    );
+
     if let Some(download_url) = _download_url {
+        info!(
+            "Mod preview update available: version {}, URL: {}",
+            latest_version.as_deref().unwrap_or_default(),
+            download_url
+        );
         Ok(UpdateAvailablePayload {
             latest_version: latest_version.unwrap_or_default(),
             download_url,
@@ -54,12 +143,6 @@ pub async fn check_for_mod_preview_update(
     } else {
         Err("No update available".to_string())
     }
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-struct ProgressPayload {
-    version: String,
-    progress: u8,
 }
 
 #[tauri::command]
@@ -213,93 +296,18 @@ pub async fn update_game_data(app_handle: AppHandle) -> Result<(), String> {
     update::game_data::update_characters(app_handle).await
 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum UpdateError {
-    #[error(transparent)]
-    Updater(#[from] tauri_plugin_updater::Error),
-    #[error("there is no pending update")]
-    NoPendingUpdate,
-    #[cfg(feature = "portable")]
-    #[error("update check failed: {0}")]
-    CheckFailed(String),
-}
-
-impl Serialize for UpdateError {
-    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str(self.to_string().as_str())
-    }
-}
-
-type ResultUpdate<T> = std::result::Result<T, UpdateError>;
-
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct UpdateMetadata {
-    version: String,
-    current_version: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    download_url: Option<String>,
-    changelog: Option<Vec<String>>,
-
-}
-
-pub struct PendingUpdate(pub Mutex<Option<(Update, Vec<u8>)>>);
-
-
-#[cfg(feature = "portable")]
-async fn fetch_latest_version(app: &tauri::AppHandle) -> Result<(Version, String, Vec<String>), String> {
-    let current_version = get_app_version(&app);
-
-    let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(25))
-        .build()
-        .map_err(|e| format!("Failed to build HTTP client: {e}"))?;
-
-    let release: GitHubRelease = client
-        .get(RELEASES_URL)
-        // .header("User-Agent", "BD2ModManager")
-        .header("Accept", "application/json")
-        .header("X-Manager-Version", current_version)
-        .header("X-Manager-Platform", std::env::consts::OS)
-        .header("X-Manager-Portable", "true")
-        .send()
-        .await
-        .map_err(|e| format!("Request failed: {e}"))?
-        .json()
-        .await
-        .map_err(|e| format!("Invalid JSON: {e}"))?;
-
-    let latest_version = release.tag_name.trim_start_matches('v');
-
-    let html_url = release.html_url.clone();
-
-    println!("Latest version: {latest_version}, URL: {html_url}");
-
-    let version = Version::parse(latest_version).map_err(|e| format!("Invalid remote version: {e}"))?;
-
-    let changelog = release.changelog.unwrap_or_default();
-
-    Ok((version, html_url, changelog))
-}
-
 #[cfg(feature = "portable")]
 #[tauri::command]
 pub async fn check_for_app_update(app_handle: AppHandle) -> ResultUpdate<Option<UpdateMetadata>> {
-    match fetch_latest_version(&app_handle).await {
+    match portable::fetch_app_latest_version(&app_handle).await {
         Ok((latest_version, download_url, changelog)) => {
             let local_version = get_app_version(&app_handle);
-
             let local_ver = semver::Version::parse(&local_version)
                 .map_err(|e| UpdateError::CheckFailed(format!("Invalid local version: {e}")))?;
 
             if latest_version <= local_ver {
                 return Ok(None);
             }
-
-            println!("changelog: {changelog:#?}");
 
             Ok(Some(UpdateMetadata {
                 version: latest_version.to_string(),
@@ -312,14 +320,27 @@ pub async fn check_for_app_update(app_handle: AppHandle) -> ResultUpdate<Option<
     }
 }
 
-
 #[cfg(not(feature = "portable"))]
 #[tauri::command]
 pub async fn check_for_app_update(
     app_handle: AppHandle,
     pending_update: State<'_, PendingUpdate>,
 ) -> ResultUpdate<Option<UpdateMetadata>> {
-    let update = app_handle.updater()?.check().await?;
+    use reqwest::header::{HeaderMap, HeaderValue};
+    use tauri_plugin_updater::UpdaterExt;
+
+    let mut headers = HeaderMap::new();
+    headers.insert("X-Manager-Version", HeaderValue::from_str(&get_app_version(&app_handle)).unwrap());
+    headers.insert("X-Manager-Platform", HeaderValue::from_str(std::env::consts::OS).unwrap());
+    headers.insert("X-Manager-Portable", HeaderValue::from_static("false"));
+
+    let update = app_handle
+        .updater_builder()
+        .timeout(std::time::Duration::from_secs(30))
+        .headers(headers)
+        .build()?
+        .check()
+        .await?;
 
     match update {
         None => Ok(None),
@@ -328,11 +349,10 @@ pub async fn check_for_app_update(
                 version: update.version.clone(),
                 current_version: update.current_version.clone(),
                 download_url: None,
-                changelog: None, 
+                changelog: None,
             };
 
             let bytes = update.download(|_, _| {}, || {}).await?;
-
             *pending_update.0.lock().unwrap() = Some((update, bytes));
 
             Ok(Some(metadata))
@@ -340,6 +360,7 @@ pub async fn check_for_app_update(
     }
 }
 
+#[cfg(not(feature = "portable"))]
 #[tauri::command]
 pub async fn install_app_update(
     app_handle: AppHandle,
@@ -351,5 +372,4 @@ pub async fn install_app_update(
 
     update.install(bytes)?;
     app_handle.restart();
-    Ok(())
 }

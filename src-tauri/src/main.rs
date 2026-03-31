@@ -223,6 +223,7 @@ pub fn main() {
             // updater
             updater::get_mod_preview_version,
             updater::check_for_app_update,
+            #[cfg(not(feature = "portable"))]
             updater::install_app_update,
             updater::check_for_mod_preview_update,
             updater::update_mod_preview,
