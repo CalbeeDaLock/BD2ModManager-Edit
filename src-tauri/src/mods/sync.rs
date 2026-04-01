@@ -12,7 +12,10 @@ use tempfile::NamedTempFile;
 
 use crate::{
     mods::BD2Mod,
-    utils::{files::{ensure_dir_exists, sync_dirs}, misc::is_elevated},
+    utils::{
+        files::{ensure_dir_exists, sync_dirs},
+        misc::is_elevated,
+    },
 };
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
@@ -71,7 +74,7 @@ pub enum SyncError {
     SymlinkFailed(String),
     HardlinkFailed(String),
     DirectoryCreationFailed(String),
-    RemovalFailed(String)
+    RemovalFailed(String),
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -124,13 +127,13 @@ pub fn sync_mods(
             },
         )
         .ok();
- 
+
     // TODO: calculate the size that will be required to transfer, check if has space available
     // if is disk full or permission denied => sync end
- 
+
     let manifest_path = game_directory.join(".bd2mm.json");
     let game_mods_path = game_directory.join("BepInEx/plugins/BrownDustX/mods/BD2MM");
- 
+
     if let Err(e) = ensure_dir_exists(&game_mods_path) {
         app_handle
             .emit(
@@ -151,11 +154,11 @@ pub fn sync_mods(
             game_mods_path.to_string_lossy().to_string(),
         ));
     }
- 
+
     if method == SyncMethod::Symlink {
         if let Ok(is_admin) = is_elevated() {
             if !is_admin {
-                println!("needs to be running as admin");
+                debug!("needs to be running as admin");
                 app_handle
                     .emit(
                         "sync-end",
@@ -172,13 +175,13 @@ pub fn sync_mods(
             }
         }
     }
- 
+
     let mut mods_to_remove = Vec::new();
- 
+
     if let Some(previous_manifest) = load_manifest(&manifest_path) {
         // if method changed, then clean all synced
         if previous_manifest.method != method {
-            println!("sync method changed, removing all synced mods.");
+            debug!("sync method changed, removing all synced mods.");
             for entry in game_mods_path
                 .read_dir()
                 .unwrap_or_else(|_| fs::read_dir(".").unwrap())
@@ -186,7 +189,7 @@ pub fn sync_mods(
                 if let Ok(entry) = entry {
                     let path = entry.path();
                     if path.symlink_metadata().is_err() {
-                        println!("no metadata, skipping.");
+                        debug!("no metadata, skipping.");
                         continue;
                     }
                     mods_to_remove.push(path);
@@ -196,10 +199,15 @@ pub fn sync_mods(
             // Remove mods that are in game mod folder but are no longer in the staging dir
             // the path is the parent of .modfile
             let current_mod_names: Vec<String> = mods.iter().map(|m| m.name.clone()).collect();
- 
+
+            debug!("current mod names in staging: {:?}", current_mod_names);
+
             let mut installed_mods: Vec<PathBuf> = Vec::new();
- 
-            for entry in walkdir::WalkDir::new(&game_mods_path).follow_links(true).min_depth(2) {
+
+            for entry in walkdir::WalkDir::new(&game_mods_path)
+                .follow_links(true)
+                .min_depth(2)
+            {
                 match entry {
                     Ok(e) => {
                         let path = e.path();
@@ -228,13 +236,14 @@ pub fn sync_mods(
                     }
                 }
             }
- 
+
             debug!("installed mods in game folder: {:?}", installed_mods);
- 
+
             mods_to_remove.extend(installed_mods.into_iter().filter(|mod_path| {
                 if let Ok(relative) = mod_path.strip_prefix(&game_mods_path) {
                     // normalize separator so  / and \ paths match
-                    let name = relative.to_string_lossy().replace("/", "\\");
+                    let name = relative.to_string_lossy().replace("\\", "/");
+                    // debug!("Checking if mod '{}' is in current mod names: {:?}", name, current_mod_names);
                     !current_mod_names.contains(&name)
                 } else {
                     false
@@ -244,7 +253,7 @@ pub fn sync_mods(
     } else {
         // No manifest  remove anything in game mods folder not in current mod list
         let current_mod_names: Vec<String> = mods.iter().map(|m| m.name.clone()).collect();
- 
+
         for entry in game_mods_path
             .read_dir()
             .unwrap_or_else(|_| fs::read_dir(".").unwrap())
@@ -259,12 +268,12 @@ pub fn sync_mods(
             }
         }
     }
-    
+
     // skip disabled mods that are not in game folder or mods with errors that are enabled, we don't need to remove because it is never synced
     let mut index = 0;
     let mods_to_sync = mods.clone().into_iter().filter(|_mod| {
         let dst_path = game_mods_path.join(&_mod.name);
- 
+
         if !dst_path.exists() && !_mod.enabled || !_mod.errors.is_empty() && _mod.enabled {
             false
         } else {
@@ -272,17 +281,27 @@ pub fn sync_mods(
         }
     });
     let total_mods_count = mods_to_sync.count() + mods_to_remove.iter().count();
- 
+
     debug!(
         "Total mods to sync: {}, total mods to remove: {}",
         total_mods_count - mods_to_remove.len(),
         mods_to_remove.len()
     );
-    // mods enabled
- 
+    
+    #[cfg(debug_assertions)]
+    println!("Mods to remove:");
+    for path in &mods_to_remove {
+        println!(
+            "- {}",
+            path.file_name()
+                .and_then(|n| n.to_str())
+                .unwrap_or_default()
+        );
+    }
+
     for path in mods_to_remove {
         debug!("Removing mod at path: {:?}", path);
- 
+
         let (status, error) = match remove_mod_path(&path) {
             Ok(_) => {
                 // remove parent dir if  empty
@@ -298,7 +317,7 @@ pub fn sync_mods(
                 Some(SyncError::RemovalFailed(e.to_string())),
             ),
         };
- 
+
         index += 1;
         app_handle
             .emit(
@@ -317,7 +336,7 @@ pub fn sync_mods(
             )
             .ok();
     }
- 
+
     // let mut synced_mods: HashMap<String, SyncedMod> = HashMap::new();
     let mut synced_mods: Vec<String> = Vec::new();
     for _mod in mods {
@@ -329,12 +348,12 @@ pub fn sync_mods(
             );
             continue;
         }
- 
+
         let dst_path = game_mods_path.join(&_mod.name);
- 
+
         if !_mod.path.exists() {
             warn!("mod {:?} does not exist in staging.", _mod.name);
- 
+
             // if it was previously synced, remove it from game folder
             let (status, error) = if dst_path.exists() || dst_path.is_symlink() {
                 match remove_mod_path(&dst_path) {
@@ -345,19 +364,28 @@ pub fn sync_mods(
                                 let _ = fs::remove_dir(parent);
                             }
                         }
-                        (SyncStatus::Removed, Some(SyncError::ModPathNotFound(
-                            _mod.path.to_string_lossy().to_string(),
-                        )))
+                        (
+                            SyncStatus::Removed,
+                            Some(SyncError::ModPathNotFound(
+                                _mod.path.to_string_lossy().to_string(),
+                            )),
+                        )
                     }
-                    Err(e) => (SyncStatus::Failed, Some(SyncError::RemovalFailed(e.to_string()))),
+                    Err(e) => (
+                        SyncStatus::Failed,
+                        Some(SyncError::RemovalFailed(e.to_string())),
+                    ),
                 }
             } else {
                 // was not in game folder, just report missing
-                (SyncStatus::Failed, Some(SyncError::ModPathNotFound(
-                    _mod.path.to_string_lossy().to_string(),
-                )))
+                (
+                    SyncStatus::Failed,
+                    Some(SyncError::ModPathNotFound(
+                        _mod.path.to_string_lossy().to_string(),
+                    )),
+                )
             };
- 
+
             index = index + 1;
             app_handle
                 .emit(
@@ -374,7 +402,7 @@ pub fn sync_mods(
                 .ok();
             continue;
         }
- 
+
         if !_mod.enabled {
             if dst_path.exists() || dst_path.is_symlink() {
                 if let Err(e) = remove_mod_path(&dst_path) {
@@ -394,16 +422,16 @@ pub fn sync_mods(
                         .ok();
                     continue;
                 }
- 
+
                 // remove parent dir if now empty
                 if let Some(parent) = dst_path.parent() {
                     if parent != game_mods_path {
                         let _ = fs::remove_dir(parent);
                     }
                 }
- 
+
                 index = index + 1;
- 
+
                 app_handle
                     .emit(
                         "sync-progress",
@@ -420,23 +448,21 @@ pub fn sync_mods(
             }
             continue;
         }
- 
+
         let mut was_updated = false;
         let mut sync_error: Option<SyncError> = None;
- 
+
         match method {
-            SyncMethod::Copy => {
-                match sync_dirs(&_mod.path, &dst_path) {
-                    Ok(updated) => {
-                        if updated {
-                            was_updated = true;
-                        }
-                    }
-                    Err(e) => {
-                        sync_error = Some(SyncError::CopyFailed(e.to_string()));
+            SyncMethod::Copy => match sync_dirs(&_mod.path, &dst_path) {
+                Ok(updated) => {
+                    if updated {
+                        was_updated = true;
                     }
                 }
-            }
+                Err(e) => {
+                    sync_error = Some(SyncError::CopyFailed(e.to_string()));
+                }
+            },
             SyncMethod::Symlink => {
                 let needs_update = if dst_path.is_symlink() {
                     dst_path.read_link().ok() != Some(_mod.path.clone())
@@ -445,7 +471,7 @@ pub fn sync_mods(
                 } else {
                     true
                 };
- 
+
                 if needs_update {
                     // Remove existing if it's not a symlink pointing to the right place
                     if dst_path.exists() || dst_path.is_symlink() {
@@ -453,7 +479,7 @@ pub fn sync_mods(
                             sync_error = Some(SyncError::RemovalFailed(e.to_string()));
                         }
                     }
- 
+
                     // Create parent dirs
                     if sync_error.is_none() {
                         if let Some(parent) = dst_path.parent() {
@@ -463,7 +489,7 @@ pub fn sync_mods(
                             }
                         }
                     }
- 
+
                     if sync_error.is_none() {
                         #[cfg(target_family = "unix")]
                         {
@@ -492,7 +518,7 @@ pub fn sync_mods(
                         sync_error = Some(SyncError::RemovalFailed(e.to_string()));
                     }
                 }
- 
+
                 if sync_error.is_none() {
                     if let Err(e) = ensure_dir_exists(&dst_path) {
                         sync_error = Some(SyncError::DirectoryCreationFailed(e.to_string()));
@@ -507,7 +533,7 @@ pub fn sync_mods(
                             };
                             let relative = entry.path().strip_prefix(&_mod.path).unwrap();
                             let target = dst_path.join(relative);
- 
+
                             if entry.file_type().is_dir() {
                                 if let Err(e) = fs::create_dir_all(&target) {
                                     sync_error =
@@ -521,7 +547,7 @@ pub fn sync_mods(
                                 }
                             }
                         }
- 
+
                         if sync_error.is_none() {
                             was_updated = true;
                         }
@@ -529,9 +555,9 @@ pub fn sync_mods(
                 }
             }
         }
- 
+
         index = index + 1;
- 
+
         let (status, error) = if let Some(ref err) = sync_error {
             (SyncStatus::Failed, Some(err.clone()))
         } else if was_updated {
@@ -539,7 +565,7 @@ pub fn sync_mods(
         } else {
             (SyncStatus::UpToDate, None)
         };
- 
+
         app_handle
             .emit(
                 "sync-progress",
@@ -553,28 +579,28 @@ pub fn sync_mods(
                 },
             )
             .ok();
- 
+
         // Only add to synced_mods if there was no error
         // mod that was disabled and removed, should we add to sync error?
         if sync_error.is_none() {
             synced_mods.push(_mod.name.clone());
         }
     }
- 
+
     // if cancel sync, remove synced mods?
     debug!(
         "{:?} mods was synced to game folder.",
         synced_mods.iter().count()
     );
- 
+
     let manifest = SyncManifest {
         method,
         synced_at: Utc::now(),
         synced_mods,
     };
- 
+
     save_manifest(&manifest_path, manifest).ok();
- 
+
     app_handle
         .emit(
             "sync-end",
@@ -587,10 +613,13 @@ pub fn sync_mods(
             },
         )
         .ok();
- 
+
     Ok(())
 }
-pub fn unsync_mods(app_handle: &tauri::AppHandle, game_directory: &PathBuf) -> Result<(), SyncError> {
+pub fn unsync_mods(
+    app_handle: &tauri::AppHandle,
+    game_directory: &PathBuf,
+) -> Result<(), SyncError> {
     let manifest_path = game_directory.join(".bd2mm.json");
     let game_mods_path = game_directory.join("BepInEx/plugins/BrownDustX/mods/BD2MM");
 
@@ -669,12 +698,12 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
     // simple check, todo: improve this by checking content too like sync do
     let manifest_path = game_directory.join(".bd2mm.json");
     let game_mods_path = game_directory.join("BepInEx/plugins/BrownDustX/mods/BD2MM");
- 
+
     if !game_mods_path.exists() {
         debug!("Game mods path does not exist, sync is needed.");
         return true;
     }
- 
+
     let manifest = match load_manifest(&manifest_path) {
         Some(m) => m,
         None => {
@@ -682,16 +711,16 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
             return true;
         }
     };
- 
+
     let manifest_mods_set: std::collections::HashSet<&str> =
         manifest.synced_mods.iter().map(|s| s.as_str()).collect();
- 
+
     let expected_mods_set: std::collections::HashSet<&str> = staging_mods
         .iter()
         .filter(|m| m.enabled && m.errors.is_empty())
         .map(|m| m.name.as_str())
         .collect();
- 
+
     if manifest_mods_set != expected_mods_set {
         debug!(
             "Manifest mods and expected mods differ, sync is needed. Manifest: {:?}, Expected: {:?}",
@@ -699,7 +728,7 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
         );
         return true;
     }
- 
+
     for mod_name in &expected_mods_set {
         let dst_path = game_mods_path.join(mod_name);
         if !dst_path.exists() {
@@ -715,10 +744,15 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
         for entry in walkdir::WalkDir::new(&game_mods_path).follow_links(true) {
             match entry {
                 Ok(e) => {
-                    if e.path().extension().and_then(|ext| ext.to_str()).map(|ext| ext == "modfile").unwrap_or(false) {
+                    if e.path()
+                        .extension()
+                        .and_then(|ext| ext.to_str())
+                        .map(|ext| ext == "modfile")
+                        .unwrap_or(false)
+                    {
                         if let Some(parent) = e.path().parent() {
                             if let Ok(rel) = parent.strip_prefix(&game_mods_path) {
-                                set.insert(rel.to_string_lossy().replace("/", "\\"));
+                                set.insert(rel.to_string_lossy().replace("\\", "/"));
                             }
                         }
                     }
@@ -727,7 +761,7 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
                     // broken symlink is installed
                     if let Some(path) = e.path() {
                         if let Ok(rel) = path.strip_prefix(&game_mods_path) {
-                            set.insert(rel.to_string_lossy().replace("/", "\\"));
+                            set.insert(rel.to_string_lossy().replace("\\", "/"));
                         }
                     }
                 }
@@ -735,7 +769,7 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
         }
         set
     };
- 
+
     for installed in &installed_mods {
         if !expected_mods_set.contains(installed.as_str()) {
             debug!(
@@ -745,6 +779,6 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
             return true;
         }
     }
- 
+
     false
 }
