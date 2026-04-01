@@ -321,7 +321,8 @@
             "createProfile": "Create Profile",
             "editProfile": "Edit Profile",
             "deleteProfile": "Delete Profile",
-            "setAsCurrent": "Set as Current"
+            "setAsCurrent": "Set as Current",
+            "refreshProfiles": "Refresh Profiles"
         },
         "notifications": {
             "profileCreated": {

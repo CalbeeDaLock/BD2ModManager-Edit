@@ -169,9 +169,14 @@ impl BD2ModManager {
             .edit_profile(profile_id, name, description)
     }
 
-    pub fn delete_profile(&mut self, profile_id: String) -> Result<String, ProfileError> {
+    pub fn delete_profile(&mut self, app_handle: &AppHandle, profile_id: String) -> Result<String, ProfileError> {
         let result = self.profile_manager.delete_profile(profile_id);
-        // self.sync_mods_with_profiles();
+        self.sync_mods_with_profiles();
+
+        // send to frontend to update mods states
+        let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
+        app_handle.emit("mods-changed", all_mods).unwrap();
+
         result
     }
 

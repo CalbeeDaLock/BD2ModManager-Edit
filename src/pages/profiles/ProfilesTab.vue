@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useProfilesStore } from '../../stores/profiles'
-import { Edit, PlusCircle, Trash2, TriangleAlert } from 'lucide-vue-next'
+import { Edit, PlusCircle, RefreshCcw, Trash2, TriangleAlert } from 'lucide-vue-next'
 import { useHeader } from '../../composables/useHeader'
 import { useI18n } from 'vue-i18n'
 import EditProfile from './modals/EditProfile.vue'
@@ -103,10 +103,19 @@ function onProfileSwitch(id: string) {
   profilesStore.switchProfile(id)
 }
 
+function refreshProfiles() {
+  profilesStore.loadProfiles()
+}
+
 useHeader({
   title: t('profilesTab.title'),
   subtitle: t('profilesTab.subtitle'),
   buttons: [
+    {
+      label: t("profilesTab.actions.refreshProfiles"),
+      icon: RefreshCcw,
+      action: refreshProfiles
+    },
     {
       label: t('profilesTab.actions.createProfile'),
       icon: PlusCircle,

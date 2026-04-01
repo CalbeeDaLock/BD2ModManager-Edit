@@ -1,7 +1,6 @@
-use bd2modmanager_lib::{mods::BD2Mod, profiles::types::Profile};
+use bd2modmanager_lib::{profiles::types::Profile};
 use log::info;
 use serde::{Deserialize, Serialize};
-use tauri::Emitter;
 
 use crate::AppState;
 
@@ -76,12 +75,8 @@ pub fn delete_profile(
     id: String,
 ) -> bool {
     let mut mod_manager = state.mod_manager.lock().unwrap();
-    match mod_manager.delete_profile(id) {
-        Ok(_s) => {
-            let all_mods: Vec<&BD2Mod> = mod_manager.cached_mods.values().collect();
-            app_handle.emit("mods-updated", all_mods).unwrap();
-            true
-        }
+    match mod_manager.delete_profile(&app_handle, id) {
+        Ok(_s) => true,
         Err(_) => false,
     }
 }
