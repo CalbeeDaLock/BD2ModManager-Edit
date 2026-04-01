@@ -65,7 +65,7 @@ let filters = reactive({
   onlyErrors: false,
 });
 const totalModsCount = computed(() => modsStore.mods.length)
-const enabledModsCount = computed(() => modsStore.mods.filter(mod => mod.enabled).length)
+const enabledModsCount = computed(() => modsStore.mods.filter(mod => mod.enabled && !mod.errors.length).length)
 
 const filteredMods = computed(() => {
   return modsStore.mods.filter((mod) => {
