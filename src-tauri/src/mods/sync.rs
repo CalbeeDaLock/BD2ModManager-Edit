@@ -5,7 +5,7 @@ use std::{
 };
 
 use chrono::Utc;
-use log::warn;
+use log::{debug, warn};
 use serde::{Deserialize, Serialize};
 use tauri::Emitter;
 use tempfile::NamedTempFile;
@@ -199,10 +199,9 @@ pub fn sync_mods(
  
             let mut installed_mods: Vec<PathBuf> = Vec::new();
  
-            for entry in walkdir::WalkDir::new(&game_mods_path).follow_links(true) {
+            for entry in walkdir::WalkDir::new(&game_mods_path).follow_links(true).min_depth(2) {
                 match entry {
                     Ok(e) => {
-                        // parent of .modfile
                         let path = e.path();
                         if path
                             .extension()
@@ -221,7 +220,7 @@ pub fn sync_mods(
                         // broken symlink
                         // no .modfile to find
                         if let Some(path) = e.path() {
-                            println!("broken symlink detected: {:?}", path);
+                            warn!("broken symlink detected: {:?}", path);
                             if !installed_mods.contains(&path.to_path_buf()) {
                                 installed_mods.push(path.to_path_buf());
                             }
@@ -230,7 +229,7 @@ pub fn sync_mods(
                 }
             }
  
-            println!("installed mods in game folder: {:?}", installed_mods);
+            debug!("installed mods in game folder: {:?}", installed_mods);
  
             mods_to_remove.extend(installed_mods.into_iter().filter(|mod_path| {
                 if let Ok(relative) = mod_path.strip_prefix(&game_mods_path) {
@@ -260,7 +259,7 @@ pub fn sync_mods(
             }
         }
     }
- 
+    
     // skip disabled mods that are not in game folder or mods with errors that are enabled, we don't need to remove because it is never synced
     let mut index = 0;
     let mods_to_sync = mods.clone().into_iter().filter(|_mod| {
@@ -274,7 +273,7 @@ pub fn sync_mods(
     });
     let total_mods_count = mods_to_sync.count() + mods_to_remove.iter().count();
  
-    println!(
+    debug!(
         "Total mods to sync: {}, total mods to remove: {}",
         total_mods_count - mods_to_remove.len(),
         mods_to_remove.len()
@@ -282,7 +281,7 @@ pub fn sync_mods(
     // mods enabled
  
     for path in mods_to_remove {
-        println!("Removing mod at path: {:?}", path);
+        debug!("Removing mod at path: {:?}", path);
  
         let (status, error) = match remove_mod_path(&path) {
             Ok(_) => {
@@ -324,34 +323,17 @@ pub fn sync_mods(
     for _mod in mods {
         // if mod has errors and is enabled, skip syncing
         if !_mod.errors.is_empty() && _mod.enabled {
-            println!(
+            warn!(
                 "mod {:?} has errors, skipping sync. Errors: {:?}",
                 _mod.name, _mod.errors
             );
-            // index = index + 1;
-            // app_handle
-            //     .emit(
-            //         "sync-progress",
-            //         SyncProgressEvent {
-            //             r#type: SyncType::Sync,
-            //             current: index,
-            //             mod_name: _mod.name.clone(),
-            //             total: total_mods_count,
-            //             status: SyncStatus::Failed,
-            //             error: Some(SyncError::ModPathNotFound(format!(
-            //                 "Mod has errors: {:?}",
-            //                 _mod.errors
-            //             ))),
-            //         },
-            //     )
-            //     .ok();
             continue;
         }
  
         let dst_path = game_mods_path.join(&_mod.name);
  
         if !_mod.path.exists() {
-            println!("mod {:?} does not exist in staging.", _mod.name);
+            warn!("mod {:?} does not exist in staging.", _mod.name);
  
             // if it was previously synced, remove it from game folder
             let (status, error) = if dst_path.exists() || dst_path.is_symlink() {
@@ -444,35 +426,6 @@ pub fn sync_mods(
  
         match method {
             SyncMethod::Copy => {
-                // let needs_update = if dst_path.exists() {
-                //     // TODO: improve this, maybe do a superficial check but reliable
-                //     // let mod_hash = hash_directory(&_mod.path).unwrap_or_default();
-                //     // let game_mod_hash = hash_directory(&dst_path).unwrap_or_default();
-                //     // mod_hash != game_mod_hash
-                //     let src_meta = _mod.path.metadata().ok();
-                //     let dst_meta = dst_path.metadata().ok();
- 
-                //     match (src_meta, dst_meta) {
-                //         (Some(src), Some(dst)) => {
-                //             src.modified().unwrap_or(UNIX_EPOCH)
-                //                 != dst.modified().unwrap_or(UNIX_EPOCH)
-                //                 || src.len() != dst.len()
-                //         }
-                //         _ => true,
-                //     }
-                // } else {
-                //     true
-                // };
- 
-                // println!("it needs update {:?}", needs_update);
- 
-                // if needs_update {
-                //     if let Err(e) = copy_dir_all(&_mod.path, &dst_path) {
-                //         sync_error = Some(SyncError::CopyFailed(e.to_string()));
-                //     } else {
-                //         was_updated = true;
-                //     }
-                // }
                 match sync_dirs(&_mod.path, &dst_path) {
                     Ok(updated) => {
                         if updated {
@@ -605,18 +558,11 @@ pub fn sync_mods(
         // mod that was disabled and removed, should we add to sync error?
         if sync_error.is_none() {
             synced_mods.push(_mod.name.clone());
-            // synced_mods.insert(
-            //     _mod.name.clone(),
-            //     SyncedMod {
-            //         mod_path: _mod.path.clone(),
-            //         game_mod_path: dst_path,
-            //     },
-            // );
         }
     }
  
     // if cancel sync, remove synced mods?
-    println!(
+    debug!(
         "{:?} mods was synced to game folder.",
         synced_mods.iter().count()
     );
@@ -669,7 +615,7 @@ pub fn unsync_mods(app_handle: &tauri::AppHandle, game_directory: &PathBuf) -> R
     {
         if let Ok(entry) = entry {
             let path = entry.path();
-            println!("Removing mod at path: {:?}", path);
+            debug!("Removing mod at path: {:?}", path);
 
             let result = remove_mod_path(&path);
 
@@ -725,14 +671,14 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
     let game_mods_path = game_directory.join("BepInEx/plugins/BrownDustX/mods/BD2MM");
  
     if !game_mods_path.exists() {
-        println!("Game mods path does not exist, sync is needed.");
+        debug!("Game mods path does not exist, sync is needed.");
         return true;
     }
  
     let manifest = match load_manifest(&manifest_path) {
         Some(m) => m,
         None => {
-            println!("Manifest cannot be loaded, sync is needed.");
+            debug!("Manifest cannot be loaded, sync is needed.");
             return true;
         }
     };
@@ -747,7 +693,7 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
         .collect();
  
     if manifest_mods_set != expected_mods_set {
-        println!(
+        debug!(
             "Manifest mods and expected mods differ, sync is needed. Manifest: {:?}, Expected: {:?}",
             manifest_mods_set, expected_mods_set
         );
@@ -757,7 +703,7 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
     for mod_name in &expected_mods_set {
         let dst_path = game_mods_path.join(mod_name);
         if !dst_path.exists() {
-            println!(
+            debug!(
                 "Mod {:?} missing from game folder, sync is needed.",
                 mod_name
             );
@@ -792,7 +738,7 @@ pub fn is_sync_needed(game_directory: &PathBuf, staging_mods: &[&BD2Mod]) -> boo
  
     for installed in &installed_mods {
         if !expected_mods_set.contains(installed.as_str()) {
-            println!(
+            debug!(
                 "Extra mod {:?} found in game folder, sync is needed.",
                 installed
             );
