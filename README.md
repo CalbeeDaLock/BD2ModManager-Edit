@@ -131,7 +131,7 @@ You can find mods on the BrownDustX Discord server: [https://discord.gg/B3Aqz6tD
 
 - Character assets by [myssal/Brown-Dust-2-Asset](https://github.com/myssal/Brown-Dust-2-Asset)
 - Thanks to **Synae** for *BrownDustX*
-   
+- Thanks to everyone who contributed by reporting bugs and suggesting features.  
    ![Alt](https://repobeats.axiom.co/api/embed/ed16651a70e0b4d1937e8e346f394c6b78c9a231.svg "Repobeats analytics image")
 
 
