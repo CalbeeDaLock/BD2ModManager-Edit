@@ -39,7 +39,8 @@
     "titlebar": {
         "appUpdate": {
             "checking": "업데이트 확인 중...",
-            "available": "업데이트 가능: v{version}"
+            "available": "업데이트 가능: v{version}",
+            "downloaded": "v{version} 준비 완료! 클릭하여 업데이트 적용"
         },
         "sync": {
             "applying": "적용 중: {modName}",
@@ -62,7 +63,9 @@
         },
         "actions": {
             "github": "GitHub",
-            "logs": "로그"
+            "logs": "로그",
+            "kofi": "Ko-Fi로 지원하기",
+            "afdian": "Afdian으로 지원하기"
         }
     },
     "sidebar": {
@@ -276,7 +279,7 @@
         "tags": {
             "new": "신규",
             "collab": "콜라보",
-            "modsCount": "모드 {count}개"
+            "modsCount": "{count} 개 모드 | {count} 개 모드"
         },
         "modTypes": {
             "cutscene": "컷씬",
@@ -293,6 +296,15 @@
             "noModsFound": {
                 "title": "모드 없음",
                 "description": "모드 탭에서 이 캐릭터의 모드를 설치하세요."
+            },
+            "discoverModsDescription": "이 캐릭터의 모든 사용 가능한 모드를 탐색할 수 있습니다. 참고: 최신 모드가 포함되지 않을 수 있습니다. 최근 업데이트: {latestUpdate}",
+            "modsTab": "내 모드",
+            "discoverModsTab": "모드 탐색",
+            "paidMod": "유료",
+            "freeMod": "무료",
+            "noIndexModsFound": {
+                "title": "모드 없음",
+                "description": "이 캐릭터에 대한 인덱스에 사용 가능한 모드가 없습니다."
             }
         }
     },
@@ -302,14 +314,15 @@
         "defaultProfile": "기본 프로필",
         "emptyDescription": "설명이 없습니다.",
         "activeProfile": "사용 중인 프로필",
-        "enabledMods": "활성화된 모드 {count}개",
+        "enabledMods": "{count} 개 활성화된 모드 | {count} 개 활성화된 모드",
         "noModsEnabled": "활성화된 모드가 없습니다.",
         "noProfileSelected": "프로필이 선택되지 않았습니다. 상세 정보를 보려면 프로필을 선택해 주세요.",
         "actions": {
             "createProfile": "프로필 생성",
             "editProfile": "프로필 편집",
             "deleteProfile": "프로필 삭제",
-            "setAsCurrent": "현재 프로필로 설정"
+            "setAsCurrent": "현재 프로필로 설정",
+            "refreshProfiles": "프로필 새로고침"
         },
         "notifications": {
             "profileCreated": {
@@ -366,7 +379,8 @@
                 },
                 "actions": {
                     "saveChanges": "변경사항 저장"
-                }
+                },
+                "description": "프로필 이름과 설명을 편집합니다."
             }
         }
     },
@@ -564,6 +578,60 @@
                     }
                 }
             }
+        },
+        "experimental": {
+            "label": "실험적 기능",
+            "sections": {
+                "migration": {
+                    "title": "이전 버전에서 가져오기",
+                    "description": "v3.2.4 이하에서 프로필 및 모드 제작자를 가져옵니다.",
+                    "profiles": {
+                        "title": "프로필",
+                        "description": "v3.2.4 이하에서 가져올 프로필을 선택하세요.",
+                        "selectPlaceholder": "가져올 프로필 선택"
+                    },
+                    "modAuthors": {
+                        "title": "모드 제작자",
+                        "description": "v3.2.4 이하에서 모드 제작자를 가져옵니다."
+                    },
+                    "actions": {
+                        "importProfiles": "프로필 가져오기",
+                        "importModAuthors": "모드 제작자 가져오기"
+                    },
+                    "confirmations": {
+                        "importModAuthors": {
+                            "title": "모드 제작자를 가져오시겠습니까?",
+                            "message": "이전 버전에서 모드 제작자를 가져오시겠습니까? 기존 모드의 제작자 이름이 이전 버전의 것으로 덮어씌워집니다. 이 작업은 취소할 수 없습니다.",
+                            "actions": {
+                                "importModAuthors": "모드 제작자 가져오기",
+                                "cancel": "취소"
+                            }
+                        }
+                    },
+                    "notifications": {
+                        "importProfilesSuccess": {
+                            "title": "프로필 가져오기 완료",
+                            "description": "이전 버전에서 프로필을 성공적으로 가져왔습니다."
+                        },
+                        "importModAuthorsSuccess": {
+                            "title": "모드 제작자 가져오기 완료",
+                            "description": "이전 버전에서 모드 제작자를 성공적으로 가져왔습니다."
+                        },
+                        "importFailed": {
+                            "title": "가져오기 실패",
+                            "description": "데이터를 가져오는 중 오류가 발생했습니다: {error}"
+                        },
+                        "errorFetchingProfiles": {
+                            "title": "프로필 가져오기 실패",
+                            "description": "이전 버전에서 프로필을 가져오는 중 오류가 발생했습니다: {error}"
+                        },
+                        "noProfilesToImport": {
+                            "title": "가져올 프로필 없음",
+                            "description": "이전 버전에서 가져올 프로필을 찾을 수 없습니다."
+                        }
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -580,7 +648,8 @@
                 "removing": "모드 제거 중...",
                 "removed": "모드 제거됨",
                 "failedToRemove": "모드 제거 실패",
-                "idleToRemove": "모드 제거"
+                "idleToRemove": "모드 제거",
+                "waitingForAction": "작업 대기 중"
             },
             "actions": {
                 "close": "닫기"
@@ -604,7 +673,8 @@
                 "github": "GitHub 방문",
                 "discord": "BrownDustX Discord",
                 "suggestFeatures": "기능 제안",
-                "reportIssues": "문제 신고"
+                "reportIssues": "문제 신고",
+                "kofi": "Ko-Fi로 지원하기"
             },
             "selectGameDirectory": {
                 "title": "게임 디렉토리",
@@ -628,6 +698,11 @@
                 "message": "이것은 모드 매니저의 {beta}입니다. 버그나 예상치 못한 동작이 발생할 수 있습니다. 문제를 발견하시면 {github}에 신고해 주세요.",
                 "beta": "베타 버전",
                 "github": "GitHub Issues"
+            },
+            "supportBanner": {
+                "title": "프로젝트 지원하기 ❤️",
+                "messageKofi": "BD2ModManager는 무료 오픈소스입니다. 도움이 되었다면 Ko-Fi로 지원을 고려해 주세요!",
+                "messageAfdian": "BD2ModManager는 무료 오픈소스입니다. 도움이 되었다면 Afdian으로 지원을 고려해 주세요!"
             }
         },
         "changeModAuthor": {
@@ -653,6 +728,17 @@
             },
             "actions": {
                 "save": "저장"
+            }
+        },
+        "updateAvailable": {
+            "title": "업데이트 가능",
+            "subtitle": "새 버전 v{version}이 출시되었습니다.",
+            "changelogLabel": "새로운 점",
+            "skipLabel": "다시 표시하지 않기",
+            "actions": {
+                "downloadUpdate": "업데이트 다운로드",
+                "later": "나중에",
+                "goToReleases": "릴리즈 페이지로"
             }
         }
     },

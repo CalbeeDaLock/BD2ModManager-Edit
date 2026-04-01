@@ -39,7 +39,8 @@
     "titlebar": {
         "appUpdate": {
             "checking": "Verificando atualizações...",
-            "available": "Atualização disponível: v{version}"
+            "available": "Atualização disponível: v{version}",
+            "downloaded": "v{version} pronta! Clique para aplicar a atualização"
         },
         "sync": {
             "applying": "Aplicando: {modName}",
@@ -62,7 +63,9 @@
         },
         "actions": {
             "github": "Github",
-            "logs": "Logs"
+            "logs": "Logs",
+            "kofi": "Apoiar no Ko-Fi",
+            "afdian": "Apoiar no Afdian"
         }
     },
     "sidebar": {
@@ -293,6 +296,15 @@
             "noModsFound": {
                 "title": "Nenhum Mod Encontrado",
                 "description": "Acesse a aba Mods para instalar mods para este personagem."
+            },
+            "discoverModsDescription": "Aqui você pode explorar todos os mods disponíveis para este personagem. Nota: a lista pode não incluir os mods mais recentes. Última atualização: {latestUpdate}",
+            "modsTab": "Seus Mods",
+            "discoverModsTab": "Descobrir Mods",
+            "paidMod": "Pago",
+            "freeMod": "Gratuito",
+            "noIndexModsFound": {
+                "title": "Nenhum Mod Encontrado",
+                "description": "Não há mods disponíveis no índice para este personagem."
             }
         }
     },
@@ -309,7 +321,8 @@
             "createProfile": "Criar Perfil",
             "editProfile": "Editar Perfil",
             "deleteProfile": "Excluir Perfil",
-            "setAsCurrent": "Definir como Atual"
+            "setAsCurrent": "Definir como Atual",
+            "refreshProfiles": "Atualizar Perfis"
         },
         "notifications": {
             "profileCreated": {
@@ -366,7 +379,8 @@
                 },
                 "actions": {
                     "saveChanges": "Salvar Alterações"
-                }
+                },
+                "description": "Edite o nome e a descrição do seu perfil."
             }
         }
     },
@@ -564,6 +578,60 @@
                     }
                 }
             }
+        },
+        "experimental": {
+            "label": "Experimental",
+            "sections": {
+                "migration": {
+                    "title": "Importar da Versão Legada",
+                    "description": "Importe perfis e autores de mods da versão v3.2.4 ou anterior.",
+                    "profiles": {
+                        "title": "Perfis",
+                        "description": "Selecione os perfis que deseja importar da versão v3.2.4 ou anterior.",
+                        "selectPlaceholder": "Selecione um perfil para importar"
+                    },
+                    "modAuthors": {
+                        "title": "Autores de Mods",
+                        "description": "Importe autores de mods da versão v3.2.4 ou anterior."
+                    },
+                    "actions": {
+                        "importProfiles": "Importar Perfis",
+                        "importModAuthors": "Importar Autores de Mods"
+                    },
+                    "confirmations": {
+                        "importModAuthors": {
+                            "title": "Importar Autores de Mods?",
+                            "message": "Tem certeza que deseja importar os autores de mods da versão legada? Isso irá sobrescrever os nomes dos autores dos seus mods atuais com os da versão legada. Esta ação não pode ser desfeita.",
+                            "actions": {
+                                "importModAuthors": "Importar Autores de Mods",
+                                "cancel": "Cancelar"
+                            }
+                        }
+                    },
+                    "notifications": {
+                        "importProfilesSuccess": {
+                            "title": "Perfis Importados",
+                            "description": "Os perfis foram importados com sucesso da versão legada."
+                        },
+                        "importModAuthorsSuccess": {
+                            "title": "Autores de Mods Importados",
+                            "description": "Os autores de mods foram importados com sucesso da versão legada."
+                        },
+                        "importFailed": {
+                            "title": "Importação Falhou",
+                            "description": "Ocorreu um erro ao importar os dados: {error}"
+                        },
+                        "errorFetchingProfiles": {
+                            "title": "Falha ao Buscar Perfis",
+                            "description": "Ocorreu um erro ao buscar perfis da versão legada: {error}"
+                        },
+                        "noProfilesToImport": {
+                            "title": "Nenhum Perfil para Importar",
+                            "description": "Nenhum perfil foi encontrado na versão legada para importar."
+                        }
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -580,7 +648,8 @@
                 "removing": "Removendo Mods...",
                 "removed": "Mods Removidos",
                 "failedToRemove": "Falha ao Remover Mods",
-                "idleToRemove": "Remover Mods"
+                "idleToRemove": "Remover Mods",
+                "waitingForAction": "Aguardando Ação"
             },
             "actions": {
                 "close": "Fechar"
@@ -604,7 +673,8 @@
                 "github": "Visite nosso Github",
                 "discord": "Discord do BrownDustX",
                 "suggestFeatures": "Sugerir Recursos",
-                "reportIssues": "Reportar Problemas"
+                "reportIssues": "Reportar Problemas",
+                "kofi": "Apoiar no Ko-Fi"
             },
             "selectGameDirectory": {
                 "title": "Diretório do Jogo",
@@ -628,6 +698,11 @@
                 "message": "Esta é uma {beta} do gerenciador de mods. Bugs ou comportamentos inesperados podem ocorrer. Se encontrar algum problema, por favor reporte em {github}.",
                 "beta": "versão beta",
                 "github": "GitHub Issues"
+            },
+            "supportBanner": {
+                "title": "Apoie o projeto ❤️",
+                "messageKofi": "BD2ModManager é gratuito e de código aberto. Se foi útil, considere me apoiar no Ko-Fi!",
+                "messageAfdian": "BD2ModManager é gratuito e de código aberto. Se foi útil, considere me apoiar no Afdian!"
             }
         },
         "changeModAuthor": {
@@ -653,6 +728,17 @@
             },
             "actions": {
                 "save": "Salvar"
+            }
+        },
+        "updateAvailable": {
+            "title": "Atualização Disponível",
+            "subtitle": "Uma nova versão está disponível v{version}.",
+            "changelogLabel": "O que há de novo",
+            "skipLabel": "Não mostrar novamente",
+            "actions": {
+                "downloadUpdate": "Baixar Atualização",
+                "later": "Depois",
+                "goToReleases": "Ver Releases"
             }
         }
     },

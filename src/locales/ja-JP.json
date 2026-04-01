@@ -39,7 +39,8 @@
     "titlebar": {
         "appUpdate": {
             "checking": "更新を確認中...",
-            "available": "アップデートあり：v{version}"
+            "available": "アップデートあり：v{version}",
+            "downloaded": "v{version} の準備ができました！クリックして適用"
         },
         "sync": {
             "applying": "適用中：{modName}",
@@ -62,7 +63,9 @@
         },
         "actions": {
             "github": "GitHub",
-            "logs": "ログ"
+            "logs": "ログ",
+            "kofi": "Ko-Fiでサポート",
+            "afdian": "Afdianでサポート"
         }
     },
     "sidebar": {
@@ -198,13 +201,13 @@
             },
             "modInstallSuccess": {
                 "title": "MODをインストールしました",
-                "description": "MOD「{modName}」が正常にインストールされました。"
+                "description": "Mod '{modName}' のインストールが完了しました。"
             }
         },
         "errors": {
             "modPreview": {
                 "title": "MODをプレビューできません",
-                "modContainErrors": "MOD「{modName}」にエラーが含まれています。プレビューを開けません。"
+                "modContainErrors": "Mod '{modName}' にエラーが含まれています。プレビューを開けません。"
             },
             "syncFailed": {
                 "title": "同期に失敗しました"
@@ -212,10 +215,10 @@
             "unsyncFailed": {
                 "title": "同期解除に失敗しました"
             },
-            "modFolderNotFound": "MOD「{modName}」のフォルダが見つかりません。",
-            "modNotDirectory": "MOD「{modName}」のパスはディレクトリではありません。",
+            "modFolderNotFound": "'{modName}' のModフォルダが見つかりません。",
+            "modNotDirectory": "'{modName}' のModパスはディレクトリではありません。",
             "stagingDirectoryNotSet": "ステージングディレクトリが設定されていません。",
-            "stagingDirectoryNotFound": "「{stagingDir}」にステージングディレクトリが見つかりません。設定を確認してください。"
+            "stagingDirectoryNotFound": "ステージングディレクトリ '{stagingDir}' が見つかりません。設定を確認してください。"
         }
     },
     "charactersTab": {
@@ -276,7 +279,7 @@
         "tags": {
             "new": "新キャラ",
             "collab": "コラボ",
-            "modsCount": "{count} 個のMOD"
+            "modsCount": "{count} 個のMod | {count} 個のMod"
         },
         "modTypes": {
             "cutscene": "カットシーン",
@@ -293,6 +296,15 @@
             "noModsFound": {
                 "title": "MODが見つかりません",
                 "description": "MODタブからこのキャラクターのMODをインストールしてください。"
+            },
+            "discoverModsDescription": "このキャラクターで利用可能なすべてのModを探索できます。注：最新のModが含まれていない場合があります。最終更新：{latestUpdate}",
+            "modsTab": "自分のMod",
+            "discoverModsTab": "Modを探す",
+            "paidMod": "有料",
+            "freeMod": "無料",
+            "noIndexModsFound": {
+                "title": "Modが見つかりません",
+                "description": "このキャラクターのインデックスに利用可能なModはありません。"
             }
         }
     },
@@ -302,14 +314,15 @@
         "defaultProfile": "デフォルトプロファイル",
         "emptyDescription": "説明はありません。",
         "activeProfile": "使用中のプロファイル",
-        "enabledMods": "{count} 個の有効なMOD",
+        "enabledMods": "{count} 個の有効なMod | {count} 個の有効なMod",
         "noModsEnabled": "有効なMODはありません。",
         "noProfileSelected": "プロファイルが選択されていません。詳細を確認するにはプロファイルを選択してください。",
         "actions": {
             "createProfile": "プロファイルを作成",
             "editProfile": "プロファイルを編集",
             "deleteProfile": "プロファイルを削除",
-            "setAsCurrent": "現在のプロファイルに設定"
+            "setAsCurrent": "現在のプロファイルに設定",
+            "refreshProfiles": "プロフィールを更新"
         },
         "notifications": {
             "profileCreated": {
@@ -366,7 +379,8 @@
                 },
                 "actions": {
                     "saveChanges": "変更を保存"
-                }
+                },
+                "description": "プロフィールの名前と説明を編集します。"
             }
         }
     },
@@ -564,6 +578,60 @@
                     }
                 }
             }
+        },
+        "experimental": {
+            "label": "実験的機能",
+            "sections": {
+                "migration": {
+                    "title": "旧バージョンからインポート",
+                    "description": "v3.2.4以前のプロフィールとMod作者をインポートします。",
+                    "profiles": {
+                        "title": "プロフィール",
+                        "description": "v3.2.4以前からインポートするプロフィールを選択してください。",
+                        "selectPlaceholder": "インポートするプロフィールを選択"
+                    },
+                    "modAuthors": {
+                        "title": "Mod作者",
+                        "description": "v3.2.4以前のMod作者をインポートします。"
+                    },
+                    "actions": {
+                        "importProfiles": "プロフィールをインポート",
+                        "importModAuthors": "Mod作者をインポート"
+                    },
+                    "confirmations": {
+                        "importModAuthors": {
+                            "title": "Mod作者をインポートしますか？",
+                            "message": "旧バージョンからMod作者をインポートしますか？既存のModの作者名が旧バージョンのものに上書きされます。この操作は元に戻せません。",
+                            "actions": {
+                                "importModAuthors": "Mod作者をインポート",
+                                "cancel": "キャンセル"
+                            }
+                        }
+                    },
+                    "notifications": {
+                        "importProfilesSuccess": {
+                            "title": "プロフィールをインポートしました",
+                            "description": "旧バージョンからプロフィールのインポートが完了しました。"
+                        },
+                        "importModAuthorsSuccess": {
+                            "title": "Mod作者をインポートしました",
+                            "description": "旧バージョンからMod作者のインポートが完了しました。"
+                        },
+                        "importFailed": {
+                            "title": "インポートに失敗しました",
+                            "description": "データのインポート中にエラーが発生しました：{error}"
+                        },
+                        "errorFetchingProfiles": {
+                            "title": "プロフィールの取得に失敗しました",
+                            "description": "旧バージョンからプロフィールを取得中にエラーが発生しました：{error}"
+                        },
+                        "noProfilesToImport": {
+                            "title": "インポートするプロフィールがありません",
+                            "description": "旧バージョンにインポートできるプロフィールが見つかりませんでした。"
+                        }
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -580,7 +648,8 @@
                 "removing": "MODを削除中...",
                 "removed": "MODを削除しました",
                 "failedToRemove": "MODの削除に失敗しました",
-                "idleToRemove": "MODを削除"
+                "idleToRemove": "MODを削除",
+                "waitingForAction": "操作を待機中"
             },
             "actions": {
                 "close": "閉じる"
@@ -604,7 +673,8 @@
                 "github": "GitHubを見る",
                 "discord": "BrownDustX Discord",
                 "suggestFeatures": "機能を提案",
-                "reportIssues": "問題を報告"
+                "reportIssues": "問題を報告",
+                "kofi": "Ko-Fiでサポート"
             },
             "selectGameDirectory": {
                 "title": "ゲームディレクトリ",
@@ -628,6 +698,11 @@
                 "message": "これはMODマネージャーの{beta}です。バグや予期しない動作が発生する場合があります。問題を発見した場合は {github} でご報告ください。",
                 "beta": "ベータ版",
                 "github": "GitHub Issues"
+            },
+            "supportBanner": {
+                "title": "プロジェクトをサポート ❤️",
+                "messageKofi": "BD2ModManagerは無料のオープンソースです。役に立った場合は、Ko-Fiでのサポートをご検討ください！",
+                "messageAfdian": "BD2ModManagerは無料のオープンソースです。役に立った場合は、Afdianでのサポートをご検討ください！"
             }
         },
         "changeModAuthor": {
@@ -653,6 +728,17 @@
             },
             "actions": {
                 "save": "保存"
+            }
+        },
+        "updateAvailable": {
+            "title": "アップデートあり",
+            "subtitle": "新バージョン v{version} が利用可能です。",
+            "changelogLabel": "更新内容",
+            "skipLabel": "今後表示しない",
+            "actions": {
+                "downloadUpdate": "アップデートをダウンロード",
+                "later": "後で",
+                "goToReleases": "リリースページへ"
             }
         }
     },

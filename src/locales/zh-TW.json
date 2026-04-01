@@ -39,7 +39,8 @@
     "titlebar": {
         "appUpdate": {
             "checking": "正在檢查更新...",
-            "available": "有可用更新：v{version}"
+            "available": "有可用更新：v{version}",
+            "downloaded": "v{version} 已就緒！點擊以套用更新"
         },
         "sync": {
             "applying": "正在套用：{modName}",
@@ -62,7 +63,9 @@
         },
         "actions": {
             "github": "GitHub",
-            "logs": "日誌"
+            "logs": "日誌",
+            "kofi": "在 Ko-Fi 上支持",
+            "afdian": "在愛發電上支持"
         }
     },
     "sidebar": {
@@ -198,13 +201,13 @@
             },
             "modInstallSuccess": {
                 "title": "模組已安裝",
-                "description": "模組「{modName}」已成功安裝。"
+                "description": "模組 '{modName}' 已成功安裝。"
             }
         },
         "errors": {
             "modPreview": {
                 "title": "無法預覽模組",
-                "modContainErrors": "模組「{modName}」包含錯誤，無法開啟預覽。"
+                "modContainErrors": "模組 '{modName}' 包含錯誤，無法開啟預覽。"
             },
             "syncFailed": {
                 "title": "同步失敗"
@@ -212,10 +215,10 @@
             "unsyncFailed": {
                 "title": "取消同步失敗"
             },
-            "modFolderNotFound": "找不到模組「{modName}」的資料夾。",
-            "modNotDirectory": "模組「{modName}」的路徑不是一個目錄。",
+            "modFolderNotFound": "未找到 '{modName}' 的模組資料夾。",
+            "modNotDirectory": "'{modName}' 的模組路徑不是一個目錄。",
             "stagingDirectoryNotSet": "暫存目錄尚未設定。",
-            "stagingDirectoryNotFound": "在「{stagingDir}」找不到暫存目錄，請檢查您的設定。"
+            "stagingDirectoryNotFound": "在 '{stagingDir}' 處未找到暫存目錄，請檢查設定。"
         }
     },
     "charactersTab": {
@@ -276,7 +279,7 @@
         "tags": {
             "new": "新角色",
             "collab": "聯名",
-            "modsCount": "{count} 個模組"
+            "modsCount": "{count} 個模組 | {count} 個模組"
         },
         "modTypes": {
             "cutscene": "過場動畫",
@@ -293,6 +296,15 @@
             "noModsFound": {
                 "title": "找不到模組",
                 "description": "請前往模組分頁為此角色安裝模組。"
+            },
+            "discoverModsDescription": "在這裡你可以瀏覽該角色所有可用的模組。注意：清單可能不包含最新的模組。最後更新：{latestUpdate}",
+            "modsTab": "我的模組",
+            "discoverModsTab": "探索模組",
+            "paidMod": "付費",
+            "freeMod": "免費",
+            "noIndexModsFound": {
+                "title": "未找到模組",
+                "description": "該角色在索引中沒有可用的模組。"
             }
         }
     },
@@ -302,14 +314,15 @@
         "defaultProfile": "預設設定檔",
         "emptyDescription": "未提供描述。",
         "activeProfile": "使用中的設定檔",
-        "enabledMods": "{count} 個已啟用模組",
+        "enabledMods": "{count} 個已啟用的模組 | {count} 個已啟用的模組",
         "noModsEnabled": "未啟用任何模組。",
         "noProfileSelected": "未選取設定檔。請選取一個設定檔以查看詳細資訊。",
         "actions": {
             "createProfile": "建立設定檔",
             "editProfile": "編輯設定檔",
             "deleteProfile": "刪除設定檔",
-            "setAsCurrent": "設為目前設定檔"
+            "setAsCurrent": "設為目前設定檔",
+            "refreshProfiles": "重新整理設定檔"
         },
         "notifications": {
             "profileCreated": {
@@ -366,7 +379,8 @@
                 },
                 "actions": {
                     "saveChanges": "儲存變更"
-                }
+                },
+                "description": "編輯設定檔的名稱和描述。"
             }
         }
     },
@@ -564,6 +578,60 @@
                     }
                 }
             }
+        },
+        "experimental": {
+            "label": "實驗性功能",
+            "sections": {
+                "migration": {
+                    "title": "從舊版本匯入",
+                    "description": "從 v3.2.4 或更早版本匯入設定檔和模組作者。",
+                    "profiles": {
+                        "title": "設定檔",
+                        "description": "選擇要從 v3.2.4 或更早版本匯入的設定檔。",
+                        "selectPlaceholder": "選擇要匯入的設定檔"
+                    },
+                    "modAuthors": {
+                        "title": "模組作者",
+                        "description": "從 v3.2.4 或更早版本匯入模組作者。"
+                    },
+                    "actions": {
+                        "importProfiles": "匯入設定檔",
+                        "importModAuthors": "匯入模組作者"
+                    },
+                    "confirmations": {
+                        "importModAuthors": {
+                            "title": "匯入模組作者？",
+                            "message": "確定要從舊版本匯入模組作者嗎？這將用舊版本的作者名稱覆蓋現有模組的作者名稱。此操作無法復原。",
+                            "actions": {
+                                "importModAuthors": "匯入模組作者",
+                                "cancel": "取消"
+                            }
+                        }
+                    },
+                    "notifications": {
+                        "importProfilesSuccess": {
+                            "title": "設定檔已匯入",
+                            "description": "設定檔已成功從舊版本匯入。"
+                        },
+                        "importModAuthorsSuccess": {
+                            "title": "模組作者已匯入",
+                            "description": "模組作者已成功從舊版本匯入。"
+                        },
+                        "importFailed": {
+                            "title": "匯入失敗",
+                            "description": "匯入資料時發生錯誤：{error}"
+                        },
+                        "errorFetchingProfiles": {
+                            "title": "擷取設定檔失敗",
+                            "description": "從舊版本擷取設定檔時發生錯誤：{error}"
+                        },
+                        "noProfilesToImport": {
+                            "title": "沒有可匯入的設定檔",
+                            "description": "在舊版本中未找到可匯入的設定檔。"
+                        }
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -580,7 +648,8 @@
                 "removing": "正在移除模組...",
                 "removed": "模組已移除",
                 "failedToRemove": "移除模組失敗",
-                "idleToRemove": "移除模組"
+                "idleToRemove": "移除模組",
+                "waitingForAction": "等待操作"
             },
             "actions": {
                 "close": "關閉"
@@ -604,7 +673,8 @@
                 "github": "前往我們的 GitHub",
                 "discord": "BrownDustX Discord",
                 "suggestFeatures": "建議功能",
-                "reportIssues": "回報問題"
+                "reportIssues": "回報問題",
+                "kofi": "在 Ko-Fi 上支持"
             },
             "selectGameDirectory": {
                 "title": "遊戲目錄",
@@ -628,6 +698,11 @@
                 "message": "這是模組管理器的 {beta}。可能存在錯誤或非預期行為。如果您發現任何問題，請在 {github} 上回報。",
                 "beta": "測試版",
                 "github": "GitHub Issues"
+            },
+            "supportBanner": {
+                "title": "支持專案 ❤️",
+                "messageKofi": "BD2ModManager 是免費開源的。如果對你有幫助，請考慮在 Ko-Fi 上支持我！",
+                "messageAfdian": "BD2ModManager 是免費開源的。如果對你有幫助，請考慮在愛發電上支持我！"
             }
         },
         "changeModAuthor": {
@@ -653,6 +728,17 @@
             },
             "actions": {
                 "save": "儲存"
+            }
+        },
+        "updateAvailable": {
+            "title": "有可用更新",
+            "subtitle": "新版本 v{version} 已發布。",
+            "changelogLabel": "更新內容",
+            "skipLabel": "不再提示",
+            "actions": {
+                "downloadUpdate": "下載更新",
+                "later": "稍後",
+                "goToReleases": "前往發布頁"
             }
         }
     },

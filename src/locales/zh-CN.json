@@ -39,7 +39,8 @@
     "titlebar": {
         "appUpdate": {
             "checking": "正在检查更新...",
-            "available": "发现新版本：v{version}"
+            "available": "发现新版本：v{version}",
+            "downloaded": "v{version} 已就绪！点击以应用更新"
         },
         "sync": {
             "applying": "正在应用：{modName}",
@@ -62,7 +63,9 @@
         },
         "actions": {
             "github": "Github",
-            "logs": "日志"
+            "logs": "日志",
+            "kofi": "在 Ko-Fi 上支持",
+            "afdian": "在爱发电上支持"
         }
     },
     "sidebar": {
@@ -198,13 +201,13 @@
             },
             "modInstallSuccess": {
                 "title": "模组已安装",
-                "description": "模组\"{modName}\"已成功安装。"
+                "description": "模组 '{modName}' 已成功安装。"
             }
         },
         "errors": {
             "modPreview": {
                 "title": "无法预览模组",
-                "modContainErrors": "模组\"{modName}\"包含错误，无法打开预览。"
+                "modContainErrors": "模组 '{modName}' 包含错误，无法打开预览。"
             },
             "syncFailed": {
                 "title": "同步失败"
@@ -212,10 +215,10 @@
             "unsyncFailed": {
                 "title": "取消同步失败"
             },
-            "modFolderNotFound": "未找到\"{modName}\"的模组文件夹。",
-            "modNotDirectory": "\"{modName}\"的模组路径不是一个目录。",
+            "modFolderNotFound": "未找到 '{modName}' 的模组文件夹。",
+            "modNotDirectory": "'{modName}' 的模组路径不是一个目录。",
             "stagingDirectoryNotSet": "暂存目录未设置。",
-            "stagingDirectoryNotFound": "在\"{stagingDir}\"未找到暂存目录，请检查您的设置。"
+            "stagingDirectoryNotFound": "在 '{stagingDir}' 处未找到暂存目录，请检查设置。"
         }
     },
     "charactersTab": {
@@ -276,7 +279,7 @@
         "tags": {
             "new": "新",
             "collab": "联动",
-            "modsCount": "{count} 个模组"
+            "modsCount": "{count} 个模组 | {count} 个模组"
         },
         "modTypes": {
             "cutscene": "过场动画",
@@ -293,6 +296,15 @@
             "noModsFound": {
                 "title": "未找到模组",
                 "description": "请前往模组选项卡为该角色安装模组。"
+            },
+            "discoverModsDescription": "在这里你可以浏览该角色所有可用的模组。注意：列表可能不包含最新的模组。最后更新：{latestUpdate}",
+            "modsTab": "我的模组",
+            "discoverModsTab": "发现模组",
+            "paidMod": "付费",
+            "freeMod": "免费",
+            "noIndexModsFound": {
+                "title": "未找到模组",
+                "description": "该角色在索引中没有可用的模组。"
             }
         }
     },
@@ -302,14 +314,15 @@
         "defaultProfile": "默认配置文件",
         "emptyDescription": "暂无描述。",
         "activeProfile": "当前使用中",
-        "enabledMods": "已启用 {count} 个模组",
+        "enabledMods": "{count} 个已启用的模组 | {count} 个已启用的模组",
         "noModsEnabled": "未启用任何模组。",
         "noProfileSelected": "未选择配置文件，请选择一个以查看详情。",
         "actions": {
             "createProfile": "创建配置文件",
             "editProfile": "编辑配置文件",
             "deleteProfile": "删除配置文件",
-            "setAsCurrent": "设为当前"
+            "setAsCurrent": "设为当前",
+            "refreshProfiles": "刷新配置文件"
         },
         "notifications": {
             "profileCreated": {
@@ -366,7 +379,8 @@
                 },
                 "actions": {
                     "saveChanges": "保存更改"
-                }
+                },
+                "description": "编辑配置文件的名称和描述。"
             }
         }
     },
@@ -564,6 +578,60 @@
                     }
                 }
             }
+        },
+        "experimental": {
+            "label": "实验性功能",
+            "sections": {
+                "migration": {
+                    "title": "从旧版本导入",
+                    "description": "从 v3.2.4 或更早版本导入配置文件和模组作者。",
+                    "profiles": {
+                        "title": "配置文件",
+                        "description": "选择要从 v3.2.4 或更早版本导入的配置文件。",
+                        "selectPlaceholder": "选择要导入的配置文件"
+                    },
+                    "modAuthors": {
+                        "title": "模组作者",
+                        "description": "从 v3.2.4 或更早版本导入模组作者。"
+                    },
+                    "actions": {
+                        "importProfiles": "导入配置文件",
+                        "importModAuthors": "导入模组作者"
+                    },
+                    "confirmations": {
+                        "importModAuthors": {
+                            "title": "导入模组作者？",
+                            "message": "确定要从旧版本导入模组作者吗？这将用旧版本的作者名称覆盖现有模组的作者名称。此操作无法撤销。",
+                            "actions": {
+                                "importModAuthors": "导入模组作者",
+                                "cancel": "取消"
+                            }
+                        }
+                    },
+                    "notifications": {
+                        "importProfilesSuccess": {
+                            "title": "配置文件已导入",
+                            "description": "配置文件已成功从旧版本导入。"
+                        },
+                        "importModAuthorsSuccess": {
+                            "title": "模组作者已导入",
+                            "description": "模组作者已成功从旧版本导入。"
+                        },
+                        "importFailed": {
+                            "title": "导入失败",
+                            "description": "导入数据时发生错误：{error}"
+                        },
+                        "errorFetchingProfiles": {
+                            "title": "获取配置文件失败",
+                            "description": "从旧版本获取配置文件时发生错误：{error}"
+                        },
+                        "noProfilesToImport": {
+                            "title": "没有可导入的配置文件",
+                            "description": "在旧版本中未找到可导入的配置文件。"
+                        }
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -580,7 +648,8 @@
                 "removing": "正在移除模组...",
                 "removed": "模组已移除",
                 "failedToRemove": "移除模组失败",
-                "idleToRemove": "移除模组"
+                "idleToRemove": "移除模组",
+                "waitingForAction": "等待操作"
             },
             "actions": {
                 "close": "关闭"
@@ -604,7 +673,8 @@
                 "github": "访问我们的 Github",
                 "discord": "BrownDustX Discord",
                 "suggestFeatures": "建议功能",
-                "reportIssues": "报告问题"
+                "reportIssues": "报告问题",
+                "kofi": "在 Ko-Fi 上支持"
             },
             "selectGameDirectory": {
                 "title": "游戏目录",
@@ -628,6 +698,11 @@
                 "message": "这是模组管理器的 {beta}，可能存在错误或意外行为。如发现任何问题，请在 {github} 上报告。",
                 "beta": "测试版",
                 "github": "GitHub Issues"
+            },
+            "supportBanner": {
+                "title": "支持项目 ❤️",
+                "messageKofi": "BD2ModManager 是免费开源的。如果对你有帮助，请考虑在 Ko-Fi 上支持我！",
+                "messageAfdian": "BD2ModManager 是免费开源的。如果对你有帮助，请考虑在爱发电上支持我！"
             }
         },
         "changeModAuthor": {
@@ -653,6 +728,17 @@
             },
             "actions": {
                 "save": "保存"
+            }
+        },
+        "updateAvailable": {
+            "title": "有可用更新",
+            "subtitle": "新版本 v{version} 已发布。",
+            "changelogLabel": "更新内容",
+            "skipLabel": "不再提示",
+            "actions": {
+                "downloadUpdate": "下载更新",
+                "later": "稍后",
+                "goToReleases": "前往发布页"
             }
         }
     },
