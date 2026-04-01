@@ -60,7 +60,7 @@ function onClose() {
 
 <template>
     <Modal v-model:show="visible" class="min-w-120 max-h-[80%] max-w-200"
-        :title="$t('profilesTab.modals.createProfile.title')" :subtitle="$t('profiles.modals.createProfile.description')" @close="onClose">
+        :title="$t('profilesTab.modals.createProfile.title')" :subtitle="$t('profilesTab.modals.createProfile.description')" @close="onClose">
         <div class="text-primary flex flex-col gap-4 p-4">
 
             <div class="flex flex-col gap-1">

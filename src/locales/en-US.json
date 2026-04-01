@@ -369,6 +369,7 @@
             },
             "editProfile": {
                 "title": "Edit Profile",
+                "description": "Edit the name and description of your profile.",
                 "nameField": {
                     "label": "Profile Name",
                     "placeholder": "Enter profile name"

@@ -7,8 +7,6 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use log::{warn, debug};
-
 use bd2modmanager_lib::{
     config::{config::PartialAppConfig, BD2Config},
     mods::metadata::ModMetadataStore,

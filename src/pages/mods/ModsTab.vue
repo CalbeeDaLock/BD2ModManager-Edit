@@ -691,7 +691,6 @@ function handleShowModConflicts(mod: BD2Mod) {
   // searhc by id?
   // show modal?
 }
-
 </script>
 <template>
   <div class="flex flex-col h-full gap-0 select-none p-4 py-2">

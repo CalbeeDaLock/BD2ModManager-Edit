@@ -32,26 +32,26 @@ async function updateLegacyProfiles() {
         legacyProfiles.value = profiles
     } catch (err) {
         loggingStore.logError("Error fetching legacy profiles:", err)
-        toast.add({ severity: 'error', summary: t('settingsTab.experimental.sections.migration.notifications.errorFetchingProfiles.title'), detail: t('settingsTab.experimental.sections.migration.notifications.errorFetchingProfiles.description') })
+        toast.add({ severity: 'error', summary: t('settingsTab.experimental.sections.migration.notifications.errorFetchingProfiles.title'), detail: t('settingsTab.experimental.sections.migration.notifications.errorFetchingProfiles.description'), life: 5000 })
     }
 }
 
 function importProfiles() {
     if (profilesIdChoose.value.length === 0) {
-        toast.add({ severity: 'warn', summary: t('settingsTab.experimental.sections.migration.notifications.noProfilesToImport.title'), detail: t('settingsTab.experimental.sections.migration.notifications.noProfilesToImport.description') })
+        toast.add({ severity: 'warn', summary: t('settingsTab.experimental.sections.migration.notifications.noProfilesToImport.title'), detail: t('settingsTab.experimental.sections.migration.notifications.noProfilesToImport.description'), life: 3000 })
         return
     }
 
     invoke('import_legacy_profiles', { profileIds: profilesIdChoose.value })
         .then(async () => {
-            toast.add({ severity: 'success', summary: t('settingsTab.experimental.sections.migration.notifications.importProfilesSuccess.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importProfilesSuccess.description') })
+            toast.add({ severity: 'success', summary: t('settingsTab.experimental.sections.migration.notifications.importProfilesSuccess.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importProfilesSuccess.description'), life: 5000 })
             profilesIdChoose.value = []
             profilesStore.loadProfiles()
             await updateLegacyProfiles()
         })
         .catch((err) => {
             loggingStore.logError("Error importing profiles:", err)
-            toast.add({ severity: 'error', summary: t('settingsTab.experimental.sections.migration.notifications.importFailed.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importFailed.description', { error: err }) })
+            toast.add({ severity: 'error', summary: t('settingsTab.experimental.sections.migration.notifications.importFailed.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importFailed.description', { error: err }), life: 5000 })
         })
 }
 
@@ -70,10 +70,10 @@ async function importModAuthors() {
 
     try {
         await invoke('import_legacy_mod_authors')
-        toast.add({ severity: 'success', summary: t('settingsTab.experimental.sections.migration.notifications.importModAuthorsSuccess.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importModAuthorsSuccess.description') })
+        toast.add({ severity: 'success', summary: t('settingsTab.experimental.sections.migration.notifications.importModAuthorsSuccess.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importModAuthorsSuccess.description'), life: 5000 })
     } catch (err) {
         loggingStore.logError("Error importing mod authors:", err)
-        toast.add({ severity: 'error', summary: t('settingsTab.experimental.sections.migration.notifications.importFailed.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importFailed.description', { error: err }) })
+        toast.add({ severity: 'error', summary: t('settingsTab.experimental.sections.migration.notifications.importFailed.title'), detail: t('settingsTab.experimental.sections.migration.notifications.importFailed.description', { error: err }), life: 5000 })
     }
 }
 
@@ -92,9 +92,8 @@ onMounted(async () => {
                             <p class="text-secondary">{{ t('settingsTab.experimental.sections.migration.profiles.description') }}</p>
                         </div>
                         <div class="flex gap-2">
-                            <Select :options="legacyProfiles.map(p => ({ label: p.name, value: p.id }))"
-                                :placeholder="t('settingsTab.experimental.sections.migration.profiles.selectPlaceholder')" class="w-64" :multiple="true"
-                                v-model="profilesIdChoose" />
+                            <Select :options="legacyProfiles.map(p => ({ label: p.name, value: p.id }))" 
+                                :placeholder="t('settingsTab.experimental.sections.migration.profiles.selectPlaceholder')" class="w-64" :multiple="true" v-model="profilesIdChoose" />
                             <Button variant="alt" @click="importProfiles">{{ t('settingsTab.experimental.sections.migration.actions.importProfiles') }}</Button>
                         </div>
                     </div>
