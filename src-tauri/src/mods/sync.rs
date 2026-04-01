@@ -5,7 +5,7 @@ use std::{
 };
 
 use chrono::Utc;
-use log::{debug, warn};
+use log::{debug, warn, error};
 use serde::{Deserialize, Serialize};
 use tauri::Emitter;
 use tempfile::NamedTempFile;
@@ -271,32 +271,49 @@ pub fn sync_mods(
 
     // skip disabled mods that are not in game folder or mods with errors that are enabled, we don't need to remove because it is never synced
     let mut index = 0;
-    let mods_to_sync = mods.clone().into_iter().filter(|_mod| {
-        let dst_path = game_mods_path.join(&_mod.name);
+    let mods_to_sync: Vec<_> = mods
+        .clone()
+        .into_iter()
+        .filter(|_mod| {
+            let dst_path = game_mods_path.join(&_mod.name);
 
-        if !dst_path.exists() && !_mod.enabled || !_mod.errors.is_empty() && _mod.enabled {
-            false
-        } else {
-            true
-        }
-    });
-    let total_mods_count = mods_to_sync.count() + mods_to_remove.iter().count();
+            if !dst_path.exists() && !_mod.enabled || !_mod.errors.is_empty() && _mod.enabled {
+                false
+            } else {
+                true
+            }
+        })
+        .collect();
+    let total_mods_count = mods_to_sync.len() + mods_to_remove.len();
 
     debug!(
         "Total mods to sync: {}, total mods to remove: {}",
         total_mods_count - mods_to_remove.len(),
         mods_to_remove.len()
     );
-    
+
     #[cfg(debug_assertions)]
-    println!("Mods to remove:");
-    for path in &mods_to_remove {
-        println!(
-            "- {}",
-            path.file_name()
-                .and_then(|n| n.to_str())
-                .unwrap_or_default()
-        );
+    {
+        println!("Mods to sync:");
+        for _mod in &mods_to_sync {
+            println!(
+                "+ {} (enabled: {}, errors: {:?})",
+                _mod.name, _mod.enabled, _mod.errors
+            );
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    {
+        println!("Mods to remove:");
+        for path in &mods_to_remove {
+            println!(
+                "- {}",
+                path.file_name()
+                    .and_then(|n| n.to_str())
+                    .unwrap_or_default()
+            );
+        }
     }
 
     for path in mods_to_remove {
@@ -405,7 +422,12 @@ pub fn sync_mods(
 
         if !_mod.enabled {
             if dst_path.exists() || dst_path.is_symlink() {
+                debug!(
+                    "mod {:?} is disabled but exists in game folder, removing.",
+                    _mod.name
+                );
                 if let Err(e) = remove_mod_path(&dst_path) {
+                    error!("Failed to remove mod {:?} at path {:?}: {}", _mod.name, dst_path, e);
                     index = index + 1;
                     app_handle
                         .emit(
@@ -423,10 +445,18 @@ pub fn sync_mods(
                     continue;
                 }
 
-                // remove parent dir if now empty
-                if let Some(parent) = dst_path.parent() {
-                    if parent != game_mods_path {
-                        let _ = fs::remove_dir(parent);
+                // get parents until BD2MM/, check if any of them has other content, if not remove, this is to remove empty dirs left by mods in subdirs
+                debug!("Checking for empty parent directories to remove for mod: {}", _mod.name);
+                
+                for parent in dst_path.ancestors().skip(1).take_while(|p| *p != game_mods_path) {
+                    let is_empty = parent.read_dir().map(|mut i| i.next().is_none()).unwrap_or(false);
+                    if is_empty {
+                        debug!("Removing empty parent directory: {:?}", parent);
+                        if let Err(e) = fs::remove_dir(parent) {
+                            error!("Failed to remove empty parent directory {:?}: {}", parent, e);
+                        }
+                    } else {
+                        break;
                     }
                 }
 
@@ -446,6 +476,7 @@ pub fn sync_mods(
                     )
                     .ok();
             }
+
             continue;
         }
 
