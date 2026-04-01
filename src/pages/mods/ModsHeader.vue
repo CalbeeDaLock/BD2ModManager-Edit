@@ -60,22 +60,10 @@ function toggleModTypes(modType: string) {
                             </div>
 
                             <div class="flex flex-col gap-1 text-md">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <Checkbox v-model="filters.onlyEnabled" />
-                                    {{ $t('modsTab.header.advancedFilters.actions.onlyEnabledMods') }}
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <Checkbox v-model="filters.onlyDisabled" />
-                                    {{ $t('modsTab.header.advancedFilters.actions.onlyDisabledMods') }}
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <Checkbox v-model="filters.onlyConflicts" />
-                                    {{ $t('modsTab.header.advancedFilters.actions.onlyConflictsMods') }}
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <Checkbox v-model="filters.onlyErrors" />
-                                    {{ $t('modsTab.header.advancedFilters.actions.onlyErrorsMods') }}
-                                </label>
+                                <Checkbox v-model="filters.onlyEnabled" :label="$t('modsTab.header.advancedFilters.actions.onlyEnabledMods')" />
+                                <Checkbox v-model="filters.onlyDisabled" :label="$t('modsTab.header.advancedFilters.actions.onlyDisabledMods')" />
+                                <Checkbox v-model="filters.onlyConflicts" :label="$t('modsTab.header.advancedFilters.actions.onlyConflictsMods')" />
+                                <Checkbox v-model="filters.onlyErrors" :label="$t('modsTab.header.advancedFilters.actions.onlyErrorsMods')" />
                             </div>
                         </div>
                     </template>
