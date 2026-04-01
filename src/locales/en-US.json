@@ -728,6 +728,17 @@
             "actions": {
                 "save": "Save"
             }
+        },
+        "updateAvailable": {
+            "title": "Update Available",
+            "subtitle": "A new version is available v{version}.",
+            "changelogLabel": "What's new",
+            "skipLabel": "Don't show again",
+            "actions": {
+                "downloadUpdate": "Download Update",
+                "later": "Later",
+                "goToReleases": "Go to Releases"
+            }
         }
     },
     "errors": {

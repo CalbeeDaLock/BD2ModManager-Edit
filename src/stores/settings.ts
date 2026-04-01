@@ -80,12 +80,13 @@ export const useSettingsStore = defineStore("settings", () => {
 
         try {
             // it will block untils downloades finisih
-            await invoke<{ version: string, currentVersion: string, changelog?: string[] }>('check_for_app_update').then((result) => {
+            await invoke<{ version: string, currentVersion: string, downloadUrl?: string, changelog?: string[] }>('check_for_app_update').then((result) => {
                 if (result) {
                     appUpdateStatus.value = {
                         checking: false,
                         version: result.version,
                         currentVersion: result.currentVersion,
+                        downloadUrl: result.downloadUrl,
                         changelog: result.changelog,
                     }
                 }

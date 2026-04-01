@@ -36,11 +36,11 @@ const emit = defineEmits<{
 
 <template>
     <Modal v-model:show="visible" class="w-120 max-h-[85vh]" @close="$emit('close')"
-        :title="$t('modals.updateAvailable.title', 'Update Available')"
-        :subtitle="$t('modals.updateAvailable.subtitle', `A new version is available v${appUpdateStatus?.version}.`)">
+        :title="$t('modals.updateAvailable.title')"
+        :subtitle="$t('modals.updateAvailable.subtitle', { version: appUpdateStatus?.version })">
         <div class="flex flex-col gap-1 p-4">
             <p class="text-sm font-medium flex items-center gap-2 text-secondary uppercase tracking-wide mb-2">
-                {{ $t('modals.updateAvailable.changelogLabel', "What's new") }}
+                {{ $t("modals.updateAvailable.changelogLabel") }}
             </p>
             <div class="flex flex-col gap-1">
                 <div v-for="(item, index) in appUpdateStatus?.changelog" :key="index"
@@ -63,13 +63,13 @@ const emit = defineEmits<{
                             skipUpdateVersion = ''
                         }
                     }"
-                        :label="$t('modals.updateAvailable.skipLabel', `Don't show again`)" />
+                        :label="$t('modals.updateAvailable.skipLabel')" />
                 </div>
                 <Button @click="$emit('close')">
-                    {{ $t('modals.updateAvailable.actions.later', 'Later') }}
+                    {{ $t('modals.updateAvailable.actions.later') }}
                 </Button>
                 <Button @click="openUrl(appUpdateStatus?.downloadUrl??'')">
-                    {{ $t('modals.updateAvailable.actions.goToReleases', 'Go to Releases') }}
+                    {{ $t('modals.updateAvailable.actions.goToReleases') }}
                 </Button>
             </div>
         </template>

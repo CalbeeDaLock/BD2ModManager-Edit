@@ -65,7 +65,7 @@ const toast = useToast()
 
 async function handleAppUpdateClick() {
     if (isPortable.value) {
-        return await openUrl("https://github.com/bruhnn/BD2ModManager/releases/latest")
+        return await openUrl(settingsStore.appUpdateStatus.downloadUrl ?? "https://github.com/bruhnn/BD2ModManager/releases/latest")
     }
 
     try {
@@ -205,6 +205,7 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
         setTimeout(() => { isCheckingForUpdates.value = false }, 1000)
     } else {
         isCheckingForUpdates.value = false
+        isCheckingDisplay.value = false
     }
 
 })
