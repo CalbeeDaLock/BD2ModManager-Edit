@@ -18,6 +18,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window"
 import Sidebar from "./components/sidebar/Sidebar.vue"
 import { useToast } from "primevue/usetoast"
 import UpdateAvailableModal from "./components/modals/UpdateAvailableModal.vue"
+import { usePortable } from "./composables/usePortable"
 
 const { t, locale } = useI18n()
 
@@ -115,9 +116,13 @@ onUnmounted(() => {
   unlistenClose?.()
 })
 
-watch(() => settingsStore.appUpdateStatus, (newStatus) => {
+const {isPortable} = usePortable()
+
+watch(() => settingsStore.appUpdateStatus, async (newStatus) => {
   const skipVersion = localStorage.getItem('skipUpdateVersion')
-  if (newStatus?.version && newStatus.version !== skipVersion) {
+
+  // update available will only show on portable
+  if (newStatus?.version && newStatus.version !== skipVersion && isPortable.value) {
     openModal('updateAvailableModal')
   }
 })
