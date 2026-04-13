@@ -2314,6 +2314,19 @@
             "skill_preview_image": "illust_skill_char061092_203.png",
             "release_date": "2026-03-26",
             "gender": "female"
+        },
+        {
+            "id": "021001",
+            "character": "Ikaruga",
+            "costume": "Noble Flame",
+            "is_collab": true,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char021001_198.png",
+            "skill_preview_image": "illust_skill_char021001_198 .png",
+            "release_date": "2026-04-09",
+            "gender": "female"
         }
     ],
     "dating": {
