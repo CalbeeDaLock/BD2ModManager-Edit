@@ -373,11 +373,6 @@
                     "author": "nimloth",
                     "type": "cutscene",
                     "is_paid": false
-                },
-                {
-                    "author": "qi",
-                    "type": "cutscene",
-                    "is_paid": true
                 }
             ]
         },
