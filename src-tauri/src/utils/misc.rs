@@ -5,11 +5,13 @@ use pelite::FileMap;
 use windows_sys::Win32::Foundation::CloseHandle;
 #[cfg(target_os = "windows")]
 use windows_sys::Win32::Security::{
-    GetTokenInformation, TokenElevationType, TokenElevationTypeFull, TOKEN_ELEVATION_TYPE,
-    TOKEN_QUERY,
+    GetTokenInformation, TokenElevation, TOKEN_ELEVATION, TOKEN_QUERY,
 };
 #[cfg(target_os = "windows")]
 use windows_sys::Win32::System::Threading::{GetCurrentProcess, OpenProcessToken};
+
+#[cfg(not(target_os = "windows"))]
+use libc;
 
 pub fn is_elevated() -> Result<bool, String> {
     #[cfg(target_os = "windows")]
@@ -18,34 +20,33 @@ pub fn is_elevated() -> Result<bool, String> {
             let process = GetCurrentProcess();
             let mut token = std::ptr::null_mut();
 
-            // BOOL == i32, success is nonzero
             if OpenProcessToken(process, TOKEN_QUERY, &mut token) != 0 {
-                let mut elevation_type: TOKEN_ELEVATION_TYPE = 0;
+                let mut elevation: TOKEN_ELEVATION = TOKEN_ELEVATION { TokenIsElevated: 0 };
                 let mut return_length: u32 = 0;
 
-                if GetTokenInformation(
+                let result = GetTokenInformation(
                     token,
-                    TokenElevationType,
-                    &mut elevation_type as *mut TOKEN_ELEVATION_TYPE as *mut _,
-                    std::mem::size_of::<TOKEN_ELEVATION_TYPE>() as u32,
+                    TokenElevation,
+                    &mut elevation as *mut TOKEN_ELEVATION as *mut _,
+                    std::mem::size_of::<TOKEN_ELEVATION>() as u32,
                     &mut return_length,
-                ) != 0
-                {
-                    CloseHandle(token);
-                    return Ok(elevation_type == TokenElevationTypeFull);
-                }
+                ) != 0;
 
                 CloseHandle(token);
+
+                if result {
+                    return Ok(elevation.TokenIsElevated != 0);
+                }
             }
         }
+
+        return Ok(false);
     }
 
     #[cfg(not(target_os = "windows"))]
     {
         return Ok(unsafe { libc::geteuid() == 0 });
     }
-
-    Ok(false)
 }
 
 pub fn get_dll_version(dll_path: &PathBuf) -> Option<String> {
