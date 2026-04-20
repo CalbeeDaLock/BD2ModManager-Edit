@@ -61,3 +61,11 @@ pub fn get_mod_preview_path(app: &AppHandle) -> Option<PathBuf> {
         None
     }
 }
+
+pub fn get_characters_path(app_handle: &AppHandle) -> Option<PathBuf> {
+    app_handle
+    .path()
+    .app_data_dir()
+    .ok()
+    .map(|dir| dir.join("characters.json"))
+}

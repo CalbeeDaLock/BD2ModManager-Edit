@@ -4,6 +4,7 @@ pub mod config;
 pub mod mods;
 pub mod profiles;
 pub mod utils;
+pub mod game;
 
 use log::{info, warn};
 use tauri::{AppHandle, Emitter};

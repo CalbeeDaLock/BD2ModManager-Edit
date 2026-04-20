@@ -390,8 +390,8 @@
             "installed": "Installed",
             "installedButOutdated": "Installed (Outdated)",
             "notInstalled": "Not Installed",
-            "gameNotFound": "Game path is not set.",
-            "bepinexMissing": "BepInEx is missing."
+            "gameNotFound": "Game path is not set",
+            "bepinexMissing": "BepInEx is missing"
         },
         "labels": {
             "gameDirectory": "Game Directory: ",
@@ -431,14 +431,21 @@
                 "title": "Remove BepInEx?",
                 "message": "Are you sure you want to remove BepInEx? This will remove all BepInEx files from your game directory. This action cannot be undone.",
                 "actions": {
-                    "removeBepInEx": "Remove BepInEx"
+                    "confirm": "Remove BepInEx"
                 }
             },
             "removeBrownDustX": {
                 "title": "Remove BrownDustX?",
                 "message": "Are you sure you want to remove BrownDustX? This will remove all BrownDustX files from your game directory including all your mods. This action cannot be undone.",
                 "actions": {
-                    "removeBrownDustX": "Remove BrownDustX"
+                    "confirm": "Remove BrownDustX"
+                }
+            },
+            "removeConfigManager": {
+                "title": "Remove Configuration Manager?",
+                "message": "Are you sure you want to remove Configuration Manager? This will remove all Configuration Manager files from your game directory. This action cannot be undone.",
+                "actions": {
+                    "confirm": "Remove Configuration Manager"
                 }
             }
         },
@@ -449,16 +456,60 @@
             "dangerMessage": "This feature is experimental. We are not responsible for any issues caused to your game installation."
         },
         "modals": {
-            "bepinexGithub": {
-                "title": "Install BepInEx from GitHub",
-                "loading": "Loading BepInEx releases from Github...",
+            "installFromGithub": {
+                "title": "Install from GitHub",
+                "description": "Select a version to install from the releases available on GitHub.",
+                "loading": "Loading releases from Github...",
                 "failedToLoadVersions": "Failed to load versions",
+                "bepinexTitle": "Install BepInEx",
+                "configManagerTitle": "Install Configuration Manager",
+                "badges": {
+                    "recommended": "Recommended"
+                },
+                "options": {
+                    "enableOtherVersions": "I accept the risks and want to install other versions"
+                },
+                "enableOtherVersionsWarning": "Other versions may cause compatibility issues with BrownDustX. If you run into problems, switch back to the recommended version before reporting.",
                 "actions": {
                     "viewOnGithub": "View on GitHub",
                     "install": "Install",
                     "retry": "Retry"
                 }
             }
+        },
+        "errors": {
+            "gamePathNotSet": "Game path is not set.",
+            "bepinexNotInstalled": "BepInEx is not installed. Please install BepInEx first.",
+            "invalidArchive": "Invalid archive file.",
+            "alreadyInstalled": "Already installed.",
+            "archiveNotFound": "Archive not found: {error}",
+            "extractionFailed": "Extraction failed: {error}",
+            "downloadFailed": "Download failed: {error}",
+            "unknown": "An unknown error occurred: {error}."
+        },
+        "logs": {
+            "versionInstalled": "{scope} version {version} is installed.",
+            "notInstalled": "{scope} is not installed.",
+            "fetchError": "Error fetching {scope} status: {error}.",
+            "installingFromArchive": "Starting {scope} installation from archive: {path}",
+            "installingFromUrl": "Starting {scope} installation from URL: {url}",
+            "installedSuccess": "{scope} installed successfully.",
+            "installError": "Error installing {scope}: {error}",
+            "gameDirectorySet": "Game directory set to {path}. Rechecking installations...",
+            "gameDirectoryUnset": "Game directory unset. Please set the game directory to manage installations.",
+            "unsupportedFile": "Unsupported file type dropped: {path}",
+            "unknownArchiveType": "Could not determine archive type for: {path}. Rename the file to include 'BepInEx', 'BrownDustX', or 'ConfigManager' in its name."
+        },
+        "fileDialog": {
+            "archiveFilter": "Archive Files",
+            "bepinexTitle": "Select BepInEx Archive File",
+            "browndustxTitle": "Select BrownDustX Archive File",
+            "configManagerTitle": "Select Configuration Manager Archive File"
+        },
+        "canRemoveReasons": {
+            "VersionMismatch": "Installed outside BD2ModManager",
+            "PluginsInstalled": "Remove other plugins first",
+            "NotInstalled": "Not installed."
         }
     },
     "settingsTab": {
