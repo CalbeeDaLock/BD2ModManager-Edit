@@ -647,7 +647,8 @@
                     },
                     "actions": {
                         "importProfiles": "Import Profiles",
-                        "importModAuthors": "Import Mod Authors"
+                        "importModAuthors": "Import Mod Authors",
+                        "searchProfiles": "Search for Profiles"
                     },
                     "confirmations": {
                         "importModAuthors": {
@@ -679,7 +680,25 @@
                         "noProfilesToImport": {
                             "title": "No Profiles to Import",
                             "description": "No profiles were found in the legacy version to import."
+                        },
+                        "noProfilesSelected": {
+                            "title": "No Profiles Selected",
+                            "description": "Please select at least one profile to import."
+                        },
+                        "noModAuthorsToImport": {
+                            "title": "No Mod Authors to Import",
+                            "description": "No mod authors were found in the legacy version to import."
                         }
+                    },
+                    "errors": {
+                        "IoError": "I/O error: {message}",
+                        "ProfileImportError": "Failed to import profile: {message}",
+                        "ProfileDeleteError": "Failed to delete legacy profile: {message}",
+                        "ModsImportError": "Failed to read legacy mods: {message}",
+                        "ModsParseError": "Failed to parse legacy mods: {message}",
+                        "ModsDeleteError": "Failed to delete legacy mods file: {message}",
+                        "ModsRefreshError": "Failed to refresh mods after import: {message}",
+                        "Unknown": "Unexpected error: {message}"
                     }
                 }
             }
