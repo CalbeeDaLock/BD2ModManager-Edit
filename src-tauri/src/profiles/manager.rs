@@ -6,7 +6,7 @@ use std::{
 };
 
 use chrono::Utc;
-use log::{info, warn};
+use log::{info, warn, error};
 use tempfile::NamedTempFile;
 
 use crate::profiles::types::{Profile, ProfileError};
@@ -20,6 +20,10 @@ pub struct ProfileManager {
 }
 
 impl ProfileManager {
+    const DEFAULT_PROFILE_ID: &'static str = "default";
+    const DEFAULT_PROFILE_NAME: &'static str = "Default";
+    const DEFAULT_PROFILE_DESC: &'static str = "d3f4ult";
+
     pub fn new(directory: PathBuf) -> ProfileManager {
         Self {
             directory,
@@ -28,52 +32,53 @@ impl ProfileManager {
         }
     }
 
-    fn _create_default_profile(&mut self) {
+    fn _create_default_profile(&mut self) -> Result<(), ProfileError> {
         let default_profile = Profile {
-            id: String::from("default"),
-            name: String::from("default"),
-            description: String::from("d3f4ult"),
+            id: String::from(Self::DEFAULT_PROFILE_ID),
+            name: String::from(Self::DEFAULT_PROFILE_NAME),
+            description: String::from(Self::DEFAULT_PROFILE_DESC),
             created_at: Utc::now().to_rfc3339(),
             active: false,
             enabled_mods: Vec::new(),
         };
 
-        if let Ok(_created) = self._create_profile_json(&default_profile) {
-            self.profiles
-                .insert(default_profile.id.clone(), default_profile);
-        };
+        self._create_profile_json(&default_profile)?;
+        self.profiles.insert(default_profile.id.clone(), default_profile);
+        Ok(())
     }
 
-    fn _create_profile_json(
-        &mut self,
-        profile: &Profile,
-    ) -> Result<(), Box<dyn std::error::Error>> {
+    fn _create_profile_json(&mut self, profile: &Profile) -> Result<(), ProfileError> {
         let mut path = self.directory.clone();
         path.push(format!("{}.json", profile.id));
 
-        info!("Creating Profile Json -> {:?}", path);
+        info!("Creating Profile -> {:?}", path);
 
-        let mut file = File::create(&path)?;
-        serde_json::to_writer_pretty(&mut file, profile)?;
-        file.flush()?;
-        file.sync_all()?;
+        let file = File::create(&path)
+            .map_err(|e| ProfileError::CreateFailed(format!("Failed to create profile json {:?}: {}", path, e)))?;
+        serde_json::to_writer_pretty(&file, profile)
+            .map_err(|e| ProfileError::CreateFailed(format!("Failed to write profile json {:?}: {}", path, e)))?;
 
-        info!("({:?}) Profile Json created successfully.", profile);
+        info!("Profile created successfully -> {:?}", profile);
 
         Ok(())
     }
 
-    pub fn save_profile(&self, profile: &Profile) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn save_profile(&self, profile: &Profile) -> Result<(), ProfileError> {
         let mut path = self.directory.clone();
         path.push(format!("{}.json", profile.id));
 
-        info!("Saving Profile Json -> {:?}", path);
+        info!("Saving Profile -> {:?}", path);
 
-        let mut file = NamedTempFile::new_in(path.parent().unwrap())?;
-        serde_json::to_writer_pretty(&mut file, profile)?;
-        file.flush()?;
-        file.as_file().sync_all()?;
-        file.persist(path)?;
+        let mut tmp = NamedTempFile::new_in(path.parent().unwrap())
+            .map_err(|e| ProfileError::SaveFailed(format!("Failed to create tmp file for {:?}: {}", path, e)))?;
+        serde_json::to_writer_pretty(&mut tmp, profile)
+            .map_err(|e| ProfileError::SaveFailed(format!("Failed to write profile json {:?}: {}", path, e)))?;
+        tmp.flush()
+            .map_err(|e| ProfileError::SaveFailed(format!("Failed to flush profile json {:?}: {}", path, e)))?;
+        tmp.persist(&path)
+            .map_err(|e| ProfileError::SaveFailed(format!("Failed to persist profile json {:?}: {}", path, e.error)))?;
+
+        info!("Profile saved successfully -> {:?}", profile);
 
         Ok(())
     }
@@ -81,10 +86,7 @@ impl ProfileManager {
     pub fn load_profiles(&mut self) -> Result<(), ProfileError> {
         if !self.directory.exists() {
             if let Err(error) = create_dir(&self.directory) {
-                warn!(
-                    "An error ocurred when creating the profiles directory: ({})",
-                    error
-                );
+                return Err(ProfileError::LoadFailed(format!("An error ocurred when creating the profiles directory: ({})", error)));
             };
         }
 
@@ -127,16 +129,21 @@ impl ProfileManager {
                 });
         }
 
-        if self.profiles.get("default").is_none() {
+        if self.profiles.get(Self::DEFAULT_PROFILE_ID).is_none() {
             warn!("Default profile not found. Creating a new.");
-            self._create_default_profile();
+            if let Err(error) = self._create_default_profile() {
+                error!("Failed to create default profile: {}", error);
+            }
         }
 
         if self.active_profile_id.is_none() {
-            if let Some(default_profile) = self.profiles.get_mut("default") {
+            if let Some(default_profile) = self.profiles.get_mut(Self::DEFAULT_PROFILE_ID) {
                 warn!("No active profile found. Setting 'Default' as active.");
+
                 self.active_profile_id = Some(default_profile.id.clone());
                 default_profile.active = true;
+            } else {
+                error!("Default profile not found, cannot set it as active.");
             }
         }
 
@@ -150,7 +157,7 @@ impl ProfileManager {
         enabled_mods: Option<Vec<String>>,
         created_at: Option<String>,
         template_id: Option<String>,
-    ) -> Result<String, ProfileError> {
+    ) -> Result<(), ProfileError> {
         let desc = description.unwrap_or_default();
         let created = Some(created_at.unwrap_or_else(|| chrono::Utc::now().to_rfc3339()));
         let enabled_mods = enabled_mods.unwrap_or_default();
@@ -171,18 +178,13 @@ impl ProfileManager {
             profile = Profile::new(name, desc, enabled_mods, created);
         }
 
-        match self.save_profile(&profile) {
-            Ok(()) => {
-                let profile_id = profile.id.clone();
-                self.profiles.insert(profile_id.clone(), profile);
-                Ok(profile_id)
-            }
-            Err(error) => Err(ProfileError::SaveFailed(error)),
-        }
+        self.save_profile(&profile)?;
+        self.profiles.insert(profile.id.clone(), profile.clone());
+        Ok(())
     }
 
-    pub fn delete_profile(&mut self, profile_id: String) -> Result<String, ProfileError> {
-        if profile_id == "default" {
+    pub fn delete_profile(&mut self, profile_id: String) -> Result<(), ProfileError> {
+        if profile_id == Self::DEFAULT_PROFILE_ID {
             return Err(ProfileError::CannotDeleteDefault);
         }
 
@@ -192,7 +194,7 @@ impl ProfileManager {
             && (self.profiles.len() > 1)
         {
             // If the profile to be deleted is the active one, switch to default first
-            self.set_active_profile("default".to_string())?;
+            self.set_active_profile(Self::DEFAULT_PROFILE_ID.to_string())?;
         }
 
         if let Some(profile) = self.profiles.get(&profile_id) {
@@ -204,7 +206,7 @@ impl ProfileManager {
                     Ok(()) => {
                         profile_deleted = true;
                     }
-                    Err(error) => return Err(ProfileError::DeleteFailed(error)),
+                    Err(error) => return Err(ProfileError::DeleteFailed(format!("Failed to delete profile json {:?}: {}", path, error))),
                 }
             } else {
                 return Err(ProfileError::NotFound(profile_id));
@@ -215,9 +217,9 @@ impl ProfileManager {
 
         if profile_deleted {
             self.profiles.remove(&profile_id);
-            Ok(profile_id)
+            Ok(())
         } else {
-            Err(ProfileError::NotFound(profile_id))
+            Err(ProfileError::DeleteFailed(format!("Failed to delete profile with id '{}'", profile_id)))
         }
     }
 
@@ -234,10 +236,8 @@ impl ProfileManager {
             return Err(ProfileError::NotFound(profile_id));
         }
 
-        match self.save_profile(self.profiles.get(&profile_id).unwrap()) {
-            Ok(()) => Ok(()),
-            Err(error) => Err(ProfileError::SaveFailed(error)),
-        }
+        self.save_profile(self.profiles.get(&profile_id).unwrap())?;
+        Ok(())
     }
 
     pub fn get_profiles(&self) -> Vec<Profile> {
@@ -250,44 +250,36 @@ impl ProfileManager {
             .and_then(|id| self.profiles.get_mut(id))
     }
 
-    pub fn set_active_profile(&mut self, profile_id: String) -> Result<String, ProfileError> {
-        let mut changed_ids = Vec::new();
+    pub fn set_active_profile(&mut self, profile_id: String) -> Result<(), ProfileError> {
+        if !self.profiles.contains_key(&profile_id) {
+            return Err(ProfileError::NotFound(profile_id));
+        }
+
+        self.active_profile_id = Some(profile_id.clone());
+
+        let mut changed_profiles = Vec::new();
         for profile in self.profiles.values_mut() {
-            if profile.active {
-                profile.active = false;
-                changed_ids.push(profile.id.clone());
+            let should_be_active = profile.id == profile_id;
+            if profile.active != should_be_active {
+                profile.active = should_be_active;
+                changed_profiles.push(profile.clone());
             }
         }
 
-        for profile_id in changed_ids {
-            if let Some(profile) = self.profiles.get(&profile_id) {
-                self.save_profile(&profile.clone()).ok();
+        for profile in changed_profiles {
+            if let Err(e) = self.save_profile(&profile) {
+                error!("Failed to save profile '{}' when setting active profile: {}", profile.name, e);
             }
         }
 
-        if self.profiles.contains_key(&profile_id) {
-            {
-                let profile = self.profiles.get_mut(&profile_id).unwrap();
-                profile.active = true;
-            }
-
-            let profile = self.profiles.get(&profile_id).unwrap().clone();
-            self.save_profile(&profile).ok();
-            self.active_profile_id = Some(profile.id.clone());
-            Ok(profile.id)
-        } else {
-            Err(ProfileError::NotFound(profile_id))
-        }
+        Ok(())
     }
 
     pub fn save_active_profile(&mut self) -> Result<(), ProfileError> {
         if let Some(active_profile) = self.get_active_profile() {
             let profile_to_save = active_profile.clone();
 
-            //drop(active_profile);
-
-            self.save_profile(&profile_to_save)
-                .map_err(|e| ProfileError::SaveFailed(e))?;
+            self.save_profile(&profile_to_save)?;
             Ok(())
         } else {
             Err(ProfileError::NotFound(

@@ -8,14 +8,39 @@ use uuid::Uuid;
 //     pub enabled: bool
 // }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error, Serialize)]
+#[serde(tag = "type", content = "message")]
 pub enum ProfileError {
+    #[error("Profile not found: {0}")]
     NotFound(String),
+    #[error("Invalid profile name: {0}")]
     InvalidName(String),
+    #[error("Profile with the same ID already exists: {0}")]
     DuplicateId(String),
-    SaveFailed(Box<dyn std::error::Error>),
+    #[error("Profile with the same name already exists: {0}")]
+    DuplicateName(String),
+    #[error("Failed to save profile: {0}")]
+    SaveFailed(String),
+    #[error("Failed to load profile: {0}")]
+    LoadFailed(String),
+    #[error("Cannot delete default profile")]
     CannotDeleteDefault,
-    DeleteFailed(std::io::Error),
+    #[error("Failed to delete profile: {0}")]
+    DeleteFailed(String),
+    #[error("Failed to activate profile: {0}")]
+    ActivateFailed(String),
+    #[error("Failed to deactivate profile: {0}")]
+    DeactivateFailed(String),
+    #[error("Failed to list profiles: {0}")]
+    ListFailed(String),
+    #[error("Failed to update profile: {0}")]
+    UpdateFailed(String),
+    #[error("Failed to create profile: {0}")]
+    CreateFailed(String),
+    #[error("Failed to rename profile: {0}")]
+    RenameFailed(String),
+    #[error("Unknown error: {0}")]
+    Other(String),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

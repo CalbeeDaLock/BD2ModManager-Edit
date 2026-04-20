@@ -1,10 +1,10 @@
 use std::{collections::HashMap, path::PathBuf};
 
 pub mod config;
+pub mod game;
 pub mod mods;
 pub mod profiles;
 pub mod utils;
-pub mod game;
 
 use log::{info, warn};
 use tauri::{AppHandle, Emitter};
@@ -125,7 +125,7 @@ impl BD2ModManager {
         app_handle.emit("mods-changed", all_mods).unwrap();
     }
 
-    // Profile Methods
+    // profile
     pub fn load_profiles(&mut self) -> Result<(), ProfileError> {
         self.profile_manager.load_profiles()
     }
@@ -138,26 +138,32 @@ impl BD2ModManager {
         self.profile_manager.get_active_profile()
     }
 
-    pub fn switch_profile(
-        &mut self,
-        app_handle: &AppHandle,
-        profile_id: String,
-    ) -> Result<String, ProfileError> {
-        let result = self.profile_manager.set_active_profile(profile_id);
-        self.sync_mods_with_profiles();
-        let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
-        app_handle.emit("mods-changed", all_mods).unwrap();
-        result
-    }
-
     pub fn create_profile(
         &mut self,
         name: String,
         description: Option<String>,
         template_id: Option<String>,
-    ) -> Result<String, ProfileError> {
+    ) -> Result<(), ProfileError> {
         self.profile_manager
             .create_profile(name, description, None, None, template_id)
+    }
+
+    pub fn switch_profile(
+        &mut self,
+        app_handle: &AppHandle,
+        profile_id: String,
+    ) -> Result<(), ProfileError> {
+        info!("Switching profile to {:?}", profile_id);
+
+        self.profile_manager.set_active_profile(profile_id)?;
+
+        self.sync_mods_with_profile();
+
+        if let Err(e) = self.update_mods_on_frontend(app_handle) {
+            warn!("Failed to update frontend after switching profile: {:?}", e);
+        }
+
+        Ok(())
     }
 
     pub fn edit_profile(
@@ -170,17 +176,22 @@ impl BD2ModManager {
             .edit_profile(profile_id, name, description)
     }
 
-    pub fn delete_profile(&mut self, app_handle: &AppHandle, profile_id: String) -> Result<String, ProfileError> {
-        let result = self.profile_manager.delete_profile(profile_id);
-        self.sync_mods_with_profiles();
+    pub fn delete_profile(
+        &mut self,
+        app_handle: &AppHandle,
+        profile_id: String,
+    ) -> Result<(), ProfileError> {
+        self.profile_manager.delete_profile(profile_id)?;
+        self.sync_mods_with_profile();
 
-        // send to frontend to update mods states
-        let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
-        app_handle.emit("mods-changed", all_mods).unwrap();
+        if let Err(e) = self.update_mods_on_frontend(app_handle) {
+            warn!("Failed to update frontend after deleting profile: {:?}", e);
+        }
 
-        result
+        Ok(())
     }
 
+    // manager
     pub fn install_mod(
         &mut self,
         app_handle: &AppHandle,
@@ -216,7 +227,11 @@ impl BD2ModManager {
         mods::sync::sync_mods(app_handle, game_directory, mods, method)
     }
 
-    pub fn unsync_mods(&mut self, app_handle: &AppHandle, game_directory: &PathBuf) -> Result<(), SyncError> {
+    pub fn unsync_mods(
+        &mut self,
+        app_handle: &AppHandle,
+        game_directory: &PathBuf,
+    ) -> Result<(), SyncError> {
         let _mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
 
         mods::sync::unsync_mods(app_handle, game_directory)
@@ -357,5 +372,28 @@ impl BD2ModManager {
         let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
         app_handle.emit("mods-changed", all_mods).unwrap();
         Ok(())
+    }
+
+    pub fn update_mods_on_frontend(&self, app_handle: &AppHandle) -> Result<(), String> {
+        let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
+        app_handle
+            .emit("mods-changed", all_mods)
+            .map_err(|e| format!("Failed to emit mods-changed event: {:?}", e))
+    }
+
+    fn sync_mods_with_profile(&mut self) {
+        if let Some(active_profile) = self.profile_manager.get_active_profile() {
+            info!("Active profile ({:?})", active_profile);
+
+            for bd2mod in self.cached_mods.values_mut() {
+                bd2mod.enabled = active_profile.get_mod_state(&bd2mod.name);
+            }
+        } else {
+            warn!("No active profile found.");
+            // reset all mods to disabled if no active profile is found, just in case
+            for bd2mod in self.cached_mods.values_mut() {
+                bd2mod.enabled = false;
+            }
+        }
     }
 }

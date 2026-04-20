@@ -1,8 +1,7 @@
-use bd2modmanager_lib::{profiles::types::Profile};
-use log::info;
+use bd2modmanager_lib::profiles::types::{Profile, ProfileError};
 use serde::{Deserialize, Serialize};
 
-use crate::AppState;
+use crate::{AppState};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -28,16 +27,9 @@ pub fn switch_profile(
     state: tauri::State<AppState>,
     app_handle: tauri::AppHandle,
     id: String,
-) -> Option<String> {
+) -> Result<(), ProfileError> {
     let mut mod_manager = state.mod_manager.lock().unwrap();
-
-    if let Ok(profile_id) = mod_manager.switch_profile(&app_handle, id) {
-        info!("Profile switched to {:?}", profile_id);
-        Some(profile_id)
-    } else {
-        info!("Failed to switch profile");
-        None
-    }
+    mod_manager.switch_profile(&app_handle, id)
 }
 
 #[tauri::command]
@@ -46,12 +38,9 @@ pub fn edit_profile(
     id: String,
     name: String,
     description: Option<String>,
-) -> bool {
+) -> Result<(), ProfileError> {
     let mut mod_manager = state.mod_manager.lock().unwrap();
-    match mod_manager.edit_profile(id, name, description) {
-        Ok(()) => true,
-        Err(_) => false,
-    }
+    mod_manager.edit_profile(id, name, description)
 }
 
 #[tauri::command]
@@ -60,12 +49,9 @@ pub fn create_profile(
     name: String,
     description: Option<String>,
     template_id: Option<String>,
-) -> Option<String> {
-    let mut mod_manager = state.mod_manager.lock().ok()?; // safe lock
-    mod_manager
-        .create_profile(name, description, template_id)
-        .ok()
-        .map(|profile| profile) // avoid cloning entire struct
+) -> Result<(), ProfileError> {
+    let mut mod_manager = state.mod_manager.lock().unwrap();
+    mod_manager.create_profile(name, description, template_id)
 }
 
 #[tauri::command]
@@ -73,10 +59,7 @@ pub fn delete_profile(
     app_handle: tauri::AppHandle,
     state: tauri::State<AppState>,
     id: String,
-) -> bool {
+) -> Result<(), ProfileError> {
     let mut mod_manager = state.mod_manager.lock().unwrap();
-    match mod_manager.delete_profile(&app_handle, id) {
-        Ok(_s) => true,
-        Err(_) => false,
-    }
+    mod_manager.delete_profile(&app_handle, id)
 }

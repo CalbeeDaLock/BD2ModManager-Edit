@@ -1,5 +1,4 @@
 import { invoke } from "@tauri-apps/api/core";
-
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
@@ -17,8 +16,6 @@ interface ProfilesState {
     profiles: Array<Profile>
 }
 
-// TODO: use events?
-
 export const useProfilesStore = defineStore("profiles", () => {
     const activeProfile = ref<Profile | null>(null);
     const activeProfileId = ref<string | null>(null);
@@ -33,54 +30,42 @@ export const useProfilesStore = defineStore("profiles", () => {
     });
 
     async function loadProfiles() {
-        await invoke<ProfilesState>("get_profiles").then(result => {
-            activeProfile.value = result.activeProfile;
-            activeProfileId.value = result.activeProfile?.id || null;
-            profiles.value = result.profiles;
-            console.log(profiles.value);
-        });
+        const result = await invoke<ProfilesState>("get_profiles");
+        activeProfile.value = result.activeProfile;
+        activeProfileId.value = result.activeProfile?.id || null;
+        profiles.value = result.profiles;
     }
 
     async function switchProfile(id: string) {
-        await invoke("switch_profile", { id }).then(() => {
-            activeProfile.value = getProfileById(id);
-            activeProfileId.value = id;
-        });
+        await invoke("switch_profile", { id });
+        activeProfile.value = getProfileById(id);
+        activeProfileId.value = id;
     }
 
     async function createProfile(name: string, description: string | null, templateId: string | null) {
-        await invoke("create_profile", { name, description, templateId }).then(result => {
-            console.log("create profile", result);
-        });
+        await invoke("create_profile", { name, description, templateId });
         await loadProfiles();
     }
 
     async function deleteProfile(id: string) {
-        await invoke("delete_profile", { id }).then(result => {
-            console.log("delete profile", result);
-        });
+        await invoke("delete_profile", { id });
+        await loadProfiles();
+    }
+
+    async function editProfile(id: string, name: string, description: string | null) {
+        await invoke("edit_profile", { id, name, description });
         await loadProfiles();
     }
 
     function getProfileById(id: string): Profile | null {
-        const profile = profiles.value.find(p => p.id === id);
-        return profile || null;
-    }
-
-    async function editProfile(id: string, name: string, description: string | null) {
-        await invoke("edit_profile", { id, name, description }).then(async (result) => {
-            console.log("edit profile", result);
-        });
-        await loadProfiles();
+        return profiles.value.find(p => p.id === id) || null;
     }
 
     return {
         activeProfile,
         activeProfileId,
-
         profiles,
         sortedProfiles,
-
         loadProfiles,
         switchProfile,
         createProfile,

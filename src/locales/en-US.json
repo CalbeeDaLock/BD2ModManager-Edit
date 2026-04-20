@@ -329,13 +329,29 @@
                 "title": "Profile Created",
                 "description": "Profile \"{profileName}\" has been successfully created."
             },
+            "profileCreateFailed": {
+                "title": "Failed to Create Profile",
+                "description": "An error occurred while creating profile \"{profileName}\"."
+            },
             "profileUpdated": {
                 "title": "Profile Updated",
                 "description": "Profile \"{profileName}\" has been successfully updated."
             },
+            "profileUpdateFailed": {
+                "title": "Failed to Update Profile",
+                "description": "An error occurred while updating profile \"{profileName}\"."
+            },
             "profileDeleted": {
                 "title": "Profile Deleted",
                 "description": "Profile \"{profileName}\" has been successfully deleted."
+            },
+            "profileDeleteFailed": {
+                "title": "Failed to Delete Profile",
+                "description": "An error occurred while deleting profile \"{profileName}\"."
+            },
+            "profileSwitchFailed": {
+                "title": "Failed to Switch Profile",
+                "description": "An error occurred while switching to profile \"{profileName}\"."
             }
         },
         "confirmations": {

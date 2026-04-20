@@ -44,8 +44,6 @@ function createNewProfile() {
 async function deleteSelected() {
   if (!profileSelectedId.value || profileSelectedId.value === 'default') return
 
-  // const _profile = profilesStore.getProfileById(profileSelectedId.value)
-
   const result = await confirm.confirm({
     title: t('profilesTab.confirmations.deleteProfile.title'),
     message: t('profilesTab.confirmations.deleteProfile.message', { profileName: selectedProfile.value?.name }),
@@ -62,49 +60,85 @@ async function deleteSelected() {
 
   if (!result.confirmed) return
 
-  await profilesStore.deleteProfile(profileSelectedId.value)
+  const deletedName = selectedProfile.value?.name
 
-  profileSelectedId.value = null
-
-  toast.add({
-    severity: 'success',
-    summary: t('profilesTab.notifications.profileDeleted.title'),
-    detail: t('profilesTab.notifications.profileDeleted.description', { profileName: selectedProfile.value?.name }),
-    life: 3000
-  })
+  try {
+    await profilesStore.deleteProfile(profileSelectedId.value)
+    profileSelectedId.value = null
+    toast.add({
+      severity: 'success',
+      summary: t('profilesTab.notifications.profileDeleted.title'),
+      detail: t('profilesTab.notifications.profileDeleted.description', { profileName: deletedName }),
+      life: 3000
+    })
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: t('profilesTab.notifications.profileDeleteFailed.title'),
+      detail: t('profilesTab.notifications.profileDeleteFailed.description', { profileName: deletedName }),
+      life: 3000
+    })
+  }
 }
-function onProfileEdit(id: string, name: string, description: string | null) {
-  profilesStore.editProfile(id, name, description)
 
-  toast.add({
-    severity: 'success',
-    summary: t('profilesTab.notifications.profileUpdated.title'),
-    detail: t('profilesTab.notifications.profileUpdated.description', { profileName: name }),
-    life: 3000
-  })
+async function onProfileEdit(id: string, name: string, description: string | null) {
+  try {
+    await profilesStore.editProfile(id, name, description)
+    toast.add({
+      severity: 'success',
+      summary: t('profilesTab.notifications.profileUpdated.title'),
+      detail: t('profilesTab.notifications.profileUpdated.description', { profileName: name }),
+      life: 3000
+    })
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: t('profilesTab.notifications.profileUpdateFailed.title'),
+      detail: t('profilesTab.notifications.profileUpdateFailed.description', { profileName: name }),
+      life: 3000
+    })
+  }
 }
 
-function onProfileCreate(
+async function onProfileCreate(
   name: string,
   description: string | null,
   profileTemplateId: string | null
 ) {
-  profilesStore.createProfile(name, description, profileTemplateId)
-
-  toast.add({
-    severity: 'success',
-    summary: t('profilesTab.notifications.profileCreated.title'),
-    detail: t('profilesTab.notifications.profileCreated.description', { profileName: name }),
-    life: 3000
-  })
+  try {
+    await profilesStore.createProfile(name, description, profileTemplateId)
+    toast.add({
+      severity: 'success',
+      summary: t('profilesTab.notifications.profileCreated.title'),
+      detail: t('profilesTab.notifications.profileCreated.description', { profileName: name }),
+      life: 3000
+    })
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: t('profilesTab.notifications.profileCreateFailed.title'),
+      detail: t('profilesTab.notifications.profileCreateFailed.description', { profileName: name }),
+      life: 3000
+    })
+  }
 }
 
-function onProfileSwitch(id: string) {
-  profilesStore.switchProfile(id)
+async function onProfileSwitch(id: string) {
+  const profile = profilesStore.getProfileById(id)
+  try {
+    await profilesStore.switchProfile(id)
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: t('profilesTab.notifications.profileSwitchFailed.title'),
+      detail: t('profilesTab.notifications.profileSwitchFailed.description', { profileName: profile?.name }),
+      life: 3000
+    })
+  }
 }
 
-function refreshProfiles() {
-  profilesStore.loadProfiles()
+async function refreshProfiles() {
+  await profilesStore.loadProfiles()
 }
 
 useHeader({
