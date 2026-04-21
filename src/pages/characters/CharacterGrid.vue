@@ -91,7 +91,7 @@ useSaveScroll(rowVirtualizer)
                 >
                     <CharacterGridItem
                         v-for="costume in rows[virtualRow.index]"
-                        :key="costume.id"
+                        :key="Array.isArray(costume.id) ? costume.id.join('-') : costume.id as string"
                         :costume="costume"
                         @open-mod-details="$emit('open-mod-details', costume)"
                     />

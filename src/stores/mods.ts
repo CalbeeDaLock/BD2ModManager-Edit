@@ -9,7 +9,7 @@ export type BD2ModType =
     | { type: 'Standing'; id: string }
     | { type: 'Cutscene'; id: string }
     | { type: 'Scene'; id: string }
-    | { type: 'Npc'; id: string }
+    | { type: 'NPC'; id: string }
     | { type: 'Dating'; id: string }
     | { type: 'Minigame' };
 
@@ -41,9 +41,10 @@ export const useModsStore = defineStore('mods', () => {
 
             if (mod.modType && (mod.modType.type == "Cutscene" || mod.modType.type == "Standing")) {
                 character = charactersStore.getCharacterById(mod.modType.id) ?? undefined
-
             } else if (mod.modType && mod.modType.type == "Dating") {
                 character = charactersStore.getCharacterByDatingId(mod.modType.id) ?? undefined
+            } else if (mod.modType && mod.modType.type == "NPC") {
+                character = charactersStore.getCharacterByNpcId(mod.modType.id) ?? undefined
             }
 
             let conflictingMods: BD2Mod[] = []
@@ -117,10 +118,6 @@ export const useModsStore = defineStore('mods', () => {
 
         return invoke("rename_mod", { oldName, newName })
     }
-
-    // async function setModAuthor(modName: string, author: string | null) {
-    //     return invoke("set_mod_author", { modName, author: author || null })
-    // }
 
     async function setModAuthor(modNames: string | string[], author: string | null) {
         const names = Array.isArray(modNames) ? modNames : [modNames];

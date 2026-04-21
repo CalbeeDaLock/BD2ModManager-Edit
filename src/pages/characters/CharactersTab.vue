@@ -91,13 +91,23 @@ const modIndex = computed(() => {
 
     for (const mod of modsStore.mods) {
         if (!mod.modType || !('id' in mod.modType)) continue;
-        if (!['Cutscene', 'Standing', 'Dating'].includes(mod.modType.type)) continue;
+        if (!['Cutscene', 'Standing', 'Dating', 'NPC'].includes(mod.modType.type)) continue;
 
         let id = mod.modType.id;
         if (mod.modType.type === 'Dating') {
             const characterId = charactersStore.getCharacterIdByDatingId(id);
             if (!characterId) continue;
             id = characterId;
+        } else if (mod.modType.type === 'NPC') {
+            if (!mod.character) continue
+            const ids = Array.isArray(mod.character.id) ? mod.character.id : [mod.character.id]
+            for (const charId of ids) {
+                let entry = index.get(charId)
+                if (!entry) { entry = { enabledTypes: new Set(), mods: [] }; index.set(charId, entry) }
+                entry.mods.push(mod)
+                if (mod.enabled) entry.enabledTypes.add('Standing')
+            }
+            continue
         }
 
         let entry = index.get(id);
@@ -105,34 +115,44 @@ const modIndex = computed(() => {
             entry = { enabledTypes: new Set(), mods: [] };
             index.set(id, entry);
         }
+        // some mods are made using NPC id, it changesthe standing and NPC too
 
         entry.mods.push(mod);
+
         if (mod.enabled) {
             entry.enabledTypes.add(mod.modType.type);
         }
     }
 
+    console.log(index)
+
     return index;
 });
 
-function hasCutsceneInstalled(id: string) {
-    return modIndex.value.get(id)?.enabledTypes.has('Cutscene') ?? false;
+function hasCutsceneInstalled(id: string | readonly string[]) {
+    const ids = Array.isArray(id) ? id : [id];
+    return ids.some(i => modIndex.value.get(i)?.enabledTypes.has('Cutscene'));
 }
 
-function hasStandingInstalled(id: string) {
-    return modIndex.value.get(id)?.enabledTypes.has('Standing') ?? false;
+function hasStandingInstalled(id: string | readonly string[]) {
+    const ids = Array.isArray(id) ? id : [id];
+
+    return ids.some(i => modIndex.value.get(i)?.enabledTypes.has('Standing'));
 }
 
-function hasDatingInstalled(id: string) {
-    return modIndex.value.get(id)?.enabledTypes.has('Dating') ?? false;
+function hasDatingInstalled(id: string | readonly string[]) {
+    const ids = Array.isArray(id) ? id : [id];
+    return ids.some(i => modIndex.value.get(i)?.enabledTypes.has('Dating'));
 }
 
-function getInstalledMods(costumeId: string) {
-    return modIndex.value.get(costumeId)?.mods ?? [];
+function getInstalledMods(id: string | readonly string[]) {
+    const ids = Array.isArray(id) ? id : [id];
+    return ids.flatMap(i => modIndex.value.get(i)?.mods ?? []);
 }
 
-function getInstalledModsCount(costumeId: string) {
-    return modIndex.value.get(costumeId)?.mods.length ?? 0;
+function getInstalledModsCount(id: string | readonly string[]) {
+    const ids = Array.isArray(id) ? id : [id];
+    return ids.reduce((sum, i) => sum + (modIndex.value.get(i)?.mods.length ?? 0), 0);
 }
 
 function toggleMod(mod: BD2Mod) {
@@ -163,8 +183,7 @@ const filteredCharacters = computed(() => {
         if (userFilters.standing === 'enabled' && !standingEnabled) return false;
         if (userFilters.standing === 'disabled' && standingEnabled) return false;
 
-
-        // if filtkering by dating, also exclude characters that don't have dating at all. we can check dating_id
+        // if filtering by dating, also exclude characters that don't have dating at all. we can check dating_id
         if (userFilters.dating !== 'any' && !char.dating_id) return false;
         if (userFilters.dating === 'enabled' && !datingEnabled) return false;
         if (userFilters.dating === 'disabled' && datingEnabled) return false;
@@ -327,7 +346,8 @@ onActivated(() => {
 
 onMounted(() => {
     if (route.query.characterId) {
-        const costume = charactersStore.characters.find(char => char.id === route.query.characterId);
+        console.log('Found characterId in query:', route.query.characterId);
+        const costume = charactersStore.getCharacterById(route.query.characterId as string);
         if (costume) {
             selectedCostume.value = costume;
             showCostumeModal.value = true;
@@ -340,7 +360,7 @@ onMounted(() => {
 watch(() => route.query.characterId, (newCharacterId) => {
     nextTick(() => {
         if (newCharacterId) {
-            const costume = charactersStore.characters.find(char => char.id === newCharacterId);
+            const costume = charactersStore.getCharacterById(newCharacterId as string);
             if (costume) {
                 selectedCostume.value = costume;
                 showCostumeModal.value = true;
@@ -386,13 +406,13 @@ watch(() => route.query.characterId, (newCharacterId) => {
 
                 <div class="flex flex-col gap-1.5">
                     <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.sortBy.title')
-                        }}</label>
+                    }}</label>
                     <Select v-model="userFilters.sortBy" :options="sortOptions" />
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.modStatus.title')
-                        }}</label>
+                    }}</label>
                     <div class="flex flex-col gap-2">
                         <div class="flex flex-col gap-1">
                             <label for="cutscene" class="text-xs font-medium text-secondary">{{
@@ -414,7 +434,7 @@ watch(() => route.query.characterId, (newCharacterId) => {
 
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.extraFilters.title')
-                        }}</label>
+                    }}</label>
                     <div class="flex flex-col gap-1.5">
                         <Checkbox v-model="userFilters.hideMenCharacters"
                             :label="t('charactersTab.filters.extraFilters.hideMenCharacters')" />
@@ -429,7 +449,7 @@ watch(() => route.query.characterId, (newCharacterId) => {
 
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.releasePeriod.title')
-                        }}</label>
+                    }}</label>
                     <Select v-model="userFilters.releasePeriod" :options="releasePeriodOptions" />
                 </div>
             </div>

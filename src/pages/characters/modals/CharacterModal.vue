@@ -38,13 +38,28 @@ const props = defineProps<{
 
 const modsStore = useModsStore();
 
+const costumeId = computed(() => {
+    const id = props.selectedCostume?.id;
+    return Array.isArray(id) ? id[0] : id;
+});
+
+const costumeIds = computed((): string[] => {
+    const id = props.selectedCostume?.id;
+    return Array.isArray(id) ? [...id] : id ? [id as string] : [];
+});
+
 const installedMods = computed(() => {
     if (!props.selectedCostume) return [];
     return modsStore.mods.filter(mod => {
         if (!mod.modType) return false;
         const { type } = mod.modType;
         if (['Cutscene', 'Standing'].includes(type)) {
-            return 'id' in mod.modType && mod.modType.id === props.selectedCostume?.id;
+            return 'id' in mod.modType && costumeIds.value.includes(mod.modType.id);
+        }
+        if (type === 'NPC') {
+            if (!mod.character) return false;
+            const modCharIds = Array.isArray(mod.character.id) ? [...mod.character.id] : [mod.character.id];
+            return modCharIds.some(id => costumeIds.value.includes(id));
         }
         if (type === 'Dating') {
             return 'id' in mod.modType && mod.modType.id === props.selectedCostume?.dating_id;
@@ -60,8 +75,9 @@ const modsByType = computed(() => {
         Dating: [] as BD2Mod[]
     };
     installedMods.value.forEach(mod => {
-        if (mod.modType?.type && mod.modType.type in grouped) {
-            grouped[mod.modType.type as keyof typeof grouped].push(mod);
+        const type = mod.modType?.type === 'NPC' ? 'Standing' : mod.modType?.type;
+        if (type && type in grouped) {
+            grouped[type as keyof typeof grouped].push(mod);
         }
     });
     return grouped;
@@ -87,20 +103,20 @@ async function openPreviewMod(mod: BD2Mod) {
     });
 }
 
-const baseDir = useAppDir()
+const baseDir = useAppDir();
 
 function getIconForLink(key: string) {
     switch (key) {
-        case "patreon": return PatreonIcon
-        case "ko-fi": return KofiIcon
-        case "discord": return DiscordIcon
-        case "afdian": return AfDianIcon
-        default: return ExternalLink
+        case "patreon": return PatreonIcon;
+        case "ko-fi": return KofiIcon;
+        case "discord": return DiscordIcon;
+        case "afdian": return AfDianIcon;
+        default: return ExternalLink;
     }
 }
 
 function handleOpenLink(link: string | null) {
-    if (!link) return
+    if (!link) return;
     openUrl(link);
 }
 
@@ -109,9 +125,13 @@ const tooltipVisible = ref<string | null>(null);
 const hasIndexMods = computed(() => {
     if (!props.selectedCostume) return false;
     return ['cutscene', 'standing', 'dating'].some(
-        type => modsIndex.getMods(props.selectedCostume!.id, type).length > 0
+        type => costumeIds.value.some(id => modsIndex.getMods(id, type).length > 0)
     );
 });
+
+function getIndexMods(type: string) {
+    return costumeIds.value.flatMap(id => modsIndex.getMods(id, type));
+}
 </script>
 
 <template>
@@ -125,11 +145,11 @@ const hasIndexMods = computed(() => {
 
         <div v-if="selectedCostume" class="flex flex-col min-h-0 text-primary overflow-hidden">
             <div class="flex items-stretch border-b border-border shrink-0">
-                <Image :src="`characters/standing/${selectedCostume.id}.png`"
+                <Image :src="`characters/standing/${costumeId}.png`"
                     :alt="`${selectedCostume.character} - ${selectedCostume.costume}`"
                     class="w-40 h-40 object-cover shrink-0 border-r border-border"
                     :fallback-sources="[
-                        convertFileSrc(`${baseDir}/assets/standing/${selectedCostume?.id}.png`),
+                        convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`),
                         '/characters/standing/placeholder_character.png'
                     ]" />
 
@@ -142,7 +162,7 @@ const hasIndexMods = computed(() => {
                             </div>
                             <div class="flex items-center gap-3 mt-1 text-xs text-secondary">
                                 <span class="flex items-center gap-1">
-                                    <Tag class="w-4 h-4" />{{ selectedCostume.id }}
+                                    <Tag class="w-4 h-4" />{{ Array.isArray(selectedCostume.id) ? selectedCostume.id.join(', ') : selectedCostume.id }}
                                 </span>
                                 <span v-if="selectedCostume.release_date" class="flex items-center gap-1">
                                     <Calendar class="w-4 h-4" />
@@ -165,13 +185,11 @@ const hasIndexMods = computed(() => {
                     <div class="flex gap-5 mt-3">
                         <div>
                             <p class="text-base font-semibold leading-none">{{ enabledModsCount }}</p>
-                            <p class="text-xs text-secondary mt-0.5">{{ $t('charactersTab.characterModal.enabledMods')
-                                }}</p>
+                            <p class="text-xs text-secondary mt-0.5">{{ $t('charactersTab.characterModal.enabledMods') }}</p>
                         </div>
                         <div>
                             <p class="text-base font-semibold leading-none">{{ installedMods.length }}</p>
-                            <p class="text-xs text-secondary mt-0.5">{{ $t('charactersTab.characterModal.totalMods') }}
-                            </p>
+                            <p class="text-xs text-secondary mt-0.5">{{ $t('charactersTab.characterModal.totalMods') }}</p>
                         </div>
                     </div>
                 </div>
@@ -198,43 +216,28 @@ const hasIndexMods = computed(() => {
                         <TabPanel key="modsPanel">
                             <div>
                                 <div v-if="installedMods.length === 0" class="text-center py-12 px-4 text-secondary">
-                                    <p class="text-sm font-medium mb-1">{{
-                                        $t('charactersTab.characterModal.noModsFound.title') }}
-                                    </p>
-                                    <p class="text-xs text-secondary">{{
-                                        $t('charactersTab.characterModal.noModsFound.description')
-                                        }}</p>
+                                    <p class="text-sm font-medium mb-1">{{ $t('charactersTab.characterModal.noModsFound.title') }}</p>
+                                    <p class="text-xs text-secondary">{{ $t('charactersTab.characterModal.noModsFound.description') }}</p>
                                 </div>
                                 <template v-else>
                                     <div v-for="(mods, type) in modsByType" :key="type" v-show="mods.length > 0">
-                                        <div
-                                            class="flex items-center justify-between px-4 py-2 bg-bg-surface border-b border-border sticky top-0 z-10">
+                                        <div class="flex items-center justify-between px-4 py-2 bg-bg-surface border-b border-border sticky top-0 z-10">
                                             <span class="text-xs font-medium text-secondary uppercase tracking-wide">
                                                 {{ $t(`charactersTab.modTypes.${type.toLowerCase()}`) }}
                                             </span>
-                                            <span class="text-xs text-secondary">{{mods.filter(m =>
-                                                m.enabled).length}}/{{
-                                                    mods.length }}</span>
+                                            <span class="text-xs text-secondary">{{ mods.filter(m => m.enabled).length }}/{{ mods.length }}</span>
                                         </div>
 
                                         <label v-for="mod in mods" :key="mod.name"
                                             class="flex items-center gap-3 px-4 py-2.5 border-b border-border cursor-pointer hover:bg-interactive-bg-hover transition-colors"
                                             :class="{ 'bg-bg-surface': !mod.enabled }">
-                                            <Checkbox :model-value="mod.enabled" @update:model-value="toggleMod(mod)"
-                                                class="shrink-0" />
-                                            <button @click.stop="openPreviewMod(mod)"
-                                                :aria-label="$t('charactersTab.characterModal.previewMod')">
-                                                <Eye
-                                                    class="w-6 h-6 cursor-pointer hover:text-primary! transition-colors active:scale-95 text-secondary" />
+                                            <Checkbox :model-value="mod.enabled" @update:model-value="toggleMod(mod)" class="shrink-0" />
+                                            <button @click.stop="openPreviewMod(mod)" :aria-label="$t('charactersTab.characterModal.previewMod')">
+                                                <Eye class="w-6 h-6 cursor-pointer hover:text-primary! transition-colors active:scale-95 text-secondary" />
                                             </button>
                                             <div class="flex-1 min-w-0">
-                                                <p class="text-sm truncate"
-                                                    :class="mod.enabled ? 'text-primary' : 'text-secondary'">{{ mod.name
-                                                    }}
-                                                </p>
-                                                <p v-if="mod.author" class="text-xs text-secondary mt-0.5">{{ mod.author
-                                                    }}
-                                                </p>
+                                                <p class="text-sm truncate" :class="mod.enabled ? 'text-primary' : 'text-secondary'">{{ mod.name }}</p>
+                                                <p v-if="mod.author" class="text-xs text-secondary mt-0.5">{{ mod.author }}</p>
                                             </div>
                                         </label>
                                     </div>
@@ -244,23 +247,21 @@ const hasIndexMods = computed(() => {
 
                         <TabPanel key="discoverModsPanel">
                             <div>
-                                <div
-                                    class="bg-bg-surface/80 border border-border rounded-lg p-3 m-2 flex items-start gap-2">
+                                <div class="bg-bg-surface/80 border border-border rounded-lg p-3 m-2 flex items-start gap-2">
                                     <Info class="w-5 h-5 text-secondary" />
-                                    <p class="text-sm  text-secondary font-medium text-wrap">
+                                    <p class="text-sm text-secondary font-medium text-wrap">
                                         {{ $t('charactersTab.characterModal.discoverModsDescription', { latestUpdate: modsIndex.latestUpdate }) }}
                                     </p>
                                 </div>
                                 <template v-for="type in ['cutscene', 'standing', 'dating']">
-                                    <div v-if="modsIndex.getMods(selectedCostume.id, type).length > 0"
+                                    <div v-if="getIndexMods(type).length > 0"
                                         class="flex items-center justify-between px-4 py-2 bg-bg-surface border-b border-border sticky top-0 z-10">
                                         <span class="text-xs font-medium text-secondary uppercase tracking-wide">
                                             {{ $t(`charactersTab.modTypes.${type}`) }}
                                         </span>
                                     </div>
 
-                                    <label v-for="(mod, index) in modsIndex.getMods(selectedCostume.id, type)"
-                                        :key="`${type}-${index}`"
+                                    <label v-for="(mod, index) in getIndexMods(type)" :key="`${type}-${index}`"
                                         class="flex items-center gap-3 px-4 py-2.5 border-b border-border transition-colors">
                                         <div class="flex-1 min-w-0 flex items-center gap-2">
                                             <div class="relative flex items-center">
@@ -274,8 +275,7 @@ const hasIndexMods = computed(() => {
                                                 </span>
                                             </div>
 
-                                            <p class="text-sm truncate text-primary flex-1">{{ mod.authorData?.name }}
-                                            </p>
+                                            <p class="text-sm truncate text-primary flex-1">{{ mod.authorData?.name }}</p>
 
                                             <div class="flex flex-row gap-4">
                                                 <div v-for="(link, key) in Object.fromEntries(Object.entries(mod.authorData?.links || {}).filter(([_, link]) => link))"
@@ -284,19 +284,15 @@ const hasIndexMods = computed(() => {
                                                     <component :is="getIconForLink(key)" class="w-4 h-4"
                                                         :color="{ 'patreon': '#FF424D', 'ko-fi': '#29ABE0', 'discord': '#5865F2', 'afdian': '#946CE6' }[key]" />
                                                     <span :title="link || ''"
-                                                        class="text-sm text-primary font-medium group-hover:text-accent-primary! transition-colors">{{
-                                                            key[0].toUpperCase() + key.slice(1) }}</span>
+                                                        class="text-sm text-primary font-medium group-hover:text-accent-primary! transition-colors">{{ key[0].toUpperCase() + key.slice(1) }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </label>
                                 </template>
                                 <div v-if="!hasIndexMods" class="text-center py-12 px-4">
-                                    <p class="text-sm font-medium text-secondary mb-1">{{
-                                        $t('charactersTab.characterModal.noIndexModsFound.title') }}
-                                    </p>
-                                    <p class="text-xs text-secondary">{{
-                                        $t('charactersTab.characterModal.noIndexModsFound.description') }}</p>
+                                    <p class="text-sm font-medium text-secondary mb-1">{{ $t('charactersTab.characterModal.noIndexModsFound.title') }}</p>
+                                    <p class="text-xs text-secondary">{{ $t('charactersTab.characterModal.noIndexModsFound.description') }}</p>
                                 </div>
                             </div>
                         </TabPanel>

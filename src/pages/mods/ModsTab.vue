@@ -58,7 +58,7 @@ const skipUnsyncConfirmation = useLocalStorage('skipUnsyncModsConfirmation', fal
 let filters = reactive({
   searchQuery: '',
   // searchType: 'mod', // 'mod' | 'character' | 'author'
-  modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "Npc" | "Dating" | "Minigame")[],
+  modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame")[],
   onlyEnabled: false,
   onlyDisabled: false,
   onlyConflicts: false,

@@ -4,6 +4,7 @@ import { Character, isCostumeNew } from '../../stores/characters';
 import { CharacterListItem } from './CharacterList.vue';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { useAppDir } from '../../composables/useAppDir';
+import { computed } from 'vue';
 
 const baseDir = useAppDir()
 
@@ -14,6 +15,13 @@ const props = defineProps<{
 const emit = defineEmits<{
     openModDetails: [costume: Character]
 }>()
+
+const costumeId = computed(() => {
+    if (props.item.type !== 'costume') return null
+    const costume = props.item.data
+    // if there are multiple character ids, use the first one
+    return Array.isArray(costume.id) ? costume.id[0] : costume.id
+})
 </script>
 
 <template>
@@ -28,11 +36,11 @@ const emit = defineEmits<{
         <div class="shrink-0">
             <Image
                 loading="lazy"
-                :src="`characters/standing/${item.data.id}.png`"
+                :src="`characters/standing/${costumeId}.png`"
                 :alt="`${item.data.character} - ${item.data.costume}`"
                 class="w-42 h-42 object-cover"
                 :fallback-sources="[
-                    convertFileSrc(`${baseDir}/assets/standing/${item.data.id}.png`),
+                    convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`),
                     '/characters/standing/placeholder_character.png'
                 ]"                
             />
@@ -61,7 +69,7 @@ const emit = defineEmits<{
             </div>
 
             <span class="text-secondary font-mono text-sm">
-                {{ $t('charactersTab.id', { id: item.data.id }) }}
+                {{ $t('charactersTab.id', { id: Array.isArray(item.data.id) ? item.data.id.join(', ') : costumeId }) }}
             </span>
 
             <div class="flex flex-1 items-end gap-8 md:gap-12 mr-4 md:mr-8 mt-2">

@@ -5,22 +5,28 @@ import { useAppDir } from '../../composables/useAppDir'
 import { isCostumeNew } from '../../stores/characters'
 import Image from '../../components/common/Image.vue'
 import { Check, X } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 const baseDir = useAppDir()
 
-defineProps<{
+const props = defineProps<{
     costume: CostumeWithMods
 }>()
+
+const costumeId = computed(() => {
+    // if there are multiple character ids, use the first one
+    return Array.isArray(props.costume.id) ? props.costume.id[0] : props.costume.id
+})
 </script>
 
 <template>
     <div @click="$emit('open-mod-details', costume)"
         class="rounded-lg cursor-pointer transition-all bg-interactive-bg text-primary hover:bg-interactive-bg-hover/40 flex flex-col h-full overflow-hidden">
         <div class="relative">
-            <Image loading="lazy" :src="`characters/standing/${costume.id}.png`"
+            <Image loading="lazy" :src="`characters/standing/${costumeId}.png`"
                 :alt="`${costume.character} - ${costume.costume}`"
                 class="w-full h-full object-cover object-top rounded-t-md" :fallback-sources="[
-                    convertFileSrc(`${baseDir}/assets/standing/${costume.id}.png`),
+                    convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`),
                     '/characters/standing/placeholder_character.png'
                 ]" />
             <div class="absolute top-2.5 left-2.5 flex gap-1">
@@ -48,7 +54,7 @@ defineProps<{
                     </span>
                 </div>
                 <div class="text-secondary text-xs">
-                    {{ $t('charactersTab.id', { id: costume.id }) }}
+                    {{ $t('charactersTab.id', { id: Array.isArray(costume.id) ? costume.id.join(', ') : costume.id }) }}
                 </div>
             </div>
 

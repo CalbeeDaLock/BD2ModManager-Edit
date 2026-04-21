@@ -175,7 +175,8 @@ const columns = [
         cell: info => {
             const char = info.getValue()
             if (char) {
-
+                // uses the first id if there are multiple
+                let charId = Array.isArray(char.id) ? char.id[0] : char.id
                 return h(
                     "div",
                     {
@@ -183,17 +184,17 @@ const columns = [
                     },
                     [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
-                            src: `/characters/heads/${char.id}.png`,
+                            src: `/characters/heads/${charId}.png`,
                             loading: 'lazy',
                             class: 'w-[2rem] h-[2rem] object-cover scale-150 cursor-pointer hover:scale-165 transition-transform',
                             fallbackSources: [
-                                convertFileSrc(`${baseDir.value}/assets/heads/${char.id}.png`),
+                                convertFileSrc(`${baseDir.value}/assets/heads/${charId}.png`),
                                 '/characters/heads/050001.png'
                             ],
                             onClick: (event: Event) => {
                                 event.stopPropagation()
                                 // redirects to character page
-                                router.push({ name: 'characters', query: { characterId: char.id } })
+                                router.push({ name: 'characters', query: { characterId: charId } })
                             }
                         }) : null,
                         preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, `${char.character} - ${char.costume}`) : null
