@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
   src: string;
@@ -9,15 +9,22 @@ const props = defineProps<{
 }>()
 
 const currentSrc = ref(props.src)
-const hasError = ref(false)
+const fallbackIndex = ref(0)
+
+watch(() => props.src, (newSrc) => {
+  currentSrc.value = newSrc
+  fallbackIndex.value = 0
+})
 
 function onError(event: Event) {
-  hasError.value = true;
   props.onError?.(event);
-  if (props.fallbackSources && props.fallbackSources.length > 0) {
-    const nextSrc = props.fallbackSources.shift()!;
-    currentSrc.value = nextSrc;
-    hasError.value = false;
+
+  const fallbacks = props.fallbackSources ?? []
+  if (fallbackIndex.value < fallbacks.length) {
+    currentSrc.value = fallbacks[fallbackIndex.value]
+    fallbackIndex.value++
+  } else if (props.errorSrc) {
+    currentSrc.value = props.errorSrc
   }
 }
 </script>
@@ -25,8 +32,7 @@ function onError(event: Event) {
 <template>
   <img
     v-bind="$attrs"
-  
-    :src="hasError && props.errorSrc ? props.errorSrc : currentSrc"
+    :src="currentSrc"
     @error="onError"
   />
 </template>
