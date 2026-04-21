@@ -514,7 +514,9 @@
             "gameDirectorySet": "Game directory set to {path}. Rechecking installations...",
             "gameDirectoryUnset": "Game directory unset. Please set the game directory to manage installations.",
             "unsupportedFile": "Unsupported file type dropped: {path}",
-            "unknownArchiveType": "Could not determine archive type for: {path}. Rename the file to include 'BepInEx', 'BrownDustX', or 'ConfigManager' in its name."
+            "unknownArchiveType": "Could not determine archive type for: {path}. Rename the file to include 'BepInEx', 'BrownDustX', or 'ConfigManager' in its name.",
+            "uninstalling": "Uninstalling {scope}...",
+            "uninstalledSuccess": "{scope} uninstalled successfully."
         },
         "fileDialog": {
             "archiveFilter": "Archive Files",

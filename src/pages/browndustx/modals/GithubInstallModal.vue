@@ -14,7 +14,10 @@ const showModal = defineModel('show', {
     required: true
 });
 
-const emit = defineEmits(['close', 'on-version-select'])
+const emit = defineEmits<{
+    close: []
+    onVersionSelect: [downloadUrl: string]
+}>()
 
 const props = defineProps({
     releasesUrl: {
@@ -106,7 +109,7 @@ function formatDate(dateString: string) {
 
 function handleVersionSelected(downloadUrl: string) {
     showModal.value = false
-    emit('on-version-select', downloadUrl)
+    emit('onVersionSelect', downloadUrl)
 }
 </script>
 

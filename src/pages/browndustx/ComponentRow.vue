@@ -3,7 +3,7 @@ import { TriangleAlert, Upload, Github, Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import Button from '../../components/common/Button.vue'
 import { computed } from 'vue';
-import { CanRemove, PluginState, Status } from './types';
+import { PluginState, Status } from './types';
 
 const props = defineProps<{
     label: string
