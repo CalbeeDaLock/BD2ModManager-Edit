@@ -1,4 +1,5 @@
 use std::path::Path;
+use sys_locale::get_locale;
 
 #[tauri::command]
 pub fn path_exists(path: String) -> bool {
@@ -24,5 +25,5 @@ pub fn is_portable() -> bool {
 
 #[tauri::command]
 pub fn get_user_locale() -> String {
-    std::env::var("LANG").unwrap_or_else(|_| "unknown".into())
+    get_locale().unwrap_or_else(|| String::from("en-US"))
 }

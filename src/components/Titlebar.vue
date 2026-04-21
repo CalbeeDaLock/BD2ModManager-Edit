@@ -100,8 +100,8 @@ const isLogsModalVisible = ref(false)
 const appVersion = ref('0.0.0')
 const { t } = useI18n()
 
-const locale = ref('unknown')
-const isChineseLanguage = computed(() => locale.value.startsWith('zh'))
+const locale = ref<string | null>(null)
+const isChineseLanguage = computed(() => locale.value?.toLowerCase().startsWith('zh'))
 
 function getErrorMessage(t: (key: string, params?: any) => string, error: SyncError | null | undefined): string {
     if (!error) return t('errors.unknownError')

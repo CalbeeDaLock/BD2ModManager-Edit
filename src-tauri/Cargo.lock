@@ -20,6 +20,7 @@ dependencies = [
  "serde_json",
  "sevenz-rust2",
  "sha2",
+ "sys-locale",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
