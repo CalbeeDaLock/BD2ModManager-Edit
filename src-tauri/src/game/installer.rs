@@ -435,8 +435,8 @@ pub enum InstallPluginError {
     GamePathNotSet,
     #[error("BepInEx is not installed")]
     BepInExNotInstalled,
-    #[error("{0} is already installed")]
-    PluginAlreadyInstalled(String),
+    #[error("Already installed")]
+    PluginAlreadyInstalled,
     #[error("Download failed: {0}")]
     DownloadFailed(String),
     #[error("Extraction failed: {0}")]
@@ -459,9 +459,7 @@ pub async fn install_browndustx_plugin_from_archive(
     }
 
     if check_bdx_plugin_installed(&game_path) {
-        return Err(InstallPluginError::PluginAlreadyInstalled(
-            "BrownDustX".into(),
-        ));
+        return Err(InstallPluginError::PluginAlreadyInstalled);
     }
 
     if !path.exists() || !path.is_file() {
@@ -590,9 +588,7 @@ pub async fn install_configmanager_plugin_from_archive(
         .join("BepInEx/plugins/ConfigurationManager/ConfigurationManager.dll")
         .exists()
     {
-        return Err(InstallPluginError::PluginAlreadyInstalled(
-            "ConfigurationManager".into(),
-        ));
+        return Err(InstallPluginError::PluginAlreadyInstalled);
     }
 
     if !path.exists() || !path.is_file() {
@@ -645,9 +641,7 @@ pub async fn install_configmanager_plugin_from_url(
         .join("BepInEx/plugins/ConfigurationManager/ConfigurationManager.dll")
         .exists()
     {
-        return Err(InstallPluginError::PluginAlreadyInstalled(
-            "ConfigurationManager".into(),
-        ));
+        return Err(InstallPluginError::PluginAlreadyInstalled);
     }
 
     let response = reqwest::get(&url)

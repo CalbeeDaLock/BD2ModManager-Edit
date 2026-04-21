@@ -157,9 +157,9 @@ async function setupDragAndDrop() {
 
             let archiveType: 'BEPINEX' | 'BROWNDUSTX' | 'CONFIGMANAGER' | null = null
 
-            if (lower.includes('bepinex')) archiveType = 'BEPINEX'
-            else if (lower.includes('browndustx') || lower.includes('bdx')) archiveType = 'BROWNDUSTX'
+            if (lower.includes('browndustx') || lower.includes('bdx')) archiveType = 'BROWNDUSTX'
             else if (lower.includes('configurationmanager') || lower.includes('configmanager')) archiveType = 'CONFIGMANAGER'
+            else if (lower.includes('bepinex')) archiveType = 'BEPINEX'
             else archiveType = await invoke<typeof archiveType>('determine_archive_type', { path })
 
             if (archiveType === 'BEPINEX') await installFromArchive('install_bepinex', 'BepInEx', path)
