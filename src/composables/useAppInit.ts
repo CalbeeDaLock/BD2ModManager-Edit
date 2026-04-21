@@ -59,7 +59,7 @@ export function useAppInitializer() {
 
     return {
       isFirstLaunch: settingsStore.settings.isFirstLaunch,
-      isBrownDustXOutdated: brownDustXVersion?.status === "INSTALLED_BUT_OUTDATED"
+      isBrownDustXOutdated: brownDustXVersion?.status === "InstalledButOutdated"
     }
   }
 

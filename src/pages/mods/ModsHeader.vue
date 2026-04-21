@@ -18,7 +18,6 @@ interface Filters {
 const filters = defineModel<Filters>("filters", {
     default: {
         searchQuery: '',
-        // searchType: 'mod',
         modTypes: [],
         onlyEnabled: false,
         onlyDisabled: false,

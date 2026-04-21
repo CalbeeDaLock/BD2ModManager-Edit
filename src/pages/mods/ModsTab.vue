@@ -47,7 +47,7 @@ const isSyncing = ref(false);
 const isUnsyncing = ref(false);
 
 const bdxVersion = ref<{
-  status: "INSTALLED" | "INSTALLED_BUT_OUTDATED" | "NOT_INSTALLED" | "GAME_NOT_FOUND",
+  status: "Installed" | "InstalledButOutdated" | "NotInstalled" | null, // null = game path not set
   version: string
 } | null>(null);
 
@@ -327,32 +327,6 @@ async function handleSyncMods() {
 
     let errorMessage = getErrorMessage(t, error)
 
-    // error that can happen syncing: 
-    // #[derive(Serialize, Clone, Debug)]
-    //     pub enum SyncCommandError {
-    //     GameDirectoryNotSet,
-    //     SyncMethodInvalid(String),
-    //     SyncFailed(SyncError), 
-    //     UnknownError(String),
-    // }
-
-    // impl From<SyncError> for SyncCommandError {
-    //     fn from(e: SyncError) -> Self {
-    //         SyncCommandError::SyncFailed(e)
-    //     }
-    // }
-    // #[derive(Debug, Clone, serde::Serialize)]
-    // #[serde(tag = "type", content = "details")]
-    // pub enum SyncError {
-    //     SymlinkAdminRequired,
-    //     ModPathNotFound(String),
-    //     CopyFailed(String),
-    //     SymlinkFailed(String),
-    //     HardlinkFailed(String),
-    //     DirectoryCreationFailed(String),
-    //     RemovalFailed(String)
-    // }
-
     toast.add({
       closable: true,
       summary: t('modsTab.errors.syncFailed.title'),
@@ -631,6 +605,7 @@ useHeader({
       icon: RefreshCcw,
       action: async () => {
         await handleRefreshMods();
+        await updateBDXVersion()
       }
     },
     {
@@ -711,13 +686,13 @@ function handleShowModConflicts(mod: BD2Mod) {
     <div class="flex justify-between items-center shrink-0">
       <div class="flex flex-col">
         <span class="text-primary font-semibold">
-          <template v-if="bdxVersion?.status == 'INSTALLED'">
+          <template v-if="bdxVersion?.status == 'Installed'">
             {{ $t("modsTab.browndustx.status.installed", { version: bdxVersion.version }) }}
           </template>
-          <template v-else-if="bdxVersion?.status == 'INSTALLED_BUT_OUTDATED'">
+          <template v-else-if="bdxVersion?.status == 'InstalledButOutdated'">
             {{ $t("modsTab.browndustx.status.installedButOutdated", { version: bdxVersion.version }) }}
           </template>
-          <template v-else-if="bdxVersion?.status == 'GAME_NOT_FOUND'">
+          <template v-else-if="!bdxVersion">
             {{ $t("modsTab.browndustx.status.gameNotFound") }}
           </template>
           <template v-else>

@@ -115,7 +115,7 @@
             "status": {
                 "installed": "BrownDustX v{version}",
                 "installedButOutdated": "BrownDustX v{version} (Outdated)",
-                "gameNotFound": "Game directory not set",
+                "gameNotFound": "Game directory not found",
                 "notInstalled": "BrownDustX not installed"
             },
             "navigation": "Go to BrownDustX"
@@ -425,7 +425,7 @@
             "brownDustXMissing": "BrownDustX is not installed. Mods won't load without it.",
             "noLogsYet": "No logs yet.",
             "dragAndDrop": "You can also drag and drop a BepInEx or BrownDustX archive here to install it",
-            "gameDirectoryNotSet": "Game directory is not set. Please set it in the settings to enable BrownDustX installation."
+            "gameDirectoryNotSet": "Game directory is not set. Please set it in the settings first."
         },
         "actions": {
             "installFromGithub": "Install from GitHub",
