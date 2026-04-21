@@ -2,7 +2,7 @@
 import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw } from "lucide-vue-next";
 
 import { computed, h, onActivated, onDeactivated, onMounted, reactive, ref, useTemplateRef, watch } from "vue";
-import { useLocalStorage, watchDebounced } from "@vueuse/core";
+import { useDebounceFn, useLocalStorage, watchDebounced } from "@vueuse/core";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 
@@ -55,9 +55,32 @@ const debouncedSearchQuery = ref('');
 const skipSyncConfirmation = useLocalStorage('skipSyncModsConfirmation', false)
 const skipUnsyncConfirmation = useLocalStorage('skipUnsyncModsConfirmation', false)
 
+const debouncedSync = useDebounceFn(async () => {
+  if (!settingsStore.settings.autoSyncMods) return;
+  if (isSyncing.value) {
+    loggingStore.logDebug("Sync in progress, skipping auto-sync.");
+    return;
+  }
+
+  isSyncing.value = true;
+  try {
+    await modsStore.syncMods();
+  } catch (error) {
+    let errorMessage = getErrorMessage(t, error);
+    toast.add({
+      closable: true,
+      summary: t('modsTab.errors.syncFailed.title'),
+      detail: errorMessage,
+      life: 5000,
+      severity: 'error'
+    });
+  } finally {
+    isSyncing.value = false;
+  }
+}, 1500);
+
 let filters = reactive({
   searchQuery: '',
-  // searchType: 'mod', // 'mod' | 'character' | 'author'
   modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame")[],
   onlyEnabled: false,
   onlyDisabled: false,
@@ -127,26 +150,15 @@ const filteredMods = computed(() => {
 function handleEnableMods(mods: BD2Mod[]) {
   loggingStore.logDebug("Enabling mods:", JSON.stringify(mods.map(m => m.name)));
   modsStore.enableMods(mods.map(m => m.name))
-    .then(() => {
-      if (settingsStore.settings.autoSyncMods) {
-        loggingStore.logDebug("Auto-sync is enabled, syncing mods after enabling.");
-        modsStore.syncMods()
-      }
-    }).catch((error) => {
-      loggingStore.logError("Error enabling mods:", error);
-    })
+    .then(() => debouncedSync())
+    .catch((error) => loggingStore.logError("Error enabling mods:", error))
 }
 
 function handleDisableMods(mods: BD2Mod[]) {
   loggingStore.logDebug("Disabling mods:", JSON.stringify(mods.map(m => m.name)));
-  modsStore.disableMods(mods.map(m => m.name)).then(() => {
-    if (settingsStore.settings.autoSyncMods) {
-      loggingStore.logDebug("Auto-sync is enabled, syncing mods after disabling.");
-      modsStore.syncMods()
-    }
-  }).catch((error) => {
-    loggingStore.logError("Error disabling mods:", error);
-  })
+  modsStore.disableMods(mods.map(m => m.name))
+    .then(() => debouncedSync())
+    .catch((error) => loggingStore.logError("Error disabling mods:", error))
 }
 
 function handlePreviewMod(mod: BD2Mod) {
@@ -430,6 +442,8 @@ async function handleDeleteMods(mods: BD2Mod[]) {
 
   if (result.confirmed) {
     modsStore.deleteMods(mods.map(m => m.name));
+
+    debouncedSync()
   }
 }
 

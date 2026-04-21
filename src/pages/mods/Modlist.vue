@@ -528,15 +528,16 @@ function handleKeyDown(event: KeyboardEvent) {
 
 function handleRowDoubleClick(event: MouseEvent, rowIndex: number) {
     // avoid previewing mod when double clicking the checkbox to enable/disable the mod
-    if (
-        !(event.target instanceof HTMLElement) ||
-        ["p-checkbox-input", "conflicts-indicator"].some(cls =>
-            (event.target as HTMLElement).classList.contains(cls)
-        )
-    ) {
-        return;
-    }
+    const target = event.target as HTMLElement
 
+    if (
+        !target ||
+        target.closest('input') ||
+        target.closest('button') ||
+        target.closest('[data-checkbox]')
+    ) {
+        return
+    }
 
     const row = rows.value[rowIndex]
     emit('preview-mod', row.original)

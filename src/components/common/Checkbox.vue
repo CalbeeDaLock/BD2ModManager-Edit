@@ -40,6 +40,7 @@ const id = `checkbox-${Math.random().toString(36).substr(2, 9)}`
 <template>
   <div
     class="flex items-center gap-2 select-none"
+    data-checkbox
     :class="{ 'cursor-not-allowed': disabled, 'cursor-pointer': !disabled }"
   >
     <input
