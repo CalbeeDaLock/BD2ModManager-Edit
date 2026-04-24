@@ -81,46 +81,73 @@ async fn download_missing_assets(
         .await
         .map_err(|e| format!("Failed creating dir: {e}"))?;
 
-    let characters_w_missing_assets: Vec<(String, bool, bool)> = characters["characters"]
-        .as_array()
-        .ok_or("Invalid characters format")?
+    let bundled_assets: std::collections::HashSet<String> = app_handle
+        .asset_resolver()
         .iter()
-        .filter_map(|character| {
-            let id = character["id"].as_str()?;
-            let is_standing_bundled = app_handle
-                .asset_resolver()
-                .get(format!("characters/standing/{}.png", id))
-                .is_some();
-            let is_head_bundled = app_handle
-                .asset_resolver()
-                .get(format!("characters/heads/{}.png", id))
-                .is_some();
-
-            // check if is bundled and not already download
-            let is_standing_downloaded = standing_characters_dir.join(format!("{}.png", id)).exists();
-            let is_head_downloaded = heads_characters_dir.join(format!("{}.png", id)).exists();
-
-            if (!is_standing_bundled && !is_standing_downloaded)
-                || (!is_head_bundled && !is_head_downloaded)
-            {
-                Some((id.to_string(), is_standing_bundled, is_head_bundled))
-            } else {
-                None
-            }
-        })
+        .map(|(path, _)| path.to_string())
         .collect();
+
+    let characters_w_missing_assets: Vec<(String, bool, bool)> = {
+        #[cfg(debug_assertions)]
+        {
+            vec![]
+        }
+
+        #[cfg(not(debug_assertions))]
+        {
+            characters["characters"]
+                .as_array()
+                .ok_or("Invalid characters format")?
+                .iter()
+                .filter_map(|character| {
+                    let id = character["id"].as_str()?;
+
+                    let is_standing_bundled =
+                        bundled_assets.contains(&format!("/characters/standing/{}.png", id));
+                    let is_head_bundled =
+                        bundled_assets.contains(&format!("/characters/heads/{}.png", id));
+
+                    // check if is bundled and not already download
+                    let is_standing_downloaded =
+                        standing_characters_dir.join(format!("{}.png", id)).exists();
+                    let is_head_downloaded =
+                        heads_characters_dir.join(format!("{}.png", id)).exists();
+
+                    debug!(
+                        "[{}] bundled=(standing:{}, head:{}) downloaded=(standing:{}, head:{})",
+                        id,
+                        is_standing_bundled,
+                        is_head_bundled,
+                        is_standing_downloaded,
+                        is_head_downloaded
+                    );
+
+                    let must_download_standing = !is_standing_bundled && !is_standing_downloaded;
+                    let must_download_head = !is_head_bundled && !is_head_downloaded;
+
+                    if must_download_standing || must_download_head {
+                        Some((id.to_string(), must_download_standing, must_download_head))
+                    } else {
+                        None
+                    }
+                })
+                .collect()
+        }
+    };
 
     let total = characters_w_missing_assets.len();
 
     if total == 0 {
-        info!("All character assets are already bundled, nothing to download");
+        info!("No character assets found to download");
         return Ok(());
     }
 
     info!("Found {total} characters with missing assets, downloading...");
 
-    for (index, (character_id, is_standing_bundled, is_head_bundled)) in characters_w_missing_assets.iter().enumerate() {
-        info!("Downloading missing assets for {character_id}; standing bundled: {is_standing_bundled}, head bundled: {is_head_bundled}");
+    for (index, (character_id, must_download_standing, must_download_head)) in
+        characters_w_missing_assets.iter().enumerate()
+    {
+        info!("Downloading missing assets for {character_id}; standing: {must_download_standing}, head: {must_download_head}");
 
         app_handle
             .emit(
@@ -132,7 +159,7 @@ async fn download_missing_assets(
             )
             .ok();
 
-        if !is_standing_bundled {
+        if *must_download_standing {
             let standing_url = format!("{}{}.png", STANDING_ASSETS_BASE_URL, character_id);
             let response = client.get(&standing_url).send().await.map_err(|e| {
                 format!("Failed to download standing asset for {character_id}: {e}")
@@ -154,7 +181,7 @@ async fn download_missing_assets(
             }
         }
 
-        if !is_head_bundled {
+        if *must_download_head {
             let head_url = format!("{}{}.png", HEADS_ASSETS_BASE_URL, character_id);
             let response =
                 client.get(&head_url).send().await.map_err(|e| {
