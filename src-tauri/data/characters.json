@@ -1,5 +1,5 @@
 {
-    "version": "0.0.12",
+    "version": "0.0.13",
     "characters": [
         {
             "id": "000708",
@@ -1901,7 +1901,10 @@
             "gender": "female"
         },
         {
-            "id": ["101601", "060401"],
+            "id": [
+                "101601",
+                "060401"
+            ],
             "character": "Celia",
             "costume": "The Curse",
             "is_collab": false,
@@ -2312,8 +2315,49 @@
             "standing": true,
             "dating_id": null,
             "character_image": "illust_inven_char021001_198.png",
-            "skill_preview_image": "illust_skill_char021001_198 .png",
+            "skill_preview_image": "illust_skill_char021001_198.png",
             "release_date": "2026-04-09",
+            "gender": "female"
+        },
+        {
+            "id": "067803",
+            "character": "Mamonir",
+            "costume": "Miracle Marine",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char021001_198.png",
+            "skill_preview_image": "illust_skill_char021001_198.png",
+            "release_date": "2026-04-23",
+            "gender": "female"
+        }
+        ,
+        {
+            "id": "004202",
+            "character": "Palette",
+            "costume": "Miracle Violet",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char004202_200.png",
+            "skill_preview_image": "illust_skill_char004202_200.png",
+            "release_date": "2026-04-23",
+            "gender": "female"
+        }
+        ,
+        {
+            "id": "003803",
+            "character": "Liberta",
+            "costume": "Miracle Rose",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char003803_201.png",
+            "skill_preview_image": "illust_skill_char003803_201.png",
+            "release_date": "2026-04-23",
             "gender": "female"
         }
     ],
