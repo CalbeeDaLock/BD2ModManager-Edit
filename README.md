@@ -3,7 +3,7 @@
 
 [![GitHub License](https://img.shields.io/github/license/bruhnn/BD2ModManager)](https://github.com/bruhnn/BD2ModManager/blob/main/LICENSE)
 [![GitHub Release](https://img.shields.io/github/v/release/bruhnn/BD2ModManager)](https://github.com/bruhnn/BD2ModManager/releases)
-[![Total Downloads](https://img.shields.io/github/downloads/bruhnn/BD2ModManager/total)](https://github.com/bruhnn/BD2ModManager/releases)
+[![Total Downloads](https://img.shields.io/endpoint?url=https://shy-waterfall-2797.bruhnn.workers.dev/downloads)](https://github.com/bruhnn/BD2ModManager/releases)
 
 
 > 🛠 Easily manage, preview, and sync mods for Brown Dust 2.
