@@ -13,7 +13,7 @@ use windows_sys::Win32::System::Threading::{GetCurrentProcess, OpenProcessToken}
 #[cfg(not(target_os = "windows"))]
 use libc;
 
-pub fn is_elevated() -> Result<bool, String> {
+pub fn is_admin() -> bool {
     #[cfg(target_os = "windows")]
     {
         unsafe {
@@ -35,18 +35,47 @@ pub fn is_elevated() -> Result<bool, String> {
                 CloseHandle(token);
 
                 if result {
-                    return Ok(elevation.TokenIsElevated != 0);
+                    return elevation.TokenIsElevated != 0;
                 }
             }
         }
 
-        return Ok(false);
+        return false;
     }
 
     #[cfg(not(target_os = "windows"))]
     {
-        return Ok(unsafe { libc::geteuid() == 0 });
+        return unsafe { libc::geteuid() == 0 };
     }
+}
+
+pub fn can_create_symlink() -> bool {
+    if is_admin() {
+        return true;
+    }
+
+    let tdir = std::env::temp_dir();
+    let file_a = tdir.join(".bd2mm.test.1");
+    let file_b = tdir.join(".bd2mm.test.2");
+
+    let _ = std::fs::remove_file(&file_a);
+    let _ = std::fs::remove_file(&file_b);
+
+    let result = {
+        #[cfg(target_os = "windows")]
+        {
+            std::os::windows::fs::symlink_file(&file_a, &file_b)
+        }
+        #[cfg(not(target_os = "windows"))]
+        {
+            std::os::unix::fs::symlink(&file_b, &file_a)
+        }
+    };
+
+    let _ = std::fs::remove_file(&file_a);
+    let _ = std::fs::remove_file(&file_b);
+
+    result.is_ok()
 }
 
 pub fn get_dll_version(dll_path: &PathBuf) -> Option<String> {

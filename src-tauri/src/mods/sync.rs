@@ -14,7 +14,7 @@ use crate::{
     mods::BD2Mod,
     utils::{
         files::{ensure_dir_exists, sync_dirs},
-        misc::is_elevated,
+        misc::{can_create_symlink},
     },
 };
 
@@ -156,23 +156,22 @@ pub fn sync_mods(
     }
 
     if method == SyncMethod::Symlink {
-        if let Ok(is_admin) = is_elevated() {
-            if !is_admin {
-                debug!("needs to be running as admin");
-                app_handle
-                    .emit(
-                        "sync-end",
-                        SyncEndEvent {
-                            r#type: SyncType::Sync,
-                            success: false,
-                            error: Some(SyncError::SymlinkAdminRequired),
-                            total: 0,
-                            synced: 0,
-                        },
-                    )
-                    .ok();
-                return Err(SyncError::SymlinkAdminRequired);
-            }
+        if !can_create_symlink() {
+            debug!("Needs to be running as admin to use symlinks.");
+
+            app_handle
+                .emit(
+                    "sync-end",
+                    SyncEndEvent {
+                        r#type: SyncType::Sync,
+                        success: false,
+                        error: Some(SyncError::SymlinkAdminRequired),
+                        total: 0,
+                        synced: 0,
+                    },
+                )
+                .ok();
+            return Err(SyncError::SymlinkAdminRequired);
         }
     }
 
