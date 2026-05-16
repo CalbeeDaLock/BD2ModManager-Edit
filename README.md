@@ -56,19 +56,53 @@ If you have suggestions or run into any problems with the app, feel free to open
 ---
 
 ## 🛠️ How to Use
-
 1. **Download** the app from [GitHub Releases](https://github.com/bruhnn/BD2ModManager/releases).
 2. **Select your Brown Dust 2 directory** (where `BrownDust II.exe` is located)
    - Example: F:\Neowiz\Browndust2\Browndust2_10000001
-3. **Add your mods** by:
+3. **Install BepInEx and BrownDustX**
+   - Download both from the BrownDustX Discord:
+     [discord.gg/B3Aqz6tDG2](https://discord.gg/B3Aqz6tDG2)
+
+   - Manual Steps:
+        
+      **Install BepInEx**
+      
+      Extract the contents of the BepInEx archive into the **game folder** (you can open the game folder from the mod manager)
+     
+      (**NOT** the launcher folder).
+     
+      Your folder should look like this:
+      ```text
+         Browndust2_10000001/
+         ├─ BepInEx/
+         ├─ winhttp.dll
+         └─ BrownDust II.exe
+      ```
+   
+      **Install BrownDustX**
+     
+      Extract the `BepInEx` folder from `BrownDustX-[VERSION].zip`
+      into the same game folder.
+     
+      Your folder should look like this:
+      ```text
+         Browndust2_10000001/
+         ├─ BepInEx/
+         │  └─ plugins/
+         │     └─ BrownDustX/
+         └─ BrownDust II.exe
+      ```
+4. **Verify the installation**
+   - Launch the game.
+   - On the loading screen, the game version and BrownDustX version should appear in red at the top-right corner.
+5. **Add your mods** by:
    - Moving them into the `mods/` folder  
      ⚠️ **Note:** This is *not* the BrownDustX `mods` directory. It's a separate folder used by this manager
-4. **Enable or disable mods**.
-5. **Sync your mods** to apply changes:
+6. **Enable or disable mods**.
+7. **Sync your mods** to apply changes:
    - This will create a folder named `BD2MM` inside the `BrownDustX` mods folder with all your enabled mods.
 
 > ⚠️ After making any changes (enable, disable, delete, rename), you **must sync** your mods to update the game folder.
-
 ### Sync Method: Copy vs Symlink
 
 Choose how mods are synced to your BrownDust X `mods` folder:
