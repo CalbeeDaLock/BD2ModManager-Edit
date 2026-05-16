@@ -1,5 +1,5 @@
 {
-    "version": "0.0.13",
+    "version": "0.0.14",
     "characters": [
         {
             "id": "000708",
@@ -2340,7 +2340,7 @@
             "is_collab": false,
             "cutscene": true,
             "standing": true,
-            "dating_id": null,
+            "dating_id": "17",
             "character_image": "illust_inven_char004202_200.png",
             "skill_preview_image": "illust_skill_char004202_200.png",
             "release_date": "2026-04-23",
@@ -2377,6 +2377,7 @@
         "13": "004102",
         "14": "003892",
         "15": "067004",
-        "16": "003604"
+        "16": "003604",
+        "17": "004202"
     }
 }
