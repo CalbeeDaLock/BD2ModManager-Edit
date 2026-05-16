@@ -68,7 +68,6 @@ If you have suggestions or run into any problems with the app, feel free to open
       **Install BepInEx**
       
       Extract the contents of the BepInEx archive into the **game folder** (you can open the game folder from the mod manager)
-     
       (**NOT** the launcher folder).
      
       Your folder should look like this:
@@ -78,6 +77,8 @@ If you have suggestions or run into any problems with the app, feel free to open
          ├─ winhttp.dll
          └─ BrownDust II.exe
       ```
+  
+      > The BepInEx archive from the BrownDustX Discord already includes ConfigurationManager.
    
       **Install BrownDustX**
      
@@ -103,6 +104,7 @@ If you have suggestions or run into any problems with the app, feel free to open
    - This will create a folder named `BD2MM` inside the `BrownDustX` mods folder with all your enabled mods.
 
 > ⚠️ After making any changes (enable, disable, delete, rename), you **must sync** your mods to update the game folder.
+
 ### Sync Method: Copy vs Symlink
 
 Choose how mods are synced to your BrownDust X `mods` folder:
