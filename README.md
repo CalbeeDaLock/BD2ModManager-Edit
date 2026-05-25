@@ -15,46 +15,6 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 ---
 
-## ✨ Major Update (v4.0.0)
-
-<details>
-<summary>See full changes in v4.0.0</summary>
-
-### General
-- Complete UI overhaul
-- Added `.rar` and `.7z` mod installation support
-- Much smaller file size (from ~164MB → ~50MB)
-- Much faster performance (sync, unsync, and other operations)
-
-### Mods Tab
-- Conflict indicator (flags mods that edit the same character/files)
-- Mod type icons
-- Character icons (head)
-- Context menu: select all, enabled, or disabled mods
-
-### Characters Tab
-- Grid view
-- Filters by name, mod types (cutscene, dating, standing, etc.)
-- Sort by name, release date, or number of mods
-- Filter by release period (last week, 2 weeks, month, etc.)
-- View and enable/disable a character's mods directly
-
-### BrownDustX Tab *(new)*
-- Detect BepInEx and BrownDustX plugin installation
-- Install BepInEx and BrownDustX directly from the app
-
-### Settings Tab
-- Auto sync mods on enable/disable
-- Show/hide columns (mod name, character, mod type, author)
-- Mod name display: name only or with subfolders
-- Character column: icon only, name only, or both
-- Mod type column: icon only, name only, or both
-- Optional color coding for mod types
-
-</details>
-
----
-
 ## 🛠️ How to Use
 1. **Download** the app from [GitHub Releases](https://github.com/bruhnn/BD2ModManager/releases).
 2. **Select your Brown Dust 2 directory** (where `BrownDust II.exe` is located)
