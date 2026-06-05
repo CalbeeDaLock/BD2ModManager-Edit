@@ -1,5 +1,5 @@
 {
-    "version": "0.0.14",
+    "version": "0.0.15",
     "characters": [
         {
             "id": "000708",
@@ -2359,6 +2359,69 @@
             "skill_preview_image": "illust_skill_char003803_201.png",
             "release_date": "2026-04-23",
             "gender": "female"
+        },
+        {
+            "id": "000396",
+            "character": "Scheherazade",
+            "costume": "Deliberate Ace",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": "18",
+            "character_image": "illust_inven_char000396_202.png",
+            "skill_preview_image": "illust_skill_char000396_202.png",
+            "release_date": "2026-06-04",
+            "gender": "female"
+        },
+        {
+            "id": "004091",
+            "character": "Darian",
+            "costume": "Herald of Enlightment",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char004091_213.png",
+            "skill_preview_image": "illust_skill_char004091_213.png",
+            "release_date": "2026-06-04",
+            "gender": "female"
+        },
+        {
+            "id": "004301",
+            "character": "Nekyndalia",
+            "costume": "Deadeye",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char004301_214.png",
+            "skill_preview_image": "illust_skill_char004301_214.png",
+            "release_date": "2026-06-04",
+            "gender": "female"
+        },
+        {
+            "id": "067491",
+            "character": "Michaela",
+            "costume": "True Liberation",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char067491_211.png",
+            "skill_preview_image": "illust_skill_char067491_211.png",
+            "release_date": "2026-06-04"
+        },
+        {
+            "id": "067504",
+            "character": "Luvencia",
+            "costume": "Ocean Vanguard",
+            "is_collab": false,
+            "cutscene": true,
+            "standing": true,
+            "dating_id": null,
+            "character_image": "illust_inven_char067504_205.png",
+            "skill_preview_image": "illust_skill_char067504_205.png",
+            "release_date": "2026-06-04"
         }
     ],
     "dating": {
@@ -2378,6 +2441,7 @@
         "14": "003892",
         "15": "067004",
         "16": "003604",
-        "17": "004202"
+        "17": "004202",
+        "18": "000396"
     }
 }
