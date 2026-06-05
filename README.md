@@ -13,6 +13,11 @@
 
 If you have suggestions or run into any problems with the app, feel free to open an issue or contact me.
 
+> [!WARNING]
+> **Before Uninstalling Brown Dust II !!!**
+>
+> If you use the **Symlink** sync method, unsync all mods before uninstalling the game. Otherwise, the uninstaller may delete your mods from the staging folder.
+
 ---
 
 ## 🛠️ How to Use
