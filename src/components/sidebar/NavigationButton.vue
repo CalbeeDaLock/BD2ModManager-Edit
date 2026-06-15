@@ -17,7 +17,7 @@ const active = computed(() => {
 <template>
     <RouterLink :to="value" 
         :class="{ 
-            'bg-accent! text-ext-on-accent!': active, 
+            'bg-accent! text-text-on-accent!': active, 
             'text-text-secondary': !active 
         }" 
         class="
@@ -27,7 +27,7 @@ const active = computed(() => {
         flex items-center 
         text-sm font-medium
         hover:bg-state-hover hover:text-text-primary">
-        <component :is="icon" class="w-[1.75em] h-[1.75em] text-text-primary" />
+        <component :is="icon" class="w-[1.75em] h-[1.75em] text-text-primary transition-colors duration-200" :class="{'text-text-on-accent!': active}" />
         {{ label }}
         
     </RouterLink>
