@@ -35,7 +35,7 @@ const VARIANTS: Record<NonNullable<typeof props.variant>, string> = {
 }
 
 const classList = computed(() => [
-    'inline-flex items-center font-medium border cursor-pointer transition-colors disabled:pointer-events-none disabled:opacity-50',
+    'inline-flex items-center font-medium border cursor-pointer transition-colors disabled:pointer-events-none disabled:opacity-50 truncate',
     SIZES[props.size ?? 'md'],
     VARIANTS[props.variant ?? 'default']
 ])
