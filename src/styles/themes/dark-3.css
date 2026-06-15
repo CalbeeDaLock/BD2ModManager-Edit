@@ -1,0 +1,60 @@
+[data-theme="dark-3"] { 
+  
+  --surface-app: #141513;       
+  --surface-panel: #181a17;     
+  --surface-card: #1d1f1c;      
+  --surface-input: #0e0f0e;     
+  --surface-popover: #242723;   
+  --surface-dialog: #1d1f1c;    
+
+  
+  --text-primary: #cfd0cb;      
+  --text-secondary: #989a94;    
+  --text-muted: #6b6c68;        
+  --text-on-accent: #f2f3ef;    
+
+  
+  --border-subtle: #242723;     
+  --border-default: #353733;    
+  --border-strong: #4d4f49;     
+  --border-focus: rgba(201, 128, 87, 0.4); 
+
+  
+  --state-hover: #262925;       
+  --state-active: rgba(207, 208, 203, 0.04); 
+  --state-selected: rgba(201, 128, 87, 0.12); 
+
+  
+  --accent: #c98057;            
+  --accent-hover: #db956e;      
+  --accent-muted: rgba(201, 128, 87, 0.15); 
+
+  
+  --success: #729c70;           
+  --success-bg: rgba(114, 156, 112, 0.12); 
+  --warning: #c99b53;           
+  --warning-bg: rgba(201, 155, 83, 0.12); 
+  --error: #ba6464;             
+  --error-bg: rgba(186, 100, 100, 0.12); 
+  --info: #688e99;              
+  --info-bg: rgba(104, 142, 153, 0.12); 
+
+  
+  --mod-cutscene: #917799;      
+  --mod-cutscene-bg: rgba(145, 119, 153, 0.12);
+  
+  --mod-scene: #6c8c99;         
+  --mod-scene-bg: rgba(108, 140, 153, 0.12);
+  
+  --mod-npc: #7a9977;           
+  --mod-npc-bg: rgba(122, 153, 119, 0.12);
+  
+  --mod-standing: #bf8f5e;      
+  --mod-standing-bg: rgba(191, 143, 94, 0.12);
+  
+  --mod-dating: #b8687a;        
+  --mod-dating-bg: rgba(184, 104, 122, 0.12);
+  
+  --mod-minigame: #9e8e67;      
+  --mod-minigame-bg: rgba(158, 142, 103, 0.12);
+}

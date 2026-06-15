@@ -197,7 +197,7 @@ useHeader({
     buttons: [{
         label: computed(() => t('common.actions.refresh')),
         icon: RefreshCcw,
-        class: "flex justify-center items-center gap-1 mt-1 px-4 py-1 rounded-sm transition-colors duration-200 border border-interactive-border cursor-pointer",
+        class: "flex justify-center items-center gap-1 mt-1 px-4 py-1 rounded-sm transition-colors duration-200 border border-border-default cursor-pointer",
         action: () => initialize(true)
     }]
 })
@@ -218,7 +218,7 @@ const CONFIGMANAGER_ASSETS_FILTER_REGEX = /BepInEx/i
 </script>
 
 <template>
-    <div class="text-primary h-full min-h-0 flex flex-col overflow-x-auto">
+    <div class="h-full min-h-0 flex flex-col overflow-x-auto">
         <GithubInstallModal v-model:show="isBepInExDialogOpen"
             :title="$t('browndustxTab.modals.installFromGithub.bepinexTitle')" @close="isBepInExDialogOpen = false"
             @on-version-select="(downloadUrl) => installFromUrl('install_bepinex', 'BepInEx', downloadUrl)" :releases-url="BEPINEX_RELEASES_URL"
@@ -232,16 +232,16 @@ const CONFIGMANAGER_ASSETS_FILTER_REGEX = /BepInEx/i
 
         <div class="flex flex-col flex-1 p-4 min-h-0 gap-2">
 
-            <div class="flex gap-2.5 p-3 rounded bg-danger/10 text-sm">
-                <TriangleAlert class="w-4 h-4 shrink-0 mt-0.5 text-danger" />
+            <div class="flex gap-2.5 p-3 rounded bg-error-bg text-sm">
+                <TriangleAlert class="w-4 h-4 shrink-0 mt-0.5 text-error" />
                 <div class="flex flex-col gap-0.5">
-                    <p class="font-medium text-danger">{{ $t('browndustxTab.alerts.danger') }}</p>
-                    <p class="text-secondary">{{ $t('browndustxTab.alerts.dangerMessage') }}</p>
+                    <p class="font-medium text-error">{{ $t('browndustxTab.alerts.danger') }}</p>
+                    <p class="text-text-secondary">{{ $t('browndustxTab.alerts.dangerMessage') }}</p>
                 </div>
             </div>
 
             <div>
-                <h3 class="text-secondary uppercase text-xs font-semibold tracking-wider mb-1">
+                <h3 class="text-text-secondary uppercase text-xs font-semibold tracking-wider mb-1">
                     {{ $t('browndustxTab.labels.frameworkAndPlugins') }}
                 </h3>
 
@@ -249,9 +249,9 @@ const CONFIGMANAGER_ASSETS_FILTER_REGEX = /BepInEx/i
                     <p v-if="!gameDirectorySet" class="text-error text-sm">
                         {{ $t("browndustxTab.messages.gameDirectoryNotSet") }}
                     </p>
-                    <p v-else class="text-secondary text-xs flex items-center gap-1.5">
+                    <p v-else class="text-text-secondary font-mono text-xs flex items-center gap-1.5">
                         <span>{{ $t("browndustxTab.labels.gameDirectory") }}</span>
-                        <span class="text-primary font-mono">{{ settingsStore.settings.gameDirectory }}</span>
+                        <span class="text-text-primary font-mono">{{ settingsStore.settings.gameDirectory }}</span>
                     </p>
                 </section>
 
@@ -295,33 +295,33 @@ const CONFIGMANAGER_ASSETS_FILTER_REGEX = /BepInEx/i
             </div>
 
             <div v-if="gameDirectorySet"
-                class="p-4 rounded border-2 border-dashed border-border text-center text-sm text-secondary">
+                class="p-4 rounded border-2 border-dashed border-border-default text-center text-sm text-text-secondary">
                 {{ $t("browndustxTab.messages.dragAndDrop") }}
             </div>
 
             <div class="flex-1 flex flex-col min-h-0">
-                <h3 class="text-secondary uppercase text-xs tracking-wider mb-2">
+                <h3 class="text-text-secondary uppercase text-xs tracking-wider mb-2">
                     {{ $t('browndustxTab.labels.logs') }}
                 </h3>
                 <div ref="logsContainer"
-                    class="flex-1 flex flex-col text-secondary overflow-y-auto bg-bg-surface p-2 border border-border rounded min-h-0"
+                    class="flex-1 flex flex-col text-text-secondary overflow-y-auto bg-bg-surface p-2 border border-border-default rounded min-h-0"
                     :class="{ 'items-center justify-center': logs.length === 0 }">
                     <template v-if="logs.length === 0">
-                        <div class="text-xs font-mono text-secondary italic text-center py-2">
+                        <div class="text-xs font-mono text-text-secondary italic text-center py-2">
                             {{ $t('browndustxTab.messages.noLogsYet') }}
                         </div>
                     </template>
                     <template v-else>
                         <div v-for="(log, index) in logs" :key="index" class="text-xs font-mono flex gap-1.5">
-                            <span class="text-secondary/60 shrink-0">{{ new Date(log.timestamp).toLocaleTimeString()
+                            <span class="text-text-secondary/60 shrink-0">{{ new Date(log.timestamp).toLocaleTimeString()
                             }}</span>
                             <span class="shrink-0" :class="{
                                 'text-success': log.level === 'success',
                                 'text-info': log.level === 'info',
                                 'text-warning': log.level === 'warn',
-                                'text-danger': log.level === 'error',
+                                'text-error': log.level === 'error',
                             }">{{ log.level.toUpperCase() }}</span>
-                            <span class="text-secondary/80 shrink-0">[{{ log.scope }}]</span>
+                            <span class="text-text-secondary/80 shrink-0">[{{ log.scope }}]</span>
                             <span>{{ log.message }}</span>
                         </div>
                     </template>

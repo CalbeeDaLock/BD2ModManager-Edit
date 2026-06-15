@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw } from "lucide-vue-next";
 
-import { computed, h, onActivated, onDeactivated, onMounted, reactive, ref, useTemplateRef, watch } from "vue";
+import { computed, defineComponent, h, onActivated, onDeactivated, onMounted, reactive, ref, useTemplateRef, watch } from "vue";
 import { useDebounceFn, useLocalStorage, watchDebounced } from "@vueuse/core";
-import { useToast } from "primevue/usetoast";
+import { useNotificationStore } from '../../stores/notification';;
 import { useI18n } from "vue-i18n";
 
 import { listen } from "@tauri-apps/api/event";
@@ -22,10 +22,11 @@ import RenameModModal from "./modals/RenameModModal.vue";
 import ModsHeader from "./ModsHeader.vue";
 import Modlist from "./Modlist.vue";
 import Button from "../../components/common/Button.vue";
-import Menu from "../../components/common/Menu.vue";
 import { getErrorMessage } from "../../utils/errors";
 import { invoke } from "@tauri-apps/api/core";
 import { useModInstall } from "../../composables/useModInstall";
+import MultiButton from "../../components/common/MultiButton.vue";
+import Popover from "../../components/common/Popover.vue";
 
 
 let unlistenFns: Array<() => void> = []
@@ -35,7 +36,7 @@ const renameModModal = useTemplateRef("renameModModal")
 
 const loggingStore = useLoggingStore()
 
-const toast = useToast()
+const notificationStore = useNotificationStore()
 const confirm = useConfirm()
 
 const { t } = useI18n();
@@ -67,11 +68,11 @@ const debouncedSync = useDebounceFn(async () => {
     await modsStore.syncMods();
   } catch (error) {
     let errorMessage = getErrorMessage(t, error);
-    toast.add({
+    notificationStore.add({
       closable: true,
-      summary: t('modsTab.errors.syncFailed.title'),
-      detail: errorMessage,
-      life: 5000,
+      title: t('modsTab.errors.syncFailed.title'),
+      message: errorMessage,
+      duration: 5000,
       severity: 'error'
     });
   } finally {
@@ -165,12 +166,12 @@ function handlePreviewMod(mod: BD2Mod) {
   loggingStore.logDebug("Previewing mod:", mod.name);
 
   if (mod.errors.length > 0) {
-    toast.add({
+    notificationStore.add({
       severity: "error",
       closable: true,
-      summary: t("modsTab.errors.modPreview.title"),
-      detail: t("modsTab.errors.modPreview.modContainErrors", { modName: mod.name }),
-      life: 3000
+      title: t("modsTab.errors.modPreview.title"),
+      message: t("modsTab.errors.modPreview.modContainErrors", { modName: mod.name }),
+      duration: 3000
     })
     return
   }
@@ -181,12 +182,12 @@ function handlePreviewMod(mod: BD2Mod) {
     // errors that can happen: just some errors like no permission to open the file, or the file doesn't exist anymore, or the file is not a valid mod file
     // no custom errors here
     let errorMsg = getErrorMessage(t, error);
-    toast.add({
+    notificationStore.add({
       severity: "error",
       closable: true,
-      summary: t("modsTab.errors.modPreview.title"),
-      detail: errorMsg,
-      life: 5000
+      title: t("modsTab.errors.modPreview.title"),
+      message: errorMsg,
+      duration: 5000
     })
 
     loggingStore.logError("Error previewing mod:", error);
@@ -203,11 +204,12 @@ async function handleOpenModFolder(mod: BD2Mod) {
   });
 
   if (!folderExists) {
-    toast.add({
+    notificationStore.add({
       severity: 'error',
       closable: true,
-      detail: t('modsTab.errors.modFolderNotFound', { modName: mod.name }),
-      life: 5000
+      title: t('modsTab.errors.modFolderNotFound.title'),
+      message: t('modsTab.errors.modFolderNotFound.message', { modName: mod.name }),
+      duration: 5000
     })
     return
   }
@@ -219,11 +221,12 @@ async function handleOpenModFolder(mod: BD2Mod) {
   });
 
   if (!isFolder) {
-    toast.add({
+    notificationStore.add({
       severity: 'error',
       closable: true,
-      detail: t('modsTab.errors.modNotDirectory', { modName: mod.name }),
-      life: 5000
+      title: t('modsTab.errors.modNotDirectory.title'),
+      message: t('modsTab.errors.modNotDirectory.message', { modName: mod.name }),
+      duration: 5000
     })
     return
   }
@@ -239,11 +242,12 @@ async function handleOpenStagingModsFolder() {
   if (!stagingDir) {
     loggingStore.logError("Staging directory is not set.");
 
-    return toast.add({
+    return notificationStore.add({
       severity: "error",
       closable: true,
-      detail: t('modsTab.errors.stagingDirectoryNotSet'),
-      life: 5000
+      title: t('modsTab.errors.stagingDirectoryNotSet.title'),
+      message: t('modsTab.errors.stagingDirectoryNotSet.message'),
+      duration: 5000
     });
   }
 
@@ -253,11 +257,12 @@ async function handleOpenStagingModsFolder() {
   });
 
   if (!directoryExists) {
-    return toast.add({
+    return notificationStore.add({
       severity: 'error',
       closable: true,
-      detail: t('modsTab.errors.stagingDirectoryNotFound', { stagingDir }),
-      life: 5000
+      title: t('modsTab.errors.stagingDirectoryNotFound.title'),
+      message: t('modsTab.errors.stagingDirectoryNotFound.message', { stagingDir }),
+      duration: 5000
     })
   }
 
@@ -324,11 +329,12 @@ async function handleSyncMods() {
 
     loggingStore.logDebug(`Command mods sync called succesfully: ${result}.`);
 
-    toast.add({
+    notificationStore.add({
       closable: true,
-      summary: t('modsTab.notifications.syncSuccess.title'),
-      detail: t('modsTab.notifications.syncSuccess.description'),
-      life: 3000,
+      title: t('modsTab.notifications.syncSuccess.title'),
+      message: t('modsTab.notifications.syncSuccess.description'),
+      duration: 5000,
+      severity: 'success'
     })
     // if (result) {
     // }
@@ -339,11 +345,11 @@ async function handleSyncMods() {
 
     let errorMessage = getErrorMessage(t, error)
 
-    toast.add({
+    notificationStore.add({
       closable: true,
-      summary: t('modsTab.errors.syncFailed.title'),
-      detail: errorMessage,
-      life: 5000,
+      title: t('modsTab.errors.\.title'),
+      message: errorMessage,
+      duration: 5000,
       severity: 'error'
     });
   } finally {
@@ -383,22 +389,23 @@ async function handleUnsyncMods() {
 
     loggingStore.logDebug(`Command mods unsync called succesfully: ${result}.`);
 
-    toast.add({
+    notificationStore.add({
       closable: true,
-      summary: t('modsTab.notifications.unsyncSuccess.title'),
-      detail: t('modsTab.notifications.unsyncSuccess.description'),
-      life: 3000,
+      title: t('modsTab.notifications.unsyncSuccess.title'),
+      message: t('modsTab.notifications.unsyncSuccess.description'),
+      duration: 3000,
+      severity: 'success'
     });
   } catch (error: any) {
     loggingStore.logError("Error unsyncing mods:", error);
 
     let errorMessage = getErrorMessage(t, error)
 
-    toast.add({
+    notificationStore.add({
       closable: true,
-      summary: t('errors.unsyncFailed'),
-      detail: errorMessage,
-      life: 5000,
+      title: t('errors.unsyncFailed'),
+      message: errorMessage,
+      duration: 5000,
       severity: 'error'
     });
 
@@ -505,21 +512,22 @@ async function setupEventListeners() {
           modName = await modsStore.installModFromFolder(path)
         }
 
-        toast.add({
+        notificationStore.add({
           closable: true,
-          summary: t('modsTab.notifications.modInstallSuccess.title'),
-          detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
-          life: 3000,
+          title: t('modsTab.notifications.modInstallSuccess.title'),
+          message: t('modsTab.notifications.modInstallSuccess.description', { modName }),
+          duration: 3000,
+          severity: 'success'
         });
 
       } catch (error: any) {
         let errorMsg = getErrorMessage(t, error)
 
-        toast.add({
+        notificationStore.add({
           closable: true,
-          summary: t('errors.modInstallFailed.title'),
-          detail: errorMsg,
-          life: 5000,
+          title: t('errors.modInstallFailed.title'),
+          message: errorMsg,
+          duration: 5000,
           severity: 'error'
         });
       }
@@ -605,8 +613,32 @@ const addModMenuItems = computed(() => [
   { label: t('modsTab.actions.installFromFolder'), clicked: installFromFolder }
 ])
 
+const AddModMenu = defineComponent({
+  setup() {
+    return () =>
+      h(Popover, {}, {
+        trigger: ({ toggle }: any) =>
+          h(Button, {
+            label: t('modsTab.actions.addMod'),
+            icon: FolderPlus,
+            variant: 'text',
+            onClick: toggle
+          }),
+        default: ({ close }: any) =>
+          h('ul', {class: 'bg-surface-popover border-border-default border-2 rounded-md'}, addModMenuItems.value.map(item =>
+            h('li', { key: item.label },
+              h('button', {
+                class: 'w-full cursor-pointer text-left px-4 py-2 hover:bg-state-hover text-sm font-medium',
+                onClick: () => { item.clicked(); close() }
+              }, item.label)
+            )
+          ))
+      })
+  }
+})
+
 useHeader({
-  title: t("modsTab.title"),
+  title: t('modsTab.title'),
   subtitle: computed(() =>
     t('modsTab.subtitle', {
       enabledModsCount: enabledModsCount.value,
@@ -615,46 +647,14 @@ useHeader({
   ),
   buttons: [
     {
-      label: computed(() => t('common.actions.refreshMods')),
       icon: RefreshCcw,
+      label: t('common.actions.refreshMods'),
       action: async () => {
-        await handleRefreshMods();
+        await handleRefreshMods()
         await updateBDXVersion()
       }
     },
-    {
-      render: () =>
-        h('div', { class: 'flex gap-2' }, [
-          h(Menu, {}, {
-            trigger: ({ toggle }: any) =>
-              h(Button, {
-                label: t('modsTab.actions.addMod'),
-                icon: FolderPlus,
-                variant: 'text',
-                onClick: toggle
-              }),
-            content: () =>
-              h(
-                'ul',
-                {},
-                addModMenuItems.value.map(item =>
-                  h(
-                    'li',
-                    { key: item.label },
-                    h(
-                      'button',
-                      {
-                        class: 'w-full cursor-pointer text-left px-4 py-2 hover:bg-interactive-bg-hover',
-                        onClick: item.clicked
-                      },
-                      item.label
-                    )
-                  )
-                )
-              )
-          }),
-        ])
-    },
+    { render: () => h(AddModMenu) }
   ]
 })
 
@@ -680,17 +680,37 @@ function handleShowModConflicts(mod: BD2Mod) {
   // searhc by id?
   // show modal?
 }
+
+
+// [TODO] reactive is sync needed
+const isSyncNeeded = ref(0)
+
+async function openGameFolder() {
+  let { gameDirectory } = settingsStore.settings
+
+  if (!gameDirectory) return
+
+  await openPath(gameDirectory)
+}
+async function openGameModsFolder() {
+  let { gameDirectory } = settingsStore.settings
+
+  if (!gameDirectory) return
+
+  // [TODO] find a better way to get this path
+  await openPath(gameDirectory + '/BepInEx/plugins/BrownDustX/mods')
+}
 </script>
 <template>
-  <div class="flex flex-col h-full gap-0 select-none p-4 py-2">
+  <div class="flex flex-col h-full gap-0 select-none p-4 py-0 pb-2">
     <UpdateAuthorModal ref="updateAuthorModal" />
     <RenameModModal ref="renameModModal" />
 
-    <div class="shrink-0">
+    <div class="shrink-0 mb-2">
       <ModsHeader v-model:filters="filters" />
     </div>
 
-    <div class="flex-1 overflow-hidden min-h-0 my-2">
+    <div class="flex-1 overflow-hidden min-h-0 mb-2">
       <Modlist :mods="filteredMods" @refresh-mods="handleRefreshMods" @enable-mods="handleEnableMods"
         @disable-mods="handleDisableMods" @change-mod-author="handleChangeModAuthor" @delete-mods="handleDeleteMods"
         @open-mod-folder="handleOpenModFolder" @preview-mod="handlePreviewMod" @rename-mod="handleRenameMod"
@@ -699,7 +719,7 @@ function handleShowModConflicts(mod: BD2Mod) {
 
     <div class="flex justify-between items-center shrink-0">
       <div class="flex flex-col">
-        <span class="text-primary font-semibold">
+        <span class="font-semibold">
           <template v-if="bdxVersion?.status == 'Installed'">
             {{ $t("modsTab.browndustx.status.installed", { version: bdxVersion.version }) }}
           </template>
@@ -713,20 +733,25 @@ function handleShowModConflicts(mod: BD2Mod) {
             {{ $t("modsTab.browndustx.status.notInstalled") }}
           </template>
         </span>
-        <RouterLink to="bdx" class="text-secondary text-xs hover:underline">
+        <RouterLink to="bdx" class="text-text-secondary text-xs hover:underline">
           {{ $t("modsTab.browndustx.navigation") }}
         </RouterLink>
       </div>
 
       <div class="flex gap-2 text-primary">
-        <Button variant="alt" :label="$t('modsTab.actions.openModsFolder')" :icon="Folder" @click="handleOpenStagingModsFolder" />
-        <Button :disabled="isSyncing || isUnsyncing" variant="alt" :label="$t('modsTab.actions.unsyncMods')"
+        <MultiButton :label="$t('modsTab.actions.openModsFolder')" :icon="Folder" @click="handleOpenStagingModsFolder"
+          :actions="[
+            { label: t('modsTab.actions.openGameFolder'), clicked: openGameFolder },
+            { label: t('modsTab.actions.openGameModsFolder'), clicked: openGameModsFolder }
+          ]" />
+        <Button variant="default" :disabled="isSyncing || isUnsyncing" :label="$t('modsTab.actions.unsyncMods')"
           :icon="FolderMinus" @click="handleUnsyncMods" />
-        <Button :disabled="isSyncing || isUnsyncing" variant="alt" :label="$t('modsTab.actions.syncMods')"
-          :icon="FolderSync" @click="handleSyncMods" :class="{
-            'bg-accent-primary! animate-pulse hover:animate-none hoverbg-accent-primary-hover!': false
+        <Button :variant="isSyncNeeded ? 'primary' : 'default'" :disabled="isSyncing || isUnsyncing"
+          :label="$t('modsTab.actions.syncMods')" :icon="FolderSync" @click="handleSyncMods" :class="{
+            'animate-pulse hover:animate-none': isSyncNeeded
           }" />
       </div>
     </div>
   </div>
 </template>
+<style scoped></style>

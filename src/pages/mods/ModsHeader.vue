@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-import { Filter } from 'lucide-vue-next'
+import { Check, Filter, SearchIcon } from 'lucide-vue-next'
 import Input from '../../components/common/Input.vue'
 import Button from '../../components/common/Button.vue'
 import Checkbox from '../../components/common/Checkbox.vue'
 import Popover from '../../components/common/Popover.vue'
+import { usePreferencesStore } from '../../stores/preferences.ts'
+
+const preferencesStore = usePreferencesStore()
 
 interface Filters {
     searchQuery: string
@@ -38,6 +41,28 @@ function toggleModTypes(modType: string) {
     }
 }
 
+function getModTypeClass(modType: string) {
+    if (!preferencesStore.enableModTypeColors) {
+        return 'bg-accent! text-text-on-accent! border-transparent!'
+    }
+    switch (modType) {
+        case 'Cutscene':
+            return 'text-mod-cutscene! bg-mod-cutscene-bg! border-transparent!'
+        case 'Standing':
+            return 'text-mod-standing! bg-mod-standing-bg! border-transparent!'
+            case 'Scene':
+            return 'text-mod-scene! bg-mod-scene-bg! border-transparent!'
+        case 'Dating':
+            return 'text-mod-dating! bg-mod-dating-bg! border-transparent!'
+        case 'NPC':
+            return 'text-mod-npc! bg-mod-npc-bg! border-transparent!'
+        case 'Minigame':
+            return 'text-mod-minigame! bg-mod-minigame-bg! border-transparent!'
+        default:
+            return ''
+    }   
+}
+
 // [TODO]: Add filters to search; character:value, author:value, modname:value
 </script>
 
@@ -45,49 +70,59 @@ function toggleModTypes(modType: string) {
     <div class="flex flex-col justify-between items-stretch gap-2">
         <div class="flex items-stretch">
             <!-- Search -->
-            <div class="flex flex-1 gap-2 justify-start align-center h-9 items-stretch overflow-hidden">
+            <div class="flex flex-1 gap-2">
                 <Popover placement="bottom-start" trigger="hover">
-                    <template #trigger="{isOpen, open, close}">
-                        <Button :icon="Filter" :label="$t('modsTab.header.actions.filters')" @click="isOpen ? close() : open()" />
+                    <template #trigger="{ isOpen, open, close }">
+                        <Button :icon="Filter":label="$t('modsTab.header.actions.filters')"
+                            @click="isOpen ? close() : open()" />
                     </template>
 
                     <template #default>
                         <div
-                            class="flex flex-col min-w-[20rem] bg-bg-surface border-border border-2 text-primary p-4 py-0 pb-2 rounded-md shadow-lg">
-                            <div class="font-semibold text-lg text-left border-interactive-border py-2">
+                            class="flex flex-col min-w-80 bg-surface-popover border-border-default border-2 p-4 py-0 pb-2 rounded-md">
+                            <div class="font-semibold text-lg text-left py-2">
                                 {{ $t('modsTab.header.advancedFilters.title') }}
                             </div>
 
                             <div class="flex flex-col gap-1 text-md">
-                                <Checkbox v-model="filters.onlyEnabled" :label="$t('modsTab.header.advancedFilters.actions.onlyEnabledMods')" />
-                                <Checkbox v-model="filters.onlyDisabled" :label="$t('modsTab.header.advancedFilters.actions.onlyDisabledMods')" />
-                                <Checkbox v-model="filters.onlyConflicts" :label="$t('modsTab.header.advancedFilters.actions.onlyConflictsMods')" />
-                                <Checkbox v-model="filters.onlyErrors" :label="$t('modsTab.header.advancedFilters.actions.onlyErrorsMods')" />
+                                <Checkbox v-model="filters.onlyEnabled"
+                                    :label="$t('modsTab.header.advancedFilters.actions.onlyEnabledMods')" />
+                                <Checkbox v-model="filters.onlyDisabled"
+                                    :label="$t('modsTab.header.advancedFilters.actions.onlyDisabledMods')" />
+                                <Checkbox v-model="filters.onlyConflicts"
+                                    :label="$t('modsTab.header.advancedFilters.actions.onlyConflictsMods')" />
+                                <Checkbox v-model="filters.onlyErrors"
+                                    :label="$t('modsTab.header.advancedFilters.actions.onlyErrorsMods')" />
                             </div>
                         </div>
                     </template>
                 </Popover>
-                <div class="relative flex-1 flex gap-1.5">
-                    <Input v-model="filters.searchQuery" :placeholder="$t('modsTab.header.searchPlaceholder')" />
+                <div class="flex-1">
+                    <Input v-model="filters.searchQuery" :icon-left="SearchIcon" clearable size="md"
+                        :placeholder="$t('modsTab.header.searchPlaceholder')" />
                 </div>
 
             </div>
         </div>
-
-        <!-- TODO: one click add show filter, another click to add to remove filter and last click to disable filter -->
+        <!-- :class="{
+            'bg-accent! text-text-on-accent!': filters.modTypes.includes(modType),
+        }" -->
         <div class="flex justify-between items-center gap-2 ">
             <div class="flex gap-2">
                 <button v-for="modType in modTypes" :key="modType" @click="toggleModTypes(modType)"
-                    class="text-xs transition-all bg-bg-surface text-secondary border-interactive-border cursor-pointer capitalize items-center gap-1.5 flex border font-semibold rounded-sm py-1 px-2"
-                    :class="{
-                        'text-cutscene! bg-cutscene-bg! border-cutscene-bg! hover:bg-cutscene-bg!': modType == 'Cutscene' && filters.modTypes.includes(modType),
-                        'text-standing! bg-standing-bg! border-standing-bg! hover:bg-standing-bg!': modType == 'Standing' && filters.modTypes.includes(modType),
-                        'text-scene!    bg-scene-bg!    border-scene-bg!    hover:bg-scene-bg!': modType == 'Scene' && filters.modTypes.includes(modType),
-                        'text-dating!   bg-dating-bg!   border-dating-bg!   hover:bg-dating-bg!   ': modType == 'Dating' && filters.modTypes.includes(modType),
-                        'text-npc!      bg-npc-bg!      border-npc-bg!      hover:bg-npc-bg!      ': modType == 'NPC' && filters.modTypes.includes(modType),
-                        'text-minigame! bg-minigame-bg! border-minigame-bg! hover:bg-minigame-bg! ': modType == 'Minigame' && filters.modTypes.includes(modType),
-                        'hover:bg-interactive-bg-hover!': !filters.modTypes.includes(modType)
-                    }">
+                    class="text-xs transition-all focus:outline-none bg-surface-card border-border-default cursor-pointer capitalize items-center flex border font-semibold rounded-full py-1 px-2 active:scale-[1] active:bg-state-active disabled:pointer-events-none disabled:opacity-50"
+
+                    :class="[filters.modTypes.includes(modType) ? getModTypeClass(modType) : 'hover:bg-state-hover! text-text-secondary']">
+                    <span class="overflow-hidden transition-all duration-150"
+                        :class="filters.modTypes.includes(modType) ? 'w-4 mr-1' : 'w-0'">
+                        <Transition enter-active-class="transition-all duration-150"
+                            enter-from-class="opacity-0 scale-50" enter-to-class="opacity-100 scale-100"
+                            leave-active-class="transition-all duration-100" leave-from-class="opacity-100 scale-100"
+                            leave-to-class="opacity-0 scale-50">
+                            <Check v-if="filters.modTypes.includes(modType)" class="w-4 h-4 shrink-0"
+                                :stroke-width="2" />
+                        </Transition>
+                    </span>
                     {{ $t(`common.modTypes.${modType.toLowerCase()}`) }}
                 </button>
             </div>

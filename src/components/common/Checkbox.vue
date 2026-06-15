@@ -5,9 +5,7 @@ import { Check } from "lucide-vue-next"
 const props = defineProps<{
   modelValue: boolean
   label?: string
-  // labelClass?: string
   description?: string
-  // descriptionClass?: string
   disabled?: boolean
   icon?: any
 }>()
@@ -21,20 +19,14 @@ const toggle = () => {
   emit("update:modelValue", !props.modelValue)
 }
 
-const boxClasses = computed(() => [
-  "w-5 h-5 rounded-sm flex items-center justify-center",
-  "border border-border transition-all duration-200 ease-in-out",
-  "focus:outline-none",
-  props.modelValue
-    ? "bg-accent-primary border-accent-primary"
-    : "bg-interactive-bg border-interactive-border",
-  !props.disabled && !props.modelValue
-    ? "hover:border-accent-primary"
-    : "",
+const classList = computed(() => [
+  "w-5 h-5 rounded-sm flex items-center justify-center border border-border-default transition-all duration-150 ease-in-out focus:outline-none shrink-0",
+  props.modelValue ? "bg-accent text-text-on-accent border-transparent!" : "bg-surface-input",
+  !props.disabled && !props.modelValue? "hover:border-border-strong hover:bg-state-hover focus:border-border-focus": "",
   props.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
 ])
 
-const id = `checkbox-${Math.random().toString(36).substr(2, 9)}`
+const id = `checkbox-${Math.random().toString(36).substring(2, 9)}`
 </script>
 
 <template>
@@ -52,10 +44,9 @@ const id = `checkbox-${Math.random().toString(36).substr(2, 9)}`
       :id="id"
     />
 
-
     <!-- // checkbox  -->
     <div
-      :class="boxClasses"
+      :class="classList"
       tabindex="0"
       @click="toggle"
       @keydown.space.prevent="toggle"
@@ -71,12 +62,12 @@ const id = `checkbox-${Math.random().toString(36).substr(2, 9)}`
         <component
           v-if="modelValue && icon"
           :is="icon"
-          class="w-3.5 h-3.5 text-primary"
+          class="w-3.5 h-3.5 text-text-primary min-w-0 shrink-0"
         />
 
         <Check
           v-else-if="modelValue"
-          class="w-3.5 h-3.5 text-primary"
+          class="w-3.5 h-3.5 text-text-on-accent min-w-0 shrink-0"
           stroke-width="3"
         />
       </Transition>
@@ -85,13 +76,13 @@ const id = `checkbox-${Math.random().toString(36).substr(2, 9)}`
 
     <label
       v-if="label"
-      :class="['text-primary text-sm ']"
+      :class="['text-text-primary text-sm font-normal']"
       :for="id"
     >
       {{ label }}
       <p
         v-if="description"
-        class="text-xs text-secondary mt-1 font-normal"
+        class="text-xs text-text-secondary mt-1 font-normal"
       >
         {{ description }}
       </p>

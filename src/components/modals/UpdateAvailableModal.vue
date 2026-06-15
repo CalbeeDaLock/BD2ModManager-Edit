@@ -39,22 +39,22 @@ const emit = defineEmits<{
         :title="$t('modals.updateAvailable.title')"
         :subtitle="$t('modals.updateAvailable.subtitle', { version: appUpdateStatus?.version })">
         <div class="flex flex-col gap-1 p-4">
-            <p class="text-sm font-medium flex items-center gap-2 text-secondary uppercase tracking-wide mb-2">
+            <p class="text-normal font-medium flex items-center gap-2 text-text-secondary mb-2">
                 {{ $t("modals.updateAvailable.changelogLabel") }}
             </p>
             <div class="flex flex-col gap-1">
                 <div v-for="(item, index) in appUpdateStatus?.changelog" :key="index"
                     class="flex items-start gap-3 px-1.5 py-1.5 text-sm">
-                    <span class="text-secondary font-mono text-xs mt-0.5 shrink-0">{{ String(index + 1).padStart(2, '0')
+                    <span class="text-text-secondary text-xs mt-0.5 shrink-0">{{ String(index + 1).padStart(2, '0')
                         }}</span>
-                    <span class="text-primary">{{ item }}</span>
+                    <span class="text-text-primary">{{ item }}</span>
                 </div>
             </div>
         </div>
 
 
         <template #footer>
-            <div class="flex items-center gap-2 p-3 border-t border-border">
+            <div class="flex items-center gap-2 p-3">
                 <div class="flex-1">
                     <Checkbox v-model="checkboxSkipVersion" @update:model-value="(value) => {
                         if (value) {
@@ -65,10 +65,10 @@ const emit = defineEmits<{
                     }"
                         :label="$t('modals.updateAvailable.skipLabel')" />
                 </div>
-                <Button @click="$emit('close')">
+                <Button variant="default" @click="$emit('close')">
                     {{ $t('modals.updateAvailable.actions.later') }}
                 </Button>
-                <Button @click="openUrl(appUpdateStatus?.downloadUrl??'')">
+                <Button variant="primary" @click="openUrl(appUpdateStatus?.downloadUrl??'')">
                     {{ $t('modals.updateAvailable.actions.goToReleases') }}
                 </Button>
             </div>

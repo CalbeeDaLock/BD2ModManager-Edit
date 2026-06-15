@@ -1,0 +1,63 @@
+[data-theme="light-2"] {
+  
+  --surface-app: #f0ede8;       
+  --surface-panel: #e8e4de;     
+  --surface-card: #ffffff;      
+  --surface-input: #ebe8e2;     
+  --surface-popover: #faf9f7;   
+  --surface-dialog: #ffffff;    
+
+  
+  --text-primary: #2a2724;      
+  --text-secondary: #5c5751;    
+  --text-muted: #9c9690;        
+  --text-on-accent: #ffffff;    
+
+  
+  --border-subtle: #dedad4;     
+  --border-default: #ccc8c0;    
+  --border-strong: #a8a49c;     
+  --border-focus: rgba(106, 140, 114, 0.45); 
+
+  
+  --state-hover: #e0dcd5;       
+  --state-active: rgba(0, 0, 0, 0.04); 
+  --state-selected: rgba(106, 140, 114, 0.13); 
+
+  
+  --accent: #6a8c72;            
+  --accent-hover: #7a9e82;
+  --accent-muted: rgba(106, 140, 114, 0.14);
+
+  
+  --success: #5a8a5a;
+  --success-bg: rgba(90, 138, 90, 0.11);
+  --warning: #a07830;
+  --warning-bg: rgba(160, 120, 48, 0.11);
+  --error: #b85050;
+  --error-bg: rgba(184, 80, 80, 0.11);
+  --info: #4a7898;
+  --info-bg: rgba(74, 120, 152, 0.11);
+
+  
+  --mod-cutscene: #7a5878;      
+  --mod-cutscene-bg: rgba(122, 88, 120, 0.12);
+
+  --mod-scene: #4a6e8a;         
+  --mod-scene-bg: rgba(74, 110, 138, 0.12);
+
+  --mod-npc: #447a60;           
+  --mod-npc-bg: rgba(68, 122, 96, 0.12);
+
+  --mod-standing: #8a7040;      
+  --mod-standing-bg: rgba(138, 112, 64, 0.12);
+
+  --mod-dating: #8a4a5a;        
+  --mod-dating-bg: rgba(138, 74, 90, 0.12);
+
+  --mod-minigame: #506080;      
+  --mod-minigame-bg: rgba(80, 96, 128, 0.12);
+
+  --mod-gameplay: #7a5c48;      
+  --mod-gameplay-bg: rgba(122, 92, 72, 0.12);
+}

@@ -51,7 +51,7 @@ function save() {
   >
     <div
       v-if="profileSelected"
-      class="text-primary flex flex-col gap-4 p-4"
+      class="text-text-primary flex flex-col gap-4 p-4"
     >
 
       <div class="flex flex-col gap-1">
@@ -76,7 +76,6 @@ function save() {
         <div class="h-10">
           <Input
             id="edit-description"
-            class="flex-auto"
             autocomplete="off"
             :placeholder="$t('profilesTab.modals.editProfile.descriptionField.placeholder')"
             :model-value="profileSelected.description ?? ''"
@@ -93,11 +92,13 @@ function save() {
           type="button"
           :label="$t('common.actions.cancel')"
           @click="visible = false"
+          variant="default"
         />
         <Button
           type="button"
           :label="$t('profilesTab.modals.editProfile.actions.saveChanges')"
           @click="save"
+          variant="primary"
         />
       </div>
     </template>

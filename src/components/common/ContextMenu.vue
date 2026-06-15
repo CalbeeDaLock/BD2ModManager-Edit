@@ -122,19 +122,19 @@ watch(() => props.show, (val) => {
 <template>
     <teleport to="body">
         <div v-show="show" ref="floatingRef" :style="floatingStyles"
-            class="z-9999 min-w-48 rounded-md border border-border bg-bg-surface py-1 shadow-lg" @contextmenu.prevent>
+            class="z-5 min-w-48 rounded-md border border-border-default bg-surface-popover py-1" @contextmenu.prevent>
             <template v-for="item in options" :key="item.key">
-                <div v-if="item.type === 'divider'" class="my-1 h-px bg-border" />
+                <div v-if="item.type === 'divider'" class="my-0.5 h-px bg-border-default" />
 
                 <div v-else-if="item.children"
-                    class="flex cursor-pointer items-center justify-between px-3 py-1.5 text-sm text-primary hover:bg-interactive-bg-hover transition-colors"
+                    class="flex cursor-pointer items-center justify-between px-3 py-1.5 text-sm hover:bg-state-hover transition-colors"
                     @mouseenter="showSubmenu(item.key, $event.currentTarget as HTMLElement)" @mouseleave="hideSubmenu">
                     <span>{{ item.label }}</span>
-                    <ChevronRight class="ml-4 h-4 w-4 text-secondary" />
+                    <ChevronRight class="ml-4 h-4 w-4 text-text-secondary" />
                 </div>
 
                 <div v-else
-                    class="cursor-pointer px-3 py-1.5 text-sm text-primary hover:bg-interactive-bg-hover transition-colors"
+                    class="cursor-pointer px-3 py-1.5 text-sm hover:bg-state-hover transition-colors"
                     @click="handleSelect(item.key)">
                     {{ item.label }}
                 </div>
@@ -142,14 +142,14 @@ watch(() => props.show, (val) => {
         </div>
 
         <div v-show="activeSubmenu !== null" ref="submenuFloatingRef" :style="submenuStyles"
-            class="z-9999 min-w-44 rounded-md border border-border bg-bg-surface py-1 shadow-lg"
+            class="z-5 min-w-44 rounded-md border border-border-default bg-surface-popover py-1 shadow-lg"
             @mouseenter="cancelHideSubmenu" @mouseleave="hideSubmenu" @contextmenu.prevent>
             <template v-for="parent in options.filter(o => o.children)" :key="parent.key">
                 <template v-if="activeSubmenu === parent.key">
                     <template v-for="child in parent.children" :key="child.key">
-                        <div v-if="child.type === 'divider'" class="my-1 h-px bg-border" />
+                        <div v-if="child.type === 'divider'" class="my-1 h-px bg-border-default" />
                         <div v-else
-                            class="cursor-pointer px-3 py-1.5 text-sm text-primary hover:bg-interactive-bg-hover transition-colors"
+                            class="cursor-pointer px-3 py-1.5 text-sm hover:bg-state-hover transition-colors"
                             @click="handleSelect(child.key)">
                             {{ child.label }}
                         </div>

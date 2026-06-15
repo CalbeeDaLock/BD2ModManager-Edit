@@ -15,7 +15,7 @@ import { getVersion } from '@tauri-apps/api/app';
 import { useI18n } from 'vue-i18n';
 import { useLoggingStore } from '../stores/logging';
 import { useSettingsStore } from '../stores/settings';
-import { useToast } from 'primevue/usetoast';
+import { useNotificationStore } from '../stores/notification';
 import { usePortable } from '../composables/usePortable';
 import GithubIcon from './icons/GithubIcon.vue';
 import KofiIcon from './icons/KofiIcon.vue';
@@ -61,7 +61,7 @@ const rawGameDataProgress = computed(() => gameDataUpdate.value.progress)
 const modPreviewProgress = refThrottled(rawmodPreviewProgress, 50, false, true)
 const gameDataProgress = refThrottled(rawGameDataProgress, 50, false, true)
 
-const toast = useToast()
+const notificationStore = useNotificationStore()
 
 async function handleAppUpdateClick() {
     if (isPortable.value) {
@@ -72,7 +72,7 @@ async function handleAppUpdateClick() {
         await settingsStore.installAppUpdate()
     } catch (error) {
         loggingStore.logError("Failed to install app update", error)
-        toast.add({ severity: 'error', summary: 'Update Error', detail: 'Failed to install update. Please try downloading it manually from GitHub.', life: 5000 })
+        notificationStore.add({ severity: 'error', title: 'Update Error', message: 'Failed to install update. Please try downloading it manually from GitHub.', duration: 5000 })
     }
 }
 
@@ -212,20 +212,18 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
 </script>
 
 <template>
-    <div class="flex select-none bg-bg-deep border-b border-bg-surface overflow-hidden min-h-10 h-10 shrink-0 sticky text-primary justify-between transition-[max-height] duration-300 ease-out"
-        data-tauri-drag-region>
-
+    <div class="flex select-none overflow-hidden min-h-10 h-10 shrink-0 sticky justify-between transition-[max-height] duration-300 ease-out bg-surface-app border-b border-border-subtle" data-tauri-drag-region>
         <div class="flex min-w-0 items-center gap-2.5 px-2 py-1 justify-center shrink-0" data-tauri-drag-region>
-            <span class="font-mono truncate font-bold text-lg text-primary select-none" data-tauri-drag-region>
+            <span class="font-mono truncate font-bold text-lg select-none" data-tauri-drag-region>
                 Mod Manager
             </span>
-            <span class="text-xs font-semibold text-primary flex gap-2 items-center justify-center">
-                <Heart class="inline w-3.5 h-3.5 text-accent-primary" />
+            <span class="text-xs font-semibold flex gap-2 items-center justify-center">
+                <Heart class="inline w-3.5 h-3.5 text-accent" />
                 v{{ appVersion }} by
                 <span class="font-mono cursor-pointer
-                    bg-linear-to-r from-accent-primary via-accent-primary/60 to-accent-primary
+                    bg-linear-to-r from-accent via-accent/60 to-accent
                     bg-size-[200%_100%] bg-clip-text text-transparent
-                    animate-sweep hover:text-accent-primary transition-colors" @click="openGithubUser">
+                    animate-sweep hover:via-accent/80 transition-colors" @click="openGithubUser">
                     @bruhnn
                 </span>
             </span>
@@ -240,16 +238,16 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                         class="w-full h-full absolute inset-0 z-10 rounded-md group-hover:underline transition-colors pointer-events-none" />
 
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
-                        <RotateCw v-if="isCheckingDisplay" class="w-3.5 h-3.5 shrink-0 animate-spin text-primary/40" />
+                        <RotateCw v-if="isCheckingDisplay" class="w-3.5 h-3.5 shrink-0 animate-spin text-text-muted" />
                         <Sparkles v-else-if="settingsStore.appUpdateStatus?.version"
-                            class="w-3.5 h-3.5 shrink-0 text-accent-primary " />
+                            class="w-3.5 h-3.5 shrink-0 text-accent" />
 
                         <span class="text-xs font-mono truncate">
-                            <span v-if="isCheckingDisplay" class="text-secondary hidden md:inline">
+                            <span v-if="isCheckingDisplay" class="text-text-secondary hidden md:inline">
                                 {{ $t('titlebar.appUpdate.checking') }}
                             </span>
                             <span v-else-if="settingsStore.appUpdateStatus?.version"
-                                class="text-accent-primary font-semibold group-hover:underline">
+                                class="text-accent font-semibold group-hover:underline">
                                 {{ !isPortable ? $t('titlebar.appUpdate.downloaded', {version: settingsStore.appUpdateStatus.version}) : $t('titlebar.appUpdate.available', {version: settingsStore.appUpdateStatus.version}) }}
                             </span>
                         </span>
@@ -264,7 +262,7 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                     class="relative flex items-center gap-1.5 px-2 my-1.5 rounded-md shrink-0">
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
                         <Puzzle v-if="modPreviewUpdate.status === 'downloading'"
-                            class="w-4 h-4 shrink-0 text-accent-primary animate-pulse" />
+                            class="w-4 h-4 shrink-0 text-accent animate-pulse" />
                         <Check v-else-if="modPreviewUpdate.status === 'downloaded'"
                             class="w-4 h-4 shrink-0 text-success" />
 
@@ -277,7 +275,7 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                                     {{ $t('titlebar.modPreview.downloadingShort') }}
                                 </span>
                             </span>
-                            <span v-else-if="modPreviewUpdate.status === 'error'" class="text-danger">
+                            <span v-else-if="modPreviewUpdate.status === 'error'" class="text-error">
                                 <span class="hidden sm:inline">
                                     {{ $t('titlebar.modPreview.updateFailed') }}
                                 </span>
@@ -285,7 +283,7 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                                     {{ $t('titlebar.modPreview.updateFailedShort') }}
                                 </span>
                             </span>
-                            <span v-else-if="modPreviewUpdate.status === 'downloaded'" class="text-primary">
+                            <span v-else-if="modPreviewUpdate.status === 'downloaded'" class="text-accent">
                                 <span class="hidden sm:inline">
                                     {{ $t('titlebar.modPreview.updated', { version: modPreviewUpdate.version }) }}
                                 </span>
@@ -297,12 +295,12 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
 
                         <div v-if="modPreviewUpdate.status === 'downloading'"
                             class="hidden sm:block w-14 md:w-20 h-2 bg-interactive-bg rounded-full overflow-hidden shrink-0">
-                            <div class="h-full bg-accent-primary rounded-full"
+                            <div class="h-full bg-accent rounded-full"
                                 :class="modPreviewProgress === 0 ? 'transition-none' : 'transition-all duration-150 ease-out'"
                                 :style="{ width: `${modPreviewProgress}%` }" />
                         </div>
                         <span v-if="modPreviewUpdate.status === 'downloading'"
-                            class="text-xs font-mono text-primary/40 shrink-0 hidden md:inline tabular-nums">
+                            class="text-xs font-mono text-accent/40 shrink-0 hidden md:inline tabular-nums">
                             {{ Math.round(modPreviewProgress) }}%
                         </span>
                     </div>
@@ -317,12 +315,12 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
 
                     <div class="flex items-center gap-1.5 relative z-10 min-w-0">
                         <Database v-if="gameDataUpdate.status === 'downloading'"
-                            class="w-4 h-4 shrink-0 text-accent-primary animate-pulse" />
+                            class="w-4 h-4 shrink-0 text-accent animate-pulse" />
                         <RotateCw v-else-if="gameDataUpdate.status === 'checking'"
-                            class="w-4 h-4 shrink-0 text-primary/40 animate-spin" />
+                            class="w-4 h-4 shrink-0 text-accent/40 animate-spin" />
                         <Check v-else-if="gameDataUpdate.status === 'updated'" class="w-4 h-4 shrink-0 text-success" />
                         <AlertTriangle v-else-if="gameDataUpdate.status === 'error'"
-                            class="w-4 h-4 shrink-0 text-danger" />
+                            class="w-4 h-4 shrink-0 text-error" />
 
                         <span class="text-xs font-mono truncate max-w-40">
                             <span v-if="gameDataUpdate.status === 'downloading'">
@@ -359,7 +357,7 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
 
                         <div v-if="gameDataUpdate.status === 'downloading'"
                             class="hidden sm:block w-14 md:w-20 h-2 bg-interactive-bg rounded-full overflow-hidden shrink-0">
-                            <div class="h-full bg-accent-primary rounded-full"
+                            <div class="h-full bg-accent rounded-full"
                                 :class="gameDataProgress === 0 ? 'transition-none' : 'transition-all duration-150 ease-out'"
                                 :style="{ width: `${gameDataProgress}%` }" />
                         </div>
@@ -371,25 +369,24 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                 </div>
             </transition>
 
-            <div v-if="(modPreviewUpdate.show || gameDataUpdate.show) && showSyncBar"
-                class="w-px bg-border my-2.5 shrink-0" />
+            <div v-if="(modPreviewUpdate.show || gameDataUpdate.show) && showSyncBar" class="w-px bg-border my-2.5 shrink-0" />
 
             <div v-show="showSyncBar"
                 class="group relative flex items-center justify-between gap-2 md:gap-3 mr-1 md:mr-2 py-0 px-2 my-1.5 transition-all rounded-md cursor-pointer shrink-0"
                 @click="handleSyncClick">
                 <div
-                    class="w-full h-full absolute inset-0 z-10 rounded-md group-hover:bg-interactive-bg-hover transition-colors pointer-events-none" />
+                    class="w-full h-full absolute inset-0 z-10 rounded-md group-hover:bg-state-hover transition-colors pointer-events-none" />
 
                 <div class="flex items-center gap-2 relative z-10 flex-1 min-w-0">
                     <RotateCw v-if="syncStateStore.status === SyncStatus.SYNCING"
-                        class="w-4 h-4 shrink-0 animate-spin text-accent-primary" />
+                        class="w-4 h-4 shrink-0 animate-spin text-accent" />
                     <Check v-else-if="syncStateStore.status === SyncStatus.COMPLETED"
                         class="w-4 h-4 shrink-0 text-success" />
                     <AlertTriangle v-else-if="syncStateStore.status === SyncStatus.FAILED"
-                        class="w-4 h-4 shrink-0 text-danger" />
+                        class="w-4 h-4 shrink-0 text-error" />
 
                     <span v-if="syncStateStore.status === SyncStatus.FAILED"
-                        class="flex-1 min-w-0 text-sm text-danger truncate">
+                        class="flex-1 min-w-0 text-sm text-error truncate">
                         {{ getErrorMessage(t, syncStateStore.error) }}
                     </span>
                     <span v-else-if="syncStateStore.status === SyncStatus.SYNCING"
@@ -407,8 +404,8 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                 </div>
 
                 <div v-if="syncStateStore.status == SyncStatus.SYNCING"
-                    class="hidden sm:block w-16 md:w-24 h-2.5 bg-interactive-bg rounded-full overflow-hidden relative z-10 shrink-0">
-                    <div class="h-full bg-accent-primary rounded-full"
+                    class="hidden sm:block w-16 md:w-24 h-2.5 bg-surface-input rounded-full overflow-hidden relative z-10 shrink-0">
+                    <div class="h-full bg-accent rounded-full"
                         :class="syncProgress === 0 ? 'transition-none' : 'transition-all duration-150 ease-out'"
                         :style="{ width: `${syncProgress}%` }" />
                 </div>
@@ -416,61 +413,48 @@ watch(() => settingsStore.appUpdateStatus?.checking, (checking) => {
                 <button
                     v-if="syncStateStore.status === SyncStatus.COMPLETED || syncStateStore.status === SyncStatus.FAILED"
                     @click.stop="showSyncBar = false"
-                    class="text-interactive-primary hover:text-accent-primary relative z-20 transition-all flex items-center justify-center shrink-0">
+                    class="text-text-primary hover:text-accent relative z-20 transition-all flex items-center justify-center shrink-0">
                     <X class="w-[1.25em] h-[1.25em] cursor-pointer" />
                 </button>
             </div>
 
-            <div class="flex items-center shrink-0 gap-2 md:gap-4">
-                <button v-if="isChineseLanguage"
-                    class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
-                    @click="handleAfdianClick">
-                    <AfDianIcon class="w-[1.5em] h-[1.5em] group-hover:fill-accent-primary! transition-colors" />
-                    <span
-                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
-                        {{ $t('titlebar.actions.afdian', 'Support me on AfDian!') }}
+            <div class="flex items-center shrink-0 gap-1">
+                <button v-if="isChineseLanguage" class="flex items-center gap-1 md:gap-2 cursor-pointer hover:bg-accent-hover hover:text-text-on-accent rounded-sm px-2 py-1 transition-colors duration-200" @click="handleAfdianClick">
+                    <AfDianIcon class="w-[1.5em] h-[1.5em]" />
+                    <span class="font-mono hidden lg:inline font-semibold text-sm">
+                        {{ $t('titlebar.actions.afdian') }}
                     </span>
                 </button>
-                <button v-else class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
-                    @click="handleKofiClick">
-                    <KofiIcon class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary! transition-colors" />
-                    <span
-                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
-                        {{ $t('titlebar.actions.kofi', 'Support me on Ko-fi!') }}
+                <button v-else class="flex items-center gap-1 md:gap-2 cursor-pointer hover:bg-accent-hover hover:text-text-on-accent rounded-sm px-2.5 py-1 transition-colors duration-200" @click="handleKofiClick">
+                    <KofiIcon class="w-[1.25em] h-[1.25em]" />
+                    <span class="font-mono hidden lg:inline font-semibold text-sm">
+                        {{ $t('titlebar.actions.kofi') }}
                     </span>
                 </button>
-                <button class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
-                    @click="handleGithubClick">
-                    <GithubIcon class="w-[1.25em] h-[1.25em] group-hover:fill-accent-primary! transition-colors" />
-                    <span
-                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
+                <button class="flex items-center gap-1 md:gap-2 cursor-pointer hover:bg-accent-hover hover:text-text-on-accent rounded-sm px-2.5 py-1 transition-colors duration-200" @click="handleGithubClick">
+                    <GithubIcon class="w-[1.25em] h-[1.25em]" />
+                    <span class="font-mono hidden lg:inline font-semibold text-sm">
                         {{ $t('titlebar.actions.github') }}
                     </span>
                 </button>
-                <button v-if="isDev"
-                    class="flex items-center gap-1 md:gap-2 text-primary fill-primary cursor-pointer group"
-                    @click="handleLogsClick">
-                    <ScrollText class="w-[1.25em] h-[1.25em] group-hover:text-accent-primary transition-colors" />
-                    <span
-                        class="font-mono hidden lg:inline font-bold text-sm group-hover:text-accent-primary transition-colors">
+                <button v-if="isDev" class="flex items-center gap-1 md:gap-2 cursor-pointer hover:bg-accent-hover hover:text-text-on-accent rounded-sm px-2.5 py-1 transition-colors duration-200" @click="handleLogsClick">
+                    <ScrollText class="w-[1.25em] h-[1.25em]" />
+                    <span class="font-mono hidden lg:inline font-semibold text-sm">
                         {{ $t('titlebar.actions.logs') }}
                     </span>
                 </button>
             </div>
 
             <div class="flex shrink-0 ml-1 md:ml-1">
-                <button @click="minimizeWindow"
-                    class="flex items-center justify-center px-3 md:px-4 hover:bg-interactive-bg-hover cursor-pointer transition-colors">
+                <button @click="minimizeWindow" class="flex items-center justify-center px-3 md:px-4 hover:bg-state-hover transition-colors">
                     <Minus class="w-[1.25em] h-[1.25em] font-bold" />
                 </button>
-                <button @click="toggleMaximizeWindow"
-                    class="flex items-center justify-center px-3 md:px-4 hover:bg-interactive-bg-hover cursor-pointer transition-colors">
+                <button @click="toggleMaximizeWindow" class="flex items-center justify-center px-3 md:px-4 hover:bg-state-hover transition-colors">
                     <SquareStop v-if="isMaximized" class="w-[1.25em] h-[1.25em]" />
                     <Square v-else class="w-[1.25em] h-[1.25em]" />
                 </button>
-                <button @click="closeWindow"
-                    class="flex items-center justify-center px-3 md:px-4 hover:bg-danger cursor-pointer transition-colors">
-                    <X class="w-[1.5em] h-[1.5em]" />
+                <button @click="closeWindow" class="flex items-center justify-center px-3 md:px-4 hover:bg-error transition-colors group">
+                    <X class="w-[1.5em] h-[1.5em] group-hover:text-text-on-accent" />
                 </button>
             </div>
         </div>

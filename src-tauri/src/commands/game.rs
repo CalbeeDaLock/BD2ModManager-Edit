@@ -55,7 +55,7 @@ pub fn get_characters(app_handle: tauri::AppHandle) -> Result<serde_json::Value,
 }
 
 #[tauri::command]
-pub fn launch_game(state: tauri::State<AppState>) -> Result<(), String> {
+pub fn launch_game(state: tauri::State<AppState>, vanilla: bool) -> Result<(), String> {
     let game_path = get_game_path(&state).ok_or("Game path not set")?;
 
     let exe_path = game_path.join("BrownDust II.exe");
@@ -64,9 +64,16 @@ pub fn launch_game(state: tauri::State<AppState>) -> Result<(), String> {
         return Err("Game executable not found".to_string());
     }
 
-    std::process::Command::new(exe_path)
-        .spawn()
-        .map_err(|e| e.to_string())?;
+    if vanilla {
+        std::process::Command::new(exe_path)
+            .args(["--doorstop-enable", "false", "--doorstop-enabled", "false"])
+            .spawn()
+            .map_err(|e| e.to_string())?;
+    } else {
+        std::process::Command::new(exe_path)
+            .spawn()
+            .map_err(|e| e.to_string())?;
+    }
 
     Ok(())
 }

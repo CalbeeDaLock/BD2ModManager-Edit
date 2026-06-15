@@ -58,18 +58,12 @@ function hide() {
 
 <template>
   <div class="relative" @mouseenter="show" @mouseleave="hide">
-    <div ref="labelRef" class="bg-danger/80 truncate rounded p-1.5 py-0.5 text-sm font-mono text-red-200 focus:outline-none">
+    <div ref="labelRef" class="truncate rounded-md bg-error-bg text-error px-2 py-1 text-xs font-medium border border-transparent transition-colors">
       {{ label }}
     </div>
     <teleport to="body">
-      <div
-        ref="descriptionRef"
-        :style="mergedStyles"
-        class="z-9999 w-max max-w-xs rounded border-2 border-interactive-border bg-interactive-bg p-2 text-primary shadow-lg transition duration-150"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'"
-        @mouseenter="show"
-        @mouseleave="hide"
-      >
+      <div ref="descriptionRef" :style="mergedStyles" class=" z-9999 w-max max-w-xs rounded-md border border-border-default bg-surface-popover text-text-primary px-3 py-2 text-sm shadow-lg transition-all duration-150" :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'"
+        @mouseenter="show" @mouseleave="hide">
         {{ description }}
       </div>
     </teleport>
