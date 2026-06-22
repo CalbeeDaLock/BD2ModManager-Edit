@@ -103,7 +103,8 @@ function onProfileSelected(profile_id: string) {
 
         <span class="flex-1" />
 
-        <span class="border border-border-subtle h-px w-full"></span>
+        <!-- <span class="border border-border-subtle h-px w-full"></span> -->
+         
         <div class="m-2 flex flex-col gap-1">
             <MultiButton :label="$t('sidebar.actions.launchGame')" :icon="Play" variant="primary" size="lg"
                 class="w-full [&>button:first-child]:flex-1" @click="launchGame()"
