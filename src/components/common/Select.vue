@@ -76,7 +76,7 @@ const { floatingStyles } = useFloating(reference, floating, {
 const SIZES = {
     sm: 'h-7 px-2.5 text-xs rounded-sm',
     md: 'h-8 px-3 text-sm rounded-sm',
-    lg: 'h-12 px-4 text-sm rounded-sm',
+    lg: 'h-12 px-4 text-sm rounded-lg',
 }
 
 const classList = computed(() => [
