@@ -42,12 +42,12 @@ const SIZES: Record<NonNullable<typeof props.size>, { button: string; chevron: s
 
 const VARIANTS: Record<NonNullable<typeof props.variant>, string> = {
   primary: 'bg-accent hover:bg-accent-hover active:bg-accent-active text-text-on-accent border-transparent',
-  default: 'bg-surface-input border border-border-default text-text-primary hover:border-border-strong active:bg-state-active'
+  default: 'bg-surface-input border-border-default text-text-primary hover:border-border-strong active:bg-state-active'
 }
 
 // [TODO] fix border on primary
 const classList = computed(() => [
-  'inline-flex items-center  border font-medium cursor-pointer select-none transition-colors disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center border font-medium cursor-pointer select-none transition-colors disabled:pointer-events-none disabled:opacity-50',
   VARIANTS[props.variant ?? 'default'],
   SIZES[props.size ?? 'md'].button
 ])
@@ -67,7 +67,7 @@ const classList = computed(() => [
     <Popover placement="bottom-end">
       <template #trigger="{ toggle, isOpen }">
         <button type="button" :disabled="disabled" :class="[
-          'inline-flex items-center justify-center font-medium cursor-pointer select-none transition-colors disabled:pointer-events-none disabled:opacity-50',
+          'inline-flex items-center justify-center border font-medium cursor-pointer select-none transition-colors disabled:pointer-events-none disabled:opacity-50',
           VARIANTS[props.variant ?? 'default'],
           SIZES[props.size ?? 'md'].chevron
         ]" aria-haspopup="true" :aria-expanded="isOpen" @click="toggle">
