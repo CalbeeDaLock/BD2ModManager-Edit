@@ -1,0 +1,135 @@
+@import "tailwindcss";
+@import "./themes/dark-1.css";
+@import "./themes/dark-2.css";
+@import "./themes/dark-3.css";
+@import "./themes/dark-4.css";
+@import "./themes/light-1.css";
+@import "./themes/light-2.css";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--surface-base);
+  color: var(--text-primary);
+  /* font-family: system-ui, sans-serif; */
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@theme {
+  --font-cinzel: "Cinzel", serif;
+
+  --animate-sweep: sweep 5s ease-in-out infinite;
+
+  @keyframes sweep {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
+
+@theme inline {
+  --bg-image-app: var(--bg-image-app, none);
+
+  --color-surface-app: var(--surface-app);
+  --color-surface-panel: var(--surface-panel);
+  --color-surface-card: var(--surface-card);
+  --color-surface-input: var(--surface-input);
+  --color-surface-popover: var(--surface-popover);
+  --color-surface-dialog: var(--surface-dialog);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-accent: var(--text-on-accent);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-border-focus: var(--border-focus);
+
+  --color-state-hover: var(--state-hover);
+  --color-state-active: var(--state-active);
+  --color-state-selected: var(--state-selected);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-error: var(--error);
+  --color-error-bg: var(--error-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+
+  --color-mod-cutscene: var(--mod-cutscene);
+  --color-mod-cutscene-bg: var(--mod-cutscene-bg);
+  --color-mod-scene: var(--mod-scene);
+  --color-mod-scene-bg: var(--mod-scene-bg);
+  --color-mod-npc: var(--mod-npc);
+  --color-mod-npc-bg: var(--mod-npc-bg);
+  --color-mod-standing: var(--mod-standing);
+  --color-mod-standing-bg: var(--mod-standing-bg);
+  --color-mod-dating: var(--mod-dating);
+  --color-mod-dating-bg: var(--mod-dating-bg);
+  --color-mod-minigame: var(--mod-minigame);
+  --color-mod-minigame-bg: var(--mod-minigame-bg);
+
+  /* --animate-pulse: pulse 1s ease-in-out infinite; */
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.80;
+    }
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-default);
+  border-radius: 24px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+  background-clip: padding-box;
+}
+
+/* ::-webkit-scrollbar-thumb:active {
+  background: var(--accent);
+  background-clip: padding-box;
+} */
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+

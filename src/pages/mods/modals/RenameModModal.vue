@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import Modal from '../../../components/common/Modal.vue';
 import Button from '../../../components/common/Button.vue';
+import Input from '../../../components/common/Input.vue';
 
 const visible = ref(false)
 
@@ -47,7 +48,7 @@ const isNameValid = computed(() => {
         <template #footer>
             <div class="flex justify-end space-x-2 p-2">
                 <Button variant="default" @click="cancel">{{ $t('common.actions.cancel') }}</Button>
-                <Button variant="default" @click="saveChanges" :disabled="!isNameValid">{{ $t('common.actions.save') }}</Button>
+                <Button variant="primary" @click="saveChanges" :disabled="!isNameValid">{{ $t('common.actions.save') }}</Button>
             </div>
         </template>
 
@@ -55,7 +56,10 @@ const isNameValid = computed(() => {
             <div>
                 <p class="text-md text-primary mb-1 font-bold">{{ $t('modals.changeModName.labels.modName') }}</p>
                 <!-- <p class="font-medium text-sm truncate text-primary">{{ modName }}</p> -->
-                <input type="text" v-model="newModName" class="w-full mt-1 p-2 border rounded" />
+                <!-- <input type="text" v-model="newModName" class="w-full mt-1 p-2 border rounded" /> -->
+                 <div class="h-10">
+                     <Input class="w-full h-full" :model-value="newModName" @update:model-value="val => newModName = val" :placeholder="modName" />
+                 </div>
             </div>
         </div>
     </Modal>

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import Modal from '../../../components/common/Modal.vue';
 import Button from '../../../components/common/Button.vue';
+import Input from '../../../components/common/Input.vue';
 
 const visible = ref(false)
 const mods = ref<{ name: string; author: string }[]>([])
@@ -43,7 +44,7 @@ function cancel() {
         <template #footer>
             <div class="flex justify-end space-x-2 p-2">
                 <Button variant="default" @click="cancel">{{ $t('common.actions.cancel') }}</Button>
-                <Button variant="default" @click="saveChanges">{{ $t('common.actions.save') }}</Button>
+                <Button variant="primary" @click="saveChanges">{{ $t('common.actions.save') }}</Button>
             </div>
         </template>
 
@@ -56,9 +57,10 @@ function cancel() {
             <div>
                 <label for="newModAuthor" class="block text-sm font-medium text-primary">{{
                     $t('modals.changeModAuthor.labels.newAuthor') }}</label>
-                <input v-model="newModAuthor" id="newModAuthor"
-                    :placeholder="$t('modals.changeModAuthor.placeholder')"
-                    class="mt-2 p-2 border bg-interactive-bg-hover border-interactive-border rounded w-full" />
+                <div class="h-10">
+                    <Input id="newModAuthor" class="w-full h-full" :model-value="newModAuthor" @update:model-value="val => newModAuthor = val"
+                        :placeholder="!isMultiple ? mods[0]?.author : $t('modals.changeModAuthor.multiplePlaceholder')" />
+                </div>
             </div>
         </div>
     </Modal>

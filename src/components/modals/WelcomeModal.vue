@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { AlertOctagon, Check } from 'lucide-vue-next';
+import { AlertOctagon, Check, RefreshCcw } from 'lucide-vue-next';
 import { open } from '@tauri-apps/plugin-dialog';
 import { dirname } from '@tauri-apps/api/path';
 import { useLoggingStore } from '../../stores/logging';
@@ -32,21 +32,27 @@ const visible = defineModel('visible', {
 })
 
 const errorMessage = ref<string | null>(null)
+const errorKey = ref(0)
 const gamePathsFound = ref<string[]>([])
+
+function setError(msg: string | null) {
+    errorMessage.value = msg
+    if (msg) errorKey.value++
+}
 
 async function handlePathSelected(path: string) {
     try {
         const isValid = await validateGamePath(path)
 
         if (!isValid) {
-            errorMessage.value = t('modals.selectGameDirectory.errors.invalidGameDirectory', { path })
+            setError(t('modals.welcome.selectGameDirectory.errors.invalidDirectory', { path }))
             return
         }
 
         await saveSettings({ gameDirectory: path })
         errorMessage.value = null
     } catch (err) {
-        errorMessage.value = t('modals.welcome.selectGameDirectory.errors.unknownError', { error: err })
+        setError(t('modals.welcome.selectGameDirectory.errors.unknownError', { error: err }))
     }
 }
 
@@ -59,7 +65,7 @@ async function handleDirectoryBrowse() {
 
     if (typeof file === 'string') {
         if (!file.toLowerCase().endsWith('browndust ii.exe')) {
-            errorMessage.value = t('modals.welcome.selectGameDirectory.errors.invalidGameExecutable')
+            setError(t('modals.welcome.selectGameDirectory.errors.invalidGameExecutable'))
             return
         }
 
@@ -74,9 +80,11 @@ function onClose() {
 
 async function findGamePaths() {
     loggingStore.logDebug('WelcomeModal opened, attempting to locate game path.')
+
     const detectedGamePaths = await locateGamePath()
     if (detectedGamePaths && detectedGamePaths.length > 0) {
-        gamePathsFound.value = [...detectedGamePaths]
+        // add some paths to test
+        gamePathsFound.value = detectedGamePaths
     } else {
         loggingStore.logDebug('No game paths found by locateGamePath.')
         gamePathsFound.value = []
@@ -91,7 +99,7 @@ onMounted(async () => {
     }
 
     try {
-        locale.value =  await invoke('get_user_locale')
+        locale.value = await invoke('get_user_locale')
     } catch (error) {
         loggingStore.logError('Failed to get user locale', error)
     }
@@ -115,8 +123,7 @@ const isChineseLanguage = computed(() => locale.value.startsWith('zh'))
 <template>
     <Modal v-model:show="visible" class="w-[80%] max-w-200 max-h-[80%]" @close="onClose" :close-on-escape="false"
         :title="$t('modals.welcome.title')" :subtitle="$t('modals.welcome.subtitle')">
-        <div class="w-full h-full flex flex-col gap-5 p-4">
-
+        <div class="w-full h-full flex flex-col gap-4 p-4">
             <div v-if="!isChineseLanguage"
                 class="flex items-center gap-3 p-3 rounded-md border border-orange-500/30 bg-orange-500/10 cursor-pointer hover:bg-orange-500/20 transition-colors"
                 @click="openUrl(KOFI_URL)">
@@ -139,21 +146,21 @@ const isChineseLanguage = computed(() => locale.value.startsWith('zh'))
 
             <div class="flex items-center justify-ceter gap-2">
                 <span @click="openUrl(GITHUB_URL)"
-                    class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
-                    <RefinedGithub class="w-4 h-4 fill-secondary" />
+                    class="text-sm flex items-center gap-1.5 text-text-secondary bg-surface-card border border-border-default rounded-full px-3 py-1 hover:text-text-primary! hover:bg-state-hover! cursor-pointer transition-colors">
+                    <RefinedGithub class="w-4 h-4 fill-text-secondary" />
                     {{ $t('modals.welcome.chips.github') }}
                 </span>
                 <span @click="openUrl(DISCORD_URL)"
-                    class="text-sm flex items-center gap-1.5 text-secondary bg-bg-surface border border-border rounded-full px-3 py-1 hover:text-primary! hover:bg-interactive-bg-hover! cursor-pointer transition-colors">
-                    <DiscordIcon class="w-4 h-4 fill-secondary" />
+                    class="text-sm flex items-center gap-1.5 text-text-secondary bg-surface-card border border-border-default rounded-full px-3 py-1 hover:text-text-primary! hover:bg-state-hover! cursor-pointer transition-colors">
+                    <DiscordIcon class="w-4 h-4 fill-text-secondary" />
                     {{ $t('modals.welcome.chips.discord') }}
                 </span>
             </div>
 
             <div class="flex flex-col gap-3">
                 <div class="flex flex-col gap-1">
-                    <p class="text-sm font-medium text-primary">{{ $t('modals.welcome.selectGameDirectory.title') }}</p>
-                    <p class="text-xs text-secondary">
+                    <p class="text-sm font-medium text-text-primary">{{ $t('modals.welcome.selectGameDirectory.title') }}</p>
+                    <p class="text-xs text-text-secondary">
                         {{ $t('modals.welcome.selectGameDirectory.description') }}
                     </p>
                 </div>
@@ -164,42 +171,53 @@ const isChineseLanguage = computed(() => locale.value.startsWith('zh'))
                     <Button :label="$t('common.actions.browse')" @click="handleDirectoryBrowse" />
                 </div>
 
-                <div v-if="settings.gameDirectory && !errorMessage" class="flex items-center gap-2">
-                    <Check class="text-success green-400 w-4 h-4 shrink-0" />
-                    <span class="text-success text-xs">
-                        {{ $t('modals.welcome.selectGameDirectory.validPath') }}
-                    </span>
-                </div>
-
-                <div v-if="errorMessage" class="flex items-center gap-2">
-                    <AlertOctagon class="text-error w-4 h-4 shrink-0" />
-                    <span class="text-error text-xs">{{ errorMessage }}</span>
-                </div>
-
                 <div v-if="gamePathsFound.length > 0" class="flex flex-col gap-2">
-                    <p class="text-xs text-secondary uppercase tracking-wide">
-                        {{ $t('modals.welcome.selectGameDirectory.labels.foundPaths') }}
-                    </p>
+                    <div class="flex justify-between items-center">
+                        <p class="text-sm font-medium text-text-primary">
+                            {{ $t('modals.welcome.selectGameDirectory.labels.foundPaths') }}
+                        </p>
+                        <Button variant="text" size="sm" @click="findGamePaths" label="Rescan" :icon="RefreshCcw" />
+                    </div>
                     <div
-                        class="w-full border rounded border-border bg-bg-surface flex flex-col max-h-48 overflow-y-auto">
+                        class="w-full border rounded border-border-default bg-surface-card flex flex-col max-h-48 overflow-y-auto">
                         <div v-for="path in gamePathsFound" :key="path"
-                            class="px-3 py-2 hover:bg-interactive-bg-hover! cursor-pointer flex items-center gap-2 rounded border border-transparent transition-colors"
+                            class="px-3 py-2 hover:bg-state-hover! active:bg-state-active! cursor-pointer flex items-center gap-2 rounded border border-transparent transition-colors"
                             @click="handlePathSelected(path)">
                             <Check v-if="path === settings.gameDirectory"
-                                class="text-accent-primary w-4 h-4 shrink-0" />
-                            <!-- <div v-else class="w-4 h-4 shrink-0" /> -->
-                            <span class="text-primary text-sm font-mono truncate">{{ path }}</span>
+                                class="text-accent w-4 h-4 shrink-0" />
+                            <span class="text-text-primary text-sm font-mono truncate">{{ path }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="flex justify-end mt-auto">
-                <Button @click="onClose" :label="$t('common.actions.continue')" />
-            </div>
-
         </div>
+
+        <template #footer>
+            <div class="flex justify-between shrink-0 p-2 px-4">
+                <div v-if="settings.gameDirectory && !errorMessage" class="flex items-center gap-2">
+                    <Check class="text-success w-4 h-4 shrink-0" />
+                    <span class="text-success text-sm">
+                        {{ $t('modals.welcome.selectGameDirectory.validPath') }}
+                    </span>
+                </div>
+                <div v-if="errorMessage" :key="errorKey" class="flex items-center gap-2 error-shake">
+                    <AlertOctagon class="text-error w-4 h-4 shrink-0" />
+                    <span class="text-error text-xs">{{ errorMessage }}</span>
+                </div>
+                <Button @click="onClose" variant="primary" :label="$t('common.actions.continue')" />
+            </div>
+        </template>
     </Modal>
 </template>
 
-<style scoped></style>
+<style scoped>
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-5px); }
+    60%       { transform: translateX(5px); }
+}
+
+.error-shake {
+    animation: shake 0.3s ease-in-out;
+}
+</style>

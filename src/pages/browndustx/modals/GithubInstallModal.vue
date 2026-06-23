@@ -65,6 +65,7 @@ async function getReleases() {
 
     try {
         const response = await fetch(props.releasesUrl)
+
         const data: any[] = await response.json()
         
         // sort by published date
@@ -123,13 +124,13 @@ function handleVersionSelected(downloadUrl: string) {
         </template>
 
         <div class="p-4">
-            <div v-if="isLoading" class="text-center py-8 text-secondary">
+            <div v-if="isLoading" class="text-center py-8 text-text-secondary">
                 {{ $t('browndustxTab.modals.installFromGithub.loading') }}
             </div>
 
             <div v-else-if="releases.length > 0" class="space-y-4">
                 <div v-if="enableOtherVersions">
-                    <p class="text-sm text-warning flex items-center gap-2">
+                    <p class="text-sm text-warning flex gap-2">
                         <TriangleAlert class="w-4 h-4 shrink-0 text-warning" />
                         {{ $t('browndustxTab.modals.installFromGithub.enableOtherVersionsWarning') }}
                     </p>
@@ -137,11 +138,11 @@ function handleVersionSelected(downloadUrl: string) {
                 <div class="space-y-2 overflow-y-auto max-h-96">
                     <div v-for="release in releases" :key="release.version">
                         <div
-                            class="w-full flex items-center gap-3 p-3 border rounded transition-opacity"
+                            class="w-full flex items-center gap-3 p-3 border border-border-default rounded transition-opacity"
                             :class="[
                                 release.version === recommendedVersion || enableOtherVersions
-                                    ? 'border-border hover:bg-bg-deep'
-                                    : 'border-border opacity-40 cursor-not-allowed select-none'
+                                    ? ''
+                                    : 'opacity-40 cursor-not-allowed select-none'
                             ]"
                         >
                             <div class="flex flex-col flex-1 items-start justify-center">
@@ -149,16 +150,17 @@ function handleVersionSelected(downloadUrl: string) {
                                     <span class="text-primary font-semibold">BepInEx {{ release.version }}</span>
                                     <span
                                         v-if="release.version === recommendedVersion"
-                                        class="text-xs px-2 py-0.5 rounded-full bg-success/10 font-bold text-success border border-success/20"
+                                        class="text-xs px-2.5 py-1 rounded-full bg-success-bg font-bold text-success "
                                     >
                                         {{ $t('browndustxTab.modals.installFromGithub.badges.recommended') }}
                                     </span>
                                 </div>
-                                <span class="text-sm font-mono text-secondary">
+                                <span class="text-sm font-mono text-text-secondary">
                                     {{ formatDate(release.published_at) }}
                                 </span>
                             </div>
                             <Button
+                                variant="default"
                                 :icon="DownloadIcon"
                                 :label="$t('browndustxTab.modals.installFromGithub.actions.install')"
                                 :disabled="release.version !== recommendedVersion && !enableOtherVersions"
@@ -168,7 +170,7 @@ function handleVersionSelected(downloadUrl: string) {
                     </div>
                 </div>
 
-                <div class="border-border space-y-2">
+                <div class="border-border-default space-y-2">
                     <Checkbox
                         v-model="enableOtherVersions"
                         :label="$t('browndustxTab.modals.installFromGithub.options.enableOtherVersions')"
@@ -177,11 +179,8 @@ function handleVersionSelected(downloadUrl: string) {
             </div>
 
             <div v-else class="text-center py-8">
-                <p class="text-secondary mb-2">{{ $t('browndustxTab.modals.installFromGithub.failedToLoadVersions') }}</p>
-                <button @click="getReleases"
-                    class="px-3 py-1 bg-interactive-bg border border-interactive-border rounded text-primary">
-                    {{ $t('browndustxTab.modals.installFromGithub.actions.retry') }}
-                </button>
+                <p class="text-text-secondary mb-2">{{ $t('browndustxTab.modals.installFromGithub.failedToLoadVersions') }}</p>
+                <Button variant="primary" :label="$t('browndustxTab.modals.installFromGithub.actions.retry')" @click="getReleases" />
             </div>
         </div>
     </Modal>

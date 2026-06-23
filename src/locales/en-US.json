@@ -17,6 +17,9 @@
             "dating": "Dating",
             "npc": "NPC",
             "minigame": "Minigame"
+        },
+        "messages": {
+            "selectEmptyState": "Nothing found here..."
         }
     },
     "app": {
@@ -97,7 +100,8 @@
             }
         },
         "actions": {
-            "launchGame": "Launch Game"
+            "launchGame": "Launch Game",
+            "launchGameWithoutMods": "Launch (Vanilla)"
         }
     },
     "modsTab": {
@@ -108,6 +112,8 @@
             "installFromZip": "Install from ZIP",
             "installFromFolder": "Install from Folder",
             "openModsFolder": "Open Mods Folder",
+            "openGameFolder": "Open Game Folder",
+            "openGameModsFolder": "Open Game Mods Folder",
             "syncMods": "Sync Mods",
             "unsyncMods": "Unsync Mods"
         },
@@ -723,6 +729,9 @@
         }
     },
     "modals": {
+        "confirmation": {
+            "rememberChoice": "Don't show again"
+        },
         "logs": {
             "title": "Application Logs",
             "noLogs": "No logs available."
@@ -771,7 +780,7 @@
                     "gamePath": "Path to Brown Dust II game directory"
                 },
                 "labels": {
-                    "foundPaths": "Found Path(s):"
+                    "foundPaths": "Found Path(s)"
                 },
                 "validPath": "Game directory set successfully.",
                 "invalidPath": "Please select a valid game directory to proceed.",

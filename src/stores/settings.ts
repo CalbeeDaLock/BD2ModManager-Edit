@@ -8,14 +8,14 @@ interface Settings {
     language?: string,
     gameDirectory?: string | null,
     stagingDirectory?: string | null,
-    searchModsRecursively: boolean,  
+    searchModsRecursively: boolean,
     syncMethod?: string,
-    checkForAppUpdates: boolean,     
-    autoUpdateModPreview: boolean,   
-    autoUpdateGameData: boolean,     
+    checkForAppUpdates: boolean,
+    autoUpdateModPreview: boolean,
+    autoUpdateGameData: boolean,
     skipUpdateVersion?: string | null,
-    autoSyncMods: boolean,           
-    isFirstLaunch: boolean,          
+    autoSyncMods: boolean,
+    isFirstLaunch: boolean,
 }
 
 export const useSettingsStore = defineStore("settings", () => {
@@ -130,9 +130,12 @@ export const useSettingsStore = defineStore("settings", () => {
     }
 
     const availableThemes = ref([
-        {
-            label: 'Dark', value: 'dark',
-        }
+        { label: 'Dark 1', value: 'dark-1' },
+        { label: 'Dark 2', value: 'dark-2' },
+        { label: "Dark 3", value: "dark-3" },
+        { label: 'Dark 4', value: 'dark-4' },
+        { label: 'Light 1', value: 'light-1' },
+        { label: 'Light 2', value: 'light-2' },
     ])
 
     return {
@@ -141,11 +144,11 @@ export const useSettingsStore = defineStore("settings", () => {
             checking: checkingForAppUpdates.value,
             ...(appUpdateStatus.value ?? {}),
         }))),
-        
+
         loadSettings,
         getSettings,
         saveSettings,
-        
+
         // version/update
         getAppVersion,
         getModPreviewVersion,
@@ -156,7 +159,7 @@ export const useSettingsStore = defineStore("settings", () => {
         updateModPreview,
         updateGameData,
         installAppUpdate,
-        
+
         // BrownDustX
         locateGamePath,
         validateGamePath,

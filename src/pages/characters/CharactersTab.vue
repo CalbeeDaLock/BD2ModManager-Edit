@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Grid3X3, List, RefreshCcw, FolderPlus } from 'lucide-vue-next';
 
-import { computed, h, nextTick, onActivated, onDeactivated, onMounted, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, h, nextTick, onActivated, onDeactivated, onMounted, reactive, ref, watch } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -14,13 +14,13 @@ import { useHeader } from '../../composables/useHeader';
 import CharacterList from './CharacterList.vue';
 import CharacterGrid from './CharacterGrid.vue';
 
-import Menu from '../../components/common/Menu.vue';
 import Button from '../../components/common/Button.vue';
 import Input from '../../components/common/Input.vue';
 import CharacterModal from './modals/CharacterModal.vue';
 import Select from '../../components/common/Select.vue';
 import Checkbox from '../../components/common/Checkbox.vue';
 import { useModInstall } from '../../composables/useModInstall';
+import Popover from '../../components/common/Popover.vue';
 
 const { t } = useI18n()
 const route = useRoute()
@@ -292,47 +292,41 @@ const openCostumeDetails = (costume: Character) => {
     showCostumeModal.value = true;
 };
 
+const AddModMenu = defineComponent({
+    setup() {
+        return () =>
+            h(Popover, {}, {
+                trigger: ({ toggle }: any) =>
+                    h(Button, {
+                        label: t('charactersTab.actions.addMod'),
+                        icon: FolderPlus,
+                        variant: 'text',
+                        onClick: toggle
+                    }),
+                default: ({ close }: any) =>
+                    h('ul', { class: 'bg-surface-popover border-border-default border-2 rounded-md' }, addModMenuItems.value.map(item =>
+                        h('li', { key: item.label },
+                            h('button', {
+                                class: 'w-full cursor-pointer text-left px-4 py-2 hover:bg-state-hover  text-sm font-medium',
+                                onClick: () => { item.clicked(); close() }
+                            }, item.label)
+                        )
+                    ))
+            })
+    }
+})
+
 useHeader({
-    title: t('charactersTab.title'), subtitle: computed(() =>
+    title: t('charactersTab.title'),
+    subtitle: computed(() =>
         t('charactersTab.subtitle', {
             enabledModsCount: enabledModsCount.value,
             totalModsCount: totalModsCount.value
         })
-    ), buttons: [
+    ),
+    buttons: [
         { icon: RefreshCcw, label: t('common.actions.refreshMods'), action: refreshData },
-        {
-            render: () =>
-                h('div', { class: 'flex gap-2' }, [
-                    h(Menu, {}, {
-                        trigger: ({ toggle }: any) =>
-                            h(Button, {
-                                label: t('charactersTab.actions.addMod'),
-                                icon: FolderPlus,
-                                variant: 'text',
-                                onClick: toggle
-                            }),
-                        content: () =>
-                            h(
-                                'ul',
-                                {},
-                                addModMenuItems.value.map(item =>
-                                    h(
-                                        'li',
-                                        { key: item.label },
-                                        h(
-                                            'button',
-                                            {
-                                                class: 'w-full cursor-pointer text-left px-4 py-2 hover:bg-interactive-bg-hover',
-                                                onClick: item.clicked
-                                            },
-                                            item.label
-                                        )
-                                    )
-                                )
-                            )
-                    }),
-                ])
-        },
+        { render: () => h(AddModMenu) }
     ]
 })
 
@@ -374,25 +368,25 @@ watch(() => route.query.characterId, (newCharacterId) => {
 </script>
 
 <template>
-    <div class="flex flex-row w-full h-full p-4 py-2 gap-4 bg-bg-deep overflow-hidden">
+    <div class="flex flex-row w-full h-full p-4 py-2 gap-4 bg-surface-app overflow-hidden">
         <div class="flex-1 min-h-0 overflow-hidden">
             <CharacterList v-if="viewMode == 'list'" :items="charactersList" @openModDetails="openCostumeDetails" />
             <CharacterGrid v-else :items="charactersGrid" @openModDetails="openCostumeDetails" />
         </div>
 
         <div
-            class="flex overflow-y-auto flex-col gap-2.5 items-start justify-start w-full max-w-[20%] min-w-50 p-2 bg-bg-surface rounded border border-border">
-            <h1 class="text-lg font-bold text-primary flex flex-row justify-between items-center w-full">
+            class="flex overflow-y-auto flex-col gap-2.5 items-start justify-start w-full max-w-[20%] min-w-50 p-2 bg-surface-panel rounded-md border border-border-default">
+            <h1 class="text-lg font-bold text-text-primary flex flex-row justify-between items-center w-full">
                 {{ t('charactersTab.filters.title') }}
                 <div class="flex gap-1">
                     <Button @click="viewMode = 'grid'" :icon="Grid3X3" :icon-class="{
-                        'text-accent-primary': viewMode === 'grid',
-                        'text-primary': viewMode !== 'grid',
+                        'text-accent': viewMode === 'grid',
+                        'text-text-primary': viewMode !== 'grid',
                         'text-xs': true
                     }" />
                     <Button @click="viewMode = 'list'" :icon="List" :icon-class="{
-                        'text-accent-primary': viewMode === 'list',
-                        'text-primary': viewMode !== 'list',
+                        'text-accent': viewMode === 'list',
+                        'text-text-primary': viewMode !== 'list',
                         'text-xs': true
                     }" />
                 </div>
@@ -405,27 +399,27 @@ watch(() => route.query.characterId, (newCharacterId) => {
                 </div>
 
                 <div class="flex flex-col gap-1.5">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.sortBy.title')
-                    }}</label>
+                    <label class="text-sm font-semibold text-text-primary">{{ t('charactersTab.filters.sortBy.title')
+                        }}</label>
                     <Select v-model="userFilters.sortBy" :options="sortOptions" />
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.modStatus.title')
-                    }}</label>
+                    <label class="text-sm font-semibold text-text-primary">{{ t('charactersTab.filters.modStatus.title')
+                        }}</label>
                     <div class="flex flex-col gap-2">
                         <div class="flex flex-col gap-1">
-                            <label for="cutscene" class="text-xs font-medium text-secondary">{{
+                            <label for="cutscene" class="text-xs font-medium text-text-secondary">{{
                                 t('charactersTab.filters.modStatus.hasCutscene') }}</label>
                             <Select id="cutscene" v-model="userFilters.cutscene" :options="modStatusOptions" />
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label for="standing" class="text-xs font-medium text-secondary">{{
+                            <label for="standing" class="text-xs font-medium text-text-secondary">{{
                                 t('charactersTab.filters.modStatus.hasStanding') }}</label>
                             <Select id="standing" v-model="userFilters.standing" :options="modStatusOptions" />
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label for="dating" class="text-xs font-medium text-secondary">{{
+                            <label for="dating" class="text-xs font-medium text-text-secondary">{{
                                 t('charactersTab.filters.modStatus.hasDating') }}</label>
                             <Select id="dating" v-model="userFilters.dating" :options="modStatusOptions" />
                         </div>
@@ -433,8 +427,8 @@ watch(() => route.query.characterId, (newCharacterId) => {
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.extraFilters.title')
-                    }}</label>
+                    <label class="text-sm font-semibold text-text-primary">{{
+                        t('charactersTab.filters.extraFilters.title') }}</label>
                     <div class="flex flex-col gap-1.5">
                         <Checkbox v-model="userFilters.hideMenCharacters"
                             :label="t('charactersTab.filters.extraFilters.hideMenCharacters')" />
@@ -448,8 +442,8 @@ watch(() => route.query.characterId, (newCharacterId) => {
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-primary">{{ t('charactersTab.filters.releasePeriod.title')
-                    }}</label>
+                    <label class="text-sm font-semibold text-text-primary">{{
+                        t('charactersTab.filters.releasePeriod.title') }}</label>
                     <Select v-model="userFilters.releasePeriod" :options="releasePeriodOptions" />
                 </div>
             </div>

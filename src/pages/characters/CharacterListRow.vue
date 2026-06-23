@@ -31,8 +31,8 @@ const costumeId = computed(() => {
 
     <div v-else-if="item.type === 'costume'"
         @click="emit('openModDetails', item.data)"
-        class="flex bg-interactive-bg rounded-lg overflow-hidden cursor-pointer hover:bg-interactive-bg-hover/30 transition-colors mx-2 mb-2">
-        
+        class="flex bg-surface-card rounded-lg overflow-hidden cursor-pointer hover:bg-state-hover transition-colors mx-2 mb-2">
+
         <div class="shrink-0">
             <Image
                 loading="lazy"
@@ -42,14 +42,14 @@ const costumeId = computed(() => {
                 :fallback-sources="[
                     convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`),
                     '/characters/standing/placeholder_character.png'
-                ]"                
+                ]"
             />
         </div>
 
         <div class="flex flex-col flex-1 p-2 min-w-0">
             <div class="text-lg font-medium flex gap-2 items-center flex-wrap">
                 <div v-if="isCostumeNew(item.data)"
-                    class="bg-red-500/75 backdrop-blur-sm text-red-100 text-xs px-2 py-0.5 rounded-sm font-medium">
+                    class="bg-error-bg text-error text-xs px-2 py-0.5 rounded-sm font-medium">
                     {{ $t('charactersTab.tags.new') }}
                 </div>
 
@@ -58,17 +58,17 @@ const costumeId = computed(() => {
                 </span>
 
                 <div v-if="item.data.modsCount > 0"
-                    class="flex bg-accent-primary/75 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap">
+                    class="flex bg-accent/75 text-text-on-accent text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap">
                     {{ $t('charactersTab.tags.modsCount', { count: item.data.modsCount }) }}
                 </div>
 
                 <div v-if="item.data.is_collab"
-                    class="bg-yellow-500/75 backdrop-blur-sm text-yellow-100 text-xs px-2 py-1 rounded-full font-medium">
+                    class="bg-warning-bg text-warning text-xs px-2 py-1 rounded-full font-medium">
                     {{ $t('charactersTab.tags.collab') }}
                 </div>
             </div>
 
-            <span class="text-secondary font-mono text-sm">
+            <span class="text-text-secondary font-mono text-sm">
                 {{ $t('charactersTab.id', { id: Array.isArray(item.data.id) ? item.data.id.join(', ') : costumeId }) }}
             </span>
 
@@ -79,7 +79,7 @@ const costumeId = computed(() => {
                     </span>
                     <span class="font-mono text-xs md:text-sm" :class="{
                         'text-success': item.data.hasCutscene,
-                        'text-danger': !item.data.hasCutscene
+                        'text-error': !item.data.hasCutscene
                     }">
                         {{ item.data.hasCutscene ? $t('charactersTab.modTypes.states.enabled', 'Enabled') : $t('charactersTab.modTypes.states.disabled', 'Disabled') }}
                     </span>
@@ -91,7 +91,7 @@ const costumeId = computed(() => {
                     </span>
                     <span class="font-mono text-xs md:text-sm" :class="{
                         'text-success': item.data.hasStanding,
-                        'text-danger': !item.data.hasStanding
+                        'text-error': !item.data.hasStanding
                     }">
                         {{ item.data.hasStanding ? $t('charactersTab.modTypes.states.enabled', 'Enabled') : $t('charactersTab.modTypes.states.disabled', 'Disabled') }}
                     </span>
@@ -103,7 +103,7 @@ const costumeId = computed(() => {
                     </span>
                     <span class="font-mono text-xs md:text-sm" :class="{
                         'text-success': item.data.hasDating,
-                        'text-danger': !item.data.hasDating
+                        'text-error': !item.data.hasDating
                     }">
                         {{ item.data.hasDating ? $t('charactersTab.modTypes.states.enabled', 'Enabled') : $t('charactersTab.modTypes.states.disabled', 'Disabled') }}
                     </span>

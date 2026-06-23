@@ -68,11 +68,11 @@ useSaveScroll(rowVirtualizer)
 </script>
 
 <template>
-    <div v-if="items.length === 0" class="text-center py-12 text-secondary">
+    <div v-if="items.length === 0" class="text-center py-12 text-text-secondary">
         <p class="text-lg">{{ $t('charactersTab.charactersNotFound') }}</p>
     </div>
 
-    <div v-else ref="parentRef" class="h-full overflow-y-auto bg-bg-deep" style="contain: strict">
+    <div v-else ref="parentRef" class="h-full overflow-y-auto bg-surface-app" style="contain: strict">
         <div :style="{ height: `${totalSize}px`, width: '100%', position: 'relative' }">
             <div :style="{
                 position: 'absolute',
