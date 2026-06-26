@@ -38,11 +38,6 @@ const props = defineProps<{
 
 const modsStore = useModsStore();
 
-const costumeId = computed(() => {
-    const id = props.selectedCostume?.id;
-    return Array.isArray(id) ? id[0] : id;
-});
-
 const costumeIds = computed((): string[] => {
     const id = props.selectedCostume?.id;
     return Array.isArray(id) ? [...id] : id ? [id as string] : [];
@@ -103,8 +98,6 @@ async function openPreviewMod(mod: BD2Mod) {
     });
 }
 
-const baseDir = useAppDir();
-
 function getIconForLink(key: string) {
     switch (key) {
         case "patreon": return PatreonIcon;
@@ -132,6 +125,14 @@ const hasIndexMods = computed(() => {
 function getIndexMods(type: string) {
     return costumeIds.value.flatMap(id => modsIndex.getMods(id, type));
 }
+
+const imageUrl = computed(() => {
+    if (!props.selectedCostume) return "#"
+    const ids = Array.isArray(props.selectedCostume.id)
+        ? props.selectedCostume.id.join(',')
+        : props.selectedCostume.id
+    return convertFileSrc(`standing/${ids}`, "bd2assets")
+})
 </script>
 
 <template>
@@ -146,13 +147,11 @@ function getIndexMods(type: string) {
         <div v-if="selectedCostume" class="flex flex-col min-h-0 text-text-primary overflow-hidden">
             <div class="flex items-stretch border-b border-border-default shrink-0">
                 <!-- [TODO] when clicked it shows full image -->
-                <Image :src="`characters/standing/${costumeId}.png`"
+                <Image :src="imageUrl"
                     :alt="`${selectedCostume.character} - ${selectedCostume.costume}`"
-                    class="w-40 h-40 object-cover shrink-0 border-r border-border-default"
-                    :fallback-sources="[
-                        convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`),
-                        '/characters/standing/placeholder_character.png'
-                    ]" />
+                    class="w-40 h-40 object-cover shrink-0 border-r border-border-default aspect-square"
+                    skeleton
+                    error-src="characters/standing/placeholder_character.png" />
 
                 <div class="flex-1 px-4 py-3 flex flex-col">
                     <div class="flex items-start justify-between gap-2">

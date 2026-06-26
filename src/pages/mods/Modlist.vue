@@ -22,9 +22,6 @@ import { useLocalStorage, useStorageAsync } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import Image from '../../components/common/Image.vue'
 import { convertFileSrc } from '@tauri-apps/api/core'
-import { useAppDir } from '../../composables/useAppDir'
-
-const baseDir = useAppDir()
 
 const router = useRouter()
 
@@ -186,8 +183,7 @@ const columns = [
         cell: info => {
             const char = info.getValue()
             if (char) {
-                // uses the first id if there are multiple
-                let charId = Array.isArray(char.id) ? char.id[0] : char.id
+                let charIds = Array.isArray(char.id) ? char.id.join(',') : char.id
                 return h(
                     "div",
                     {
@@ -195,17 +191,16 @@ const columns = [
                     },
                     [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
-                            src: `/characters/heads/${charId}.png`,
-                            loading: 'lazy',
-                            class: 'w-[2rem] h-[2rem] object-cover scale-150 cursor-pointer hover:scale-165 transition-transform',
-                            fallbackSources: [
-                                convertFileSrc(`${baseDir.value}/assets/heads/${charId}.png`),
-                                '/characters/heads/050001.png'
-                            ],
+                            src: convertFileSrc(`heads/${charIds}`, 'bd2assets'),
+                            errorSrc: "/characters/heads/050001.png",
+                            // class: 'w-[2rem] h-[2rem] object-cover aspect-square scale-150 cursor-pointer hover:scale-165 transition-transform',
+                            class: 'w-10 h-10 scale-150 aspect-square cursor-pointer transition-transform hover:scale-165',
+                            imgClass: 'object-contain',
                             onClick: (event: Event) => {
+
                                 event.stopPropagation()
                                 // redirects to character page
-                                router.push({ name: 'characters', query: { characterId: charId } })
+                                router.push({ name: 'characters', query: { characterId: Array.isArray(char.id) ? char.id[0] : char.id } })
                             }
                         }) : null,
                         preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, `${char.character} - ${char.costume}`) : null

@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { convertFileSrc } from '@tauri-apps/api/core'
 import { CostumeWithMods } from './CharacterGrid.vue'
-import { useAppDir } from '../../composables/useAppDir'
 import { isCostumeNew } from '../../stores/characters'
-import Image from '../../components/common/Image.vue'
 import { Check, X } from 'lucide-vue-next'
 import { computed } from 'vue'
-
-const baseDir = useAppDir()
+import Image from '../../components/common/Image.vue'
 
 const props = defineProps<{
     costume: CostumeWithMods
 }>()
 
-const costumeId = computed(() => {
-    // if there are multiple character ids, use the first one
-    return Array.isArray(props.costume.id) ? props.costume.id[0] : props.costume.id
+const imageUrl = computed(() => {
+    const ids = Array.isArray(props.costume.id)
+        ? props.costume.id.join(',')
+        : props.costume.id
+    return convertFileSrc(`standing/${ids}`, "bd2assets")
 })
 </script>
 
@@ -23,12 +22,8 @@ const costumeId = computed(() => {
     <div @click="$emit('open-mod-details', costume)"
         class="rounded-lg cursor-pointer transition-all bg-surface-card text-text-primary hover:bg-state-hover flex flex-col h-full overflow-hidden">
         <div class="relative">
-            <Image loading="lazy" :src="`characters/standing/${costumeId}.png`"
-                :alt="`${costume.character} - ${costume.costume}`"
-                class="w-full h-full object-cover object-top rounded-t-md" :fallback-sources="[
-                    convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`), // app data
-                    '/characters/standing/placeholder_character.png' // placeholeer
-                ]" />
+            <Image :src="imageUrl" :alt="`${costume.character} - ${costume.costume}`" class="w-full aspect-square rounded-t-md"
+                error-src="characters/standing/placeholder_character.png" skeleton />
             <div class="absolute top-2.5 left-2.5 flex gap-1">
                 <div v-if="costume.modsCount > 0"
                     class="bg-accent/75 text-text-on-accent text-xs px-2 py-1 rounded-full font-medium">
@@ -58,7 +53,8 @@ const costumeId = computed(() => {
                 </div>
             </div>
 
-            <div class="flex justify-around items-center gap-2 text-xs text-text-primary font-mono overflow-x-auto scrollbar-hide">
+            <div
+                class="flex justify-around items-center gap-2 text-xs text-text-primary font-mono overflow-x-auto scrollbar-hide">
                 <div class="text-center p-1">
                     <div class="mb-1 flex items-center font-semibold gap-1">
                         {{ $t('charactersTab.modTypes.cutscene') }}

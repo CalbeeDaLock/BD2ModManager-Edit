@@ -3,10 +3,7 @@ import Image from '../../components/common/Image.vue';
 import { Character, isCostumeNew } from '../../stores/characters';
 import { CharacterListItem } from './CharacterList.vue';
 import { convertFileSrc } from '@tauri-apps/api/core';
-import { useAppDir } from '../../composables/useAppDir';
 import { computed } from 'vue';
-
-const baseDir = useAppDir()
 
 const props = defineProps<{
     item: CharacterListItem
@@ -16,11 +13,13 @@ const emit = defineEmits<{
     openModDetails: [costume: Character]
 }>()
 
-const costumeId = computed(() => {
-    if (props.item.type !== 'costume') return null
+const imageUrl = computed(() => {
+    if (props.item.type !== 'costume') return '#'
     const costume = props.item.data
-    // if there are multiple character ids, use the first one
-    return Array.isArray(costume.id) ? costume.id[0] : costume.id
+    const ids = Array.isArray(costume.id)
+        ? costume.id.join(',')
+        : costume.id
+    return convertFileSrc(`standing/${ids}`, "bd2assets")
 })
 </script>
 
@@ -35,14 +34,11 @@ const costumeId = computed(() => {
 
         <div class="shrink-0">
             <Image
-                loading="lazy"
-                :src="`characters/standing/${costumeId}.png`"
+                :src="imageUrl"
                 :alt="`${item.data.character} - ${item.data.costume}`"
-                class="w-42 h-42 object-cover"
-                :fallback-sources="[
-                    convertFileSrc(`${baseDir}/assets/standing/${costumeId}.png`),
-                    '/characters/standing/placeholder_character.png'
-                ]"
+                class="w-42 h-42 object-cover object-top rounded-t-md aspect-square"
+                error-src="characters/standing/placeholder_character.png"
+                skeleton
             />
         </div>
 
@@ -69,7 +65,7 @@ const costumeId = computed(() => {
             </div>
 
             <span class="text-text-secondary font-mono text-sm">
-                {{ $t('charactersTab.id', { id: Array.isArray(item.data.id) ? item.data.id.join(', ') : costumeId }) }}
+                {{ $t('charactersTab.id', { id: Array.isArray(item.data.id) ? item.data.id.join(', ') : item.data.id }) }}
             </span>
 
             <div class="flex flex-1 items-end gap-8 md:gap-12 mr-4 md:mr-8 mt-2">
