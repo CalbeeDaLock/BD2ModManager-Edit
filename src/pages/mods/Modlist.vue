@@ -27,7 +27,7 @@ const router = useRouter()
 
 const preferencesStore = usePreferencesStore()
 
-const columnSizes = useLocalStorage("modlist-column-sizes", {} as Record<string, number>)
+const columnSizes = useLocalStorage("modlist-column-sizes", {})
 const columnOrder = useLocalStorage<string[]>("modlist-column-order", [])
 
 const allColumns = computed(() => [

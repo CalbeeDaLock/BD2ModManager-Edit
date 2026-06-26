@@ -34,13 +34,13 @@ function handleActionClick(close: () => void, action: (typeof props.actions)[num
   action.clicked()
 }
 
-const SIZES: Record<NonNullable<typeof props.size>, { button: string; chevron: string }> = {
+const SIZES = {
   sm: { button: 'h-7 px-2.5 text-xs gap-1.5 rounded-l-sm', chevron: 'h-7 w-6 rounded-r-sm' },
   md: { button: 'h-8 px-3 text-sm gap-2 rounded-l-md', chevron: 'h-8 w-7 rounded-r-md' },
   lg: { button: 'h-12 px-4 text-sm gap-2 rounded-l-lg', chevron: 'h-12 w-10 rounded-r-lg' },
 }
 
-const VARIANTS: Record<NonNullable<typeof props.variant>, string> = {
+const VARIANTS = {
   primary: 'bg-accent hover:bg-accent-hover active:bg-accent-active text-text-on-accent border-transparent',
   default: 'bg-surface-input border-border-default text-text-primary hover:border-border-strong active:bg-state-active'
 }

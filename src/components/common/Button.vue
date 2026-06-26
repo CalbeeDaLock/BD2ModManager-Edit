@@ -21,13 +21,13 @@ async function handleClick(event: MouseEvent) {
   emit('click', event)
 }
 
-const SIZES: Record<NonNullable<typeof props.size>, string> = {
+const SIZES = {
   sm: 'h-7 px-2.5 text-xs rounded-sm gap-1.5',
   md: 'h-8 px-3 text-sm rounded-md gap-2',
   lg: 'h-12 px-4 text-sm rounded-lg gap-2',
 }
 
-const VARIANTS: Record<NonNullable<typeof props.variant>, string> = {
+const VARIANTS = {
   primary: 'bg-accent text-text-on-accent hover:bg-accent-hover active:bg-accent-active border-transparent',
   default:'bg-surface-input text-text-primary border-border-default active:bg-state-active hover:border-border-strong justify-center',
   text: 'bg-transparent text-text-primary hover:bg-state-hover border-transparent active:bg-state-active',
