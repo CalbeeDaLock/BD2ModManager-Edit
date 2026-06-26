@@ -1,5 +1,5 @@
 {
-    "version": "0.0.16",
+    "version": "0.0.17",
     "characters": [
         {
             "id": "000708",
@@ -18,14 +18,14 @@
             "character_name": {
                 "en": "Eclipse",
                 "cn": "伊柯利普斯",
-                "hp": "エクリプス",
+                "jp": "エクリプス",
                 "tw": "伊柯利普斯",
                 "kr": "이클립스"
             },
             "costume_name": {
                 "en": "Dream Bride",
                 "cn": "梦中的新娘",
-                "hp": "夢の中の花嫁",
+                "jp": "夢の中の花嫁",
                 "tw": "夢中的新娘",
                 "kr": "꿈속의 신부"
             },
@@ -55,14 +55,14 @@
             "character_name": {
                 "en": "Justia",
                 "cn": "悠丝缇亚",
-                "hp": "ユースティア",
+                "jp": "ユースティア",
                 "tw": "悠絲緹亞",
                 "kr": "유스티아"
             },
             "costume_name": {
                 "en": "White Reaper",
                 "cn": "皎洁死神",
-                "hp": "白い死神",
+                "jp": "白い死神",
                 "tw": "皎潔死神",
                 "kr": "하얀 사신"
             },
@@ -92,14 +92,14 @@
             "character_name": {
                 "en": "Justia",
                 "cn": "悠丝缇亚",
-                "hp": "ユースティア",
+                "jp": "ユースティア",
                 "tw": "悠絲緹亞",
                 "kr": "유스티아"
             },
             "costume_name": {
                 "en": "Blood Glutton",
                 "cn": "血之贪食者",
-                "hp": "血の貪食者",
+                "jp": "血の貪食者",
                 "tw": "血之貪食者",
                 "kr": "피의 탐식자"
             },
@@ -129,14 +129,14 @@
             "character_name": {
                 "en": "Lathel",
                 "cn": "拉德尔",
-                "hp": "ラテル",
+                "jp": "ラテル",
                 "tw": "拉德爾",
                 "kr": "라텔"
             },
             "costume_name": {
                 "en": "Pool Party",
                 "cn": "泳池派对",
-                "hp": "プールパーティ",
+                "jp": "プールパーティ",
                 "tw": "泳池派對",
                 "kr": "풀 파티"
             },
@@ -166,14 +166,14 @@
             "character_name": {
                 "en": "Diana",
                 "cn": "黛安娜",
-                "hp": "ディアナ",
+                "jp": "ディアナ",
                 "tw": "黛安娜",
                 "kr": "디아나"
             },
             "costume_name": {
                 "en": "Adventurer of the Unknown",
                 "cn": "未知探究者",
-                "hp": "未知の探求者",
+                "jp": "未知の探求者",
                 "tw": "未知的探究者",
                 "kr": "미지의 탐구자"
             },
@@ -203,14 +203,14 @@
             "character_name": {
                 "en": "Rou",
                 "cn": "鲁",
-                "hp": "ルゥ",
+                "jp": "ルゥ",
                 "tw": "魯",
                 "kr": "루"
             },
             "costume_name": {
                 "en": "Stray Cat",
                 "cn": "流浪猫",
-                "hp": "ストレイ・キャット",
+                "jp": "ストレイ・キャット",
                 "tw": "流浪貓",
                 "kr": "스트레이 캣"
             },
@@ -240,14 +240,14 @@
             "character_name": {
                 "en": "Rubia",
                 "cn": "露比雅",
-                "hp": "ルヴィア",
+                "jp": "ルヴィア",
                 "tw": "露比雅",
                 "kr": "루비아"
             },
             "costume_name": {
                 "en": "Thorn of the Desert",
                 "cn": "沙漠之刺",
-                "hp": "砂漠の棘",
+                "jp": "砂漠の棘",
                 "tw": "沙漠之刺",
                 "kr": "사막의 가시"
             },
@@ -277,14 +277,14 @@
             "character_name": {
                 "en": "Scheherazade",
                 "cn": "莎赫拉查德",
-                "hp": "シェラザード",
+                "jp": "シェラザード",
                 "tw": "莎赫拉查德",
                 "kr": "세헤라자드"
             },
             "costume_name": {
                 "en": "The Lapis Witch",
                 "cn": "苍蓝魔女",
-                "hp": "蒼の魔女",
+                "jp": "蒼の魔女",
                 "tw": "蒼藍魔女",
                 "kr": "푸른 마녀"
             },
@@ -314,14 +314,14 @@
             "character_name": {
                 "en": "Scheherazade",
                 "cn": "莎赫拉查德",
-                "hp": "シェラザード",
+                "jp": "シェラザード",
                 "tw": "莎赫拉查德",
                 "kr": "세헤라자드"
             },
             "costume_name": {
                 "en": "Code Name S",
                 "cn": "代号S",
-                "hp": "コードネームS",
+                "jp": "コードネームS",
                 "tw": "代號S",
                 "kr": "코드네임 S"
             },
@@ -351,14 +351,14 @@
             "character_name": {
                 "en": "Scheherazade",
                 "cn": "莎赫拉查德",
-                "hp": "シェラザード",
+                "jp": "シェラザード",
                 "tw": "莎赫拉查德",
                 "kr": "세헤라자드"
             },
             "costume_name": {
                 "en": "Pool Party",
                 "cn": "泳池派对",
-                "hp": "プールパーティ",
+                "jp": "プールパーティ",
                 "tw": "泳池派對",
                 "kr": "풀 파티"
             },
@@ -388,14 +388,14 @@
             "character_name": {
                 "en": "Eclipse",
                 "cn": "伊柯利普斯",
-                "hp": "エクリプス",
+                "jp": "エクリプス",
                 "tw": "伊柯利普斯",
                 "kr": "이클립스"
             },
             "costume_name": {
                 "en": "Beach Vacation",
                 "cn": "海滨度假",
-                "hp": "ビーチバカンス",
+                "jp": "ビーチバカンス",
                 "tw": "海邊度假",
                 "kr": "비치 바캉스"
             },
@@ -425,14 +425,14 @@
             "character_name": {
                 "en": "Gray",
                 "cn": "格雷",
-                "hp": "グレイ",
+                "jp": "グレイ",
                 "tw": "格雷",
                 "kr": "그레이"
             },
             "costume_name": {
                 "en": "Vanguard",
                 "cn": "先锋大将",
-                "hp": "先鋒隊",
+                "jp": "先鋒隊",
                 "tw": "先鋒大將",
                 "kr": "선봉장"
             },
@@ -462,14 +462,14 @@
             "character_name": {
                 "en": "Rou",
                 "cn": "鲁",
-                "hp": "ルゥ",
+                "jp": "ルゥ",
                 "tw": "魯",
                 "kr": "루"
             },
             "costume_name": {
                 "en": "Nature's Claw",
                 "cn": "自然之爪",
-                "hp": "自然の爪",
+                "jp": "自然の爪",
                 "tw": "自然的腳爪",
                 "kr": "자연의 발톱"
             },
@@ -499,14 +499,14 @@
             "character_name": {
                 "en": "Justia",
                 "cn": "悠丝缇亚",
-                "hp": "ユースティア",
+                "jp": "ユースティア",
                 "tw": "悠絲緹亞",
                 "kr": "유스티아"
             },
             "costume_name": {
                 "en": "Kendo Club",
                 "cn": "剑道社",
-                "hp": "剣道部",
+                "jp": "剣道部",
                 "tw": "劍道社",
                 "kr": "검도부"
             },
@@ -536,14 +536,14 @@
             "character_name": {
                 "en": "Olstein",
                 "cn": "奥尔施塔因",
-                "hp": "オルシュタイン",
+                "jp": "オルシュタイン",
                 "tw": "奧爾施塔因",
                 "kr": "올슈타인"
             },
             "costume_name": {
                 "en": "The Fiend Scholar",
                 "cn": "魔物学家",
-                "hp": "魔物学者",
+                "jp": "魔物学者",
                 "tw": "魔獸學家",
                 "kr": "마물학자"
             },
@@ -573,14 +573,14 @@
             "character_name": {
                 "en": "Morpeah",
                 "cn": "墨菲亚",
-                "hp": "モルフェア",
+                "jp": "モルフェア",
                 "tw": "墨菲亞",
                 "kr": "모르페아"
             },
             "costume_name": {
                 "en": "Beach Vacation",
                 "cn": "海滨度假",
-                "hp": "ビーチバカンス",
+                "jp": "ビーチバカンス",
                 "tw": "海邊度假",
                 "kr": "비치 바캉스"
             },
@@ -610,14 +610,14 @@
             "character_name": {
                 "en": "Sylvia",
                 "cn": "席比雅",
-                "hp": "シルヴィア",
+                "jp": "シルヴィア",
                 "tw": "席比雅",
                 "kr": "실비아"
             },
             "costume_name": {
                 "en": "Admiral",
                 "cn": "海军队长",
-                "hp": "海軍隊長",
+                "jp": "海軍隊長",
                 "tw": "海軍上將",
                 "kr": "해군 대장"
             },
@@ -647,14 +647,14 @@
             "character_name": {
                 "en": "Eclipse",
                 "cn": "伊柯利普斯",
-                "hp": "エクリプス",
+                "jp": "エクリプス",
                 "tw": "伊柯利普斯",
                 "kr": "이클립스"
             },
             "costume_name": {
                 "en": "Dimension Witch",
                 "cn": "空间魔女",
-                "hp": "空間の魔女",
+                "jp": "空間の魔女",
                 "tw": "空間魔女",
                 "kr": "공간의 마녀"
             },
@@ -684,14 +684,14 @@
             "character_name": {
                 "en": "Nebris",
                 "cn": "内布利斯",
-                "hp": "ネブリス",
+                "jp": "ネブリス",
                 "tw": "內布利斯",
                 "kr": "네브리스"
             },
             "costume_name": {
                 "en": "New Hire",
                 "cn": "新进员工",
-                "hp": "新入社員",
+                "jp": "新入社員",
                 "tw": "新進員工",
                 "kr": "신입 사원"
             },
@@ -721,14 +721,14 @@
             "character_name": {
                 "en": "Yomi",
                 "cn": "咏",
-                "hp": "詠",
+                "jp": "詠",
                 "tw": "詠",
                 "kr": "요미"
             },
             "costume_name": {
                 "en": "Gentle Destroyer",
                 "cn": "温和的破坏者",
-                "hp": "穏やかな破壊者",
+                "jp": "穏やかな破壊者",
                 "tw": "溫和的破壞者",
                 "kr": "온화한 파괴자"
             },
@@ -758,14 +758,14 @@
             "character_name": {
                 "en": "Hikage",
                 "cn": "日影",
-                "hp": "日影",
+                "jp": "日影",
                 "tw": "日影",
                 "kr": "히카게"
             },
             "costume_name": {
                 "en": "Kind Ruthlessness",
                 "cn": "和蔼的无情",
-                "hp": "優しき無情",
+                "jp": "優しき無情",
                 "tw": "和藹的無情",
                 "kr": "상냥한 무정"
             },
@@ -795,14 +795,14 @@
             "character_name": {
                 "en": "Nebris",
                 "cn": "内布利斯",
-                "hp": "ネブリス",
+                "jp": "ネブリス",
                 "tw": "內布利斯",
                 "kr": "네브리스"
             },
             "costume_name": {
                 "en": "Labyrinth Gatekeeper",
                 "cn": "迷宫的门卫",
-                "hp": "迷宮の門番",
+                "jp": "迷宮の門番",
                 "tw": "迷宮的門衛",
                 "kr": "미궁의 문지기"
             },
@@ -832,14 +832,14 @@
             "character_name": {
                 "en": "Diana",
                 "cn": "黛安娜",
-                "hp": "ディアナ",
+                "jp": "ディアナ",
                 "tw": "黛安娜",
                 "kr": "디아나"
             },
             "costume_name": {
                 "en": "Anti-dystopia",
                 "cn": "反乌托邦",
-                "hp": "アンチ・ディストピア",
+                "jp": "アンチ・ディストピア",
                 "tw": "反烏托邦",
                 "kr": "안티 디스토피아"
             },
@@ -869,14 +869,14 @@
             "character_name": {
                 "en": "Gray",
                 "cn": "格雷",
-                "hp": "グレイ",
+                "jp": "グレイ",
                 "tw": "格雷",
                 "kr": "그레이"
             },
             "costume_name": {
                 "en": "The Sharpshooter of the Mist",
                 "cn": "迷雾神射手",
-                "hp": "霧の名射手",
+                "jp": "霧の名射手",
                 "tw": "迷霧神射手",
                 "kr": "안개의 명사수"
             },
@@ -906,14 +906,14 @@
             "character_name": {
                 "en": "Morpeah",
                 "cn": "墨菲亚",
-                "hp": "モルフェア",
+                "jp": "モルフェア",
                 "tw": "墨菲亞",
                 "kr": "모르페아"
             },
             "costume_name": {
                 "en": "Daydream Bunny",
                 "cn": "白日梦兔女郎",
-                "hp": "デイドリーム・バニー",
+                "jp": "デイドリーム・バニー",
                 "tw": "白日夢兔女郎",
                 "kr": "데이드림 바니"
             },
@@ -943,14 +943,14 @@
             "character_name": {
                 "en": "Loen",
                 "cn": "罗安",
-                "hp": "ロエン",
+                "jp": "ロエン",
                 "tw": "羅安",
                 "kr": "로엔"
             },
             "costume_name": {
                 "en": "Celebrity Bunny",
                 "cn": "名人兔女郎",
-                "hp": "セレブリティ・バニー",
+                "jp": "セレブリティ・バニー",
                 "tw": "名人兔女郎",
                 "kr": "셀레브리티 바니"
             },
@@ -980,14 +980,14 @@
             "character_name": {
                 "en": "Liatris",
                 "cn": "莉亚特里斯",
-                "hp": "リアトリス",
+                "jp": "リアトリス",
                 "tw": "莉亞特里斯",
                 "kr": "리아트리스"
             },
             "costume_name": {
                 "en": "Neon Stalker",
                 "cn": "霓虹跟踪狂",
-                "hp": "ネオン・ストーカー",
+                "jp": "ネオン・ストーカー",
                 "tw": "霓虹跟蹤狂",
                 "kr": "네온 스토커"
             },
@@ -1017,14 +1017,14 @@
             "character_name": {
                 "en": "Lathel",
                 "cn": "拉德尔",
-                "hp": "ラテル",
+                "jp": "ラテル",
                 "tw": "拉德爾",
                 "kr": "라텔"
             },
             "costume_name": {
                 "en": "Herb Tracker",
                 "cn": "草药猎人",
-                "hp": "薬草採集者",
+                "jp": "薬草採集者",
                 "tw": "草藥獵人",
                 "kr": "약초 추적자"
             },
@@ -1054,14 +1054,14 @@
             "character_name": {
                 "en": "Teresse",
                 "cn": "泰瑞丝",
-                "hp": "テレーゼ",
+                "jp": "テレーゼ",
                 "tw": "泰瑞絲",
                 "kr": "테레제"
             },
             "costume_name": {
                 "en": "Medical Club",
                 "cn": "保健部",
-                "hp": "保健委員",
+                "jp": "保健委員",
                 "tw": "保健社",
                 "kr": "양호부"
             },
@@ -1091,14 +1091,14 @@
             "character_name": {
                 "en": "Loen",
                 "cn": "罗安",
-                "hp": "ロエン",
+                "jp": "ロエン",
                 "tw": "羅安",
                 "kr": "로엔"
             },
             "costume_name": {
                 "en": "Track and Field Team",
                 "cn": "田径社社员",
-                "hp": "陸上部 部員",
+                "jp": "陸上部 部員",
                 "tw": "田徑社社員",
                 "kr": "육상부 부원"
             },
@@ -1128,14 +1128,14 @@
             "character_name": {
                 "en": "Elpis",
                 "cn": "厄尔比斯",
-                "hp": "エルピス",
+                "jp": "エルピス",
                 "tw": "厄爾比斯",
                 "kr": "엘피스"
             },
             "costume_name": {
                 "en": "Hand of Salvation",
                 "cn": "救赎之手",
-                "hp": "救いの手",
+                "jp": "救いの手",
                 "tw": "救贖之手",
                 "kr": "구원의 손길"
             },
@@ -1165,14 +1165,14 @@
             "character_name": {
                 "en": "Liberta",
                 "cn": "黎维塔",
-                "hp": "リベルタ",
+                "jp": "リベルタ",
                 "tw": "黎維塔",
                 "kr": "리베르타"
             },
             "costume_name": {
                 "en": "Dark Saintess",
                 "cn": "暗黑圣女",
-                "hp": "暗黒聖女",
+                "jp": "暗黒聖女",
                 "tw": "暗黑聖女",
                 "kr": "암흑 성녀"
             },
@@ -1202,14 +1202,14 @@
             "character_name": {
                 "en": "Rubia",
                 "cn": "露比雅",
-                "hp": "ルヴィア",
+                "jp": "ルヴィア",
                 "tw": "露比雅",
                 "kr": "루비아"
             },
             "costume_name": {
                 "en": "Maid Name C",
                 "cn": "女仆代号C",
-                "hp": "メイドネームC",
+                "jp": "メイドネームC",
                 "tw": "女僕代號C",
                 "kr": "메이드네임 C"
             },
@@ -1239,14 +1239,14 @@
             "character_name": {
                 "en": "Yumi",
                 "cn": "雪泉",
-                "hp": "雪泉",
+                "jp": "雪泉",
                 "tw": "雪泉",
                 "kr": "유미"
             },
             "costume_name": {
                 "en": "Dancing Snowflake",
                 "cn": "雪花之舞",
-                "hp": "雪花の舞",
+                "jp": "雪花の舞",
                 "tw": "雪花之舞",
                 "kr": "눈꽃의 춤"
             },
@@ -1276,14 +1276,14 @@
             "character_name": {
                 "en": "Julie",
                 "cn": "茱莉",
-                "hp": "ジュリー",
+                "jp": "ジュリー",
                 "tw": "茱莉",
                 "kr": "줄리"
             },
             "costume_name": {
                 "en": "Healer",
                 "cn": "恢复师",
-                "hp": "回復師",
+                "jp": "回復師",
                 "tw": "恢復師",
                 "kr": "회복사"
             },
@@ -1313,14 +1313,14 @@
             "character_name": {
                 "en": "Liatris",
                 "cn": "莉亚特里斯",
-                "hp": "リアトリス",
+                "jp": "リアトリス",
                 "tw": "莉亞特里斯",
                 "kr": "리아트리스"
             },
             "costume_name": {
                 "en": "Maid Name R",
                 "cn": "女仆代号R",
-                "hp": "メイドネームR",
+                "jp": "メイドネームR",
                 "tw": "女僕代號R",
                 "kr": "메이드네임 R"
             },
@@ -1350,14 +1350,14 @@
             "character_name": {
                 "en": "Rou",
                 "cn": "鲁",
-                "hp": "ルゥ",
+                "jp": "ルゥ",
                 "tw": "魯",
                 "kr": "루"
             },
             "costume_name": {
                 "en": "Red Riding Hood",
                 "cn": "小红帽",
-                "hp": "赤ずきん",
+                "jp": "赤ずきん",
                 "tw": "小紅帽",
                 "kr": "빨간모자"
             },
@@ -1387,14 +1387,14 @@
             "character_name": {
                 "en": "Rafina",
                 "cn": "拉菲娜",
-                "hp": "ラフィーナ",
+                "jp": "ラフィーナ",
                 "tw": "拉菲娜",
                 "kr": "라피나"
             },
             "costume_name": {
                 "en": "Game Club",
                 "cn": "游戏社",
-                "hp": "ゲーム部",
+                "jp": "ゲーム部",
                 "tw": "遊戲社",
                 "kr": "게임부"
             },
@@ -1424,14 +1424,14 @@
             "character_name": {
                 "en": "Roxy",
                 "cn": "洛琪希",
-                "hp": "ロキシー",
+                "jp": "ロキシー",
                 "tw": "洛琪希",
                 "kr": "록시"
             },
             "costume_name": {
                 "en": "Respected Master",
                 "cn": "受尊敬的师傅",
-                "hp": "尊敬される師匠",
+                "jp": "尊敬される師匠",
                 "tw": "受尊敬的師傅",
                 "kr": "존경받는 스승"
             },
@@ -1461,14 +1461,14 @@
             "character_name": {
                 "en": "Rou",
                 "cn": "鲁",
-                "hp": "ルゥ",
+                "jp": "ルゥ",
                 "tw": "魯",
                 "kr": "루"
             },
             "costume_name": {
                 "en": "White Cat",
                 "cn": "白色猫咪",
-                "hp": "白猫",
+                "jp": "白猫",
                 "tw": "白色貓咪",
                 "kr": "하얀 고양이"
             },
@@ -1498,14 +1498,14 @@
             "character_name": {
                 "en": "Liberta",
                 "cn": "黎维塔",
-                "hp": "リベルタ",
+                "jp": "リベルタ",
                 "tw": "黎維塔",
                 "kr": "리베르타"
             },
             "costume_name": {
                 "en": "Onsen Manager",
                 "cn": "温泉管理员",
-                "hp": "温泉管理人",
+                "jp": "温泉管理人",
                 "tw": "溫泉管理者",
                 "kr": "온천 관리인"
             },
@@ -1535,14 +1535,14 @@
             "character_name": {
                 "en": "Liatris",
                 "cn": "莉亚特里斯",
-                "hp": "リアトリス",
+                "jp": "リアトリス",
                 "tw": "莉亞特里斯",
                 "kr": "리아트리스"
             },
             "costume_name": {
                 "en": "Rodev's Star",
                 "cn": "罗戴夫之星",
-                "hp": "ロデブの星",
+                "jp": "ロデブの星",
                 "tw": "羅戴夫之星",
                 "kr": "로데브의 별"
             },
@@ -1572,14 +1572,14 @@
             "character_name": {
                 "en": "Cynthia",
                 "cn": "辛西亚",
-                "hp": "シンシア",
+                "jp": "シンシア",
                 "tw": "辛西亞",
                 "kr": "신시아"
             },
             "costume_name": {
                 "en": "Warmth within the Severe Cold",
                 "cn": "寒日温暖",
-                "hp": "酷寒の中の温もり",
+                "jp": "酷寒の中の温もり",
                 "tw": "酷寒中的熱氣",
                 "kr": "혹한 속의 온기"
             },
@@ -1609,14 +1609,14 @@
             "character_name": {
                 "en": "Lecliss",
                 "cn": "莱克莉斯",
-                "hp": "レクリス",
+                "jp": "レクリス",
                 "tw": "萊克莉斯",
                 "kr": "레클리스"
             },
             "costume_name": {
                 "en": "Android Queen",
                 "cn": "机械人女王",
-                "hp": "アンドロイドクイーン",
+                "jp": "アンドロイドクイーン",
                 "tw": "安卓女王",
                 "kr": "안드로이드 퀸"
             },
@@ -1646,14 +1646,14 @@
             "character_name": {
                 "en": "Helena",
                 "cn": "海伦娜",
-                "hp": "ヘレナ",
+                "jp": "ヘレナ",
                 "tw": "海倫娜",
                 "kr": "헬레나"
             },
             "costume_name": {
                 "en": "B-Rank Idol",
                 "cn": "B级偶像",
-                "hp": "B級アイドル",
+                "jp": "B級アイドル",
                 "tw": "B級偶像",
                 "kr": "B급 아이돌"
             },
@@ -1683,14 +1683,14 @@
             "character_name": {
                 "en": "Refithea",
                 "cn": "芮彼泰雅",
-                "hp": "レピテア",
+                "jp": "レピテア",
                 "tw": "芮彼泰雅",
                 "kr": "레피테아"
             },
             "costume_name": {
                 "en": "The Gluttonous",
                 "cn": "贪婪之星",
-                "hp": "貪欲の星",
+                "jp": "貪欲の星",
                 "tw": "貪婪之星",
                 "kr": "탐욕의 별"
             },
@@ -1720,14 +1720,14 @@
             "character_name": {
                 "en": "High Elf Archer",
                 "cn": "妖精弓手",
-                "hp": "妖精弓手",
+                "jp": "妖精弓手",
                 "tw": "妖精弓手",
                 "kr": "엘프 궁수"
             },
             "costume_name": {
                 "en": "Daughter of Starwind",
                 "cn": "星风之女",
-                "hp": "星風の娘",
+                "jp": "星風の娘",
                 "tw": "星風之女",
                 "kr": "별바람의 딸"
             },
@@ -1757,14 +1757,14 @@
             "character_name": {
                 "en": "Anastasia",
                 "cn": "安娜塔西亚",
-                "hp": "アナスタシア",
+                "jp": "アナスタシア",
                 "tw": "安娜塔西亞",
                 "kr": "아나스타샤"
             },
             "costume_name": {
                 "en": "Gentle Maid",
                 "cn": "和善女仆",
-                "hp": "優しきメイド",
+                "jp": "優しきメイド",
                 "tw": "和藹的女僕",
                 "kr": "상냥한 메이드"
             },
@@ -1794,14 +1794,14 @@
             "character_name": {
                 "en": "Elise",
                 "cn": "爱丽洁",
-                "hp": "エリーゼ",
+                "jp": "エリーゼ",
                 "tw": "愛麗潔",
                 "kr": "엘리제"
             },
             "costume_name": {
                 "en": "Lovely Lady",
                 "cn": "可爱小姐",
-                "hp": "愛しいレディ",
+                "jp": "愛しいレディ",
                 "tw": "可愛的小姐",
                 "kr": "사랑스러운 아가씨"
             },
@@ -1831,14 +1831,14 @@
             "character_name": {
                 "en": "Blade",
                 "cn": "布莱德",
-                "hp": "ブレイド",
+                "jp": "ブレイド",
                 "tw": "布萊德",
                 "kr": "블레이드"
             },
             "costume_name": {
                 "en": "Young Lady",
                 "cn": "小公主",
-                "hp": "公女",
+                "jp": "公女",
                 "tw": "小公主",
                 "kr": "소공녀"
             },
@@ -1868,14 +1868,14 @@
             "character_name": {
                 "en": "Teresse",
                 "cn": "泰瑞丝",
-                "hp": "テレーゼ",
+                "jp": "テレーゼ",
                 "tw": "泰瑞絲",
                 "kr": "테레제"
             },
             "costume_name": {
                 "en": "Beachside Angel",
                 "cn": "海滨天使",
-                "hp": "ビーチの天使",
+                "jp": "ビーチの天使",
                 "tw": "海邊天使",
                 "kr": "해변의 천사"
             },
@@ -1905,14 +1905,14 @@
             "character_name": {
                 "en": "Eris",
                 "cn": "艾莉丝",
-                "hp": "エリス",
+                "jp": "エリス",
                 "tw": "艾莉絲",
                 "kr": "에리스"
             },
             "costume_name": {
                 "en": "Your Very Own Cat",
                 "cn": "只属于你的猫咪",
-                "hp": "あなただけの猫",
+                "jp": "あなただけの猫",
                 "tw": "只屬於你的貓咪",
                 "kr": "당신만의 고양이"
             },
@@ -1942,14 +1942,14 @@
             "character_name": {
                 "en": "Blade",
                 "cn": "布莱德",
-                "hp": "ブレイド",
+                "jp": "ブレイド",
                 "tw": "布萊德",
                 "kr": "블레이드"
             },
             "costume_name": {
                 "en": "Apostle",
                 "cn": "使徒",
-                "hp": "使徒",
+                "jp": "使徒",
                 "tw": "使者",
                 "kr": "사도"
             },
@@ -1979,14 +1979,14 @@
             "character_name": {
                 "en": "Lecliss",
                 "cn": "莱克莉斯",
-                "hp": "レクリス",
+                "jp": "レクリス",
                 "tw": "萊克莉斯",
                 "kr": "레클리스"
             },
             "costume_name": {
                 "en": "Killer Doll",
                 "cn": "杀人娃娃",
-                "hp": "殺人人形",
+                "jp": "殺人人形",
                 "tw": "殺人娃娃",
                 "kr": "살인 인형"
             },
@@ -2016,14 +2016,14 @@
             "character_name": {
                 "en": "Roxy",
                 "cn": "洛琪希",
-                "hp": "ロキシー",
+                "jp": "ロキシー",
                 "tw": "洛琪希",
                 "kr": "록시"
             },
             "costume_name": {
                 "en": "Emerging Desire",
                 "cn": "泄露的欲望",
-                "hp": "漏れ出る欲望",
+                "jp": "漏れ出る欲望",
                 "tw": "洩露的慾望",
                 "kr": "새어 나온 욕망"
             },
@@ -2053,14 +2053,14 @@
             "character_name": {
                 "en": "Yozakura",
                 "cn": "夜樱",
-                "hp": "夜桜",
+                "jp": "夜桜",
                 "tw": "夜櫻",
                 "kr": "요자쿠라"
             },
             "costume_name": {
                 "en": "Fist of Conviction",
                 "cn": "信念之拳",
-                "hp": "信念の拳",
+                "jp": "信念の拳",
                 "tw": "信念之拳",
                 "kr": "신념의 주먹"
             },
@@ -2090,14 +2090,14 @@
             "character_name": {
                 "en": "Justia",
                 "cn": "悠丝缇亚",
-                "hp": "ユースティア",
+                "jp": "ユースティア",
                 "tw": "悠絲緹亞",
                 "kr": "유스티아"
             },
             "costume_name": {
                 "en": "Knight of Blood",
                 "cn": "血骑士",
-                "hp": "鮮血の騎士",
+                "jp": "鮮血の騎士",
                 "tw": "血騎士",
                 "kr": "피의 기사"
             },
@@ -2127,14 +2127,14 @@
             "character_name": {
                 "en": "Nartas",
                 "cn": "纳罗达斯",
-                "hp": "ナルタス",
+                "jp": "ナルタス",
                 "tw": "納羅達斯",
                 "kr": "나르타스"
             },
             "costume_name": {
                 "en": "Anonymous Sage",
                 "cn": "无名道士",
-                "hp": "名も無き道士",
+                "jp": "名も無き道士",
                 "tw": "無名道士",
                 "kr": "무명도사"
             },
@@ -2164,14 +2164,14 @@
             "character_name": {
                 "en": "Gray",
                 "cn": "格雷",
-                "hp": "グレイ",
+                "jp": "グレイ",
                 "tw": "格雷",
                 "kr": "그레이"
             },
             "costume_name": {
                 "en": "Pool Party",
                 "cn": "泳池派对",
-                "hp": "プールパーティ",
+                "jp": "プールパーティ",
                 "tw": "泳池派對",
                 "kr": "풀 파티"
             },
@@ -2201,14 +2201,14 @@
             "character_name": {
                 "en": "Eleaneer",
                 "cn": "艾尼尔",
-                "hp": "エレニール",
+                "jp": "エレニール",
                 "tw": "艾尼爾",
                 "kr": "에레니르"
             },
             "costume_name": {
                 "en": "Piercing Magic Bow",
                 "cn": "穿透魔弓",
-                "hp": "貫く魔弓",
+                "jp": "貫く魔弓",
                 "tw": "貫穿的魔弓",
                 "kr": "꿰뚫는 마궁"
             },
@@ -2238,14 +2238,14 @@
             "character_name": {
                 "en": "Anastasia",
                 "cn": "安娜塔西亚",
-                "hp": "アナスタシア",
+                "jp": "アナスタシア",
                 "tw": "安娜塔西亞",
                 "kr": "아나스타샤"
             },
             "costume_name": {
                 "en": "Fire Graffiti",
                 "cn": "热火涂鸦",
-                "hp": "ファイアグラフィティ",
+                "jp": "ファイアグラフィティ",
                 "tw": "火之塗鴉",
                 "kr": "파이어 그라피티"
             },
@@ -2275,14 +2275,14 @@
             "character_name": {
                 "en": "Zenith",
                 "cn": "杰尼斯",
-                "hp": "ジェニス",
+                "jp": "ジェニス",
                 "tw": "傑尼斯",
                 "kr": "제니스"
             },
             "costume_name": {
                 "en": "Poolside Guardian",
                 "cn": "水上守护者",
-                "hp": "水遊びの守護者",
+                "jp": "水遊びの守護者",
                 "tw": "水上守護者",
                 "kr": "물놀이 수호자"
             },
@@ -2312,14 +2312,14 @@
             "character_name": {
                 "en": "Dalvi",
                 "cn": "达非",
-                "hp": "キュウビ",
+                "jp": "キュウビ",
                 "tw": "達非",
                 "kr": "달비"
             },
             "costume_name": {
                 "en": "Bright Moon",
                 "cn": "明月",
-                "hp": "明月",
+                "jp": "明月",
                 "tw": "明月",
                 "kr": "명월"
             },
@@ -2349,14 +2349,14 @@
             "character_name": {
                 "en": "Celia",
                 "cn": "西利亚",
-                "hp": "セリア",
+                "jp": "セリア",
                 "tw": "西利亞",
                 "kr": "셀리아"
             },
             "costume_name": {
                 "en": "Descendant of the Great Witch",
                 "cn": "大魔女后裔",
-                "hp": "大魔女の末裔",
+                "jp": "大魔女の末裔",
                 "tw": "大魔女的後裔",
                 "kr": "대마녀의 후예"
             },
@@ -2386,14 +2386,14 @@
             "character_name": {
                 "en": "Goblin Slayer",
                 "cn": "哥布林杀手",
-                "hp": "ゴブリンスレイヤー",
+                "jp": "ゴブリンスレイヤー",
                 "tw": "哥布林殺手",
                 "kr": "고블린 슬레이어"
             },
             "costume_name": {
                 "en": "Orcbolg",
                 "cn": "小鬼杀手",
-                "hp": "小鬼を殺す者",
+                "jp": "小鬼を殺す者",
                 "tw": "小鬼殺手",
                 "kr": "소귀 살해자"
             },
@@ -2423,14 +2423,14 @@
             "character_name": {
                 "en": "Sacred Justia",
                 "cn": "神圣悠丝缇亚",
-                "hp": "神聖ユースティア",
+                "jp": "神聖ユースティア",
                 "tw": "神聖悠絲緹亞",
                 "kr": "신성 유스티아"
             },
             "costume_name": {
                 "en": "Reclaimed Destiny",
                 "cn": "找回的命运",
-                "hp": "取り戻せし運命",
+                "jp": "取り戻せし運命",
                 "tw": "找回的命運",
                 "kr": "되찾은 운명"
             },
@@ -2460,14 +2460,14 @@
             "character_name": {
                 "en": "Angelica",
                 "cn": "安洁莉卡",
-                "hp": "アンジェリカ",
+                "jp": "アンジェリカ",
                 "tw": "安潔莉卡",
                 "kr": "안젤리카"
             },
             "costume_name": {
                 "en": "Neon Savior",
                 "cn": "霓虹救星",
-                "hp": "ネオン・セイヴァー",
+                "jp": "ネオン・セイヴァー",
                 "tw": "霓虹救星",
                 "kr": "네온 세이비어"
             },
@@ -2497,14 +2497,14 @@
             "character_name": {
                 "en": "Eclipse",
                 "cn": "伊柯利普斯",
-                "hp": "エクリプス",
+                "jp": "エクリプス",
                 "tw": "伊柯利普斯",
                 "kr": "이클립스"
             },
             "costume_name": {
                 "en": "Nightmare Bunny",
                 "cn": "恶梦兔女郎",
-                "hp": "ナイトメア・バニー",
+                "jp": "ナイトメア・バニー",
                 "tw": "惡夢兔女郎",
                 "kr": "나이트메어 바니"
             },
@@ -2534,14 +2534,14 @@
             "character_name": {
                 "en": "Eris",
                 "cn": "艾莉丝",
-                "hp": "エリス",
+                "jp": "エリス",
                 "tw": "艾莉絲",
                 "kr": "에리스"
             },
             "costume_name": {
                 "en": "Esteemed Adventurer",
                 "cn": "受祝福的冒险家",
-                "hp": "有望な冒険家",
+                "jp": "有望な冒険家",
                 "tw": "受祝福的冒險家",
                 "kr": "촉망받는 모험가"
             },
@@ -2571,14 +2571,14 @@
             "character_name": {
                 "en": "Helena",
                 "cn": "海伦娜",
-                "hp": "ヘレナ",
+                "jp": "ヘレナ",
                 "tw": "海倫娜",
                 "kr": "헬레나"
             },
             "costume_name": {
                 "en": "Top Idol",
                 "cn": "顶尖偶像",
-                "hp": "トップアイドル",
+                "jp": "トップアイドル",
                 "tw": "頂尖偶像",
                 "kr": "톱 아이돌"
             },
@@ -2608,14 +2608,14 @@
             "character_name": {
                 "en": "Sylvia",
                 "cn": "席比雅",
-                "hp": "シルヴィア",
+                "jp": "シルヴィア",
                 "tw": "席比雅",
                 "kr": "실비아"
             },
             "costume_name": {
                 "en": "Desert Flower",
                 "cn": "沙漠之花",
-                "hp": "砂漠の華",
+                "jp": "砂漠の華",
                 "tw": "沙漠之花",
                 "kr": "사막의 꽃"
             },
@@ -2645,14 +2645,14 @@
             "character_name": {
                 "en": "Zenith",
                 "cn": "杰尼斯",
-                "hp": "ジェニス",
+                "jp": "ジェニス",
                 "tw": "傑尼斯",
                 "kr": "제니스"
             },
             "costume_name": {
                 "en": "Robin Hood",
                 "cn": "罗宾汉",
-                "hp": "ロビンフッド",
+                "jp": "ロビンフッド",
                 "tw": "羅賓漢",
                 "kr": "로빈 후드"
             },
@@ -2682,14 +2682,14 @@
             "character_name": {
                 "en": "Teresse",
                 "cn": "泰瑞丝",
-                "hp": "テレーゼ",
+                "jp": "テレーゼ",
                 "tw": "泰瑞絲",
                 "kr": "테레제"
             },
             "costume_name": {
                 "en": "Angel of Destruction",
                 "cn": "毁灭天使",
-                "hp": "破壊の天使",
+                "jp": "破壊の天使",
                 "tw": "破壞的天使",
                 "kr": "파괴의 천사"
             },
@@ -2719,14 +2719,14 @@
             "character_name": {
                 "en": "Rafina",
                 "cn": "拉菲娜",
-                "hp": "ラフィーナ",
+                "jp": "ラフィーナ",
                 "tw": "拉菲娜",
                 "kr": "라피나"
             },
             "costume_name": {
                 "en": "Steel Engine",
                 "cn": "钢铁引擎",
-                "hp": "鋼のエンジン",
+                "jp": "鋼のエンジン",
                 "tw": "鋼鐵引擎",
                 "kr": "강철엔진"
             },
@@ -2756,14 +2756,14 @@
             "character_name": {
                 "en": "Eleaneer",
                 "cn": "艾尼尔",
-                "hp": "エレニール",
+                "jp": "エレニール",
                 "tw": "艾尼爾",
                 "kr": "에레니르"
             },
             "costume_name": {
                 "en": "B-Rank Idol",
                 "cn": "B级偶像",
-                "hp": "B級アイドル",
+                "jp": "B級アイドル",
                 "tw": "B級偶像",
                 "kr": "B급 아이돌"
             },
@@ -2793,14 +2793,14 @@
             "character_name": {
                 "en": "Morpeah",
                 "cn": "墨菲亚",
-                "hp": "モルフェア",
+                "jp": "モルフェア",
                 "tw": "墨菲亞",
                 "kr": "모르페아"
             },
             "costume_name": {
                 "en": "Apostle",
                 "cn": "使徒",
-                "hp": "使徒",
+                "jp": "使徒",
                 "tw": "使者",
                 "kr": "사도"
             },
@@ -2830,14 +2830,14 @@
             "character_name": {
                 "en": "Angelica",
                 "cn": "安洁莉卡",
-                "hp": "アンジェリカ",
+                "jp": "アンジェリカ",
                 "tw": "安潔莉卡",
                 "kr": "안젤리카"
             },
             "costume_name": {
                 "en": "Pool Party",
                 "cn": "泳池派对",
-                "hp": "プールパーティ",
+                "jp": "プールパーティ",
                 "tw": "泳池派對",
                 "kr": "풀 파티"
             },
@@ -2867,14 +2867,14 @@
             "character_name": {
                 "en": "Priestess",
                 "cn": "女神官",
-                "hp": "女神官",
+                "jp": "女神官",
                 "tw": "女神官",
                 "kr": "여신관"
             },
             "costume_name": {
                 "en": "Earth Mother Believer",
                 "cn": "地母神的祭司",
-                "hp": "地母神の愛娘",
+                "jp": "地母神の愛娘",
                 "tw": "地母神的祭司",
                 "kr": "지모신의 사제"
             },
@@ -2904,14 +2904,14 @@
             "character_name": {
                 "en": "Yuri",
                 "cn": "尤里",
-                "hp": "ユリ",
+                "jp": "ユリ",
                 "tw": "尤里",
                 "kr": "유리"
             },
             "costume_name": {
                 "en": "Whitebolt",
                 "cn": "白雷",
-                "hp": "白雷",
+                "jp": "白雷",
                 "tw": "白雷",
                 "kr": "백뢰"
             },
@@ -2941,14 +2941,14 @@
             "character_name": {
                 "en": "Alec",
                 "cn": "艾瑞克",
-                "hp": "アレック",
+                "jp": "アレック",
                 "tw": "艾瑞克",
                 "kr": "알렉"
             },
             "costume_name": {
                 "en": "Sword Breaker",
                 "cn": "破剑士",
-                "hp": "ソードブレーカー",
+                "jp": "ソードブレーカー",
                 "tw": "劍之毀滅者",
                 "kr": "소드 브레이커"
             },
@@ -2978,14 +2978,14 @@
             "character_name": {
                 "en": "Elise",
                 "cn": "爱丽洁",
-                "hp": "エリーゼ",
+                "jp": "エリーゼ",
                 "tw": "愛麗潔",
                 "kr": "엘리제"
             },
             "costume_name": {
                 "en": "Code Name O",
                 "cn": "代号O",
-                "hp": "コードネーム O",
+                "jp": "コードネーム O",
                 "tw": "代號O",
                 "kr": "코드네임 O"
             },
@@ -3015,14 +3015,14 @@
             "character_name": {
                 "en": "Celia",
                 "cn": "西利亚",
-                "hp": "セリア",
+                "jp": "セリア",
                 "tw": "西利亞",
                 "kr": "셀리아"
             },
             "costume_name": {
                 "en": "Masquerade Bunny",
                 "cn": "化妆舞会兔女郎",
-                "hp": "マスカレイド・バニー",
+                "jp": "マスカレイド・バニー",
                 "tw": "化裝舞會兔女郎",
                 "kr": "마스커레이드 바니"
             },
@@ -3052,14 +3052,14 @@
             "character_name": {
                 "en": "Rubia",
                 "cn": "露比雅",
-                "hp": "ルヴィア",
+                "jp": "ルヴィア",
                 "tw": "露比雅",
                 "kr": "루비아"
             },
             "costume_name": {
                 "en": "The Empress of the Ocean",
                 "cn": "大海女帝",
-                "hp": "海の女帝",
+                "jp": "海の女帝",
                 "tw": "大海女帝",
                 "kr": "바다의 여제"
             },
@@ -3089,14 +3089,14 @@
             "character_name": {
                 "en": "Granhildr",
                 "cn": "格兰希特",
-                "hp": "グランヒルト",
+                "jp": "グランヒルト",
                 "tw": "葛蘭西特",
                 "kr": "그란힐트"
             },
             "costume_name": {
                 "en": "Comeback Idol",
                 "cn": "回归偶像",
-                "hp": "カムバックアイドル",
+                "jp": "カムバックアイドル",
                 "tw": "回歸偶像",
                 "kr": "컴백 아이돌"
             },
@@ -3126,14 +3126,14 @@
             "character_name": {
                 "en": "Glacia",
                 "cn": "克蕾西亚",
-                "hp": "グレイシア",
+                "jp": "グレイシア",
                 "tw": "克蕾西亞",
                 "kr": "글레이시아"
             },
             "costume_name": {
                 "en": "Alice",
                 "cn": "爱丽丝",
-                "hp": "アリス",
+                "jp": "アリス",
                 "tw": "愛麗絲",
                 "kr": "앨리스"
             },
@@ -3166,14 +3166,14 @@
             "character_name": {
                 "en": "Seir",
                 "cn": "赛尔",
-                "hp": "セイル",
+                "jp": "セイル",
                 "tw": "賽爾",
                 "kr": "세이르"
             },
             "costume_name": {
                 "en": "New Hire",
                 "cn": "新进员工",
-                "hp": "新入社員",
+                "jp": "新入社員",
                 "tw": "新進員工",
                 "kr": "신입 사원"
             },
@@ -3206,14 +3206,14 @@
             "character_name": {
                 "en": "Jayden",
                 "cn": "杰登",
-                "hp": "ジェイデン",
+                "jp": "ジェイデン",
                 "tw": "傑登",
                 "kr": "제이든"
             },
             "costume_name": {
                 "en": "Beautiful Girl Devotee",
                 "cn": "美少女信奉者",
-                "hp": "美少女信者",
+                "jp": "美少女信者",
                 "tw": "美少女信奉者",
                 "kr": "미소녀 신봉자"
             },
@@ -3243,14 +3243,14 @@
             "character_name": {
                 "en": "Granhildr",
                 "cn": "格兰希特",
-                "hp": "グランヒルト",
+                "jp": "グランヒルト",
                 "tw": "葛蘭西特",
                 "kr": "그란힐트"
             },
             "costume_name": {
                 "en": "The Void",
                 "cn": "虚无之星",
-                "hp": "虚無の星",
+                "jp": "虚無の星",
                 "tw": "虛無之星",
                 "kr": "허무의 별"
             },
@@ -3283,14 +3283,14 @@
             "character_name": {
                 "en": "Wiggle",
                 "cn": "威格",
-                "hp": "ウィグル",
+                "jp": "ウィグル",
                 "tw": "威格",
                 "kr": "위글"
             },
             "costume_name": {
                 "en": "Bomb Fanatic",
                 "cn": "炸弹狂",
-                "hp": "爆弾狂",
+                "jp": "爆弾狂",
                 "tw": "炸彈狂",
                 "kr": "폭탄광"
             },
@@ -3320,14 +3320,14 @@
             "character_name": {
                 "en": "Ventana",
                 "cn": "班塔纳",
-                "hp": "ヴェンタナ",
+                "jp": "ヴェンタナ",
                 "tw": "班塔納",
                 "kr": "벤타나"
             },
             "costume_name": {
                 "en": "Snow White",
                 "cn": "白雪公主",
-                "hp": "スノーホワイト",
+                "jp": "スノーホワイト",
                 "tw": "白雪公主",
                 "kr": "백설"
             },
@@ -3357,14 +3357,14 @@
             "character_name": {
                 "en": "Ventana",
                 "cn": "班塔纳",
-                "hp": "ヴェンタナ",
+                "jp": "ヴェンタナ",
                 "tw": "班塔納",
                 "kr": "벤타나"
             },
             "costume_name": {
                 "en": "Onsen Practitioner",
                 "cn": "温泉修行者",
-                "hp": "温泉修行人",
+                "jp": "温泉修行人",
                 "tw": "溫泉修行者",
                 "kr": "온천 수행자"
             },
@@ -3394,14 +3394,14 @@
             "character_name": {
                 "en": "Sylvia",
                 "cn": "席比雅",
-                "hp": "シルヴィア",
+                "jp": "シルヴィア",
                 "tw": "席比雅",
                 "kr": "실비아"
             },
             "costume_name": {
                 "en": "The Sword Queen",
                 "cn": "剑后",
-                "hp": "剣后",
+                "jp": "剣后",
                 "tw": "劍后",
                 "kr": "검후"
             },
@@ -3431,14 +3431,14 @@
             "character_name": {
                 "en": "Dalvi",
                 "cn": "达非",
-                "hp": "キュウビ",
+                "jp": "キュウビ",
                 "tw": "達非",
                 "kr": "달비"
             },
             "costume_name": {
                 "en": "Summer Vacation",
                 "cn": "暑假",
-                "hp": "サマーバカンス",
+                "jp": "サマーバカンス",
                 "tw": "暑假",
                 "kr": "여름휴가"
             },
@@ -3471,14 +3471,14 @@
             "character_name": {
                 "en": "Remnunt",
                 "cn": "雷南特",
-                "hp": "レムナント",
+                "jp": "レムナント",
                 "tw": "雷南特",
                 "kr": "램넌트"
             },
             "costume_name": {
                 "en": "Combat Doctor",
                 "cn": "战斗医生",
-                "hp": "戦闘医師",
+                "jp": "戦闘医師",
                 "tw": "戰鬥醫師",
                 "kr": "전투 의사"
             },
@@ -3508,14 +3508,14 @@
             "character_name": {
                 "en": "Refithea",
                 "cn": "芮彼泰雅",
-                "hp": "レピテア",
+                "jp": "レピテア",
                 "tw": "芮彼泰雅",
                 "kr": "레피테아"
             },
             "costume_name": {
                 "en": "Pure White Blessing",
                 "cn": "纯白祝福",
-                "hp": "純白の祝福",
+                "jp": "純白の祝福",
                 "tw": "純白的祝福",
                 "kr": "새하얀 축복"
             },
@@ -3548,14 +3548,14 @@
             "character_name": {
                 "en": "Maria",
                 "cn": "玛丽亚",
-                "hp": "マリア",
+                "jp": "マリア",
                 "tw": "瑪麗亞",
                 "kr": "마리아"
             },
             "costume_name": {
                 "en": "Archmage",
                 "cn": "大魔法师",
-                "hp": "大魔術師",
+                "jp": "大魔術師",
                 "tw": "大魔法師",
                 "kr": "대마법사"
             },
@@ -3585,14 +3585,14 @@
             "character_name": {
                 "en": "Loen",
                 "cn": "罗安",
-                "hp": "ロエン",
+                "jp": "ロエン",
                 "tw": "羅安",
                 "kr": "로엔"
             },
             "costume_name": {
                 "en": "Last Hope",
                 "cn": "最后的希望",
-                "hp": "最後の希望",
+                "jp": "最後の希望",
                 "tw": "最後希望",
                 "kr": "마지막 희망"
             },
@@ -3622,14 +3622,14 @@
             "character_name": {
                 "en": "Olivier",
                 "cn": "奥利维耶",
-                "hp": "オリビエ",
+                "jp": "オリビエ",
                 "tw": "奧利維爾",
                 "kr": "올리비에"
             },
             "costume_name": {
                 "en": "Fallen Wings",
                 "cn": "堕落之翼",
-                "hp": "堕ちた翼",
+                "jp": "堕ちた翼",
                 "tw": "墮落之翼",
                 "kr": "타락한 날개"
             },
@@ -3662,14 +3662,14 @@
             "character_name": {
                 "en": "Samay",
                 "cn": "莎美",
-                "hp": "サメイ",
+                "jp": "サメイ",
                 "tw": "莎美",
                 "kr": "사메이"
             },
             "costume_name": {
                 "en": "Kind Liberator",
                 "cn": "深情解放者",
-                "hp": "優しき解放者",
+                "jp": "優しき解放者",
                 "tw": "溫柔的解放者",
                 "kr": "다정한 해방자"
             },
@@ -3702,14 +3702,14 @@
             "character_name": {
                 "en": "Samay",
                 "cn": "莎美",
-                "hp": "サメイ",
+                "jp": "サメイ",
                 "tw": "莎美",
                 "kr": "사메이"
             },
             "costume_name": {
                 "en": "Kind Student",
                 "cn": "和善学生",
-                "hp": "優しき学生",
+                "jp": "優しき学生",
                 "tw": "和藹的學生",
                 "kr": "상냥한 학생"
             },
@@ -3739,14 +3739,14 @@
             "character_name": {
                 "en": "Luvencia",
                 "cn": "卢班希亚",
-                "hp": "ルベンシア",
+                "jp": "ルベンシア",
                 "tw": "盧班希亞",
                 "kr": "루벤시아"
             },
             "costume_name": {
                 "en": "Deal Snatcher",
                 "cn": "印鉴掠夺者",
-                "hp": "契約奪取者",
+                "jp": "契約奪取者",
                 "tw": "印鑑掠奪者",
                 "kr": "인감 탈취자"
             },
@@ -3776,14 +3776,14 @@
             "character_name": {
                 "en": "Venaka",
                 "cn": "贝那卡",
-                "hp": "ベナカ",
+                "jp": "ベナカ",
                 "tw": "貝那卡",
                 "kr": "베나카"
             },
             "costume_name": {
                 "en": "DJ",
                 "cn": "DJ",
-                "hp": "DJ",
+                "jp": "DJ",
                 "tw": "DJ",
                 "kr": "DJ"
             },
@@ -3816,14 +3816,14 @@
             "character_name": {
                 "en": "Lydia",
                 "cn": "黎迪雅",
-                "hp": "リディア",
+                "jp": "リディア",
                 "tw": "黎迪雅",
                 "kr": "리디아"
             },
             "costume_name": {
                 "en": "Apprentice Spearman",
                 "cn": "见习枪兵",
-                "hp": "見習い槍兵",
+                "jp": "見習い槍兵",
                 "tw": "實習槍兵",
                 "kr": "견습 창병"
             },
@@ -3856,14 +3856,14 @@
             "character_name": {
                 "en": "Lisianne",
                 "cn": "莉西安",
-                "hp": "リシアンヌ",
+                "jp": "リシアンヌ",
                 "tw": "莉西安",
                 "kr": "리시안느"
             },
             "costume_name": {
                 "en": "Wandering Priest",
                 "cn": "流浪神职者",
-                "hp": "放浪の聖職者",
+                "jp": "放浪の聖職者",
                 "tw": "流浪神職人員",
                 "kr": "방랑 성직자"
             },
@@ -3893,14 +3893,14 @@
             "character_name": {
                 "en": "Lathel",
                 "cn": "拉德尔",
-                "hp": "ラテル",
+                "jp": "ラテル",
                 "tw": "拉德爾",
                 "kr": "라텔"
             },
             "costume_name": {
                 "en": "Lonely Survivor",
                 "cn": "孤独生还者",
-                "hp": "ローンサバイバー",
+                "jp": "ローンサバイバー",
                 "tw": "孤獨的生存者",
                 "kr": "론리 서바이버"
             },
@@ -3930,14 +3930,14 @@
             "character_name": {
                 "en": "Justia",
                 "cn": "悠丝缇亚",
-                "hp": "ユースティア",
+                "jp": "ユースティア",
                 "tw": "悠絲緹亞",
                 "kr": "유스티아"
             },
             "costume_name": {
                 "en": "Pool Party",
                 "cn": "泳池派对",
-                "hp": "プールパーティ",
+                "jp": "プールパーティ",
                 "tw": "泳池派對",
                 "kr": "풀 파티"
             },
@@ -3967,14 +3967,14 @@
             "character_name": {
                 "en": "Lathel",
                 "cn": "拉德尔",
-                "hp": "ラテル",
+                "jp": "ラテル",
                 "tw": "拉德爾",
                 "kr": "라텔"
             },
             "costume_name": {
                 "en": "Homunculus",
                 "cn": "霍尔蒙克斯",
-                "hp": "ホムンクルス",
+                "jp": "ホムンクルス",
                 "tw": "霍爾蒙克斯",
                 "kr": "호문쿨루스"
             },
@@ -4004,14 +4004,14 @@
             "character_name": {
                 "en": "Lathel",
                 "cn": "拉德尔",
-                "hp": "ラテル",
+                "jp": "ラテル",
                 "tw": "拉德爾",
                 "kr": "라텔"
             },
             "costume_name": {
                 "en": "Dark Knight",
                 "cn": "暗黑骑士",
-                "hp": "暗黒騎士",
+                "jp": "暗黒騎士",
                 "tw": "暗黑騎士",
                 "kr": "암흑 기사"
             },
@@ -4041,14 +4041,14 @@
             "character_name": {
                 "en": "Levia",
                 "cn": "莱维亚",
-                "hp": "レヴィア",
+                "jp": "レヴィア",
                 "tw": "萊維亞",
                 "kr": "레비아"
             },
             "costume_name": {
                 "en": "Overheat",
                 "cn": "过热",
-                "hp": "オーバーヒート",
+                "jp": "オーバーヒート",
                 "tw": "過熱",
                 "kr": "오버히트"
             },
@@ -4078,14 +4078,14 @@
             "character_name": {
                 "en": "Andrew",
                 "cn": "安德鲁",
-                "hp": "アンドリュー",
+                "jp": "アンドリュー",
                 "tw": "安德魯",
                 "kr": "앤드류"
             },
             "costume_name": {
                 "en": "Specialist",
                 "cn": "专家",
-                "hp": "スペシャリスト",
+                "jp": "スペシャリスト",
                 "tw": "專家",
                 "kr": "스페셜리스트"
             },
@@ -4115,14 +4115,14 @@
             "character_name": {
                 "en": "Justia",
                 "cn": "悠丝缇亚",
-                "hp": "ユースティア",
+                "jp": "ユースティア",
                 "tw": "悠絲緹亞",
                 "kr": "유스티아"
             },
             "costume_name": {
                 "en": "Hot Summer Dream",
                 "cn": "仲夏之梦",
-                "hp": "真夏の夢",
+                "jp": "真夏の夢",
                 "tw": "仲夏之夢",
                 "kr": "한여름의 꿈"
             },
@@ -4152,14 +4152,14 @@
             "character_name": {
                 "en": "Venaka",
                 "cn": "贝那卡",
-                "hp": "ベナカ",
+                "jp": "ベナカ",
                 "tw": "貝那卡",
                 "kr": "베나카"
             },
             "costume_name": {
                 "en": "Wind Dancer",
                 "cn": "风之舞姬",
-                "hp": "風の踊り子",
+                "jp": "風の踊り子",
                 "tw": "風之舞姬",
                 "kr": "바람의 무희"
             },
@@ -4189,14 +4189,14 @@
             "character_name": {
                 "en": "Scheherazade",
                 "cn": "莎赫拉查德",
-                "hp": "シェラザード",
+                "jp": "シェラザード",
                 "tw": "莎赫拉查德",
                 "kr": "세헤라자드"
             },
             "costume_name": {
                 "en": "The Magic School Professor",
                 "cn": "魔法学校教授",
-                "hp": "魔法学校教授",
+                "jp": "魔法学校教授",
                 "tw": "魔法學校教授",
                 "kr": "마법학교 교수"
             },
@@ -4226,14 +4226,14 @@
             "character_name": {
                 "en": "Yuri",
                 "cn": "尤里",
-                "hp": "ユリ",
+                "jp": "ユリ",
                 "tw": "尤里",
                 "kr": "유리"
             },
             "costume_name": {
                 "en": "Comeback Idol",
                 "cn": "回归偶像",
-                "hp": "カムバックアイドル",
+                "jp": "カムバックアイドル",
                 "tw": "回歸偶像",
                 "kr": "컴백 아이돌"
             },
@@ -4263,14 +4263,14 @@
             "character_name": {
                 "en": "Levia",
                 "cn": "莱维亚",
-                "hp": "レヴィア",
+                "jp": "レヴィア",
                 "tw": "萊維亞",
                 "kr": "레비아"
             },
             "costume_name": {
                 "en": "Track and Field Captain",
                 "cn": "田径社社长",
-                "hp": "陸上部 部長",
+                "jp": "陸上部 部長",
                 "tw": "田徑社社長",
                 "kr": "육상부 부장"
             },
@@ -4300,14 +4300,14 @@
             "character_name": {
                 "en": "Lathel",
                 "cn": "拉德尔",
-                "hp": "ラテル",
+                "jp": "ラテル",
                 "tw": "拉德爾",
                 "kr": "라텔"
             },
             "costume_name": {
                 "en": "Promise of Vengeance",
                 "cn": "复仇的誓言",
-                "hp": "復讐の誓い",
+                "jp": "復讐の誓い",
                 "tw": "復仇的誓約",
                 "kr": "복수의 맹세"
             },
@@ -4337,14 +4337,14 @@
             "character_name": {
                 "en": "Wilhelmina",
                 "cn": "威廉明娜",
-                "hp": "ウィルヘルミナ",
+                "jp": "ウィルヘルミナ",
                 "tw": "威廉明娜",
                 "kr": "빌헬미나"
             },
             "costume_name": {
                 "en": "Water Park Queen",
                 "cn": "水上乐园女王",
-                "hp": "ウォーターパークの女王",
+                "jp": "ウォーターパークの女王",
                 "tw": "水上樂園女王",
                 "kr": "워터파크의 여왕"
             },
@@ -4377,14 +4377,14 @@
             "character_name": {
                 "en": "Arines",
                 "cn": "阿里内斯",
-                "hp": "アリネス",
+                "jp": "アリネス",
                 "tw": "阿里內斯",
                 "kr": "아리네스"
             },
             "costume_name": {
                 "en": "Priest of Vitality",
                 "cn": "活力祭司",
-                "hp": "活力の司祭",
+                "jp": "活力の司祭",
                 "tw": "活力的祭司",
                 "kr": "활력의 사제"
             },
@@ -4417,14 +4417,14 @@
             "character_name": {
                 "en": "Bernie",
                 "cn": "维尔尼",
-                "hp": "ベルニー",
+                "jp": "ベルニー",
                 "tw": "維爾尼",
                 "kr": "베르니"
             },
             "costume_name": {
                 "en": "Righteous Raider Girl",
                 "cn": "侠盗少女",
-                "hp": "義賊少女",
+                "jp": "義賊少女",
                 "tw": "義賊少女",
                 "kr": "의적 소녀"
             },
@@ -4454,14 +4454,14 @@
             "character_name": {
                 "en": "Olivier",
                 "cn": "奥利维耶",
-                "hp": "オリビエ",
+                "jp": "オリビエ",
                 "tw": "奧利維爾",
                 "kr": "올리비에"
             },
             "costume_name": {
                 "en": "Faithful Wings",
                 "cn": "信实之翼",
-                "hp": "信心の翼",
+                "jp": "信心の翼",
                 "tw": "忠實之翼",
                 "kr": "신실의 날개"
             },
@@ -4491,14 +4491,14 @@
             "character_name": {
                 "en": "Glacia",
                 "cn": "克蕾西亚",
-                "hp": "グレイシア",
+                "jp": "グレイシア",
                 "tw": "克蕾西亞",
                 "kr": "글레이시아"
             },
             "costume_name": {
                 "en": "Disciplinary Committee",
                 "cn": "纪律部",
-                "hp": "風紀委員会",
+                "jp": "風紀委員会",
                 "tw": "糾察隊",
                 "kr": "선도부"
             },
@@ -4528,14 +4528,14 @@
             "character_name": {
                 "en": "Levia",
                 "cn": "莱维亚",
-                "hp": "レヴィア",
+                "jp": "レヴィア",
                 "tw": "萊維亞",
                 "kr": "레비아"
             },
             "costume_name": {
                 "en": "Night of Jealousy",
                 "cn": "猜忌之夜",
-                "hp": "嫉妬の夜",
+                "jp": "嫉妬の夜",
                 "tw": "忌妒之夜",
                 "kr": "시기의 밤"
             },
@@ -4565,14 +4565,14 @@
             "character_name": {
                 "en": "Layla",
                 "cn": "蕾拉",
-                "hp": "レイラ",
+                "jp": "レイラ",
                 "tw": "蕾拉",
                 "kr": "레일라"
             },
             "costume_name": {
                 "en": "Anvil of Creation",
                 "cn": "创造铁砧",
-                "hp": "想像の金床",
+                "jp": "想像の金床",
                 "tw": "創造的鐵砧",
                 "kr": "창조의 모루"
             },
@@ -4602,14 +4602,14 @@
             "character_name": {
                 "en": "Michaela",
                 "cn": "米卡艾拉",
-                "hp": "ミカエラ",
+                "jp": "ミカエラ",
                 "tw": "米卡埃拉",
                 "kr": "미카엘라"
             },
             "costume_name": {
                 "en": "Acting Archbishop",
                 "cn": "神圣者",
-                "hp": "大主教代行",
+                "jp": "大主教代行",
                 "tw": "神聖者",
                 "kr": "거룩한 자"
             },
@@ -4639,14 +4639,14 @@
             "character_name": {
                 "en": "Rafina",
                 "cn": "拉菲娜",
-                "hp": "ラフィーナ",
+                "jp": "ラフィーナ",
                 "tw": "拉菲娜",
                 "kr": "라피나"
             },
             "costume_name": {
                 "en": "Code Name A",
                 "cn": "代号A",
-                "hp": "コードネームA",
+                "jp": "コードネームA",
                 "tw": "代號A",
                 "kr": "코드네임 A"
             },
@@ -4676,14 +4676,14 @@
             "character_name": {
                 "en": "Michaela",
                 "cn": "米卡艾拉",
-                "hp": "ミカエラ",
+                "jp": "ミカエラ",
                 "tw": "米卡埃拉",
                 "kr": "미카엘라"
             },
             "costume_name": {
                 "en": "Queen of Signatures",
                 "cn": "签名女王",
-                "hp": "サインの女王",
+                "jp": "サインの女王",
                 "tw": "簽名女王",
                 "kr": "서명의 여왕"
             },
@@ -4713,14 +4713,14 @@
             "character_name": {
                 "en": "Michaela",
                 "cn": "米卡艾拉",
-                "hp": "ミカエラ",
+                "jp": "ミカエラ",
                 "tw": "米卡埃拉",
                 "kr": "미카엘라"
             },
             "costume_name": {
                 "en": "Beachside Justice",
                 "cn": "海滨正义",
-                "hp": "浜辺の正義",
+                "jp": "浜辺の正義",
                 "tw": "海邊正義",
                 "kr": "해변의 정의"
             },
@@ -4750,14 +4750,14 @@
             "character_name": {
                 "en": "Sword Maiden",
                 "cn": "剑之圣女",
-                "hp": "剣の乙女",
+                "jp": "剣の乙女",
                 "tw": "劍之聖女",
                 "kr": "검의 처녀"
             },
             "costume_name": {
                 "en": "Supreme God Archbishop",
                 "cn": "至高神的大主教",
-                "hp": "至高神の大司教",
+                "jp": "至高神の大司教",
                 "tw": "至高神的大主教",
                 "kr": "지고신의 대주교"
             },
@@ -4787,14 +4787,14 @@
             "character_name": {
                 "en": "Nebris",
                 "cn": "内布利斯",
-                "hp": "ネブリス",
+                "jp": "ネブリス",
                 "tw": "內布利斯",
                 "kr": "네브리스"
             },
             "costume_name": {
                 "en": "Laid-back Lifeguard",
                 "cn": "松散的救生员",
-                "hp": "ユルいライフガード",
+                "jp": "ユルいライフガード",
                 "tw": "鬆散的救生員",
                 "kr": "느슨한 라이프 가드"
             },
@@ -4824,14 +4824,14 @@
             "character_name": {
                 "en": "Andrew",
                 "cn": "安德鲁",
-                "hp": "アンドリュー",
+                "jp": "アンドリュー",
                 "tw": "安德魯",
                 "kr": "앤드류"
             },
             "costume_name": {
                 "en": "Loyal Butler",
                 "cn": "忠直管家",
-                "hp": "忠実な執事",
+                "jp": "忠実な執事",
                 "tw": "忠誠耿直的管家",
                 "kr": "충직한 집사"
             },
@@ -4861,14 +4861,14 @@
             "character_name": {
                 "en": "Luvencia",
                 "cn": "卢班希亚",
-                "hp": "ルベンシア",
+                "jp": "ルベンシア",
                 "tw": "盧班希亞",
                 "kr": "루벤시아"
             },
             "costume_name": {
                 "en": "Wild Dog",
                 "cn": "野犬",
-                "hp": "ワイルドドッグ",
+                "jp": "ワイルドドッグ",
                 "tw": "野犬",
                 "kr": "와일드독"
             },
@@ -4898,14 +4898,14 @@
             "character_name": {
                 "en": "Refithea",
                 "cn": "芮彼泰雅",
-                "hp": "レピテア",
+                "jp": "レピテア",
                 "tw": "芮彼泰雅",
                 "kr": "레피테아"
             },
             "costume_name": {
                 "en": "Poolside Fairy",
                 "cn": "水上精灵",
-                "hp": "水遊びの妖精",
+                "jp": "水遊びの妖精",
                 "tw": "水上精靈",
                 "kr": "물놀이 요정"
             },
@@ -4935,14 +4935,14 @@
             "character_name": {
                 "en": "Ingrid",
                 "cn": "英格利得",
-                "hp": "イングリッド",
+                "jp": "イングリッド",
                 "tw": "英格利得",
                 "kr": "잉그리드"
             },
             "costume_name": {
                 "en": "Kardis' Bullet",
                 "cn": "卡迪斯的子弹",
-                "hp": "カディスの弾丸",
+                "jp": "カディスの弾丸",
                 "tw": "卡迪斯的子彈",
                 "kr": "카디스의 탄환"
             },
@@ -4972,14 +4972,14 @@
             "character_name": {
                 "en": "Alec",
                 "cn": "艾瑞克",
-                "hp": "アレック",
+                "jp": "アレック",
                 "tw": "艾瑞克",
                 "kr": "알렉"
             },
             "costume_name": {
                 "en": "The Destruction",
                 "cn": "毁灭之星",
-                "hp": "破壊の星",
+                "jp": "破壊の星",
                 "tw": "毀滅之星",
                 "kr": "파괴의 별"
             },
@@ -5009,14 +5009,14 @@
             "character_name": {
                 "en": "Ventana",
                 "cn": "班塔纳",
-                "hp": "ヴェンタナ",
+                "jp": "ヴェンタナ",
                 "tw": "班塔納",
                 "kr": "벤타나"
             },
             "costume_name": {
                 "en": "Comeback Idol",
                 "cn": "回归偶像",
-                "hp": "カムバックアイドル",
+                "jp": "カムバックアイドル",
                 "tw": "回歸偶像",
                 "kr": "컴백 아이돌"
             },
@@ -5046,14 +5046,14 @@
             "character_name": {
                 "en": "Olstein",
                 "cn": "奥尔施塔因",
-                "hp": "オルシュタイン",
+                "jp": "オルシュタイン",
                 "tw": "奧爾施塔因",
                 "kr": "올슈타인"
             },
             "costume_name": {
                 "en": "Sage of Blue Clouds",
                 "cn": "青云道士",
-                "hp": "青雲の道士",
+                "jp": "青雲の道士",
                 "tw": "青雲道士",
                 "kr": "청운의 도사"
             },
@@ -5083,14 +5083,14 @@
             "character_name": {
                 "en": "Gray",
                 "cn": "格雷",
-                "hp": "グレイ",
+                "jp": "グレイ",
                 "tw": "格雷",
                 "kr": "그레이"
             },
             "costume_name": {
                 "en": "B-Rank Manager",
                 "cn": "B级老板",
-                "hp": "B級社長",
+                "jp": "B級社長",
                 "tw": "B級老闆",
                 "kr": "B급 사장"
             },
@@ -5120,14 +5120,14 @@
             "character_name": {
                 "en": "Angelica",
                 "cn": "安洁莉卡",
-                "hp": "アンジェリカ",
+                "jp": "アンジェリカ",
                 "tw": "安潔莉卡",
                 "kr": "안젤리카"
             },
             "costume_name": {
                 "en": "The Fallen",
                 "cn": "堕落之星",
-                "hp": "堕落の星",
+                "jp": "堕落の星",
                 "tw": "墮落之星",
                 "kr": "타락의 별"
             },
@@ -5157,14 +5157,14 @@
             "character_name": {
                 "en": "Wilhelmina",
                 "cn": "威廉明娜",
-                "hp": "ウィルヘルミナ",
+                "jp": "ウィルヘルミナ",
                 "tw": "威廉明娜",
                 "kr": "빌헬미나"
             },
             "costume_name": {
                 "en": "Iron Monarch",
                 "cn": "钢铁君主",
-                "hp": "鋼の君主",
+                "jp": "鋼の君主",
                 "tw": "鋼鐵君主",
                 "kr": "강철의 군주"
             },
@@ -5194,14 +5194,14 @@
             "character_name": {
                 "en": "Olivier",
                 "cn": "奥利维耶",
-                "hp": "オリビエ",
+                "jp": "オリビエ",
                 "tw": "奧利維爾",
                 "kr": "올리비에"
             },
             "costume_name": {
                 "en": "Apostle",
                 "cn": "使徒",
-                "hp": "使徒",
+                "jp": "使徒",
                 "tw": "使者",
                 "kr": "사도"
             },
@@ -5231,14 +5231,14 @@
             "character_name": {
                 "en": "Sylvia",
                 "cn": "席比雅",
-                "hp": "シルヴィア",
+                "jp": "シルヴィア",
                 "tw": "席比雅",
                 "kr": "실비아"
             },
             "costume_name": {
                 "en": "Bikini Agent",
                 "cn": "比基尼特工",
-                "hp": "ビキニエージェント",
+                "jp": "ビキニエージェント",
                 "tw": "比基尼特務",
                 "kr": "비키니 에이전트"
             },
@@ -5268,14 +5268,14 @@
             "character_name": {
                 "en": "Teresse",
                 "cn": "泰瑞丝",
-                "hp": "テレーゼ",
+                "jp": "テレーゼ",
                 "tw": "泰瑞絲",
                 "kr": "테레제"
             },
             "costume_name": {
                 "en": "Milky Bikini",
                 "cn": "奶牛比基尼",
-                "hp": "ミルキービキニ",
+                "jp": "ミルキービキニ",
                 "tw": "奶牛比基尼",
                 "kr": "밀키 비키니"
             },
@@ -5305,14 +5305,14 @@
             "character_name": {
                 "en": "Rubia",
                 "cn": "露比雅",
-                "hp": "ルヴィア",
+                "jp": "ルヴィア",
                 "tw": "露比雅",
                 "kr": "루비아"
             },
             "costume_name": {
                 "en": "Maid Bikini",
                 "cn": "女仆比基尼",
-                "hp": "メイドビキニ",
+                "jp": "メイドビキニ",
                 "tw": "女僕比基尼",
                 "kr": "메이드 비키니"
             },
@@ -5342,14 +5342,14 @@
             "character_name": {
                 "en": "Darian",
                 "cn": "达丽安",
-                "hp": "ダリアン",
+                "jp": "ダリアン",
                 "tw": "達麗安",
                 "kr": "다리안"
             },
             "costume_name": {
                 "en": "Prophetic Dream",
                 "cn": "启示之梦",
-                "hp": "啓示の夢",
+                "jp": "啓示の夢",
                 "tw": "啟示之夢",
                 "kr": "계시의 꿈"
             },
@@ -5379,14 +5379,14 @@
             "character_name": {
                 "en": "Tyr",
                 "cn": "提尔",
-                "hp": "ティル",
+                "jp": "ティル",
                 "tw": "提爾",
                 "kr": "티르"
             },
             "costume_name": {
                 "en": "Starlight Guardian",
                 "cn": "星光守护者",
-                "hp": "星光の守護者",
+                "jp": "星光の守護者",
                 "tw": "星光守護者",
                 "kr": "별빛의 수호자"
             },
@@ -5416,14 +5416,14 @@
             "character_name": {
                 "en": "Sonya",
                 "cn": "索尼娅",
-                "hp": "ソーニャ",
+                "jp": "ソーニャ",
                 "tw": "索妮亞",
                 "kr": "소냐"
             },
             "costume_name": {
                 "en": "Shadowed Dream",
                 "cn": "潜藏的梦",
-                "hp": "深裏の夢",
+                "jp": "深裏の夢",
                 "tw": "潛藏的夢",
                 "kr": "이면의 꿈"
             },
@@ -5453,14 +5453,14 @@
             "character_name": {
                 "en": "Wilhelmina",
                 "cn": "威廉明娜",
-                "hp": "ウィルヘルミナ",
+                "jp": "ウィルヘルミナ",
                 "tw": "威廉明娜",
                 "kr": "빌헬미나"
             },
             "costume_name": {
                 "en": "Frozen Queen",
                 "cn": "银雪凝光女王",
-                "hp": "フローズン・クイーン",
+                "jp": "フローズン・クイーン",
                 "tw": "冰雪女王",
                 "kr": "프로즌 퀸"
             },
@@ -5490,14 +5490,14 @@
             "character_name": {
                 "en": "Diana",
                 "cn": "黛安娜",
-                "hp": "ディアナ",
+                "jp": "ディアナ",
                 "tw": "黛安娜",
                 "kr": "디아나"
             },
             "costume_name": {
                 "en": "Magical Innovator",
                 "cn": "魔法匠心",
-                "hp": "マジカル・イノベーター",
+                "jp": "マジカル・イノベーター",
                 "tw": "魔法革新者",
                 "kr": "매지컬 이노베이터"
             },
@@ -5527,14 +5527,14 @@
             "character_name": {
                 "en": "Olivier",
                 "cn": "奥利维耶",
-                "hp": "オリビエ",
+                "jp": "オリビエ",
                 "tw": "奧利維爾",
                 "kr": "올리비에"
             },
             "costume_name": {
                 "en": "Retired Legend",
                 "cn": "传奇退役",
-                "hp": "伝説のOG",
+                "jp": "伝説のOG",
                 "tw": "引退的傳奇",
                 "kr": "은퇴한 전설"
             },
@@ -5564,14 +5564,14 @@
             "character_name": {
                 "en": "Blade",
                 "cn": "布莱德",
-                "hp": "ブレイド",
+                "jp": "ブレイド",
                 "tw": "布萊德",
                 "kr": "블레이드"
             },
             "costume_name": {
                 "en": "Onsen Swordfighter",
                 "cn": "温泉剑客",
-                "hp": "温泉剣客",
+                "jp": "温泉剣客",
                 "tw": "溫泉劍客",
                 "kr": "온천 검객"
             },
@@ -5601,14 +5601,14 @@
             "character_name": {
                 "en": "Sonya",
                 "cn": "索尼娅",
-                "hp": "ソーニャ",
+                "jp": "ソーニャ",
                 "tw": "索妮亞",
                 "kr": "소냐"
             },
             "costume_name": {
                 "en": "Little Pumpkin Girl",
                 "cn": "卖南瓜的少女",
-                "hp": "かぼちゃ売りの少女",
+                "jp": "かぼちゃ売りの少女",
                 "tw": "賣南瓜的少女",
                 "kr": "호박팔이 소녀"
             },
@@ -5638,14 +5638,14 @@
             "character_name": {
                 "en": "Darian",
                 "cn": "达丽安",
-                "hp": "ダリアン",
+                "jp": "ダリアン",
                 "tw": "達麗安",
                 "kr": "다리안"
             },
             "costume_name": {
                 "en": "Bittersweet Bunny",
                 "cn": "半糖余韵兔女郎",
-                "hp": "ビタースウィート・バニー",
+                "jp": "ビタースウィート・バニー",
                 "tw": "苦甜兔女郎",
                 "kr": "비터스윗 바니"
             },
@@ -5675,14 +5675,14 @@
             "character_name": {
                 "en": "Tyr",
                 "cn": "提尔",
-                "hp": "ティル",
+                "jp": "ティル",
                 "tw": "提爾",
                 "kr": "티르"
             },
             "costume_name": {
                 "en": "Innocent Bunny",
                 "cn": "澄心无邪兔女郎",
-                "hp": "イノセント・バニー",
+                "jp": "イノセント・バニー",
                 "tw": "軟萌兔女郎",
                 "kr": "이노센트 바니"
             },
@@ -5712,14 +5712,14 @@
             "character_name": {
                 "en": "Palette",
                 "cn": "帕莱特",
-                "hp": "パレット",
+                "jp": "パレット",
                 "tw": "帕萊特",
                 "kr": "팔레트"
             },
             "costume_name": {
                 "en": "Shattered Dream",
                 "cn": "惊悚之梦",
-                "hp": "恐怖の夢",
+                "jp": "恐怖の夢",
                 "tw": "恐懼之夢",
                 "kr": "공포의 꿈"
             },
@@ -5749,14 +5749,14 @@
             "character_name": {
                 "en": "Eleaneer",
                 "cn": "艾尼尔",
-                "hp": "エレニール",
+                "jp": "エレニール",
                 "tw": "艾尼爾",
                 "kr": "에레니르"
             },
             "costume_name": {
                 "en": "Shadow Bunny",
                 "cn": "夜色流影兔女郎",
-                "hp": "シャドウ・バニー",
+                "jp": "シャドウ・バニー",
                 "tw": "酷魅兔女郎",
                 "kr": "쉐도우 바니"
             },
@@ -5786,14 +5786,14 @@
             "character_name": {
                 "en": "Granhildr",
                 "cn": "格兰希特",
-                "hp": "グランヒルト",
+                "jp": "グランヒルト",
                 "tw": "葛蘭西特",
                 "kr": "그란힐트"
             },
             "costume_name": {
                 "en": "Boo Ghost",
                 "cn": "恶作剧幽灵",
-                "hp": "サプライズゴースト",
+                "jp": "サプライズゴースト",
                 "tw": "惡作劇幽靈",
                 "kr": "깜짝 유령"
             },
@@ -5823,14 +5823,14 @@
             "character_name": {
                 "en": "Granadair",
                 "cn": "葛拉娜德",
-                "hp": "グラナデ",
+                "jp": "グラナデ",
                 "tw": "葛拉娜德",
                 "kr": "그라나데"
             },
             "costume_name": {
                 "en": "Shrine Maiden of Purification",
                 "cn": "净化巫女",
-                "hp": "浄化の巫女",
+                "jp": "浄化の巫女",
                 "tw": "淨化巫女",
                 "kr": "정화의 무녀"
             },
@@ -5860,14 +5860,14 @@
             "character_name": {
                 "en": "Granadair",
                 "cn": "葛拉娜德",
-                "hp": "グラナデ",
+                "jp": "グラナデ",
                 "tw": "葛拉娜德",
                 "kr": "그라나데"
             },
             "costume_name": {
                 "en": "Queen of Gluttis",
                 "cn": "葛洛堤的女王",
-                "hp": "グラティの女王",
+                "jp": "グラティの女王",
                 "tw": "葛洛堤女王",
                 "kr": "글러티의 여왕"
             },
@@ -5897,14 +5897,14 @@
             "character_name": {
                 "en": "Liberta",
                 "cn": "黎维塔",
-                "hp": "リベルタ",
+                "jp": "リベルタ",
                 "tw": "黎維塔",
                 "kr": "리베르타"
             },
             "costume_name": {
                 "en": "Hedonist",
                 "cn": "享乐主义者",
-                "hp": "享楽探究者",
+                "jp": "享楽探究者",
                 "tw": "享樂主義者",
                 "kr": "쾌락 추구자"
             },
@@ -5934,14 +5934,14 @@
             "character_name": {
                 "en": "Zenith",
                 "cn": "杰尼斯",
-                "hp": "ジェニス",
+                "jp": "ジェニス",
                 "tw": "傑尼斯",
                 "kr": "제니스"
             },
             "costume_name": {
                 "en": "Stranger Bunny",
                 "cn": "神秘面纱兔女郎",
-                "hp": "ストレンジャー・バニー",
+                "jp": "ストレンジャー・バニー",
                 "tw": "神秘兔女郎",
                 "kr": "스트레인저 바니"
             },
@@ -5971,14 +5971,14 @@
             "character_name": {
                 "en": "Mamonir",
                 "cn": "马莫尼勒",
-                "hp": "マモニル",
+                "jp": "マモニル",
                 "tw": "馬莫尼勒",
                 "kr": "마모니르"
             },
             "costume_name": {
                 "en": "Night of Death",
                 "cn": "玄夜",
-                "hp": "終焉の夜",
+                "jp": "終焉の夜",
                 "tw": "死亡之夜",
                 "kr": "죽음의 밤"
             },
@@ -6008,14 +6008,14 @@
             "character_name": {
                 "en": "Helena",
                 "cn": "海伦娜",
-                "hp": "ヘレナ",
+                "jp": "ヘレナ",
                 "tw": "海倫娜",
                 "kr": "헬레나"
             },
             "costume_name": {
                 "en": "Rising Star",
                 "cn": "新星",
-                "hp": "ライジング・スター",
+                "jp": "ライジング・スター",
                 "tw": "閃耀新星",
                 "kr": "라이징 스타"
             },
@@ -6045,14 +6045,14 @@
             "character_name": {
                 "en": "Ikaruga",
                 "cn": "斑鸠",
-                "hp": "斑鳩",
+                "jp": "斑鳩",
                 "tw": "斑鳩",
                 "kr": "이카루가"
             },
             "costume_name": {
                 "en": "Noble Flame",
                 "cn": "纯净之焰",
-                "hp": "清廉の炎",
+                "jp": "清廉の炎",
                 "tw": "清廉之焰",
                 "kr": "청렴한 불꽃"
             },
@@ -6082,14 +6082,14 @@
             "character_name": {
                 "en": "Mamonir",
                 "cn": "马莫尼勒",
-                "hp": "マモニル",
+                "jp": "マモニル",
                 "tw": "馬莫尼勒",
                 "kr": "마모니르"
             },
             "costume_name": {
                 "en": "Miracle Marine",
                 "cn": "奇迹海洋",
-                "hp": "ミラクル・マリン",
+                "jp": "ミラクル・マリン",
                 "tw": "奇蹟海洋",
                 "kr": "미라클 마린"
             },
@@ -6119,14 +6119,14 @@
             "character_name": {
                 "en": "Palette",
                 "cn": "帕莱特",
-                "hp": "パレット",
+                "jp": "パレット",
                 "tw": "帕萊特",
                 "kr": "팔레트"
             },
             "costume_name": {
                 "en": "Miracle Violet",
                 "cn": "奇迹紫罗兰",
-                "hp": "ミラクル・ヴァイオレット",
+                "jp": "ミラクル・ヴァイオレット",
                 "tw": "奇蹟紫羅蘭",
                 "kr": "미라클 바이올렛"
             },
@@ -6156,14 +6156,14 @@
             "character_name": {
                 "en": "Liberta",
                 "cn": "黎维塔",
-                "hp": "リベルタ",
+                "jp": "リベルタ",
                 "tw": "黎維塔",
                 "kr": "리베르타"
             },
             "costume_name": {
                 "en": "Miracle Rose",
                 "cn": "奇迹玫瑰",
-                "hp": "ミラクル・ローズ",
+                "jp": "ミラクル・ローズ",
                 "tw": "奇蹟玫瑰",
                 "kr": "미라클 로즈"
             },
@@ -6193,14 +6193,14 @@
             "character_name": {
                 "en": "Scheherazade",
                 "cn": "莎赫拉查德",
-                "hp": "シェラザード",
+                "jp": "シェラザード",
                 "tw": "莎赫拉查德",
                 "kr": "세헤라자드"
             },
             "costume_name": {
                 "en": "Deliberate Ace",
                 "cn": "从容的王牌",
-                "hp": "デリバレート・エース",
+                "jp": "デリバレート・エース",
                 "tw": "致勝王牌莎赫拉查德",
                 "kr": "딜리버레이트 에이스"
             },
@@ -6230,14 +6230,14 @@
             "character_name": {
                 "en": "Darian",
                 "cn": "达丽安",
-                "hp": "ダリアン",
+                "jp": "ダリアン",
                 "tw": "達麗安",
                 "kr": "다리안"
             },
             "costume_name": {
                 "en": "Herald of Enlightenment",
                 "cn": "启蒙信使",
-                "hp": "啓蒙の使者",
+                "jp": "啓蒙の使者",
                 "tw": "啟蒙使者",
                 "kr": "계몽의 전령"
             },
@@ -6267,14 +6267,14 @@
             "character_name": {
                 "en": "Nekyndalia",
                 "cn": "内肯达莉亚",
-                "hp": "ネケンダリア",
+                "jp": "ネケンダリア",
                 "tw": "涅肯達莉亞",
                 "kr": "네켄달리아"
             },
             "costume_name": {
                 "en": "Deadeye",
                 "cn": "神枪手",
-                "hp": "デッドアイ",
+                "jp": "デッドアイ",
                 "tw": "致命之眼",
                 "kr": "데드아이"
             },
@@ -6304,14 +6304,14 @@
             "character_name": {
                 "en": "Michaela",
                 "cn": "米卡艾拉",
-                "hp": "ミカエラ",
+                "jp": "ミカエラ",
                 "tw": "米卡埃拉",
                 "kr": "미카엘라"
             },
             "costume_name": {
                 "en": "True Liberation",
                 "cn": "真意解放",
-                "hp": "トゥルー・リベレーション",
+                "jp": "トゥルー・リベレーション",
                 "tw": "終極解脫",
                 "kr": "트루 리버레이션"
             },
@@ -6341,14 +6341,14 @@
             "character_name": {
                 "en": "Luvencia",
                 "cn": "卢班希亚",
-                "hp": "ルベンシア",
+                "jp": "ルベンシア",
                 "tw": "盧班希亞",
                 "kr": "루벤시아"
             },
             "costume_name": {
                 "en": "Ocean Vanguard",
                 "cn": "海洋先锋",
-                "hp": "オーシャン・ヴァンガード",
+                "jp": "オーシャン・ヴァンガード",
                 "tw": "海洋先鋒",
                 "kr": "오션 뱅가드"
             },
@@ -6381,14 +6381,14 @@
             "character_name": {
                 "en": "Gynt",
                 "cn": "君特",
-                "hp": "ギュント",
+                "jp": "ギュント",
                 "tw": "君特",
                 "kr": "귄트"
             },
             "costume_name": {
                 "en": "Lugo Hunter",
                 "cn": "卢戈猎人",
-                "hp": "ルーゴ狩人",
+                "jp": "ルーゴ狩人",
                 "tw": "盧戈獵人",
                 "kr": "루고 사냥꾼"
             },
@@ -6421,14 +6421,14 @@
             "character_name": {
                 "en": "Fred",
                 "cn": "弗雷德",
-                "hp": "フレッド",
+                "jp": "フレッド",
                 "tw": "弗雷德",
                 "kr": "프레드"
             },
             "costume_name": {
                 "en": "Lugo Defense Force",
                 "cn": "卢戈卫队",
-                "hp": "ルーゴ守備隊",
+                "jp": "ルーゴ守備隊",
                 "tw": "盧戈守衛隊",
                 "kr": "루고 수비대"
             },
@@ -6461,14 +6461,14 @@
             "character_name": {
                 "en": "Wiggle",
                 "cn": "威格",
-                "hp": "ウィグル",
+                "jp": "ウィグル",
                 "tw": "威格",
                 "kr": "위글"
             },
             "costume_name": {
                 "en": "Bomb in the Hoodie",
                 "cn": "炸弹帽衫",
-                "hp": "ボムインザフード",
+                "jp": "ボムインザフード",
                 "tw": "帽T下的炸彈",
                 "kr": "밤 인 더 후드"
             },
@@ -6501,14 +6501,14 @@
             "character_name": {
                 "en": "Lucrezia",
                 "cn": "卢克雷齐亚",
-                "hp": "ルクレチア",
+                "jp": "ルクレチア",
                 "tw": "盧克雷齊亞",
                 "kr": "루크레치아"
             },
             "costume_name": {
                 "en": "Seductive Wings",
                 "cn": "诱惑之翼",
-                "hp": "誘惑の翼",
+                "jp": "誘惑の翼",
                 "tw": "誘惑的翅膀",
                 "kr": "유혹의 날개"
             },
@@ -6541,14 +6541,14 @@
             "character_name": {
                 "en": "Celia",
                 "cn": "西利亚",
-                "hp": "セリア",
+                "jp": "セリア",
                 "tw": "西利亞",
                 "kr": "셀리아"
             },
             "costume_name": {
                 "en": "The Curse",
                 "cn": "诅咒之星",
-                "hp": "呪いの星",
+                "jp": "呪いの星",
                 "tw": "詛咒之星",
                 "kr": "저주의 별"
             },
@@ -6581,14 +6581,14 @@
             "character_name": {
                 "en": "Seir",
                 "cn": "赛尔",
-                "hp": "セイル",
+                "jp": "セイル",
                 "tw": "賽爾",
                 "kr": "세이르"
             },
             "costume_name": {
                 "en": "Demon's Daughter",
                 "cn": "恶魔之女",
-                "hp": "悪魔の娘",
+                "jp": "悪魔の娘",
                 "tw": "惡魔之女",
                 "kr": "악마의 딸"
             },
@@ -6621,14 +6621,14 @@
             "character_name": {
                 "en": "Seir",
                 "cn": "赛尔",
-                "hp": "セイル",
+                "jp": "セイル",
                 "tw": "賽爾",
                 "kr": "세이르"
             },
             "costume_name": {
                 "en": "B-Rank Idol",
                 "cn": "B级偶像",
-                "hp": "B級アイドル",
+                "jp": "B級アイドル",
                 "tw": "B級偶像",
                 "kr": "B급 아이돌"
             },
@@ -6661,14 +6661,14 @@
             "character_name": {
                 "en": "Kry",
                 "cn": "克莱",
-                "hp": "クライ",
+                "jp": "クライ",
                 "tw": "克萊",
                 "kr": "크라이"
             },
             "costume_name": {
                 "en": "Liberated Marauder",
                 "cn": "解放掠夺者",
-                "hp": "開放された略奪者",
+                "jp": "開放された略奪者",
                 "tw": "解放的掠奪者",
                 "kr": "해방된 약탈자"
             },
@@ -6701,14 +6701,14 @@
             "character_name": {
                 "en": "Kry",
                 "cn": "克莱",
-                "hp": "クライ",
+                "jp": "クライ",
                 "tw": "克萊",
                 "kr": "크라이"
             },
             "costume_name": {
                 "en": "Violent Student",
                 "cn": "粗暴学生",
-                "hp": "乱暴な学生",
+                "jp": "乱暴な学生",
                 "tw": "粗暴的學生",
                 "kr": "난폭한 학생"
             },
@@ -6741,14 +6741,14 @@
             "character_name": {
                 "en": "Jayden",
                 "cn": "杰登",
-                "hp": "ジェイデン",
+                "jp": "ジェイデン",
                 "tw": "傑登",
                 "kr": "제이든"
             },
             "costume_name": {
                 "en": "Manga Research Club",
                 "cn": "漫画研究社",
-                "hp": "漫画研究部",
+                "jp": "漫画研究部",
                 "tw": "漫畫研究社",
                 "kr": "만화 연구부"
             },
@@ -6781,14 +6781,14 @@
             "character_name": {
                 "en": "Emma",
                 "cn": "艾玛",
-                "hp": "エマ",
+                "jp": "エマ",
                 "tw": "艾瑪",
                 "kr": "엠마"
             },
             "costume_name": {
                 "en": "Haggard Delinquent",
                 "cn": "麻烦问题儿童",
-                "hp": "刺々しい不良",
+                "jp": "刺々しい不良",
                 "tw": "難伺候的問題學生",
                 "kr": "까칠한 불량아"
             },
@@ -6821,14 +6821,14 @@
             "character_name": {
                 "en": "Emma",
                 "cn": "艾玛",
-                "hp": "エマ",
+                "jp": "エマ",
                 "tw": "艾瑪",
                 "kr": "엠마"
             },
             "costume_name": {
                 "en": "School Queen",
                 "cn": "校园女王",
-                "hp": "学校のクイーン",
+                "jp": "学校のクイーン",
                 "tw": "學校女王",
                 "kr": "학교의 여왕"
             },
@@ -6861,14 +6861,14 @@
             "character_name": {
                 "en": "Carlson",
                 "cn": "卡森",
-                "hp": "カーソン",
+                "jp": "カーソン",
                 "tw": "卡森",
                 "kr": "칼슨"
             },
             "costume_name": {
                 "en": "The Mercenary Knight",
                 "cn": "佣兵骑士",
-                "hp": "傭兵騎士",
+                "jp": "傭兵騎士",
                 "tw": "傭兵騎士",
                 "kr": "용병 기사"
             },
@@ -6901,14 +6901,14 @@
             "character_name": {
                 "en": "Rigenette",
                 "cn": "莉兹内",
-                "hp": "リジー",
+                "jp": "リジー",
                 "tw": "莉茲內",
                 "kr": "리즈넷"
             },
             "costume_name": {
                 "en": "Little Hunter",
                 "cn": "小猎人",
-                "hp": "チビ狩人",
+                "jp": "チビ狩人",
                 "tw": "小獵人",
                 "kr": "꼬마 사냥꾼"
             },
@@ -6941,14 +6941,14 @@
             "character_name": {
                 "en": "Beatrice",
                 "cn": "比阿特丽丝",
-                "hp": "ベアトリス",
+                "jp": "ベアトリス",
                 "tw": "比阿特麗絲",
                 "kr": "베아트리체"
             },
             "costume_name": {
                 "en": "The Mighty Warrior of the Tribe",
                 "cn": "部族大战士",
-                "hp": "部族の大戦士",
+                "jp": "部族の大戦士",
                 "tw": "部族的大戰士",
                 "kr": "부족의 대전사"
             },
@@ -6978,14 +6978,14 @@
             "character_name": {
                 "en": "Granhildr",
                 "cn": "格兰希特",
-                "hp": "グランヒルト",
+                "jp": "グランヒルト",
                 "tw": "葛蘭西特",
                 "kr": "그란힐트"
             },
             "costume_name": {
                 "en": "Combat Medic",
                 "cn": "战地医疗兵",
-                "hp": "コンバット・メディック",
+                "jp": "コンバット・メディック",
                 "tw": "戰地醫護兵",
                 "kr": "컴뱃 메딕"
             },
