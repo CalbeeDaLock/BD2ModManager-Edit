@@ -18,7 +18,6 @@ import PatreonIcon from '../../../components/icons/PatreonIcon.vue';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import AfDianIcon from '../../../components/icons/AfDianIcon.vue';
 import { convertFileSrc } from '@tauri-apps/api/core';
-import { useAppDir } from '../../../composables/useAppDir';
 import { useNotificationStore } from '../../../stores/notification.ts';
 
 const loggingStore = useLoggingStore();

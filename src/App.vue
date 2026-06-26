@@ -31,6 +31,8 @@ const confirm = useConfirm()
 const modsStore = useModsStore()
 const notificationStore = useNotificationStore()
 
+const { isPortable } = usePortable()
+
 let unlistenClose: (() => void) | null = null
 
 provideHeader()
@@ -53,6 +55,30 @@ function closeModal(modalName: string) {
   currentModalVisible.value = modalQueue.value[0] ?? ''
 }
 
+watch(
+  () => settings.value.language,
+  (newLanguage) => (locale.value = newLanguage || "en_US"),
+  { immediate: true }
+)
+
+watch(
+  () => settings.value.theme,
+  (newTheme) => {
+    const theme = newTheme ?? "dark-1"
+    const validTheme = settingsStore.availableThemes.map(t => t.value).includes(theme)
+    document.documentElement.setAttribute("data-theme", validTheme ? theme : "dark-1")
+  },
+  { immediate: true }
+)
+
+watch(() => settingsStore.appUpdateStatus, (newStatus) => {
+  const skipVersion = localStorage.getItem('skipUpdateVersion')
+  
+  // update available will only show on portable
+  if (newStatus?.version && newStatus.version !== skipVersion && isPortable.value) {
+    openModal('updateAvailableModal')
+  }
+})
 onMounted(async () => {
   if (!import.meta.env.DEV) {
     document.addEventListener("contextmenu", (event) => event.preventDefault())
@@ -109,23 +135,6 @@ onMounted(async () => {
 onUnmounted(() => {
   unlistenClose?.()
 })
-
-const { isPortable } = usePortable()
-
-watch(() => settingsStore.appUpdateStatus, async (newStatus) => {
-  const skipVersion = localStorage.getItem('skipUpdateVersion')
-
-  // update available will only show on portable
-  if (newStatus?.version && newStatus.version !== skipVersion && isPortable.value) {
-    openModal('updateAvailableModal')
-  }
-})
-
-watch(
-    () => settings.value.theme,
-    (newTheme) => document.documentElement.setAttribute("data-theme", newTheme || "dark"),
-    { immediate: true }
-  )
 </script>
 
 <template>
