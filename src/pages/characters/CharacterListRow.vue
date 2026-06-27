@@ -73,10 +73,6 @@ const charName = computed(() => {
                 </div>
             </div>
 
-            <span class="text-text-secondary font-mono text-sm">
-                {{ $t('charactersTab.id', { id: Array.isArray(item.data.id) ? item.data.id.join(', ') : item.data.id }) }}
-            </span>
-
             <div class="flex flex-1 items-end gap-8 md:gap-12 mr-4 md:mr-8 mt-2">
                 <div class="flex flex-col items-center">
                     <span class="font-semibold text-sm md:text-base">

@@ -55,9 +55,6 @@ const charName = computed(() => {
                         {{ charName }}
                     </span>
                 </div>
-                <div class="text-text-secondary text-xs">
-                    {{ $t('charactersTab.id', { id: Array.isArray(costume.id) ? costume.id.join(', ') : costume.id }) }}
-                </div>
             </div>
 
             <div
