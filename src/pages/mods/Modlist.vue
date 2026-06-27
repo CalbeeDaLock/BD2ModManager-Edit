@@ -196,7 +196,7 @@ const columns = [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
                             src: convertFileSrc(`heads/${charIds}`, "bd2assets"),
                             errorSrc: "/characters/heads/050001.png",
-                            class: 'w-10 h-10 scale-150 aspect-square cursor-pointer transition-transform hover:scale-165',
+                            class: 'w-8 h-8 scale-150 aspect-square cursor-pointer transition-transform hover:scale-165',
                             imgClass: 'object-contain',
                             onClick: (event: Event) => {
 
