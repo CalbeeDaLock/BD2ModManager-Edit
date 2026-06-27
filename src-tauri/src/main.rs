@@ -161,7 +161,8 @@ pub fn main() {
             if let Some(bytes) = get_game_asset(ctx.app_handle(), &ids, category) {
                 http::Response::builder()
                     .header("Content-Type", "image/png")
-                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Origin", "http://tauri.localhost")
+                    .header("Cache-Control", "public, max-age=604800") // 7 days cache
                     .body(bytes)
                     .unwrap()
             } else {
