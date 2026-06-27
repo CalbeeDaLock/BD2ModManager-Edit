@@ -551,6 +551,10 @@
                     "language": {
                         "label": "Language",
                         "placeholder": "Select a language"
+                    },
+                    "forceEnglishNames": {
+                        "label": "Use English character names",
+                        "description": "Always display character names in English, regardless of the selected language."
                     }
                 },
                 "directories": {

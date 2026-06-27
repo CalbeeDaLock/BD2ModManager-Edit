@@ -2,10 +2,13 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Language } from '../stores/settings'
 import { Character } from '../stores/characters'
+import { usePreferencesStore } from '../stores/preferences'
 
 export function useLang() {
     const { locale } = useI18n()
+    const preferencesStore = usePreferencesStore()
     return computed((): Language => {
+        if (preferencesStore.forceEnglishNames) return 'en'
         const raw = locale.value?.split('_')[1]?.toLowerCase()
         return (raw as Language) ?? 'en'
     })

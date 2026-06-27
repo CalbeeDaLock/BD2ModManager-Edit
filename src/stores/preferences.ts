@@ -12,8 +12,8 @@ export const usePreferencesStore = defineStore("preferences", () => {
   const modNameDisplay = useLocalStorage("modNameDisplay", "short");
   const characterDisplay = useLocalStorage("characterDisplay", "full");
   const modTypeDisplay = useLocalStorage("modTypeDisplay", "full");
-  
   const enableModTypeColors = useLocalStorage("modTypeColors", true);
+  const forceEnglishNames  = useLocalStorage("forceEnglishNames", false)
 
 
   return {
@@ -21,6 +21,7 @@ export const usePreferencesStore = defineStore("preferences", () => {
     enableModTypeColors,
     modNameDisplay,
     characterDisplay,
-    modTypeDisplay
-      };
+    modTypeDisplay,
+    forceEnglishNames    
+  };
 });

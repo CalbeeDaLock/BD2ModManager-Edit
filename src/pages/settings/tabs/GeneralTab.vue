@@ -13,8 +13,10 @@ import Checkbox from '../../../components/common/Checkbox.vue';
 import { useLoggingStore } from '../../../stores/logging';
 import { Language, useSettingsStore } from '../../../stores/settings';
 import { useNotificationStore } from '../../../stores/notification.ts';
+import { usePreferencesStore } from '../../../stores/preferences.ts';
 
 const settingsStore = useSettingsStore()
+const preferencesStore = usePreferencesStore()
 
 const notificationStore = useNotificationStore()
 
@@ -213,6 +215,12 @@ async function handleGameDirectoryBrowse() {
                         <Select :model-value="settings.language" :options="availableLanguages"
                             :placeholder="$t('settingsTab.general.sections.application.language.placeholder')" option-label="label"
                             option-value="value" @update:model-value="onLanguageChanged" class="col-span-2" />
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <Checkbox v-model="preferencesStore.forceEnglishNames"
+                            :label="$t('settingsTab.general.sections.application.forceEnglishNames.label')"
+                            :description="$t('settingsTab.general.sections.application.forceEnglishNames.description')" />
                     </div>
                 </div>
             </Section>
