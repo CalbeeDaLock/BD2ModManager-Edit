@@ -156,7 +156,7 @@ const columns = [
                 }) : null,
                 preferencesStore.modTypeDisplay === 'labelOnly' || preferencesStore.modTypeDisplay === 'full' ? h('span', {
                     class: ['font-medium', getTypeClass(modType)]
-                }, modType ?? null) : null
+                }, t(`common.modTypes.${modType.toLowerCase()}`) ?? null) : null
             ])
         },
         header: () => h('span', { class: 'flex' }, t('modsTab.modlist.header.modType')),
