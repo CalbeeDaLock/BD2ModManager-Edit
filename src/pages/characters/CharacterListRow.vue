@@ -46,6 +46,7 @@ const charName = computed(() => {
                 :alt="charName"
                 class="w-42 h-42 object-cover object-top rounded-t-md aspect-square"
                 error-src="characters/standing/placeholder_character.png"
+                error-class="bg-text-primary"
                 skeleton
             />
         </div>

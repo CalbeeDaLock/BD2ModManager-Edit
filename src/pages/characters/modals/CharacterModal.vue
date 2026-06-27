@@ -157,7 +157,8 @@ const charName = computed(() => {
                 <Image :src="imageUrl"
                     class="w-40 h-40 object-cover shrink-0 border-r border-border-default aspect-square"
                     skeleton
-                    error-src="characters/standing/placeholder_character.png" />
+                    error-src="characters/standing/placeholder_character.png"
+                    error-class="bg-text-primary" />
 
                 <div class="flex-1 px-4 py-3 flex flex-col">
                     <div class="flex items-start justify-between gap-2">

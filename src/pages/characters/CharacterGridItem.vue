@@ -30,7 +30,7 @@ const charName = computed(() => {
         class="rounded-lg cursor-pointer transition-all bg-surface-card text-text-primary hover:bg-state-hover flex flex-col h-full overflow-hidden">
         <div class="relative">
             <Image :src="imageUrl" :alt="charName" class="w-full aspect-square rounded-t-md"
-                error-src="characters/standing/placeholder_character.png" skeleton />
+                error-src="characters/standing/placeholder_character.png" skeleton error-class="bg-text-primary" />
             <div class="absolute top-2.5 left-2.5 flex gap-1">
                 <div v-if="costume.modsCount > 0"
                     class="bg-accent/75 text-text-on-accent text-xs px-2 py-1 rounded-full font-medium">
