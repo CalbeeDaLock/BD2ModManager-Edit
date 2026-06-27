@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Image from '../../components/common/Image.vue';
 import { Character, isCostumeNew } from '../../stores/characters';
-import { CharacterListItem } from './CharacterList.vue';
+import { formatCharName, useLang } from '../../utils/formatCharName.ts';
+import { CharacterListItem, CostumeWithMods } from './CharacterList.vue';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { computed } from 'vue';
 
@@ -21,6 +22,13 @@ const imageUrl = computed(() => {
         : costume.id
     return convertFileSrc(`standing/${ids}`, "bd2assets")
 })
+
+const lang = useLang()
+
+const charName = computed(() => {   
+    if (props.item.type == "header") return
+    return formatCharName(props.item.data as CostumeWithMods, lang.value)
+})
 </script>
 
 <template>
@@ -35,7 +43,7 @@ const imageUrl = computed(() => {
         <div class="shrink-0">
             <Image
                 :src="imageUrl"
-                :alt="`${item.data.character} - ${item.data.costume}`"
+                :alt="charName"
                 class="w-42 h-42 object-cover object-top rounded-t-md aspect-square"
                 error-src="characters/standing/placeholder_character.png"
                 skeleton
@@ -50,7 +58,7 @@ const imageUrl = computed(() => {
                 </div>
 
                 <span class="truncate">
-                    {{ item.data.character }} - {{ item.data.costume }}
+                    {{ charName }}
                 </span>
 
                 <div v-if="item.data.modsCount > 0"

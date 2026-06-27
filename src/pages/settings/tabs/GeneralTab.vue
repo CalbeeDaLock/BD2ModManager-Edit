@@ -11,7 +11,7 @@ import Input from '../../../components/common/Input.vue';
 import Button from '../../../components/common/Button.vue';
 import Checkbox from '../../../components/common/Checkbox.vue';
 import { useLoggingStore } from '../../../stores/logging';
-import { useSettingsStore } from '../../../stores/settings';
+import { Language, useSettingsStore } from '../../../stores/settings';
 import { useNotificationStore } from '../../../stores/notification.ts';
 
 const settingsStore = useSettingsStore()
@@ -82,7 +82,7 @@ async function onThemeChanged(theme: string) {
     logInfo(`Theme changed to ${theme}`)
 }
 
-async function onLanguageChanged(language: string) {
+async function onLanguageChanged(language: Language) {
     if (!language) return
 
 

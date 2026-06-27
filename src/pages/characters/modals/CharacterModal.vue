@@ -19,6 +19,7 @@ import { openUrl } from '@tauri-apps/plugin-opener';
 import AfDianIcon from '../../../components/icons/AfDianIcon.vue';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { useNotificationStore } from '../../../stores/notification.ts';
+import { getCharName, useLang } from '../../../utils/formatCharName.ts';
 
 const loggingStore = useLoggingStore();
 const notificationStore = useNotificationStore();
@@ -132,6 +133,13 @@ const imageUrl = computed(() => {
         : props.selectedCostume.id
     return convertFileSrc(`standing/${ids}`, "bd2assets")
 })
+
+const lang = useLang()
+
+const charName = computed(() => {   
+    if (!props.selectedCostume) return
+    return getCharName(props.selectedCostume, lang.value)
+})
 </script>
 
 <template>
@@ -147,7 +155,6 @@ const imageUrl = computed(() => {
             <div class="flex items-stretch border-b border-border-default shrink-0">
                 <!-- [TODO] when clicked it shows full image -->
                 <Image :src="imageUrl"
-                    :alt="`${selectedCostume.character} - ${selectedCostume.costume}`"
                     class="w-40 h-40 object-cover shrink-0 border-r border-border-default aspect-square"
                     skeleton
                     error-src="characters/standing/placeholder_character.png" />
@@ -156,8 +163,8 @@ const imageUrl = computed(() => {
                     <div class="flex items-start justify-between gap-2">
                         <div>
                             <div class="flex items-baseline gap-2">
-                                <h3 class="font-semibold text-base text-text-primary">{{ selectedCostume.character }}</h3>
-                                <span class="text-sm text-text-secondary">{{ selectedCostume.costume }}</span>
+                                <h3 class="font-semibold text-base text-text-primary">{{ charName?.character }}</h3>
+                                <span class="text-sm text-text-secondary">{{ charName?.costume }}</span>
                             </div>
                             <div class="flex flex-col tems-center gap-3 mt-1 text-xs text-text-secondary">
                                 <span class="flex items-center gap-1">

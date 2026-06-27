@@ -5,6 +5,7 @@ import { isCostumeNew } from '../../stores/characters'
 import { Check, X } from 'lucide-vue-next'
 import { computed } from 'vue'
 import Image from '../../components/common/Image.vue'
+import { formatCharName, useLang } from '../../utils/formatCharName.ts'
 
 const props = defineProps<{
     costume: CostumeWithMods
@@ -16,13 +17,19 @@ const imageUrl = computed(() => {
         : props.costume.id
     return convertFileSrc(`standing/${ids}`, "bd2assets")
 })
+
+const lang = useLang()
+
+const charName = computed(() => {
+    return formatCharName(props.costume, lang.value)
+})
 </script>
 
 <template>
     <div @click="$emit('open-mod-details', costume)"
         class="rounded-lg cursor-pointer transition-all bg-surface-card text-text-primary hover:bg-state-hover flex flex-col h-full overflow-hidden">
         <div class="relative">
-            <Image :src="imageUrl" :alt="`${costume.character} - ${costume.costume}`" class="w-full aspect-square rounded-t-md"
+            <Image :src="imageUrl" :alt="charName" class="w-full aspect-square rounded-t-md"
                 error-src="characters/standing/placeholder_character.png" skeleton />
             <div class="absolute top-2.5 left-2.5 flex gap-1">
                 <div v-if="costume.modsCount > 0"
@@ -39,13 +46,13 @@ const imageUrl = computed(() => {
         <div class="px-2 py-2 flex flex-col shrink-0">
             <div class="mb-2">
                 <div class="font-semibold text-base min-w-0 flex gap-2 items-center"
-                    :title="costume.character + ' - ' + costume.costume">
+                    :title="charName">
                     <div v-if="isCostumeNew(costume)"
                         class="bg-error-bg text-error text-xs px-2 py-0.5 rounded-sm font-medium shrink-0">
                         {{ $t('charactersTab.tags.new') }}
                     </div>
                     <span class="truncate">
-                        {{ costume.character }} - {{ costume.costume }}
+                        {{ charName }}
                     </span>
                 </div>
                 <div class="text-text-secondary text-xs">

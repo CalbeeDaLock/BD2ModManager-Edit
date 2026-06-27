@@ -3,9 +3,11 @@ import { defineStore } from "pinia";
 import { invoke } from "@tauri-apps/api/core"
 import { useLoggingStore } from "./logging";
 
+export type Language = "en" | "cn" | "jp" | "tw" | "kr"
+
 interface Settings {
     theme?: string,
-    language?: string,
+    language?: Language,
     gameDirectory?: string | null,
     stagingDirectory?: string | null,
     searchModsRecursively: boolean,

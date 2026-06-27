@@ -21,11 +21,13 @@ import { useI18n } from 'vue-i18n'
 import { useLocalStorage, useStorageAsync } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import Image from '../../components/common/Image.vue'
+import { formatCharName, useLang } from '../../utils/formatCharName.ts'
 import { convertFileSrc } from '@tauri-apps/api/core'
 
 const router = useRouter()
 
 const preferencesStore = usePreferencesStore()
+const lang = useLang()
 
 const columnSizes = useLocalStorage("modlist-column-sizes", {})
 const columnOrder = useLocalStorage<string[]>("modlist-column-order", [])
@@ -182,6 +184,7 @@ const columns = [
         // accessorFn: row => row.character == null ? undefined : row.character,
         cell: info => {
             const char = info.getValue()
+            if (!char) return
             if (char) {
                 let charIds = Array.isArray(char.id) ? char.id.join(',') : char.id
                 return h(
@@ -191,9 +194,8 @@ const columns = [
                     },
                     [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
-                            src: convertFileSrc(`heads/${charIds}`, 'bd2assets'),
+                            src: convertFileSrc(`heads/${charIds}`, "bd2assets"),
                             errorSrc: "/characters/heads/050001.png",
-                            // class: 'w-[2rem] h-[2rem] object-cover aspect-square scale-150 cursor-pointer hover:scale-165 transition-transform',
                             class: 'w-10 h-10 scale-150 aspect-square cursor-pointer transition-transform hover:scale-165',
                             imgClass: 'object-contain',
                             onClick: (event: Event) => {
@@ -203,7 +205,7 @@ const columns = [
                                 router.push({ name: 'characters', query: { characterId: Array.isArray(char.id) ? char.id[0] : char.id } })
                             }
                         }) : null,
-                        preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, `${char.character} - ${char.costume}`) : null
+                        preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, formatCharName(char, lang.value)) : null
                     ]
                 )
             }
