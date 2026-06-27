@@ -45,7 +45,7 @@ const charName = computed(() => {
 
         <div class="px-2 py-2 flex flex-col shrink-0">
             <div class="mb-2">
-                <div class="font-semibold text-base min-w-0 flex gap-2 items-center"
+                <div class="font-semibold text-sm min-w-0 flex gap-2 items-center"
                     :title="charName">
                     <div v-if="isCostumeNew(costume)"
                         class="bg-error-bg text-error text-xs px-2 py-0.5 rounded-sm font-medium shrink-0">
