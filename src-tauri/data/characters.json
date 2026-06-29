@@ -1,5 +1,5 @@
 {
-    "version": "0.0.17",
+    "version": "0.0.18",
     "characters": [
         {
             "id": "000708",
@@ -6363,8 +6363,8 @@
         },
         {
             "id": [
-                "001301",
-                "100101"
+                "100101",
+                "001301"
             ],
             "character": "Gynt",
             "costume": "Lugo Hunter",
@@ -6403,8 +6403,8 @@
         },
         {
             "id": [
-                "001401",
-                "100201"
+                "100201",
+                "001401"
             ],
             "character": "Fred",
             "costume": "Lugo Defense Force",
@@ -6443,8 +6443,8 @@
         },
         {
             "id": [
-                "060102",
-                "100502"
+                "100502",
+                "060102"
             ],
             "character": "Wiggle",
             "costume": "Bomb in the Hoodie",
@@ -6483,8 +6483,8 @@
         },
         {
             "id": [
-                "060201",
-                "100601"
+                "100601",
+                "060201"
             ],
             "character": "Lucrezia",
             "costume": "Seductive Wings",
@@ -6563,8 +6563,8 @@
         },
         {
             "id": [
-                "060901",
-                "101101"
+                "101101",
+                "060901"
             ],
             "character": "Seir",
             "costume": "Demon's Daughter",
@@ -6603,8 +6603,8 @@
         },
         {
             "id": [
-                "060902",
-                "101102"
+                "101102",
+                "060902"
             ],
             "character": "Seir",
             "costume": "B-Rank Idol",
@@ -6643,8 +6643,8 @@
         },
         {
             "id": [
-                "062101",
-                "101501"
+                "101501",
+                "062101"
             ],
             "character": "Kry",
             "costume": "Liberated Marauder",
@@ -6683,8 +6683,8 @@
         },
         {
             "id": [
-                "062102",
-                "101502"
+                "101502",
+                "062102"
             ],
             "character": "Kry",
             "costume": "Violent Student",
@@ -6723,8 +6723,8 @@
         },
         {
             "id": [
-                "062702",
-                "101202"
+                "101202",
+                "062702"
             ],
             "character": "Jayden",
             "costume": "Manga Research Club",
@@ -6763,8 +6763,8 @@
         },
         {
             "id": [
-                "062801",
-                "101301"
+                "101301",
+                "062801"
             ],
             "character": "Emma",
             "costume": "Haggard Delinquent",
@@ -6803,8 +6803,8 @@
         },
         {
             "id": [
-                "062802",
-                "101302"
+                "101302",
+                "062802"
             ],
             "character": "Emma",
             "costume": "School Queen",
@@ -6843,8 +6843,8 @@
         },
         {
             "id": [
-                "064701",
-                "103201"
+                "103201",
+                "064701"
             ],
             "character": "Carlson",
             "costume": "The Mercenary Knight",
@@ -6883,8 +6883,8 @@
         },
         {
             "id": [
-                "064901",
-                "103401"
+                "103401",
+                "064901"
             ],
             "character": "Rigenette",
             "costume": "Little Hunter",
@@ -6923,8 +6923,8 @@
         },
         {
             "id": [
-                "065001",
-                "103501"
+                "103501",
+                "065001"
             ],
             "character": "Beatrice",
             "costume": "The Mighty Warrior of the Tribe",
