@@ -95,7 +95,7 @@ fn get_game_asset(app_handle: &AppHandle, character_ids: &[&str], category: &str
         let path = format!("characters/{}/{}.png", category, id);
         // debug!("Trying bundled asset: {}", path);
         if let Some(asset) = app_handle.asset_resolver().get(path.clone()) {
-            debug!("Found bundled asset: {}", path);
+            // debug!("Found bundled asset: {}", path);
             return Some(asset.bytes.to_vec());
         }
     }
