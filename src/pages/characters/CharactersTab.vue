@@ -304,7 +304,7 @@ const AddModMenu = defineComponent({
                         onClick: toggle
                     }),
                 default: ({ close }: any) =>
-                    h('ul', { class: 'bg-surface-popover border-border-default border-2 rounded-md' }, addModMenuItems.value.map(item =>
+                    h('ul', { class: 'bg-surface-popover border-border-default border rounded-md' }, addModMenuItems.value.map(item =>
                         h('li', { key: item.label },
                             h('button', {
                                 class: 'w-full cursor-pointer text-left px-4 py-2 hover:bg-state-hover  text-sm font-medium',

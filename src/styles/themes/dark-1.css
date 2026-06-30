@@ -2,9 +2,9 @@
   [data-theme="dark-1"] {
     --surface-app: #12141d;
     --surface-panel: #1a1d28;
-    --surface-card: #1e2130; 
+    --surface-card: rgb(44, 49, 64);  
     --surface-input: #252838;   
-    --surface-popover: #2c3140;
+    --surface-popover: rgb(25, 28, 39);
     --surface-dialog: #1a1d28;
 
     --text-primary: #e0e4eb;

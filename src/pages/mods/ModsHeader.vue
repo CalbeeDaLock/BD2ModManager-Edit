@@ -79,7 +79,7 @@ function getModTypeClass(modType: string) {
 
                     <template #default>
                         <div
-                            class="flex flex-col min-w-80 bg-surface-popover border-border-default border-2 p-4 py-0 pb-2 rounded-md">
+                            class="flex flex-col min-w-80 bg-surface-popover border-border-default border p-4 py-0 pb-2 rounded-md">
                             <div class="font-semibold text-lg text-left py-2">
                                 {{ $t('modsTab.header.advancedFilters.title') }}
                             </div>
@@ -110,7 +110,7 @@ function getModTypeClass(modType: string) {
         <div class="flex justify-between items-center gap-2 ">
             <div class="flex gap-2">
                 <button v-for="modType in modTypes" :key="modType" @click="toggleModTypes(modType)"
-                    class="text-xs transition-all focus:outline-none bg-surface-card border-border-default cursor-pointer capitalize items-center flex border font-semibold rounded-full py-1 px-2 active:scale-[1] active:bg-state-active disabled:pointer-events-none disabled:opacity-50"
+                    class="text-xs transition-all focus:outline-none bg-surface-input border-border-default cursor-pointer capitalize items-center flex border font-semibold rounded-full py-1 px-2 active:scale-[1] active:bg-state-active disabled:pointer-events-none disabled:opacity-50"
 
                     :class="[filters.modTypes.includes(modType) ? getModTypeClass(modType) : 'hover:bg-state-hover! text-text-secondary']">
                     <span class="overflow-hidden transition-all duration-150"
