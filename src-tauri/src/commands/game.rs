@@ -1,6 +1,7 @@
 use std::{fs, path::PathBuf};
 use bd2modmanager_lib::{game::{game::{self, VersionResult}, installer::{self, is_bdx_archive, is_bepinex_archive, is_configmanager_archive}}, utils::path::get_characters_path};
 use winreg::{enums::HKEY_CURRENT_USER, RegKey};
+use log::{info, warn};
 
 use crate::AppState;
 
@@ -15,19 +16,23 @@ fn get_game_path(state: &AppState) -> Option<PathBuf> {
 #[tauri::command]
 pub fn locate_game() -> Option<Vec<String>> {
     let hkcu = RegKey::predef(HKEY_CURRENT_USER);
-    let launcher_key_path = r"Software\Neowiz\Browndust2Starter\10000001";
 
-    let mut path_founds = Vec::new();
+    let Ok(parent_key) = hkcu.open_subkey(r"Software\Neowiz\Browndust2Starter") else {
+        warn!("Browndust2Starter registry key not found");
+        return None;
+    };
 
-    match hkcu.open_subkey(launcher_key_path) {
-        Ok(key) => {
-            let result: Result<String, _> = key.get_value("path");
-            path_founds.push(result.ok()?);
-        }
-        Err(_) => {}
-    }
+    let path_founds: Vec<String> = parent_key
+        .enum_keys()
+        .flatten()
+        .filter_map(|subkey_name| parent_key.open_subkey(subkey_name).ok())
+        .filter_map(|key| key.get_value::<String, _>("path").ok())
+        .collect();
+
+    info!("found {} game path(s)", path_founds.len());
 
     if path_founds.is_empty() {
+        info!("no game path(s) found");
         None
     } else {
         Some(path_founds)
