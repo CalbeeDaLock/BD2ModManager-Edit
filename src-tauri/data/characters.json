@@ -1,5 +1,5 @@
 {
-    "version": "0.0.19",
+    "version": "0.0.20",
     "characters": [
         {
             "id": "000708",
@@ -792,6 +792,7 @@
             "gender": "female",
             "costume_id": "003301",
             "character_id": 33,
+            "npc_id": "0033",
             "character_name": {
                 "en": "Nebris",
                 "cn": "内布利斯",
@@ -1125,6 +1126,7 @@
             "gender": "female",
             "costume_id": "003101",
             "character_id": 31,
+            "npc_id": "300302",
             "character_name": {
                 "en": "Elpis",
                 "cn": "厄尔比斯",
@@ -3582,6 +3584,7 @@
             "gender": "female",
             "costume_id": "003201",
             "character_id": 32,
+            "npc_id": "300501",
             "character_name": {
                 "en": "Loen",
                 "cn": "罗安",
