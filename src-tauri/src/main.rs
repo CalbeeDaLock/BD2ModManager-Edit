@@ -32,6 +32,8 @@ mod update;
 use percent_encoding::percent_decode_str;
 use reqwest;
 
+struct BundledAssets(std::collections::HashSet<String>);
+
 pub struct AppState {
     pub mod_manager: Arc<Mutex<BD2ModManager>>,
     pub config: Arc<Mutex<BD2Config>>,
@@ -91,12 +93,32 @@ fn rotate_logs(logs_dir: &PathBuf) {
 }
 
 fn get_game_asset(app_handle: &AppHandle, character_ids: &[&str], category: &str) -> Option<Vec<u8>> {
-    for id in character_ids {
-        let path = format!("characters/{}/{}.png", category, id);
-        // debug!("Trying bundled asset: {}", path);
-        if let Some(asset) = app_handle.asset_resolver().get(path.clone()) {
-            // debug!("Found bundled asset: {}", path);
-            return Some(asset.bytes.to_vec());
+    #[cfg(not(debug_assertions))]
+    {
+        let bundled_assets = app_handle.state::<BundledAssets>();
+    
+        for id in character_ids {
+            let path = format!("/characters/{}/{}.png", category, id);
+            // debug!("Trying bundled asset: {}", path);
+            if bundled_assets.0.contains(&path) {
+                // debug!("Found bundled asset: {}", path);
+                if let Some(asset) = app_handle.asset_resolver().get(path.clone()) {
+                    return Some(asset.bytes.to_vec());
+                }
+            }
+        }
+    
+        debug!("Assets for character id {:?} not found bundled", character_ids);
+    }
+
+    if let Ok(app_data) = app_handle.path().app_data_dir() {
+        for id in character_ids {
+            let appdata_asset_path = app_data.join("assets").join(category).join(format!("{}.png", id));
+            // debug!("Trying appdata path: {:?}", appdata_asset_path);
+            if let Ok(bytes) = std::fs::read(&appdata_asset_path) {
+                debug!("Found asset on appdata: {:?}", appdata_asset_path);
+                return Some(bytes);
+            }
         }
     }
 
@@ -109,19 +131,6 @@ fn get_game_asset(app_handle: &AppHandle, character_ids: &[&str], category: &str
                     // debug!("Found asset on dev server: {}", url);
                     return Some(bytes.to_vec());
                 }
-            }
-        }
-    }
-
-    debug!("Assets for character id {:?} not found bundled", character_ids);
-
-    if let Ok(app_data) = app_handle.path().app_data_dir() {
-        for id in character_ids {
-            let appdata_asset_path = app_data.join("assets").join(category).join(format!("{}.png", id));
-            debug!("Trying appdata path: {:?}", appdata_asset_path);
-            if let Ok(bytes) = std::fs::read(&appdata_asset_path) {
-                debug!("Found asset on appdata: {:?}", appdata_asset_path);
-                return Some(bytes);
             }
         }
     }
@@ -251,8 +260,15 @@ pub fn main() {
                 config: Arc::new(Mutex::new(config)),
             };
 
+            let bundled_assets: std::collections::HashSet<String> = app
+                .asset_resolver()
+                .iter()
+                .map(|(path, _)| path.to_string())
+                .collect();
+
             app.manage(app_state);
             app.manage(PendingUpdate(std::sync::Mutex::new(None)));
+            app.manage(BundledAssets(bundled_assets));
 
             // move data to appdata
             data::move_data_to_appdata(&app_handle).expect("Failed to move data to appdata");
