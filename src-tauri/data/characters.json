@@ -1,5 +1,5 @@
 {
-    "version": "0.0.20",
+    "version": "0.0.21",
     "characters": [
         {
             "id": "000708",
@@ -3346,7 +3346,7 @@
             "id": "067004",
             "character": "Ventana",
             "costume": "Onsen Practitioner",
-            "is_collab": true,
+            "is_collab": false,
             "cutscene": true,
             "standing": true,
             "dating_id": "15",
