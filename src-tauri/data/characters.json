@@ -1,5 +1,5 @@
 {
-    "version": "0.0.18",
+    "version": "0.0.19",
     "characters": [
         {
             "id": "000708",
@@ -6996,6 +6996,80 @@
                 "head_image": "icon_char067104_209.png",
                 "character_image": "illust_inven_char067104_206.png",
                 "skill_image": "illust_skill_char067104_206.png"
+            }
+        },
+        {
+            "id": "060804",
+            "character": "Elise",
+            "costume": "Naive Lady",
+            "is_collab": false,
+            "cutscene": false,
+            "standing": false,
+            "dating_id": null,
+            "character_image": "illust_inven_char060804_207.png",
+            "skill_preview_image": null,
+            "release_date": null,
+            "gender": "female",
+            "costume_id": "060804",
+            "character_id": 608,
+            "character_name": {
+                "en": "Elise",
+                "cn": "爱丽洁",
+                "jp": "エリーゼ",
+                "tw": "愛麗潔",
+                "kr": "엘리제"
+            },
+            "costume_name": {
+                "en": "Naive Lady",
+                "cn": "稚心佳人",
+                "jp": "ナイーヴ・レディ",
+                "tw": "天真的小姐",
+                "kr": "나이브 레이디"
+            },
+            "skin_type": "normal",
+            "grade": 5,
+            "element": "fire",
+            "assets": {
+                "head_image": "icon_char060804_210.png",
+                "character_image": "illust_inven_char060804_207.png",
+                "skill_image": null
+            }
+        },
+        {
+            "id": "003392",
+            "character": "Nebris",
+            "costume": "Lucky Bikini",
+            "is_collab": false,
+            "cutscene": false,
+            "standing": false,
+            "dating_id": null,
+            "character_image": "illust_inven_char003392_212.png",
+            "skill_preview_image": null,
+            "release_date": null,
+            "gender": "female",
+            "costume_id": "003392",
+            "character_id": 33,
+            "character_name": {
+                "en": "Nebris",
+                "cn": "内布利斯",
+                "jp": "ネブリス",
+                "tw": "內布利斯",
+                "kr": "네브리스"
+            },
+            "costume_name": {
+                "en": "Lucky Bikini",
+                "cn": "幸运比基尼",
+                "jp": "ラッキー・ビキニ",
+                "tw": "幸運比基尼",
+                "kr": "럭키 비키니"
+            },
+            "skin_type": "special",
+            "grade": 5,
+            "element": "wind",
+            "assets": {
+                "head_image": "icon_char003392_215.png",
+                "character_image": "illust_inven_char003392_212.png",
+                "skill_image": null
             }
         }
     ],
