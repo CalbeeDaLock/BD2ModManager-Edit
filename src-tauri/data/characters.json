@@ -1,5 +1,5 @@
 {
-    "version": "0.0.21",
+    "version": "0.0.22",
     "characters": [
         {
             "id": "000708",
@@ -6974,7 +6974,7 @@
             "dating_id": "19",
             "character_image": "illust_inven_char067104_206.png",
             "skill_preview_image": "illust_skill_char067104_206.png",
-            "release_date": null,
+            "release_date": "2026-06-18",
             "gender": "female",
             "costume_id": "067104",
             "character_id": 671,
@@ -7011,7 +7011,7 @@
             "dating_id": null,
             "character_image": "illust_inven_char060804_207.png",
             "skill_preview_image": null,
-            "release_date": null,
+            "release_date": "2026-07-02",
             "gender": "female",
             "costume_id": "060804",
             "character_id": 608,
@@ -7048,7 +7048,7 @@
             "dating_id": null,
             "character_image": "illust_inven_char003392_212.png",
             "skill_preview_image": null,
-            "release_date": null,
+            "release_date": "2026-07-02",
             "gender": "female",
             "costume_id": "003392",
             "character_id": 33,
