@@ -1,0 +1,228 @@
+use std::{fs, path::PathBuf};
+use bd2modmanager_lib::{game::{game::{self, VersionResult}, installer::{self, is_bdx_archive, is_bepinex_archive, is_configmanager_archive}}, utils::path::get_characters_path};
+use winreg::{enums::HKEY_CURRENT_USER, RegKey};
+
+use crate::AppState;
+
+fn get_game_path(state: &AppState) -> Option<PathBuf> {
+    let config = state.config.lock().unwrap();
+    config
+        .game_directory
+        .as_ref()
+        .map(PathBuf::from)
+}
+
+#[tauri::command]
+pub fn locate_game() -> Option<Vec<String>> {
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    let launcher_key_path = r"Software\Neowiz\Browndust2Starter\10000001";
+
+    let mut path_founds = Vec::new();
+
+    match hkcu.open_subkey(launcher_key_path) {
+        Ok(key) => {
+            let result: Result<String, _> = key.get_value("path");
+            path_founds.push(result.ok()?);
+        }
+        Err(_) => {}
+    }
+
+    if path_founds.is_empty() {
+        None
+    } else {
+        Some(path_founds)
+    }
+}
+
+#[tauri::command]
+pub fn validate_game_path(path: String) -> bool {
+    PathBuf::from(&path).join("BrownDust II.exe").exists() && PathBuf::from(&path).join("BrownDust II_Data").exists()
+}
+
+#[tauri::command]
+pub fn get_game_version(state: tauri::State<AppState>) -> Option<String> {
+    let game_path = get_game_path(&state)?;
+    game::get_game_version(&game_path)
+}
+
+#[tauri::command]
+pub fn get_characters(app_handle: tauri::AppHandle) -> Result<serde_json::Value, String> {
+    let chars_path = get_characters_path(&app_handle).ok_or("failed to get characters path")?;
+
+    let content = std::fs::read_to_string(&chars_path).map_err(|e| e.to_string())?;
+
+    serde_json::from_str(&content).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn launch_game(state: tauri::State<AppState>) -> Result<(), String> {
+    let game_path = get_game_path(&state).ok_or("Game path not set")?;
+
+    let exe_path = game_path.join("BrownDust II.exe");
+
+    if !exe_path.exists() {
+        return Err("Game executable not found".to_string());
+    }
+
+    std::process::Command::new(exe_path)
+        .spawn()
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn get_bepinex_version(app_handle: tauri::AppHandle, state: tauri::State<AppState>) -> Option<VersionResult> {
+    let game_path = get_game_path(&state)?;
+    game::get_bepinex_version(&app_handle, &game_path)
+}
+
+#[tauri::command]
+pub fn get_browndustx_version(app_handle: tauri::AppHandle, state: tauri::State<AppState>) -> Option<VersionResult> {
+    let game_path = get_game_path(&state)?;
+    game::get_browndustx_version(&app_handle, &game_path)
+}
+
+#[tauri::command]
+pub fn get_configmanager_version(app_handle: tauri::AppHandle, state: tauri::State<AppState>) -> Option<VersionResult> {
+    let game_path = get_game_path(&state)?;
+    game::get_configmanager_version(&app_handle, &game_path)
+}
+
+#[tauri::command]
+pub async fn install_bepinex(
+    state: tauri::State<'_, AppState>, 
+    app_handle: tauri::AppHandle,
+    path: Option<PathBuf>,
+    url: Option<String>
+) -> Result<(), installer::InstallBepInExError> {
+    let game_path = {
+        let config = state.config.lock().map_err(|_| installer::InstallBepInExError::Unknown("Failed to lock config".into()))?;
+        config
+            .game_directory
+            .as_ref()
+            .map(PathBuf::from)
+            .ok_or_else(|| installer::InstallBepInExError::GamePathNotSet)?
+    };
+
+    
+    match (path, url) {
+        (Some(path), None) => installer::install_bepinex_from_archive(&app_handle, game_path.clone(), path).await,
+        (None, Some(url)) => installer::install_bepinex_from_url(&app_handle, game_path.clone(), url).await,
+        _ => Err(installer::InstallBepInExError::Unknown("Either path or url must be provided".to_string())),
+    }
+}
+
+#[tauri::command]
+pub async fn uninstall_bepinex(state: tauri::State<'_, AppState>, app_handle: tauri::AppHandle) -> Result<(), installer::UninstallBepInExError> {
+    let game_path = {
+        let config = state.config.lock().map_err(|_| installer::UninstallBepInExError::Unknown("Failed to lock config".into()))?;
+        config
+            .game_directory
+            .as_ref()
+            .map(PathBuf::from)
+            .ok_or_else(|| installer::UninstallBepInExError::GamePathNotSet)?
+    };
+
+    installer::uninstall_bepinex(&app_handle, &game_path).await
+}
+
+#[tauri::command]
+pub async fn install_browndustx(
+    state: tauri::State<'_, AppState>, 
+    app_handle: tauri::AppHandle,
+    path: PathBuf
+) -> Result<(), installer::InstallPluginError> {
+    let game_path = {
+        let config = state.config.lock().map_err(|_| installer::InstallPluginError::Unknown("Failed to lock config".into()))?;
+        config
+            .game_directory
+            .as_ref()
+            .map(PathBuf::from)
+            .ok_or_else(|| installer::InstallPluginError::GamePathNotSet)?
+    };
+
+    installer::install_browndustx_plugin_from_archive(&app_handle, &game_path, path).await
+}
+
+#[tauri::command]
+pub async fn uninstall_browndustx(
+    state: tauri::State<'_, AppState>, 
+    app_handle: tauri::AppHandle,
+) -> Result<(), installer::UninstallPluginError> {
+    let game_path = {
+        let config = state.config.lock().map_err(|_| installer::UninstallPluginError::Unknown("Failed to lock config".into()))?;
+        config
+            .game_directory
+            .as_ref()
+            .map(PathBuf::from)
+            .ok_or_else(|| installer::UninstallPluginError::GamePathNotSet)?
+    };
+
+    installer::uninstall_browndustx_plugin(&app_handle, &game_path).await
+}
+
+#[tauri::command]
+pub async fn install_configmanager(
+    state: tauri::State<'_, AppState>, 
+    app_handle: tauri::AppHandle,
+    path: Option<PathBuf>,
+    url: Option<String>
+) -> Result<(), installer::InstallPluginError> {
+    let game_path = {
+        let config = state.config.lock().map_err(|_| installer::InstallPluginError::Unknown("Failed to lock config".into()))?;
+        config
+            .game_directory
+            .as_ref()
+            .map(PathBuf::from)
+            .ok_or_else(|| installer::InstallPluginError::GamePathNotSet)?
+    };
+
+    match (path, url) {
+        (Some(path), None) => installer::install_configmanager_plugin_from_archive(&app_handle, &game_path, path).await,
+        (None, Some(url)) => installer::install_configmanager_plugin_from_url(&app_handle, &game_path, url).await,
+        _ => Err(installer::InstallPluginError::Unknown("Either path or url must be provided".to_string())),
+    }
+}
+
+#[tauri::command]
+pub async fn uninstall_configmanager(
+    state: tauri::State<'_, AppState>, 
+    app_handle: tauri::AppHandle,
+) -> Result<(), installer::UninstallPluginError> {
+    let game_path = {
+        let config = state.config.lock().map_err(|_| installer::UninstallPluginError::Unknown("Failed to lock config".into()))?;
+        config
+            .game_directory
+            .as_ref()
+            .map(PathBuf::from)
+            .ok_or_else(|| installer::UninstallPluginError::GamePathNotSet)?
+    };
+
+    installer::uninstall_configmanager_plugin(&app_handle, &game_path).await
+}
+
+#[tauri::command]
+pub fn determine_archive_type(path: String) -> Result<Option<String>, String> {
+    let archive_path = PathBuf::from(path);
+    if !archive_path.exists() {
+        return Ok(None);
+    }
+
+    let file = fs::File::open(&archive_path).map_err(|e| e.to_string())?;
+    let mut archive = zip::ZipArchive::new(file).map_err(|e| e.to_string())?;
+
+    if is_bepinex_archive(&mut archive) {
+        return Ok(Some("BEPINEX".to_string()));
+    }
+
+    if is_bdx_archive(&mut archive) {
+        return Ok(Some("BROWNDUSTX".to_string()));
+    }
+
+    if is_configmanager_archive(&mut archive) {
+        return Ok(Some("CONFIGMANAGER".to_string()));
+    }
+
+    Ok(None)
+}
