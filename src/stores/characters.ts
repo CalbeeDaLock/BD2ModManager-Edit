@@ -2,6 +2,7 @@ import { computed, readonly, shallowRef } from "vue";
 import { defineStore } from "pinia";
 import { timeOperation } from "../utils/timeOp";
 import { invoke } from "@tauri-apps/api/core";
+import { Language } from "./settings";
 
 export interface Character {
     id: string | readonly string[];
@@ -16,6 +17,15 @@ export interface Character {
     is_collab?: boolean;
     gender?: string;
     npc_id?: string;
+
+    // new keys
+    costume_id: string,
+    character_id: Int16Array,
+    character_name: { [Lang in Language]: string }
+    costume_name: { [Lang in Language]: string }
+    skin_type: "normal" | "special" | "prestige"
+    grade: number
+    element: "dark" | "light" | "water" | "fire" | "wind"
 }
 
 interface CharactersJson {

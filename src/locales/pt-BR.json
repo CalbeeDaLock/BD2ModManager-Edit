@@ -79,8 +79,12 @@
             "characters": "Personagens",
             "profiles": "Perfis",
             "browndustx": "BrownDustX",
+<<<<<<< HEAD
             "settings": "Configurações",
             "npcs": "NPC"
+=======
+            "settings": "Configurações"
+>>>>>>> upstream/main
         },
         "notifications": {
             "gameLaunched": {
@@ -132,9 +136,13 @@
                     "onlyEnabledMods": "Apenas Mods Ativados",
                     "onlyDisabledMods": "Apenas Mods Desativados",
                     "onlyConflictsMods": "Apenas Mods com Conflitos",
+<<<<<<< HEAD
                     "onlyErrorsMods": "Apenas Mods com Erros",
                     "hideErrorsMods": "Ocultar Mods com Erros",
                     "onlyOneModType": "Selecionar Apenas Um Tipo de Mod"
+=======
+                    "onlyErrorsMods": "Apenas Mods com Erros"
+>>>>>>> upstream/main
                 }
             }
         },
@@ -162,8 +170,12 @@
                 "deleteMod": "Excluir Mod",
                 "deleteSelectedMods": "Excluir Mods Selecionados",
                 "openModFolder": "Abrir Pasta do Mod",
+<<<<<<< HEAD
                 "previewMod": "Visualizar Mod",
                 "doubleClickToPreviewTip": "Dica: dê um duplo clique em uma linha para visualizar um mod."
+=======
+                "previewMod": "Visualizar Mod"
+>>>>>>> upstream/main
             }
         },
         "confirmations": {
@@ -260,8 +272,12 @@
                 "hideMenCharacters": "Ocultar Personagens Masculinos",
                 "hideWomenCharacters": "Ocultar Personagens Femininos",
                 "onlyCharactersWithMods": "Apenas Personagens com Mods",
+<<<<<<< HEAD
                 "onlyCharactersWithoutMods": "Apenas Personagens sem Mods",
                 "onlyCollabCharacters": "Apenas Personagens de Colaboração"
+=======
+                "onlyCharactersWithoutMods": "Apenas Personagens sem Mods"
+>>>>>>> upstream/main
             },
             "releasePeriod": {
                 "title": "Período de Lançamento",
@@ -778,6 +794,7 @@
         "shouldBeInFolder": "Este mod deve estar dentro de uma pasta. Por favor, crie uma pasta com o mesmo nome do mod e mova o arquivo do mod para dentro dela.",
         "missingAtlasFile": "Este mod está sem o arquivo de atlas.",
         "noDescription": "Nenhuma descrição fornecida."
+<<<<<<< HEAD
     },
     "npcsTab": {
         "title": "NPC",
@@ -811,5 +828,7 @@
                 "description": "Acesse a aba Mods para instalar mods para este NPC."
             }
         }
+=======
+>>>>>>> upstream/main
     }
 }

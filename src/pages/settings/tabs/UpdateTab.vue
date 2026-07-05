@@ -81,24 +81,26 @@ async function updateModPreview() {
           />
         </div>
 
-        <div class="flex items-center justify-between ">
+        <div class="flex items-center justify-between">
           <div>
-            <div class="font-medium text-primary">BD2ModPreview</div>
-            <div class="text-sm text-secondary">
+            <div class="font-medium text-text-primary">BD2ModPreview</div>
+            <div class="text-sm text-text-secondary">
               Version {{ modPreviewVersion || 'Unknown' }}
             </div>
           </div>
           <div>
-            <Button 
-            v-if="modPreviewUpdatesAvailable && modPreviewUpdatesAvailable.downloadUrl" 
-            :label="$t('settingsTab.updates.sections.updates.actions.updateModPreview')" @click="updateModPreview" />
-            <Button v-else :label="isCheckingModPreviewUpdates ? $t('settingsTab.updates.sections.updates.actions.checkingForUpdates') : $t('settingsTab.updates.sections.updates.actions.checkForUpdates')" @click="checkModPreviewUpdates" :disabled="isCheckingModPreviewUpdates" />            
+            <Button
+              v-if="modPreviewUpdatesAvailable && modPreviewUpdatesAvailable.downloadUrl"
+              :label="$t('settingsTab.updates.sections.updates.actions.updateModPreview')"
+              @click="updateModPreview" />
+            <Button
+              v-else
+              :label="isCheckingModPreviewUpdates ? $t('settingsTab.updates.sections.updates.actions.checkingForUpdates') : $t('settingsTab.updates.sections.updates.actions.checkForUpdates')"
+              @click="checkModPreviewUpdates"
+              :disabled="isCheckingModPreviewUpdates" />
           </div>
-
         </div>
-
       </Section>
-
     </div>
   </TabPanel>
 </template>

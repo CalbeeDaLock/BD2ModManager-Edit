@@ -10,10 +10,10 @@ defineProps<{
 <template>
     <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-1">
-            <span class="text-lg font-semibold text-primary">
+            <span class="text-lg font-semibold text-text-primary">
                 {{ title }}
             </span>
-            <span v-if="description" class="text-secondary">
+            <span v-if="description" class="text-text-secondary">
                 {{ description }}
             </span>
         </div>

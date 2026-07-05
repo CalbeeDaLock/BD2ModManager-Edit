@@ -1,0 +1,74 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build (${{ matrix.name }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: installer
+            args: --no-sign
+            argsWithoutMsi: --no-sign --no-bundle --bundles nsis
+          - name: portable
+            args: --no-bundle --features portable
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+
+      - name: Download bundled tools
+        run: pnpm download:modpreview
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Get version
+        id: get_version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build
+        shell: bash
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          MATRIX_NAME="${{ matrix.name }}"
+
+          if [[ "$MATRIX_NAME" == "installer" && ( "$VERSION" == *"-dev"* || "$VERSION" == *"-beta"* ) ]]; then
+            echo "Dev/Beta installer build detected: $VERSION"
+            pnpm tauri build ${{ matrix.argsWithoutMsi }}
+          else
+            echo "Normal build: $VERSION ($MATRIX_NAME)"
+            pnpm tauri build ${{ matrix.args }}
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}-${{ github.sha }}
+          path: |
+            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/BD2ModManager.exe
+          if-no-files-found: ignore

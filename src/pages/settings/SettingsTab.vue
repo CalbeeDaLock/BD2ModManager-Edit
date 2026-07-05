@@ -32,9 +32,9 @@ const tabs = computed(() => [{
 </script>
 
 <template>
-    <div class="text-primary h-full overflow-y-auto flex flex-col w-full">
-        <TabGroup vertical>
-            <div class="relative flex flex-col p-2 border-r border-border">
+    <div class="text-text-primary h-full overflow-y-auto flex flex-col w-full">
+        <TabGroup>
+            <div class="relative flex flex-col p-2">
                 <TabList class="flex gap-1 transition-all">
                     <Tab v-for="tab in tabs" as="template" :key="tab.value" v-slot="{ selected }">
                         <button class="
@@ -45,10 +45,10 @@ const tabs = computed(() => [{
                         text-md
                         cursor-pointer
                         ring-0 ring-transparent
-                        hover:bg-interactive-bg-hover
+                        hover:bg-state-hover
                         flex gap-1.5 items-center"
-                            :class="{ 'bg-interactive-bg text-primary font-medium': selected, 'text-secondary': !selected }">
-                            <component v-if="tab.icon" :is="tab.icon" :class="['w-[1.25em] h-[1.25em] text-primary']" />
+                            :class="{ 'bg-accent-muted! text-text-primary font-medium': selected, 'text-text-secondary': !selected }">
+                            <component v-if="tab.icon" :is="tab.icon" :class="['w-[1.25em] h-[1.25em] text-text-primar']" />
                             {{ tab.label }}
                         </button>
                     </Tab>

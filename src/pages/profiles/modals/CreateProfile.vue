@@ -61,7 +61,7 @@ function onClose() {
 <template>
     <Modal v-model:show="visible" class="min-w-120 max-h-[80%] max-w-200"
         :title="$t('profilesTab.modals.createProfile.title')" :subtitle="$t('profilesTab.modals.createProfile.description')" @close="onClose">
-        <div class="text-primary flex flex-col gap-4 p-4">
+        <div class="text-text-primary flex flex-col gap-4 p-4">
 
             <div class="flex flex-col gap-1">
                 <label for="name" class="font-semibold">
@@ -104,9 +104,9 @@ function onClose() {
 
         <template #footer>
             <div class="flex justify-end gap-2 p-2">
-                <Button type="button" :label="$t('common.actions.cancel')"
+                <Button :label="$t('common.actions.cancel')"
                     @click="onClose" />
-                <Button type="button" :label="$t('profilesTab.modals.createProfile.actions.createProfile')" @click="create" :disabled="!canCreateProfile" />
+                <Button  variant="primary" :label="$t('profilesTab.modals.createProfile.actions.createProfile')" @click="create" :disabled="!canCreateProfile" />
             </div>
         </template>
     </Modal>

@@ -1,7 +1,7 @@
 {
   "name": "bd2modmanager",
   "private": true,
-  "version": "4.1.1",
+  "version": "4.2.0-beta",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,6 @@
   "dependencies": {
     "@floating-ui/vue": "^1.1.10",
     "@headlessui/vue": "^1.7.23",
-    "@primeuix/themes": "^2.0.3",
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/vue-table": "^8.21.3",
     "@tanstack/vue-virtual": "^3.13.19",
@@ -32,8 +31,7 @@
     "@vueuse/core": "^14.2.1",
     "lucide-vue-next": "^0.575.0",
     "pinia": "^3.0.4",
-    "pnpm": "^10.30.2",
-    "primevue": "^4.5.4",
+    "pnpm": "^10.34.4",
     "tailwindcss": "^4.2.1",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.29",
@@ -46,7 +44,7 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/devtools": "^8.0.6",
     "typescript": "~5.9.3",
-    "vite": "^7.3.1",
+    "vite": "^7.3.5",
     "vite-plugin-vue-devtools": "^8.0.6",
     "vue-tsc": "^3.2.5"
   }

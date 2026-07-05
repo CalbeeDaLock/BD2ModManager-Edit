@@ -1,6 +1,6 @@
 {
-    "version": "0.4",
-    "last_updated": "2026-04-02",
+    "version": "0.5",
+    "last_updated": "2026-05-29",
     "authors": {
         "anextra": {
             "name": "AnExtra",
@@ -270,6 +270,11 @@
                     "author": "linr",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -307,6 +312,11 @@
                     "author": "nimloth",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -373,6 +383,11 @@
                     "author": "nimloth",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -605,6 +620,11 @@
                 },
                 {
                     "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
                     "type": "cutscene",
                     "is_paid": true
                 }
@@ -1009,6 +1029,11 @@
                     "author": "yuk11sh1d4",
                     "type": "dating",
                     "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -1068,6 +1093,11 @@
                     "author": "linr",
                     "type": "dating",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -1750,6 +1780,11 @@
                     "author": "yuk11sh1d4",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         },
@@ -1867,6 +1902,11 @@
                     "author": "yuk11sh1d4",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -1920,6 +1960,11 @@
                     "author": "qi",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -1962,6 +2007,11 @@
                 },
                 {
                     "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
                     "type": "cutscene",
                     "is_paid": true
                 }
@@ -2232,6 +2282,11 @@
                     "author": "yuk11sh1d4",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         },
@@ -2339,6 +2394,11 @@
                     "author": "qi",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -2736,6 +2796,11 @@
                     "author": "yuk11sh1d4",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -3005,6 +3070,11 @@
                     "author": "hcoel",
                     "type": "dating",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -3049,6 +3119,11 @@
                     "author": "qi",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -3146,6 +3221,11 @@
                 {
                     "author": "na0h",
                     "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
                     "is_paid": true
                 }
             ]
@@ -3363,6 +3443,11 @@
                     "author": "na0h",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -3468,6 +3553,11 @@
                 },
                 {
                     "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
                     "type": "cutscene",
                     "is_paid": true
                 }
@@ -3658,6 +3748,11 @@
                     "author": "qi",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         },
@@ -3729,6 +3824,21 @@
                 },
                 {
                     "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
                     "type": "cutscene",
                     "is_paid": true
                 }
@@ -4217,6 +4327,11 @@
                     "author": "qi",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         },
@@ -4236,6 +4351,11 @@
                     "author": "sloth",
                     "type": "standing",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -4270,6 +4390,11 @@
                     "author": "linr",
                     "type": "standing",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -4287,6 +4412,11 @@
                 },
                 {
                     "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
                     "type": "cutscene",
                     "is_paid": true
                 }
@@ -4397,6 +4527,11 @@
                     "author": "nimloth",
                     "type": "standing",
                     "is_paid": false
+                },
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -4856,6 +4991,11 @@
                     "author": "yuk11sh1d4",
                     "type": "cutscene",
                     "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -4922,6 +5062,11 @@
                 },
                 {
                     "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
                     "type": "cutscene",
                     "is_paid": true
                 }
@@ -5185,6 +5330,16 @@
                     "author": "linr",
                     "type": "dating",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "dating",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -5752,6 +5907,11 @@
                     "author": "linr",
                     "type": "cutscene",
                     "is_paid": false
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         },
@@ -5776,6 +5936,26 @@
                     "author": "linr",
                     "type": "standing",
                     "is_paid": false
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -5795,6 +5975,21 @@
                     "author": "linr",
                     "type": "standing",
                     "is_paid": false
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
                 }
             ]
         },
@@ -5832,6 +6027,16 @@
                 {
                     "author": "tazmanyakk",
                     "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
                     "is_paid": true
                 }
             ]
@@ -5982,15 +6187,6 @@
                 }
             ]
         },
-        "Granhildr · Boo Ghost": {
-            "mods": [
-                {
-                    "author": "anextra",
-                    "type": "cutscene",
-                    "is_paid": false
-                }
-            ]
-        },
         "020201": {
             "mods": [
                 {
@@ -6002,6 +6198,21 @@
                     "author": "linr",
                     "type": "standing",
                     "is_paid": false
+                },
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         },
@@ -6011,6 +6222,182 @@
                     "author": "linr",
                     "type": "standing",
                     "is_paid": false
+                }
+            ]
+        },
+        "067803": {
+            "mods": [
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                }
+            ]
+        },
+        "004202": {
+            "mods": [
+                {
+                    "author": "hcoel",
+                    "type": "dating",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "dating",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "yuk11sh1d4",
+                    "type": "dating",
+                    "is_paid": true
+                },
+                {
+                    "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                }
+            ]
+        },
+        "003803": {
+            "mods": [
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "yuk11sh1d4",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
+                }
+            ]
+        },
+        "021001": {
+            "mods": [
+                {
+                    "author": "hcoel",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "hcoel",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "standing",
+                    "is_paid": true
+                },
+                {
+                    "author": "na0h",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "yuk11sh1d4",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "cutscene",
+                    "is_paid": true
+                },
+                {
+                    "author": "tazmanyakk",
+                    "type": "standing",
+                    "is_paid": true
                 }
             ]
         }

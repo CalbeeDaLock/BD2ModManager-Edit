@@ -16,20 +16,17 @@ const displayTitle = computed(() => title.value || (route.meta?.title as string)
 </script>
 
 <template>
-    <div
-        class="px-2 flex select-none bg-bg-deep overflow-hidden min-h-10 h-12 shrink-0 sticky text-primary justify-between transition-[max-height] duration-300 ease-out">
+    <div class="px-2 flex select-none overflow-hidden min-h-10 h-12 shrink-0 sticky justify-between transition-[max-height] duration-300 ease-out">
         <!-- :style="{ maxHeight: showSyncBar ? '52px' : '40px' }"  -->
-
         <div class="flex min-w-0 items-center gap-2 px-2 py-1 justify-center">
-            <span class="font-mono truncate font-bold text-lg text-primary select-none flex">
+            <span class="font-mono truncate font-bold text-lg select-none flex">
                 {{ displayTitle }}
             </span>
 
             <span v-if="subtitle"
-                class="hidden md:block truncate flex-1 font-medium text-xs text-secondary select-none">
+                class="hidden md:block truncate flex-1 font-medium text-xs text-text-secondary select-none">
                 {{ subtitle }}
             </span>
-
         </div>
         <div class="flex items-center shrink-0 gap-1 md:gap-2" v-if="buttons.length > 0">
             <template v-for="(button, index) in buttons">

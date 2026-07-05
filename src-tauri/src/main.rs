@@ -18,7 +18,8 @@ use bd2modmanager_lib::{
     },
     BD2ModManager,
 };
-use tauri::Manager;
+use log::debug;
+use tauri::{AppHandle, Manager, http};
 
 mod commands;
 use commands::*;
@@ -27,6 +28,11 @@ use crate::commands::updater::PendingUpdate;
 
 mod migrate;
 mod update;
+
+use percent_encoding::percent_decode_str;
+use reqwest;
+
+struct BundledAssets(std::collections::HashSet<String>);
 
 pub struct AppState {
     pub mod_manager: Arc<Mutex<BD2ModManager>>,
@@ -86,6 +92,54 @@ fn rotate_logs(logs_dir: &PathBuf) {
     }
 }
 
+fn get_game_asset(app_handle: &AppHandle, character_ids: &[&str], category: &str) -> Option<Vec<u8>> {
+    #[cfg(not(debug_assertions))]
+    {
+        let bundled_assets = app_handle.state::<BundledAssets>();
+    
+        for id in character_ids {
+            let path = format!("/characters/{}/{}.png", category, id);
+            // debug!("Trying bundled asset: {}", path);
+            if bundled_assets.0.contains(&path) {
+                // debug!("Found bundled asset: {}", path);
+                if let Some(asset) = app_handle.asset_resolver().get(path.clone()) {
+                    return Some(asset.bytes.to_vec());
+                }
+            }
+        }
+    
+        debug!("Assets for character id {:?} not found bundled", character_ids);
+    }
+
+    if let Ok(app_data) = app_handle.path().app_data_dir() {
+        for id in character_ids {
+            let appdata_asset_path = app_data.join("assets").join(category).join(format!("{}.png", id));
+            // debug!("Trying appdata path: {:?}", appdata_asset_path);
+            if let Ok(bytes) = std::fs::read(&appdata_asset_path) {
+                debug!("Found asset on appdata: {:?}", appdata_asset_path);
+                return Some(bytes);
+            }
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    for id in character_ids {
+        let url = format!("http://localhost:1420/characters/{}/{}.png", category, id);
+        if let Ok(resp) = reqwest::blocking::get(&url) {
+            if resp.status().is_success() {
+                if let Ok(bytes) = resp.bytes() {
+                    // debug!("Found asset on dev server: {}", url);
+                    return Some(bytes.to_vec());
+                }
+            }
+        }
+    }
+
+    debug!("Assets not found for characters {:?}", character_ids);
+
+    None
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn main() {
     let context: tauri::Context = tauri::generate_context!();
@@ -94,8 +148,45 @@ pub fn main() {
         let logs_dir = data_dir.join(&bundle_id).join("logs");
         rotate_logs(&logs_dir);
     }
-    
+
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            let _ = app.get_webview_window("main")
+            .expect("no main window")
+            .set_focus();
+        }))
+        .register_uri_scheme_protocol("bd2assets", |ctx, request| {
+            // standing/065001,065002
+            // standing/065001
+            // heads/065002
+            let uri_path = percent_decode_str(request.uri().path())
+                .decode_utf8_lossy()
+                .trim_start_matches('/')
+                .to_string();
+
+            // println!("{:?}", uri_path);
+
+            let parts: Vec<&str> = uri_path.splitn(2, '/').collect();
+
+            let category = parts.get(0).copied().unwrap_or("standing");
+            let ids_raw = parts.get(1).copied().unwrap_or("");
+            let ids: Vec<&str> = ids_raw.split(',').collect();
+
+            if let Some(bytes) = get_game_asset(ctx.app_handle(), &ids, category) {
+                http::Response::builder()
+                    .header("Content-Type", "image/png")
+                    .header("Access-Control-Allow-Origin", "http://tauri.localhost")
+                    .header("Cache-Control", "public, max-age=604800") // 7 days cache
+                    .body(bytes)
+                    .unwrap()
+            } else {
+                // 404
+                http::Response::builder()
+                .status(404)
+                 .body(format!("missing character asset: {:?}", ids).into_bytes())
+                .unwrap()
+            }
+        })
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_os::init())
@@ -169,8 +260,15 @@ pub fn main() {
                 config: Arc::new(Mutex::new(config)),
             };
 
+            let bundled_assets: std::collections::HashSet<String> = app
+                .asset_resolver()
+                .iter()
+                .map(|(path, _)| path.to_string())
+                .collect();
+
             app.manage(app_state);
             app.manage(PendingUpdate(std::sync::Mutex::new(None)));
+            app.manage(BundledAssets(bundled_assets));
 
             // move data to appdata
             data::move_data_to_appdata(&app_handle).expect("Failed to move data to appdata");

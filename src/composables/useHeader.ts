@@ -9,7 +9,7 @@ interface HeaderButton {
   action?: () => void | Promise<void>
   render?: () => any
   labelClass?: string
-  variant?: 'text' | 'default' | 'unstyled' | 'alt'
+  variant?: 'default' | 'primary' | 'danger' | 'text'
 }
 
 interface HeaderContext {

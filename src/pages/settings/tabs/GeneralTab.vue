@@ -11,12 +11,14 @@ import Input from '../../../components/common/Input.vue';
 import Button from '../../../components/common/Button.vue';
 import Checkbox from '../../../components/common/Checkbox.vue';
 import { useLoggingStore } from '../../../stores/logging';
-import { useToast } from 'primevue/usetoast';
-import { useSettingsStore } from '../../../stores/settings';
+import { Language, useSettingsStore } from '../../../stores/settings';
+import { useNotificationStore } from '../../../stores/notification.ts';
+import { usePreferencesStore } from '../../../stores/preferences.ts';
 
 const settingsStore = useSettingsStore()
+const preferencesStore = usePreferencesStore()
 
-const toast = useToast()
+const notificationStore = useNotificationStore()
 
 const { t, availableLocales } = useI18n()
 
@@ -82,7 +84,7 @@ async function onThemeChanged(theme: string) {
     logInfo(`Theme changed to ${theme}`)
 }
 
-async function onLanguageChanged(language: string) {
+async function onLanguageChanged(language: Language) {
     if (!language) return
 
 
@@ -150,11 +152,11 @@ async function handleStagingModsBrowse() {
 
         logInfo(`Staging mods directory changed to ${folder}`)
 
-        toast.add({
+        notificationStore.add({
             severity: 'success',
-            summary: 'Staging Mods Directory Updated',
-            detail: `Staging mods directory has been updated to ${folder}.`,
-            life: 3000
+            title: 'Staging Mods Directory Updated',
+            message: `Staging mods directory has been updated to ${folder}.`,
+            duration: 3000
         })
     }
 }
@@ -171,22 +173,22 @@ async function handleGameDirectoryBrowse() {
         const isValid = await settingsStore.validateGamePath(folder)
         if (!isValid) {
             logWarning(`Selected game directory ${folder} is not valid.`)
-            toast.add({
+            notificationStore.add({
                 severity: 'warn',
-                summary: 'Invalid Game Directory',
-                detail: `The selected game directory ${folder} is not valid.`,
-                life: 5000
+                title: 'Invalid Game Directory',
+                message: `The selected game directory ${folder} is not valid.`,
+                duration: 5000
             })
             return
         }
 
         await settingsStore.saveSettings({ gameDirectory: folder })
         logInfo(`Game directory changed to ${folder}`)
-        toast.add({
+        notificationStore.add({
             severity: 'success',
-            summary: 'Game Directory Updated',
-            detail: `Game directory has been updated to ${folder}.`,
-            life: 3000
+            title: 'Game Directory Updated',
+            message: `Game directory has been updated to ${folder}.`,
+            duration: 3000
         })
     }
 }
@@ -214,6 +216,12 @@ async function handleGameDirectoryBrowse() {
                             :placeholder="$t('settingsTab.general.sections.application.language.placeholder')" option-label="label"
                             option-value="value" @update:model-value="onLanguageChanged" class="col-span-2" />
                     </div>
+
+                    <div class="flex items-start gap-3">
+                        <Checkbox v-model="preferencesStore.forceEnglishNames"
+                            :label="$t('settingsTab.general.sections.application.forceEnglishNames.label')"
+                            :description="$t('settingsTab.general.sections.application.forceEnglishNames.description')" />
+                    </div>
                 </div>
             </Section>
 
@@ -223,13 +231,11 @@ async function handleGameDirectoryBrowse() {
                         <label class="text-sm font-medium">
                             {{ $t('settingsTab.general.sections.directories.gameDirectory.label') }}
                         </label>
-                        <div class="flex w-full gap-2 items-stretch h-10 col-span-2">
-                            <Input class="h-full w-full min-w-32" :model-value="settings.gameDirectory ?? ''"
+                        <div class="flex w-full gap-2 items-center col-span-2">
+                            <Input class="w-full min-w-32" :model-value="settings.gameDirectory ?? ''"
                                 placeholder="Game Directory" readonly />
-
                             <Button :label="$t('common.actions.browse')" :icon="Folder"
                                 @click="handleGameDirectoryBrowse" class="whitespace-nowrap min-w-32" />
-
                             <Button class="whitespace-nowrap" :icon="SquareArrowOutUpRight"
                                 @click="handleOpenFolder(settings.gameDirectory)" :disabled="!settings.gameDirectory" />
                         </div>
@@ -239,8 +245,8 @@ async function handleGameDirectoryBrowse() {
                         <label class="text-sm font-medium">
                             {{ $t('settingsTab.general.sections.directories.modsDirectory.label') }}
                         </label>
-                        <div class="flex col-span-2 gap-2 items-stretch h-10">
-                            <Input class="h-full min-w-32" :model-value="settings.stagingDirectory ?? ''"
+                        <div class="flex col-span-2 gap-2 items-center">
+                            <Input class="w-full min-w-32" :model-value="settings.stagingDirectory ?? ''"
                                 placeholder="Staging Mods Directory" readonly />
                             <Button :label="$t('common.actions.browse')" :icon="Folder" @click="handleStagingModsBrowse"
                                 class="min-w-32" />
@@ -268,7 +274,7 @@ async function handleGameDirectoryBrowse() {
                     <div class="grid grid-cols-3 items-center gap-4">
                         <div class="flex flex-col">
                             <span class="text-sm font-medium">{{ $t('settingsTab.general.sections.modManagement.syncMethod.label') }}</span>
-                            <p class="text-xs text-secondary">{{ $t('settingsTab.general.sections.modManagement.syncMethod.description') }}</p>
+                            <p class="text-xs text-text-secondary">{{ $t('settingsTab.general.sections.modManagement.syncMethod.description') }}</p>
                         </div>
                         <Select :model-value="settings.syncMethod" :options="availableSyncMethods"
                             @update:model-value="onSyncMethodChanged" class="col-span-2" />

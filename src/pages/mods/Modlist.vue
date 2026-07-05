@@ -21,16 +21,28 @@ import { useI18n } from 'vue-i18n'
 import { useLocalStorage, useStorageAsync } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import Image from '../../components/common/Image.vue'
+<<<<<<< HEAD
 import { convertFileSrc } from '@tauri-apps/api/core'
 import { useAppDir } from '../../composables/useAppDir'
 
 const baseDir = useAppDir()
+=======
+import { formatCharName, useLang } from '../../utils/formatCharName.ts'
+import { convertFileSrc } from '@tauri-apps/api/core'
+>>>>>>> upstream/main
 
 const router = useRouter()
 
 const preferencesStore = usePreferencesStore()
+<<<<<<< HEAD
 
 const columnSizes = useLocalStorage("modlist-column-sizes", {} as Record<string, number>)
+=======
+const lang = useLang()
+
+const columnSizes = useLocalStorage("modlist-column-sizes", {})
+const columnOrder = useLocalStorage<string[]>("modlist-column-order", [])
+>>>>>>> upstream/main
 
 const allColumns = computed(() => [
     'name',
@@ -80,6 +92,7 @@ function getErrorDescription(error: string) {
 
 function getTypeClass(type: string) {
     if (!preferencesStore.enableModTypeColors) return ''
+<<<<<<< HEAD
     
     return {
         'Cutscene': 'font-medium text-cutscene',
@@ -88,6 +101,16 @@ function getTypeClass(type: string) {
         'Dating': 'font-medium text-dating',
         'NPC': 'font-medium text-npc',
         'Minigame': 'font-medium text-minigame'
+=======
+
+    return {
+        'Cutscene': 'text-mod-cutscene',
+        'Standing': 'text-mod-standing',
+        'Scene': 'text-mod-scene',
+        'Dating': 'text-mod-dating',
+        'NPC': 'text-mod-npc',
+        'Minigame': 'text-mod-minigame'
+>>>>>>> upstream/main
     }[type] || ''
 }
 
@@ -96,8 +119,13 @@ const columns = [
         cell: info => {
             const mod = info.row.original
             return h('div', { class: 'flex items-center gap-2 overflow-hidden' }, [
+<<<<<<< HEAD
                 mod.errors.length > 0 ? h('span', { class: 'select-none rounded-lg text-sm font-mono text-red-200' },
                     h(AlertTriangle, { class: 'text-red-400 w-[1.25rem] h-[1.25rem]' })
+=======
+                mod.errors.length > 0 ? h('span', { class: 'select-none rounded-lg text-sm font-mono' },
+                    h(AlertTriangle, { class: 'text-error w-[1.25rem] h-[1.25rem]' })
+>>>>>>> upstream/main
                 ) :
                     h(Checkbox, {
                         modelValue: mod.enabled,
@@ -107,19 +135,32 @@ const columns = [
                         },
                         onClick: (e: Event) => e.stopPropagation()
                     }),
+<<<<<<< HEAD
                 h('span', { class: 'truncate text-primary flex-1' }, preferencesStore.modNameDisplay === "short"? mod.displayName: mod.name),
+=======
+                h('span', { class: 'truncate flex-1' }, preferencesStore.modNameDisplay === "short" ? mod.displayName : mod.name),
+>>>>>>> upstream/main
                 mod.conflictingMods && mod.conflictingMods.length > 0 ? h('button', {
                     onClick: (e: Event) => {
                         emit('show-mod-conflicts', mod)
                         e.stopPropagation()
                     },
 
+<<<<<<< HEAD
                     class: 'conflicts-indicator cursor-pointer text-xs group flex items-center gap-1 py-1 hover:bg-yellow-500 transition-colors bg-yellow-600 font-bold font-mono box-border px-1.5 rounded-sm h-6'
                 }, [
                     h(TriangleAlert, { class: 'w-4 h-4 text-primary transition-colors' }),
                     h('span', { class: 'text-primary font-bold text-xs' }, mod.conflictingMods.length)
                 ]) : null,
                 mod.errors.length > 0? h('div', { class: 'flex gap-2 flex-wrap' },
+=======
+                    class: 'cursor-pointer text-xs group flex items-center gap-1 py-1 transition-colors bg-warning-bg text-warning font-bold font-mono box-border px-1.5 rounded-sm h-6'
+                }, [
+                    h(TriangleAlert, { class: 'w-4 h-4 transition-colors' }),
+                    h('span', { class: ' font-bold text-xs' }, mod.conflictingMods.length)
+                ]) : null,
+                mod.errors.length > 0 ? h('div', { class: 'flex gap-2 flex-wrap' },
+>>>>>>> upstream/main
                     mod.errors.map((error, index) =>
                         h(ErrorTag, {
                             key: index,
@@ -130,7 +171,11 @@ const columns = [
                 ) : null
             ])
         },
+<<<<<<< HEAD
         header: () => h('span', { class: 'flex text-primary items-center' }, t('modsTab.modlist.header.modName')),
+=======
+        header: () => h('span', { class: 'flex text-text-primary items-center' }, t('modsTab.modlist.header.modName')),
+>>>>>>> upstream/main
         size: 300
     }),
     columnHelper.accessor('modType', {
@@ -140,6 +185,7 @@ const columns = [
             return h('div', {
                 class: ['flex items-center gap-1.5', preferencesStore.modTypeDisplay === 'iconOnly' ? 'justify-center' : '']
             }, [
+<<<<<<< HEAD
                 preferencesStore.modTypeDisplay === 'iconOnly' || preferencesStore.modTypeDisplay === 'full' ? h(Image, {
                     class: "w-[1.25rem] h-[1.25rem] object-contain",
                     src: `/icons/${modType.toLowerCase()}.png`
@@ -150,6 +196,28 @@ const columns = [
             ])
         },
         header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.modType')),
+=======
+                preferencesStore.modTypeDisplay === 'iconOnly' || preferencesStore.modTypeDisplay === 'full' ? h("div", {
+                    class: [
+                        "w-5 h-5",
+                        "bg-current",
+                        "mask-no-repeat",
+                        "mask-center",
+                        "mask-contain",
+                        `mask-[url(/icons/${modType.toLowerCase()}.png)]`,
+                        getTypeClass(modType)
+                    ],
+                    style: {
+                        maskImage: `url(/icons/${modType.toLowerCase()}.png)`
+                    }
+                }) : null,
+                preferencesStore.modTypeDisplay === 'labelOnly' || preferencesStore.modTypeDisplay === 'full' ? h('span', {
+                    class: ['font-medium', getTypeClass(modType)]
+                }, t(`common.modTypes.${modType.toLowerCase()}`) ?? null) : null
+            ])
+        },
+        header: () => h('span', { class: 'flex' }, t('modsTab.modlist.header.modType')),
+>>>>>>> upstream/main
         // accessorFn: row => row.modType,
         sortUndefined: "last",
         sortDescFirst: false,
@@ -174,9 +242,15 @@ const columns = [
         // accessorFn: row => row.character == null ? undefined : row.character,
         cell: info => {
             const char = info.getValue()
+<<<<<<< HEAD
             if (char) {
                 // uses the first id if there are multiple
                 let charId = Array.isArray(char.id) ? char.id[0] : char.id
+=======
+            if (!char) return
+            if (char) {
+                let charIds = Array.isArray(char.id) ? char.id.join(',') : char.id
+>>>>>>> upstream/main
                 return h(
                     "div",
                     {
@@ -184,6 +258,7 @@ const columns = [
                     },
                     [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
+<<<<<<< HEAD
                             src: `/characters/heads/${charId}.png`,
                             loading: 'lazy',
                             class: 'w-[2rem] h-[2rem] object-cover scale-150 cursor-pointer hover:scale-165 transition-transform',
@@ -198,6 +273,20 @@ const columns = [
                             }
                         }) : null,
                         preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, `${char.character} - ${char.costume}`) : null
+=======
+                            src: convertFileSrc(`heads/${charIds}`, "bd2assets"),
+                            errorSrc: "/characters/heads/050001.png",
+                            class: 'w-8 h-8 scale-150 aspect-square cursor-pointer transition-transform hover:scale-165',
+                            imgClass: 'object-contain',
+                            onClick: (event: Event) => {
+
+                                event.stopPropagation()
+                                // redirects to character page
+                                router.push({ name: 'characters', query: { characterId: Array.isArray(char.id) ? char.id[0] : char.id } })
+                            }
+                        }) : null,
+                        preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, formatCharName(char, lang.value)) : null
+>>>>>>> upstream/main
                     ]
                 )
             }
@@ -218,9 +307,15 @@ const columns = [
     }),
     columnHelper.accessor('author', {
         cell: info => {
+<<<<<<< HEAD
             return h('span', { class: 'truncate text-sm text-primary' }, info.getValue())
         },
         header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.author')),
+=======
+            return h('span', { class: 'truncate text-sm' }, info.getValue())
+        },
+        header: () => h('span', { class: 'flex' }, t('modsTab.modlist.header.author')),
+>>>>>>> upstream/main
         size: 200
     }),
 ]
@@ -298,6 +393,12 @@ const table = useVueTable({
         },
         get columnVisibility() {
             return columnVisibility.value
+<<<<<<< HEAD
+=======
+        },
+        get columnOrder() {
+            return columnOrder.value
+>>>>>>> upstream/main
         }
     },
     onRowSelectionChange: updateOrValue => {
@@ -319,6 +420,15 @@ const table = useVueTable({
                 ? updaterOrValue(columnSizes.value)
                 : updaterOrValue
     },
+<<<<<<< HEAD
+=======
+    onColumnOrderChange: updaterOrValue => {
+        columnOrder.value =
+            typeof updaterOrValue === 'function'
+                ? updaterOrValue(columnOrder.value)
+                : updaterOrValue
+    }
+>>>>>>> upstream/main
 })
 
 const rows = computed(() => table.getRowModel().rows)
@@ -445,6 +555,7 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             key: 'preview',
             show: isSingleSelection
         } as ContextMenuItem,
+<<<<<<< HEAD
         {
             type: 'divider' as const,
             key: 'd-tip'
@@ -454,6 +565,8 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             label: t('modsTab.modlist.contextMenu.doubleClickToPreviewTip'),
             key: 'tip-double-click'
         } as ContextMenuItem,
+=======
+>>>>>>> upstream/main
     ].filter(item => item.show !== false)
 })
 
@@ -552,6 +665,7 @@ function handleRowDoubleClick(event: MouseEvent, rowIndex: number) {
     emit('preview-mod', row.original)
 }
 
+<<<<<<< HEAD
 // Clicking on the empty area of the mod list (not on a row) clears the
 // current row selection so the highlighted rows un-highlight. We use
 // capture-phase mousedown so we run before any row's @click handler.
@@ -565,12 +679,78 @@ function handleBackgroundMouseDown(event: MouseEvent) {
     if (event.button !== 0) return
     table.resetRowSelection()
     anchorRowIndex.value = null
+=======
+
+const draggedColumnId = ref<string | null>(null)
+const dragOverColumnId = ref<string | null>(null)
+const ghostStyle = ref({ left: '0px', top: '0px', width: '0px', height: '0px' })
+const ghostHeader = computed(() =>
+    table.getFlatHeaders().find(h => h.id === draggedColumnId.value) ?? null
+)
+
+function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
+    if ((e.target as HTMLElement).closest('[data-resize-handle]')) return
+
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    const offsetX = e.clientX - rect.left
+    const offsetY = e.clientY - rect.top
+    const startX = e.clientX
+    const startY = e.clientY
+    let hasMoved = false
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+        if (!hasMoved) {
+            const dx = moveEvent.clientX - startX
+            const dy = moveEvent.clientY - startY
+            if (Math.sqrt(dx * dx + dy * dy) < 5) return
+            hasMoved = true
+            draggedColumnId.value = headerId
+            ghostStyle.value = {
+                left: `${moveEvent.clientX - offsetX}px`,
+                top: `${moveEvent.clientY - offsetY}px`,
+                width: `${rect.width}px`,
+                height: `${rect.height}px`,
+            }
+        }
+
+        ghostStyle.value = {
+            ...ghostStyle.value,
+            left: `${moveEvent.clientX - offsetX}px`,
+            top: `${moveEvent.clientY - offsetY}px`,
+        }
+
+        const el = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY)
+        const headerEl = el?.closest('[data-header-id]') as HTMLElement | null
+        const overId = headerEl?.dataset.headerId ?? null
+        dragOverColumnId.value = overId !== draggedColumnId.value ? overId : null
+    }
+
+    const onMouseUp = () => {
+        if (hasMoved && draggedColumnId.value && dragOverColumnId.value) {
+            const currentOrder = table.getAllLeafColumns().map(c => c.id)
+            const fromIndex = currentOrder.indexOf(draggedColumnId.value)
+            const toIndex = currentOrder.indexOf(dragOverColumnId.value)
+            const newOrder = [...currentOrder]
+            newOrder.splice(fromIndex, 1)
+            newOrder.splice(toIndex, 0, draggedColumnId.value!)
+            table.setColumnOrder(newOrder)
+        }
+        draggedColumnId.value = null
+        dragOverColumnId.value = null
+        window.removeEventListener('mousemove', onMouseMove)
+        window.removeEventListener('mouseup', onMouseUp)
+    }
+
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+>>>>>>> upstream/main
 }
 
 </script>
 
 <template>
     <!-- mods contextmenu -->
+<<<<<<< HEAD
     <ContextMenu
         :options="contextMenuItems"
         :show="showDropdown"
@@ -606,6 +786,67 @@ function handleBackgroundMouseDown(event: MouseEvent) {
                                     'z-9999 absolute right-0 top-0 h-full w-0.5  opacity-0 hover:opacity-100 select-none touch-none',
                                     !header.column.getIsLastColumn() ? 'hover:bg-accent-primary-hover cursor-col-resize' : '',
                                     header.column.getIsResizing() && !header.column.getIsLastColumn() ? 'bg-accent-primary opacity-100 h-screen!' : ''
+=======
+    <ContextMenu :options="contextMenuItems" :show="showDropdown" :x="x" :y="y" @update:show="showDropdown = $event"
+        @select="handleSelect" />
+
+    <!-- header contextmenu -->
+    <!-- the header can be surface-app or surface-card -->
+    <div class="flex h-full">
+        <div ref="parentRef"
+            class="flex-1 overflow-auto border border-border-subtle rounded relative focus:outline-none bg-surface-panel"
+            tabindex="0" @keydown="handleKeyDown">
+            <div :style="{ height: `${totalSize + 46.39}px` }" class="relative">
+                <div class="w-full h-full ">
+                    <div class="sticky top-0 z-1 bg-surface-app grid border-b border-border-default"
+                        :style="{ gridTemplateColumns }">
+                        <div v-for="header in table.getFlatHeaders()" :key="header.id" :data-header-id="header.id"
+                            class="p-3 px-2 flex items-center gap-2 transition-colors cursor-default font-semibold select-none relative bg-surface-app hover:bg-state-hover has-[.filter-button:hover]:bg-transparent"
+                            :class="{
+                                'opacity-50 cursor-move': draggedColumnId === header.id,
+                                'border-l-2 border-accent': dragOverColumnId === header.id
+                            }" @mousedown="handleHeaderMouseDown($event, header.id)"
+                            @click="header.column.getToggleSortingHandler()?.($event)">
+
+
+                            <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
+                                :props="header.getContext()" />
+                            <ArrowDownWideNarrow v-if="header.column.getIsSorted() == 'desc'"
+                                class="w-[1.25em] h-[1.25em] text-text-secondary" />
+                            <ArrowUpNarrowWide v-if="header.column.getIsSorted() == 'asc'"
+                                class="w-[1.25em] h-[1.25em] text-text-secondary" />
+
+                            <!-- <div class="flex flex-col gap-1 flex-1">
+                                <span class="flex gap-2">
+                                    <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
+                                    <ArrowDownWideNarrow v-if="header.column.getIsSorted() == 'desc'" class="w-[1.25em] h-[1.25em] text-text-secondary" />
+                                    <ArrowUpNarrowWide v-if="header.column.getIsSorted() == 'asc'" class="w-[1.25em] h-[1.25em] text-text-secondary" />
+                                </span>
+                                <span @click.stop @mousedown.stop @touchstart.stop>
+                                    <Input v-if="header.column.id == 'name' || header.column.id == 'author'" class="min-w-0 w-full" placeholder="" />
+                                    <Select v-if="header.column.id == 'modType'" multiple class="w-full min-w-0" placeholder="" :options="[...['Cutscene', 'Standing', 'Scene', 'Dating', 'NPC', 'Minigame'].map((modType) => ({
+                                        value: modType,
+                                        label: modType
+                                    }))]" />
+                                    <Select v-if="header.column.id == 'character'" multiple class="w-full min-w-0" placeholder="" :options="[]" />
+
+                                </span>
+                            </div> -->
+
+
+                            <!-- <ListFilter v-if="header.column.id == 'character'" class="filter-button ml-auto w-[1.25em] h-[1.25em] text-text-secondary hover:text-text-muted active:scale-105" @click.stop
+                                @mousedown.stop
+                                @touchstart.stop /> -->
+
+                            <div v-if="header.column.getCanResize()" data-resize-handle
+                                @dblclick="header.column.resetSize()" @click.stop
+                                @mousedown="(event) => { if (!header.column.getIsLastColumn()) header.getResizeHandler()?.(event) }"
+                                @touchstart="(event) => { if (!header.column.getIsLastColumn()) header.getResizeHandler()?.(event) }"
+                                :class="[
+                                    'z-9999 absolute right-0 top-0 h-full w-0.5 opacity-0 hover:opacity-100 select-none touch-none',
+                                    !header.column.getIsLastColumn() ? 'hover:bg-accent-hover cursor-col-resize' : '',
+                                    header.column.getIsResizing() && !header.column.getIsLastColumn() ? 'bg-accent-hover opacity-100 h-screen!' : ''
+>>>>>>> upstream/main
                                 ]" :style="header.column.getIsResizing() ? {
                                     transform: `translateX(${table.getState().columnSizingInfo.deltaOffset ?? 0}px)`
                                 } : undefined">
@@ -617,6 +858,7 @@ function handleBackgroundMouseDown(event: MouseEvent) {
                         height: `${virtualRow.size}px`,
                         transform: `translateY(${virtualRow.start + 46.39}px)`,
                         gridTemplateColumns
+<<<<<<< HEAD
                     }" data-mod-row class="absolute top-0 left-0 min-w-full grid items-center hover:bg-interactive-bg-hover border-b border-border"
                         @contextmenu="handleContextMenu($event, virtualRow.index)"
                         @click="handleRowClick($event, virtualRow.index)"
@@ -624,6 +866,15 @@ function handleBackgroundMouseDown(event: MouseEvent) {
                         :class="{ 'bg-accent-primary!': rows[virtualRow.index].getIsSelected() }">
                         <div v-for="cell in rows[virtualRow.index].getVisibleCells()" :key="cell.id"
                             class="p-3 overflow-hidden">
+=======
+                    }" class="absolute top-0 left-0 min-w-full grid items-center hover:bg-state-hover border-b border-border-default"
+                        @contextmenu="handleContextMenu($event, virtualRow.index)"
+                        @click="handleRowClick($event, virtualRow.index)"
+                        @dblclick="handleRowDoubleClick($event, virtualRow.index)"
+                        :class="{ 'bg-state-selected!': rows[virtualRow.index].getIsSelected() }">
+                        <div v-for="cell in rows[virtualRow.index].getVisibleCells()" :key="cell.id"
+                            class="p-3 px-2 overflow-hidden">
+>>>>>>> upstream/main
                             <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
                         </div>
                     </div>
@@ -631,4 +882,18 @@ function handleBackgroundMouseDown(event: MouseEvent) {
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 </template>
+=======
+
+
+    <Teleport to="body">
+        <div v-if="draggedColumnId && ghostHeader"
+            class="fixed pointer-events-none z-9999 flex items-center font-semibold gap-2 p-3 px-2 bg-surface-app border border-border-default rounded opacity-75"
+            :style="ghostStyle">
+            <FlexRender :render="ghostHeader.column.columnDef.header" :props="ghostHeader.getContext()" />
+        </div>
+    </Teleport>
+</template>
+<style scoped></style>
+>>>>>>> upstream/main

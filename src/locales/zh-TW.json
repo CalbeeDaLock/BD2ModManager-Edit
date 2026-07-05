@@ -79,8 +79,12 @@
             "characters": "角色",
             "profiles": "設定檔",
             "browndustx": "BrownDustX",
+<<<<<<< HEAD
             "settings": "設定",
             "npcs": "NPC"
+=======
+            "settings": "設定"
+>>>>>>> upstream/main
         },
         "notifications": {
             "gameLaunched": {
@@ -132,9 +136,13 @@
                     "onlyEnabledMods": "僅顯示已啟用模組",
                     "onlyDisabledMods": "僅顯示已停用模組",
                     "onlyConflictsMods": "僅顯示衝突模組",
+<<<<<<< HEAD
                     "onlyErrorsMods": "僅顯示錯誤模組",
                     "hideErrorsMods": "隱藏錯誤模組",
                     "onlyOneModType": "僅選擇一種模組類型"
+=======
+                    "onlyErrorsMods": "僅顯示錯誤模組"
+>>>>>>> upstream/main
                 }
             }
         },
@@ -162,8 +170,12 @@
                 "deleteMod": "刪除模組",
                 "deleteSelectedMods": "刪除所選模組",
                 "openModFolder": "開啟模組資料夾",
+<<<<<<< HEAD
                 "previewMod": "預覽模組",
                 "doubleClickToPreviewTip": "提示：雙擊列即可預覽模組。"
+=======
+                "previewMod": "預覽模組"
+>>>>>>> upstream/main
             }
         },
         "confirmations": {
@@ -260,8 +272,12 @@
                 "hideMenCharacters": "隱藏男性角色",
                 "hideWomenCharacters": "隱藏女性角色",
                 "onlyCharactersWithMods": "僅顯示有模組的角色",
+<<<<<<< HEAD
                 "onlyCharactersWithoutMods": "僅顯示沒有模組的角色",
                 "onlyCollabCharacters": "僅顯示聯名角色"
+=======
+                "onlyCharactersWithoutMods": "僅顯示沒有模組的角色"
+>>>>>>> upstream/main
             },
             "releasePeriod": {
                 "title": "發布時間",
@@ -778,6 +794,7 @@
         "shouldBeInFolder": "此模組應放置在一個資料夾內，請建立一個與模組同名的資料夾，並將模組檔案移入其中。",
         "missingAtlasFile": "此模組缺少圖集檔案。",
         "noDescription": "未提供描述。"
+<<<<<<< HEAD
     },
     "npcsTab": {
         "title": "NPC",
@@ -811,5 +828,7 @@
                 "description": "請前往模組分頁為此 NPC 安裝模組。"
             }
         }
+=======
+>>>>>>> upstream/main
     }
 }

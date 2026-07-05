@@ -2,16 +2,16 @@
 import { open } from '@tauri-apps/plugin-dialog'
 import { getErrorMessage } from '../utils/errors'
 import { useI18n } from 'vue-i18n'
-import { useToast } from 'primevue/usetoast'
 import { useLoggingStore } from '../stores/logging'
 import { useModsStore } from '../stores/mods'
+import { useNotificationStore } from '../stores/notification'
 
 
 // composable because modstab and cahracters tab will both need to install mods, and we want to keep the logic in one place
 export function useModInstall() {
   const modsStore = useModsStore()
   const loggingStore = useLoggingStore()
-  const toast = useToast()
+  const notificationStore = useNotificationStore()
   const { t } = useI18n()
 
   async function installFromZip() {
@@ -26,11 +26,12 @@ export function useModInstall() {
       try {
         const modName = await modsStore.installModFromZip(file)
 
-        toast.add({
+        notificationStore.add({
+          severity: 'success',
           closable: true,
-          summary: t('modsTab.notifications.modInstallSuccess.title'),
-          detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
-          life: 3000
+          title: t('modsTab.notifications.modInstallSuccess.title'),
+          message: t('modsTab.notifications.modInstallSuccess.description', { modName }),
+          duration: 3000
         })
 
         return modName
@@ -42,11 +43,11 @@ export function useModInstall() {
           error instanceof Error ? error.message : String(error)
         )
 
-        toast.add({
+        notificationStore.add({
           closable: true,
-          summary: t('errors.modInstallFailed.title'),
-          detail: errorMsg,
-          life: 5000,
+          title: t('errors.modInstallFailed.title'),
+          message: errorMsg,
+          duration: 5000,
           severity: 'error'
         })
       }
@@ -65,11 +66,12 @@ export function useModInstall() {
       try {
         const modName = await modsStore.installModFromFolder(folder)
 
-        toast.add({
+        notificationStore.add({
+          severity: 'success',
           closable: true,
-          summary: t('modsTab.notifications.modInstallSuccess.title'),
-          detail: t('modsTab.notifications.modInstallSuccess.description', { modName }),
-          life: 3000
+          title: t('modsTab.notifications.modInstallSuccess.title'),
+          message: t('modsTab.notifications.modInstallSuccess.description', { modName }),
+          duration: 3000
         })
 
         return modName
@@ -81,11 +83,11 @@ export function useModInstall() {
           error instanceof Error ? error.message : String(error)
         )
 
-        toast.add({
+        notificationStore.add({
           closable: true,
-          summary: t('errors.modInstallFailed.title'),
-          detail: errorMsg,
-          life: 5000,
+          title: t('errors.modInstallFailed.title'),
+          message: errorMsg,
+          duration: 5000,
           severity: 'error'
         })
       }

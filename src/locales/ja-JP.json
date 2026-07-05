@@ -79,8 +79,12 @@
             "characters": "キャラクター",
             "profiles": "プロファイル",
             "browndustx": "BrownDustX",
+<<<<<<< HEAD
             "settings": "設定",
             "npcs": "NPC"
+=======
+            "settings": "設定"
+>>>>>>> upstream/main
         },
         "notifications": {
             "gameLaunched": {
@@ -132,9 +136,13 @@
                     "onlyEnabledMods": "有効なMODのみ表示",
                     "onlyDisabledMods": "無効なMODのみ表示",
                     "onlyConflictsMods": "競合するMODのみ表示",
+<<<<<<< HEAD
                     "onlyErrorsMods": "エラーのあるMODのみ表示",
                     "hideErrorsMods": "エラーのあるMODを非表示",
                     "onlyOneModType": "MODタイプを1つだけ選択"
+=======
+                    "onlyErrorsMods": "エラーのあるMODのみ表示"
+>>>>>>> upstream/main
                 }
             }
         },
@@ -162,8 +170,12 @@
                 "deleteMod": "MODを削除",
                 "deleteSelectedMods": "選択したMODを削除",
                 "openModFolder": "MODフォルダを開く",
+<<<<<<< HEAD
                 "previewMod": "MODをプレビュー",
                 "doubleClickToPreviewTip": "ヒント：行をダブルクリックするとMODをプレビューできます。"
+=======
+                "previewMod": "MODをプレビュー"
+>>>>>>> upstream/main
             }
         },
         "confirmations": {
@@ -260,8 +272,12 @@
                 "hideMenCharacters": "男性キャラクターを非表示",
                 "hideWomenCharacters": "女性キャラクターを非表示",
                 "onlyCharactersWithMods": "MODがあるキャラクターのみ表示",
+<<<<<<< HEAD
                 "onlyCharactersWithoutMods": "MODがないキャラクターのみ表示",
                 "onlyCollabCharacters": "コラボキャラクターのみ表示"
+=======
+                "onlyCharactersWithoutMods": "MODがないキャラクターのみ表示"
+>>>>>>> upstream/main
             },
             "releasePeriod": {
                 "title": "リリース期間",
@@ -778,6 +794,7 @@
         "shouldBeInFolder": "このMODはフォルダ内に配置する必要があります。MODと同じ名前のフォルダを作成し、MODファイルをその中に移動してください。",
         "missingAtlasFile": "このMODにはアトラスファイルがありません。",
         "noDescription": "説明はありません。"
+<<<<<<< HEAD
     },
     "npcsTab": {
         "title": "NPC",
@@ -811,5 +828,7 @@
                 "description": "MODタブからこのNPCのMODをインストールしてください。"
             }
         }
+=======
+>>>>>>> upstream/main
     }
 }

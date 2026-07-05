@@ -17,6 +17,12 @@
             "dating": "Dating",
             "npc": "NPC",
             "minigame": "Minigame"
+<<<<<<< HEAD
+=======
+        },
+        "messages": {
+            "selectEmptyState": "Nothing found here..."
+>>>>>>> upstream/main
         }
     },
     "app": {
@@ -77,7 +83,10 @@
         "tabs": {
             "mods": "Mods",
             "characters": "Characters",
+<<<<<<< HEAD
             "npcs": "NPC",
+=======
+>>>>>>> upstream/main
             "profiles": "Profiles",
             "browndustx": "BrownDustX",
             "settings": "Settings"
@@ -98,7 +107,12 @@
             }
         },
         "actions": {
+<<<<<<< HEAD
             "launchGame": "Launch Game"
+=======
+            "launchGame": "Launch Game",
+            "launchGameWithoutMods": "Launch (Vanilla)"
+>>>>>>> upstream/main
         }
     },
     "modsTab": {
@@ -109,6 +123,11 @@
             "installFromZip": "Install from ZIP",
             "installFromFolder": "Install from Folder",
             "openModsFolder": "Open Mods Folder",
+<<<<<<< HEAD
+=======
+            "openGameFolder": "Open Game Folder",
+            "openGameModsFolder": "Open Game Mods Folder",
+>>>>>>> upstream/main
             "syncMods": "Sync Mods",
             "unsyncMods": "Unsync Mods"
         },
@@ -132,9 +151,13 @@
                     "onlyEnabledMods": "Only Enabled Mods",
                     "onlyDisabledMods": "Only Disabled Mods",
                     "onlyConflictsMods": "Only Conflicts Mods",
+<<<<<<< HEAD
                     "onlyErrorsMods": "Only Errors Mods",
                     "hideErrorsMods": "Hide Error Mods",
                     "onlyOneModType": "Only Select One Mod Type"
+=======
+                    "onlyErrorsMods": "Only Errors Mods"
+>>>>>>> upstream/main
                 }
             }
         },
@@ -162,8 +185,12 @@
                 "deleteMod": "Delete Mod",
                 "deleteSelectedMods": "Delete Selected Mods",
                 "openModFolder": "Open Mod Folder",
+<<<<<<< HEAD
                 "previewMod": "Preview Mod",
                 "doubleClickToPreviewTip": "Tip: double-click a row to preview a mod."
+=======
+                "previewMod": "Preview Mod"
+>>>>>>> upstream/main
             }
         },
         "confirmations": {
@@ -260,8 +287,12 @@
                 "hideMenCharacters": "Hide Men Characters",
                 "hideWomenCharacters": "Hide Women Characters",
                 "onlyCharactersWithMods": "Only Characters with Mods",
+<<<<<<< HEAD
                 "onlyCharactersWithoutMods": "Only Characters without Mods",
                 "onlyCollabCharacters": "Only Collab Characters"
+=======
+                "onlyCharactersWithoutMods": "Only Characters without Mods"
+>>>>>>> upstream/main
             },
             "releasePeriod": {
                 "title": "Release Period",
@@ -313,6 +344,7 @@
             }
         }
     },
+<<<<<<< HEAD
     "npcsTab": {
         "title": "NPC",
         "subtitle": "{enabledModsCount} of {totalModsCount} NPC mods enabled",
@@ -346,6 +378,8 @@
             }
         }
     },
+=======
+>>>>>>> upstream/main
     "profilesTab": {
         "title": "Profiles",
         "subtitle": "Manage your mod profiles to easily switch between different mod setups.",
@@ -583,6 +617,13 @@
                     "language": {
                         "label": "Language",
                         "placeholder": "Select a language"
+<<<<<<< HEAD
+=======
+                    },
+                    "forceEnglishNames": {
+                        "label": "Use English character names",
+                        "description": "Always display character names in English, regardless of the selected language."
+>>>>>>> upstream/main
                     }
                 },
                 "directories": {
@@ -761,6 +802,12 @@
         }
     },
     "modals": {
+<<<<<<< HEAD
+=======
+        "confirmation": {
+            "rememberChoice": "Don't show again"
+        },
+>>>>>>> upstream/main
         "logs": {
             "title": "Application Logs",
             "noLogs": "No logs available."
@@ -809,7 +856,11 @@
                     "gamePath": "Path to Brown Dust II game directory"
                 },
                 "labels": {
+<<<<<<< HEAD
                     "foundPaths": "Found Path(s):"
+=======
+                    "foundPaths": "Found Path(s)"
+>>>>>>> upstream/main
                 },
                 "validPath": "Game directory set successfully.",
                 "invalidPath": "Please select a valid game directory to proceed.",

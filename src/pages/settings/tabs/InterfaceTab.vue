@@ -12,6 +12,7 @@ const preferencesStore = usePreferencesStore()
 const { t } = useI18n()
 
 const columnsOptions = computed(() => [
+    // { label: t('settingsTab.interface.sections.columns.visibleColumns.options.status', 'Status'), value: 'status'},
     { label: t('settingsTab.interface.sections.columns.visibleColumns.options.modName'), value: 'name' },
     { label: t('settingsTab.interface.sections.columns.visibleColumns.options.character'), value: 'character' },
     { label: t('settingsTab.interface.sections.columns.visibleColumns.options.modType'), value: 'modType' },
@@ -38,7 +39,7 @@ const modTypeDisplayOptions = computed(() => [
 
 <template>
     <TabPanel>
-        <div class="flex flex-col gap-4 text-primary">
+        <div class="flex flex-col gap-4">
             <Section :title="$t('settingsTab.interface.sections.columns.title')">
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-1">
@@ -47,7 +48,7 @@ const modTypeDisplayOptions = computed(() => [
                         </label>
                         <Select v-model="preferencesStore.visibleModListColumns" :options="columnsOptions"
                             option-label="label" option-value="value" class="w-full" multiple />
-                        <p class="text-xs text-secondary">
+                        <p class="text-xs text-text-secondary">
                             {{ $t('settingsTab.interface.sections.columns.visibleColumns.description') }}
                         </p>
                     </div>
@@ -57,14 +58,13 @@ const modTypeDisplayOptions = computed(() => [
                             <div class="flex flex-col">
                                 <span class="text-sm font-medium">{{
                                     $t('settingsTab.interface.sections.modNameColumn.label') }}</span>
-                                <p class="text-xs text-secondary">{{
+                                <p class="text-xs text-text-secondary">{{
                                     $t('settingsTab.interface.sections.modNameColumn.description') }}</p>
                             </div>
                             <Select :model-value="preferencesStore.modNameDisplay"
                                 @update:model-value="preferencesStore.modNameDisplay = $event"
                                 :options="modNameDisplayOptions" class="col-span-2" />
                         </div>
-
                     </div>
 
                     <div class="grid grid-cols-3">
@@ -72,7 +72,7 @@ const modTypeDisplayOptions = computed(() => [
                             <span class="text-sm font-medium">{{
                                 $t('settingsTab.interface.sections.characterColumn.label')
                             }}</span>
-                            <p class="text-xs text-secondary">{{
+                            <p class="text-xs text-text-secondary">{{
                                 $t('settingsTab.interface.sections.characterColumn.description') }}
                             </p>
                         </div>
@@ -87,7 +87,7 @@ const modTypeDisplayOptions = computed(() => [
                                 <span class="text-sm font-medium">{{
                                     $t('settingsTab.interface.sections.modTypeColumn.label')
                                     }}</span>
-                                <p class="text-xs text-secondary">{{
+                                <p class="text-xs text-text-secondary">{{
                                     $t('settingsTab.interface.sections.modTypeColumn.description') }}
                                 </p>
                             </div>
@@ -97,8 +97,7 @@ const modTypeDisplayOptions = computed(() => [
                         </div>
 
                         <div class="flex items-start gap-3">
-                            <Checkbox inputId="enable-colors" binary v-model="preferencesStore.enableModTypeColors"
-                                class="mt-0.5"
+                            <Checkbox v-model="preferencesStore.enableModTypeColors"
                                 :label="$t('settingsTab.interface.sections.modTypeColumn.enableColors.label')"
                                 :description="$t('settingsTab.interface.sections.modTypeColumn.enableColors.description')" />
                         </div>
