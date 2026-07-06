@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, h, onActivated, onDeactivated, onMounted, reactive, ref, useTemplateRef, watch } from "vue";
+import { computed, defineComponent, h, onActivated, onDeactivated, onMounted, ref, useTemplateRef, watch } from "vue";
 import { useDebounceFn, useLocalStorage, watchDebounced } from "@vueuse/core";
 import { useNotificationStore } from '../../stores/notification';
+import { getErrorMessage } from "../../utils/errors";
 import { useI18n } from "vue-i18n";
 
 import { listen } from "@tauri-apps/api/event";
@@ -76,7 +77,7 @@ const debouncedSync = useDebounceFn(async () => {
   }
 }, 1500);
 
-let filters = reactive({
+const filters = ref({
   searchQuery: '',
   modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame")[],
   onlyEnabled: false,
@@ -130,16 +131,16 @@ const filteredMods = computed(() => {
       }
     }
 
-    if (filters.modTypes.length > 0) {
+    if (filters.value.modTypes.length > 0) {
       if (!mod.modType) return false
-      if (!filters.modTypes.includes(mod.modType.type)) return false
+      if (!filters.value.modTypes.includes(mod.modType.type)) return false
     }
 
-    if (filters.onlyEnabled && !mod.enabled) return false
-    if (filters.onlyDisabled && mod.enabled) return false
-    if (filters.onlyErrors && mod.errors.length === 0) return false
-    if (filters.hideErrors && mod.errors.length > 0) return false
-    if (filters.onlyConflicts && mod.conflictingMods.length === 0) return false
+    if (filters.value.onlyEnabled && !mod.enabled) return false
+    if (filters.value.onlyDisabled && mod.enabled) return false
+    if (filters.value.onlyErrors && mod.errors.length === 0) return false
+    if (filters.value.hideErrors && mod.errors.length > 0) return false
+    if (filters.value.onlyConflicts && mod.conflictingMods.length === 0) return false
 
     return true
   })
@@ -528,7 +529,7 @@ onDeactivated(() => {
 })
 
 watchDebounced(
-  () => filters.searchQuery,
+  () => filters.value.searchQuery,
   (newValue) => {
     debouncedSearchQuery.value = newValue;
   },
@@ -624,8 +625,11 @@ function handleRenameMod(mod: BD2Mod) {
 }
 
 function handleShowModConflicts(mod: BD2Mod) {
-  filters.searchQuery = `conflictsWith:"${mod.name}"`;
+  filters.value.searchQuery = `conflictsWith:"${mod.name}"`;
 }
+
+// [TODO] reactive is sync needed
+const isSyncNeeded = ref(0)
 
 async function openGameFolder() {
   let { gameDirectory } = settingsStore.settings

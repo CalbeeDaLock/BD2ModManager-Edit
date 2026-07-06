@@ -21,28 +21,16 @@ import { useI18n } from 'vue-i18n'
 import { useLocalStorage, useStorageAsync } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import Image from '../../components/common/Image.vue'
-<<<<<<< HEAD
-import { convertFileSrc } from '@tauri-apps/api/core'
-import { useAppDir } from '../../composables/useAppDir'
-
-const baseDir = useAppDir()
-=======
 import { formatCharName, useLang } from '../../utils/formatCharName.ts'
 import { convertFileSrc } from '@tauri-apps/api/core'
->>>>>>> upstream/main
 
 const router = useRouter()
 
 const preferencesStore = usePreferencesStore()
-<<<<<<< HEAD
-
-const columnSizes = useLocalStorage("modlist-column-sizes", {} as Record<string, number>)
-=======
 const lang = useLang()
 
 const columnSizes = useLocalStorage("modlist-column-sizes", {})
 const columnOrder = useLocalStorage<string[]>("modlist-column-order", [])
->>>>>>> upstream/main
 
 const allColumns = computed(() => [
     'name',
@@ -92,16 +80,6 @@ function getErrorDescription(error: string) {
 
 function getTypeClass(type: string) {
     if (!preferencesStore.enableModTypeColors) return ''
-<<<<<<< HEAD
-    
-    return {
-        'Cutscene': 'font-medium text-cutscene',
-        'Standing': 'font-medium text-standing',
-        'Scene': 'font-medium text-scene',
-        'Dating': 'font-medium text-dating',
-        'NPC': 'font-medium text-npc',
-        'Minigame': 'font-medium text-minigame'
-=======
 
     return {
         'Cutscene': 'text-mod-cutscene',
@@ -110,7 +88,6 @@ function getTypeClass(type: string) {
         'Dating': 'text-mod-dating',
         'NPC': 'text-mod-npc',
         'Minigame': 'text-mod-minigame'
->>>>>>> upstream/main
     }[type] || ''
 }
 
@@ -119,13 +96,8 @@ const columns = [
         cell: info => {
             const mod = info.row.original
             return h('div', { class: 'flex items-center gap-2 overflow-hidden' }, [
-<<<<<<< HEAD
-                mod.errors.length > 0 ? h('span', { class: 'select-none rounded-lg text-sm font-mono text-red-200' },
-                    h(AlertTriangle, { class: 'text-red-400 w-[1.25rem] h-[1.25rem]' })
-=======
                 mod.errors.length > 0 ? h('span', { class: 'select-none rounded-lg text-sm font-mono' },
                     h(AlertTriangle, { class: 'text-error w-[1.25rem] h-[1.25rem]' })
->>>>>>> upstream/main
                 ) :
                     h(Checkbox, {
                         modelValue: mod.enabled,
@@ -135,32 +107,19 @@ const columns = [
                         },
                         onClick: (e: Event) => e.stopPropagation()
                     }),
-<<<<<<< HEAD
-                h('span', { class: 'truncate text-primary flex-1' }, preferencesStore.modNameDisplay === "short"? mod.displayName: mod.name),
-=======
                 h('span', { class: 'truncate flex-1' }, preferencesStore.modNameDisplay === "short" ? mod.displayName : mod.name),
->>>>>>> upstream/main
                 mod.conflictingMods && mod.conflictingMods.length > 0 ? h('button', {
                     onClick: (e: Event) => {
                         emit('show-mod-conflicts', mod)
                         e.stopPropagation()
                     },
 
-<<<<<<< HEAD
-                    class: 'conflicts-indicator cursor-pointer text-xs group flex items-center gap-1 py-1 hover:bg-yellow-500 transition-colors bg-yellow-600 font-bold font-mono box-border px-1.5 rounded-sm h-6'
-                }, [
-                    h(TriangleAlert, { class: 'w-4 h-4 text-primary transition-colors' }),
-                    h('span', { class: 'text-primary font-bold text-xs' }, mod.conflictingMods.length)
-                ]) : null,
-                mod.errors.length > 0? h('div', { class: 'flex gap-2 flex-wrap' },
-=======
                     class: 'cursor-pointer text-xs group flex items-center gap-1 py-1 transition-colors bg-warning-bg text-warning font-bold font-mono box-border px-1.5 rounded-sm h-6'
                 }, [
                     h(TriangleAlert, { class: 'w-4 h-4 transition-colors' }),
                     h('span', { class: ' font-bold text-xs' }, mod.conflictingMods.length)
                 ]) : null,
                 mod.errors.length > 0 ? h('div', { class: 'flex gap-2 flex-wrap' },
->>>>>>> upstream/main
                     mod.errors.map((error, index) =>
                         h(ErrorTag, {
                             key: index,
@@ -171,11 +130,7 @@ const columns = [
                 ) : null
             ])
         },
-<<<<<<< HEAD
-        header: () => h('span', { class: 'flex text-primary items-center' }, t('modsTab.modlist.header.modName')),
-=======
         header: () => h('span', { class: 'flex text-text-primary items-center' }, t('modsTab.modlist.header.modName')),
->>>>>>> upstream/main
         size: 300
     }),
     columnHelper.accessor('modType', {
@@ -185,18 +140,6 @@ const columns = [
             return h('div', {
                 class: ['flex items-center gap-1.5', preferencesStore.modTypeDisplay === 'iconOnly' ? 'justify-center' : '']
             }, [
-<<<<<<< HEAD
-                preferencesStore.modTypeDisplay === 'iconOnly' || preferencesStore.modTypeDisplay === 'full' ? h(Image, {
-                    class: "w-[1.25rem] h-[1.25rem] object-contain",
-                    src: `/icons/${modType.toLowerCase()}.png`
-                }) : null,
-                preferencesStore.modTypeDisplay === 'labelOnly' || preferencesStore.modTypeDisplay === 'full' ? h('span', {
-                    class: ['font-base', getTypeClass(modType)]
-                }, modType ?? null) : null
-            ])
-        },
-        header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.modType')),
-=======
                 preferencesStore.modTypeDisplay === 'iconOnly' || preferencesStore.modTypeDisplay === 'full' ? h("div", {
                     class: [
                         "w-5 h-5",
@@ -217,7 +160,6 @@ const columns = [
             ])
         },
         header: () => h('span', { class: 'flex' }, t('modsTab.modlist.header.modType')),
->>>>>>> upstream/main
         // accessorFn: row => row.modType,
         sortUndefined: "last",
         sortDescFirst: false,
@@ -242,15 +184,9 @@ const columns = [
         // accessorFn: row => row.character == null ? undefined : row.character,
         cell: info => {
             const char = info.getValue()
-<<<<<<< HEAD
-            if (char) {
-                // uses the first id if there are multiple
-                let charId = Array.isArray(char.id) ? char.id[0] : char.id
-=======
             if (!char) return
             if (char) {
                 let charIds = Array.isArray(char.id) ? char.id.join(',') : char.id
->>>>>>> upstream/main
                 return h(
                     "div",
                     {
@@ -258,22 +194,6 @@ const columns = [
                     },
                     [
                         preferencesStore.characterDisplay === 'iconOnly' || preferencesStore.characterDisplay === 'full' ? h(Image, {
-<<<<<<< HEAD
-                            src: `/characters/heads/${charId}.png`,
-                            loading: 'lazy',
-                            class: 'w-[2rem] h-[2rem] object-cover scale-150 cursor-pointer hover:scale-165 transition-transform',
-                            fallbackSources: [
-                                convertFileSrc(`${baseDir.value}/assets/heads/${charId}.png`),
-                                '/characters/heads/050001.png'
-                            ],
-                            onClick: (event: Event) => {
-                                event.stopPropagation()
-                                // redirects to character page
-                                router.push({ name: 'characters', query: { characterId: charId } })
-                            }
-                        }) : null,
-                        preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, `${char.character} - ${char.costume}`) : null
-=======
                             src: convertFileSrc(`heads/${charIds}`, "bd2assets"),
                             errorSrc: "/characters/heads/050001.png",
                             class: 'w-8 h-8 scale-150 aspect-square cursor-pointer transition-transform hover:scale-165',
@@ -286,7 +206,6 @@ const columns = [
                             }
                         }) : null,
                         preferencesStore.characterDisplay === 'nameOnly' || preferencesStore.characterDisplay === 'full' ? h('span', { class: 'truncate text-sm text-primary' }, formatCharName(char, lang.value)) : null
->>>>>>> upstream/main
                     ]
                 )
             }
@@ -307,15 +226,9 @@ const columns = [
     }),
     columnHelper.accessor('author', {
         cell: info => {
-<<<<<<< HEAD
-            return h('span', { class: 'truncate text-sm text-primary' }, info.getValue())
-        },
-        header: () => h('span', { class: 'flex text-primary' }, t('modsTab.modlist.header.author')),
-=======
             return h('span', { class: 'truncate text-sm' }, info.getValue())
         },
         header: () => h('span', { class: 'flex' }, t('modsTab.modlist.header.author')),
->>>>>>> upstream/main
         size: 200
     }),
 ]
@@ -393,12 +306,9 @@ const table = useVueTable({
         },
         get columnVisibility() {
             return columnVisibility.value
-<<<<<<< HEAD
-=======
         },
         get columnOrder() {
             return columnOrder.value
->>>>>>> upstream/main
         }
     },
     onRowSelectionChange: updateOrValue => {
@@ -420,15 +330,12 @@ const table = useVueTable({
                 ? updaterOrValue(columnSizes.value)
                 : updaterOrValue
     },
-<<<<<<< HEAD
-=======
     onColumnOrderChange: updaterOrValue => {
         columnOrder.value =
             typeof updaterOrValue === 'function'
                 ? updaterOrValue(columnOrder.value)
                 : updaterOrValue
     }
->>>>>>> upstream/main
 })
 
 const rows = computed(() => table.getRowModel().rows)
@@ -555,18 +462,6 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             key: 'preview',
             show: isSingleSelection
         } as ContextMenuItem,
-<<<<<<< HEAD
-        {
-            type: 'divider' as const,
-            key: 'd-tip'
-        } as ContextMenuItem,
-        {
-            type: 'tip' as const,
-            label: t('modsTab.modlist.contextMenu.doubleClickToPreviewTip'),
-            key: 'tip-double-click'
-        } as ContextMenuItem,
-=======
->>>>>>> upstream/main
     ].filter(item => item.show !== false)
 })
 
@@ -665,21 +560,6 @@ function handleRowDoubleClick(event: MouseEvent, rowIndex: number) {
     emit('preview-mod', row.original)
 }
 
-<<<<<<< HEAD
-// Clicking on the empty area of the mod list (not on a row) clears the
-// current row selection so the highlighted rows un-highlight. We use
-// capture-phase mousedown so we run before any row's @click handler.
-function handleBackgroundMouseDown(event: MouseEvent) {
-    const target = event.target as HTMLElement | null
-    if (!target) return
-    // If the click landed inside a row (or any interactive control), do nothing.
-    if (target.closest('[data-mod-row]')) return
-    if (target.closest('button') || target.closest('input') || target.closest('[data-checkbox]')) return
-    // Don't clear on right-click (the context-menu handler manages selection).
-    if (event.button !== 0) return
-    table.resetRowSelection()
-    anchorRowIndex.value = null
-=======
 
 const draggedColumnId = ref<string | null>(null)
 const dragOverColumnId = ref<string | null>(null)
@@ -743,50 +623,12 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
 
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
->>>>>>> upstream/main
 }
 
 </script>
 
 <template>
     <!-- mods contextmenu -->
-<<<<<<< HEAD
-    <ContextMenu
-        :options="contextMenuItems"
-        :show="showDropdown"
-        :x="x"
-        :y="y"
-        @update:show="showDropdown = $event"
-        @select="handleSelect"
-    />
-
-    <!-- header contextmenu -->
-
-    <div class="flex h-full">
-        <div ref="parentRef" class="flex-1 overflow-auto border border-border rounded relative" tabindex="0"
-            @keydown="handleKeyDown" @mousedown.capture="handleBackgroundMouseDown">
-            <div :style="{ height: `${totalSize + 46.39}px` }" class="relative">
-                <div class="w-full h-full ">
-                    <div class="sticky top-0 z-1 bg-bg-surface grid border-b border-border "
-                        :style="{ gridTemplateColumns }">
-                        <div v-for="header in table.getFlatHeaders()" :key="header.id" :class="[
-                            'p-3 px-2 flex items-center gap-2 transition-colors cursor-pointer font-semibold select-none relative bg-bg-surface hover:bg-interactive-bg-hover!'
-                        ]" @click="header.column.getToggleSortingHandler()?.($event)">
-                            <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
-                                :props="header.getContext()" />
-
-                            <ArrowDownWideNarrow v-if="header.column.getIsSorted() == 'desc'"
-                                class="w-[1.25em] h-[1.25em] text-secondary" />
-                            <ArrowUpNarrowWide v-if="header.column.getIsSorted() == 'asc'"
-                                class="w-[1.25em] h-[1.25em] text-secondary" />
-
-                            <div v-if="header.column.getCanResize()" @dblclick="header.column.resetSize()" @click.stop
-                                @mousedown="(event) => {if (!header.column.getIsLastColumn()) header.getResizeHandler()?.(event)}"
-                                @touchstart="(event) => {if (!header.column.getIsLastColumn()) header.getResizeHandler()?.(event)}" :class="[
-                                    'z-9999 absolute right-0 top-0 h-full w-0.5  opacity-0 hover:opacity-100 select-none touch-none',
-                                    !header.column.getIsLastColumn() ? 'hover:bg-accent-primary-hover cursor-col-resize' : '',
-                                    header.column.getIsResizing() && !header.column.getIsLastColumn() ? 'bg-accent-primary opacity-100 h-screen!' : ''
-=======
     <ContextMenu :options="contextMenuItems" :show="showDropdown" :x="x" :y="y" @update:show="showDropdown = $event"
         @select="handleSelect" />
 
@@ -846,7 +688,6 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
                                     'z-9999 absolute right-0 top-0 h-full w-0.5 opacity-0 hover:opacity-100 select-none touch-none',
                                     !header.column.getIsLastColumn() ? 'hover:bg-accent-hover cursor-col-resize' : '',
                                     header.column.getIsResizing() && !header.column.getIsLastColumn() ? 'bg-accent-hover opacity-100 h-screen!' : ''
->>>>>>> upstream/main
                                 ]" :style="header.column.getIsResizing() ? {
                                     transform: `translateX(${table.getState().columnSizingInfo.deltaOffset ?? 0}px)`
                                 } : undefined">
@@ -858,15 +699,6 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
                         height: `${virtualRow.size}px`,
                         transform: `translateY(${virtualRow.start + 46.39}px)`,
                         gridTemplateColumns
-<<<<<<< HEAD
-                    }" data-mod-row class="absolute top-0 left-0 min-w-full grid items-center hover:bg-interactive-bg-hover border-b border-border"
-                        @contextmenu="handleContextMenu($event, virtualRow.index)"
-                        @click="handleRowClick($event, virtualRow.index)"
-                        @dblclick="handleRowDoubleClick($event, virtualRow.index)"
-                        :class="{ 'bg-accent-primary!': rows[virtualRow.index].getIsSelected() }">
-                        <div v-for="cell in rows[virtualRow.index].getVisibleCells()" :key="cell.id"
-                            class="p-3 overflow-hidden">
-=======
                     }" class="absolute top-0 left-0 min-w-full grid items-center hover:bg-state-hover border-b border-border-default"
                         @contextmenu="handleContextMenu($event, virtualRow.index)"
                         @click="handleRowClick($event, virtualRow.index)"
@@ -874,7 +706,6 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
                         :class="{ 'bg-state-selected!': rows[virtualRow.index].getIsSelected() }">
                         <div v-for="cell in rows[virtualRow.index].getVisibleCells()" :key="cell.id"
                             class="p-3 px-2 overflow-hidden">
->>>>>>> upstream/main
                             <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
                         </div>
                     </div>
@@ -882,9 +713,6 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-</template>
-=======
 
 
     <Teleport to="body">
@@ -896,4 +724,3 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
     </Teleport>
 </template>
 <style scoped></style>
->>>>>>> upstream/main

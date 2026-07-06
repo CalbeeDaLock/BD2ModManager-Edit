@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { BD2Mod, useModsStore } from '../../../stores/mods';
 import { useLoggingStore } from '../../../stores/logging';
 import { getErrorMessage } from '../../../utils/errors';
-import { useToast } from 'primevue/usetoast';
+import { useNotificationStore } from '../../../stores/notification';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/common/Button.vue';
 import Modal from '../../../components/common/Modal.vue';
@@ -14,7 +14,7 @@ import { getNpcIcon } from '../npcIcons';
 import type { NpcEntry } from '../types';
 
 const loggingStore = useLoggingStore();
-const toast = useToast();
+const notificationStore = useNotificationStore();
 const { t } = useI18n();
 const modsStore = useModsStore();
 
@@ -53,12 +53,12 @@ async function openPreviewMod(mod: BD2Mod) {
         loggingStore.logDebug("Mod previewed successfully:", mod.name);
     }).catch((error) => {
         const errorMsg = getErrorMessage(t, error);
-        toast.add({
+        notificationStore.add({
             severity: "error",
             closable: true,
-            summary: t("modsTab.errors.modPreview.title"),
-            detail: errorMsg,
-            life: 5000
+            title: t("modsTab.errors.modPreview.title"),
+            message: errorMsg,
+            duration: 5000
         });
         loggingStore.logError("Error previewing mod:", error);
     });

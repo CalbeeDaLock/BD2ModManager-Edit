@@ -79,12 +79,8 @@
             "characters": "캐릭터",
             "profiles": "프로필",
             "browndustx": "BrownDustX",
-<<<<<<< HEAD
             "settings": "설정",
             "npcs": "NPC"
-=======
-            "settings": "설정"
->>>>>>> upstream/main
         },
         "notifications": {
             "gameLaunched": {
@@ -136,13 +132,9 @@
                     "onlyEnabledMods": "활성화된 모드만 표시",
                     "onlyDisabledMods": "비활성화된 모드만 표시",
                     "onlyConflictsMods": "충돌 모드만 표시",
-<<<<<<< HEAD
                     "onlyErrorsMods": "오류 모드만 표시",
                     "hideErrorsMods": "오류 모드 숨기기",
                     "onlyOneModType": "한 가지 모드 유형만 선택"
-=======
-                    "onlyErrorsMods": "오류 모드만 표시"
->>>>>>> upstream/main
                 }
             }
         },
@@ -170,12 +162,8 @@
                 "deleteMod": "모드 삭제",
                 "deleteSelectedMods": "선택한 모드 삭제",
                 "openModFolder": "모드 폴더 열기",
-<<<<<<< HEAD
                 "previewMod": "모드 미리보기",
                 "doubleClickToPreviewTip": "팁: 행을 더블클릭하면 모드를 미리볼 수 있습니다."
-=======
-                "previewMod": "모드 미리보기"
->>>>>>> upstream/main
             }
         },
         "confirmations": {
@@ -272,12 +260,8 @@
                 "hideMenCharacters": "남성 캐릭터 숨기기",
                 "hideWomenCharacters": "여성 캐릭터 숨기기",
                 "onlyCharactersWithMods": "모드가 있는 캐릭터만 표시",
-<<<<<<< HEAD
                 "onlyCharactersWithoutMods": "모드가 없는 캐릭터만 표시",
                 "onlyCollabCharacters": "콜라보 캐릭터만 표시"
-=======
-                "onlyCharactersWithoutMods": "모드가 없는 캐릭터만 표시"
->>>>>>> upstream/main
             },
             "releasePeriod": {
                 "title": "출시 기간",
@@ -794,7 +778,6 @@
         "shouldBeInFolder": "이 모드는 폴더 안에 있어야 합니다. 모드와 같은 이름의 폴더를 만들고 모드 파일을 그 안으로 이동해 주세요.",
         "missingAtlasFile": "이 모드에 아틀라스 파일이 없습니다.",
         "noDescription": "설명이 없습니다."
-<<<<<<< HEAD
     },
     "npcsTab": {
         "title": "NPC",
@@ -828,7 +811,5 @@
                 "description": "모드 탭에서 이 NPC의 모드를 설치하세요."
             }
         }
-=======
->>>>>>> upstream/main
     }
 }

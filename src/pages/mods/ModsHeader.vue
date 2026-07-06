@@ -20,7 +20,7 @@ interface Filters {
 }
 
 const filters = defineModel<Filters>("filters", {
-    default: {
+    default: () => ({
         searchQuery: '',
         modTypes: [],
         onlyEnabled: false,
@@ -29,7 +29,7 @@ const filters = defineModel<Filters>("filters", {
         onlyErrors: false,
         hideErrors: false,
         onlyOneModType: false,
-    }
+    })
 })
 
 const modTypes = ["Cutscene", "Standing", "Scene", "Dating", "NPC", "Minigame"];
