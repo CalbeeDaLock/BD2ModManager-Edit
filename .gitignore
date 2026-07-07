@@ -34,4 +34,7 @@ src-tauri/2
 /target
 /.vscode
 /src-tauri/resources
-log.txt
+log.log
+node_modules
+run.bat
+run_exe.bat
