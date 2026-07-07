@@ -80,7 +80,7 @@
             "profiles": "プロファイル",
             "browndustx": "BrownDustX",
             "settings": "設定",
-            "npcs": "NPC"
+            "npc": "NPC"
         },
         "notifications": {
             "gameLaunched": {
@@ -779,7 +779,7 @@
         "missingAtlasFile": "このMODにはアトラスファイルがありません。",
         "noDescription": "説明はありません。"
     },
-    "npcsTab": {
+    "npcTab": {
         "title": "NPC",
         "subtitle": "{totalModsCount} 個中 {enabledModsCount} 個のNPC MODが有効",
         "npcsNotFound": "MODのあるNPCが見つかりません。",

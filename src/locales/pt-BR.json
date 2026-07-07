@@ -80,7 +80,7 @@
             "profiles": "Perfis",
             "browndustx": "BrownDustX",
             "settings": "Configurações",
-            "npcs": "NPC"
+            "npc": "NPC"
         },
         "notifications": {
             "gameLaunched": {
@@ -779,7 +779,7 @@
         "missingAtlasFile": "Este mod está sem o arquivo de atlas.",
         "noDescription": "Nenhuma descrição fornecida."
     },
-    "npcsTab": {
+    "npcTab": {
         "title": "NPC",
         "subtitle": "{enabledModsCount} de {totalModsCount} mods de NPC ativados",
         "npcsNotFound": "Nenhum NPC com mods encontrado.",

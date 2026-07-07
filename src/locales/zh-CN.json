@@ -80,7 +80,7 @@
             "profiles": "配置文件",
             "browndustx": "BrownDustX",
             "settings": "设置",
-            "npcs": "NPC"
+            "npc": "NPC"
         },
         "notifications": {
             "gameLaunched": {
@@ -779,7 +779,7 @@
         "missingAtlasFile": "此模组缺少图集文件。",
         "noDescription": "暂无描述。"
     },
-    "npcsTab": {
+    "npcTab": {
         "title": "NPC",
         "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个 NPC 模组",
         "npcsNotFound": "未找到有模组的 NPC。",

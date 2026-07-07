@@ -11,4 +11,6 @@ export interface NpcEntry {
     modsCount: number;
     /** Number of currently-enabled, error-free NPC mods. */
     enabledCount: number;
+    /** True when at least one NPC (Standing) mod is enabled. */
+    hasStanding: boolean;
 }

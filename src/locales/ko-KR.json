@@ -80,7 +80,7 @@
             "profiles": "프로필",
             "browndustx": "BrownDustX",
             "settings": "설정",
-            "npcs": "NPC"
+            "npc": "NPC"
         },
         "notifications": {
             "gameLaunched": {
@@ -779,7 +779,7 @@
         "missingAtlasFile": "이 모드에 아틀라스 파일이 없습니다.",
         "noDescription": "설명이 없습니다."
     },
-    "npcsTab": {
+    "npcTab": {
         "title": "NPC",
         "subtitle": "{totalModsCount}개 중 {enabledModsCount}개 NPC 모드 활성화됨",
         "npcsNotFound": "모드가 있는 NPC를 찾을 수 없습니다.",

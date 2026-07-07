@@ -15,18 +15,14 @@ import NpcModal from './modals/NpcModal.vue';
 import Button from '../../components/common/Button.vue';
 import Input from '../../components/common/Input.vue';
 import Select from '../../components/common/Select.vue';
+import Image from '../../components/common/Image.vue';
 import { getNpcIcon } from './npcIcons';
 import type { NpcEntry } from './types';
 
 const { t } = useI18n();
 const modsStore = useModsStore();
 
-const totalModsCount = computed(() => modsStore.mods.filter(m => m.modType?.type === 'NPC').length);
-const enabledModsCount = computed(() =>
-    modsStore.mods.filter(m => m.modType?.type === 'NPC' && m.enabled && !m.errors.length).length
-);
-
-const viewMode = useLocalStorage('npcs-view-mode', 'grid'); // 'grid' or 'list'
+const viewMode = useLocalStorage('npc-view-mode', 'grid'); // 'grid' or 'list'
 
 const userFilters = reactive({
     searchQuery: '',
@@ -34,12 +30,12 @@ const userFilters = reactive({
 });
 
 const sortOptions = computed(() => [
-    { label: t('npcsTab.filters.sortBy.options.idDesc'), value: 'id-desc' },
-    { label: t('npcsTab.filters.sortBy.options.idAsc'), value: 'id-asc' },
-    { label: t('npcsTab.filters.sortBy.options.nameAsc'), value: 'a-z' },
-    { label: t('npcsTab.filters.sortBy.options.nameDesc'), value: 'z-a' },
-    { label: t('npcsTab.filters.sortBy.options.modsAsc'), value: 'mods-asc' },
-    { label: t('npcsTab.filters.sortBy.options.modsDesc'), value: 'mods-desc' },
+    { label: t('npcTab.filters.sortBy.options.idDesc'), value: 'id-desc' },
+    { label: t('npcTab.filters.sortBy.options.idAsc'), value: 'id-asc' },
+    { label: t('npcTab.filters.sortBy.options.nameAsc'), value: 'a-z' },
+    { label: t('npcTab.filters.sortBy.options.nameDesc'), value: 'z-a' },
+    { label: t('npcTab.filters.sortBy.options.modsAsc'), value: 'mods-asc' },
+    { label: t('npcTab.filters.sortBy.options.modsDesc'), value: 'mods-desc' },
 ]);
 
 // npc300501 is not an NPC — she is the character "Loen" (003201) whose
@@ -81,16 +77,30 @@ const npcs = computed<NpcEntry[]>(() => {
                 id,
                 name: characterName || `NPC ${id}`,
                 modsCount: 0,
-                enabledCount: 0
+                enabledCount: 0,
+                hasStanding: false
             };
             groups.set(id, entry);
         }
         entry.modsCount += 1;
-        if (mod.enabled && !mod.errors.length) entry.enabledCount += 1;
+        if (mod.enabled && !mod.errors.length) {
+            entry.enabledCount += 1;
+            entry.hasStanding = true;
+        }
     }
 
     return Array.from(groups.values());
 });
+
+// Header counts must match what's actually shown on screen: sum over the
+// derived npc list (which already excludes non-NPC ids), not every NPC-typed
+// mod in the store.
+const totalModsCount = computed(() =>
+    npcs.value.reduce((sum, npc) => sum + npc.modsCount, 0)
+);
+const enabledModsCount = computed(() =>
+    npcs.value.reduce((sum, npc) => sum + npc.enabledCount, 0)
+);
 
 const filteredNpcs = computed(() => {
     const search = userFilters.searchQuery.toLowerCase();
@@ -198,9 +208,9 @@ function refreshData() {
 }
 
 useHeader({
-    title: t('npcsTab.title'),
+    title: t('npcTab.title'),
     subtitle: computed(() =>
-        t('npcsTab.subtitle', {
+        t('npcTab.subtitle', {
             enabledModsCount: enabledModsCount.value,
             totalModsCount: totalModsCount.value
         })
@@ -212,12 +222,12 @@ useHeader({
 </script>
 
 <template>
-    <div class="flex flex-row w-full h-full p-4 py-2 gap-4 bg-bg-deep overflow-hidden">
+    <div class="flex flex-row w-full h-full p-4 py-2 gap-4 bg-surface-app overflow-hidden">
         <div class="flex-1 min-h-0 overflow-hidden">
-            <div v-if="sortedNpcs.length === 0" class="text-center py-12 text-secondary">
-                <p class="text-lg">{{ t('npcsTab.npcsNotFound') }}</p>
+            <div v-if="sortedNpcs.length === 0" class="text-center py-12 text-text-secondary">
+                <p class="text-lg">{{ t('npcTab.npcsNotFound') }}</p>
             </div>
-            <div v-else-if="viewMode === 'grid'" ref="parentRef" class="h-full overflow-y-auto bg-bg-deep" style="contain: strict">
+            <div v-else-if="viewMode === 'grid'" ref="parentRef" class="h-full overflow-y-auto bg-surface-app" style="contain: strict">
                 <div :style="{ height: `${totalSize}px`, width: '100%', position: 'relative' }">
                     <div :style="{
                         position: 'absolute',
@@ -245,26 +255,33 @@ useHeader({
                 </div>
             </div>
             <!-- List view: simple non-virtualized list, one row per NPC -->
-            <div v-else class="h-full overflow-y-auto bg-bg-deep">
+            <div v-else class="h-full overflow-y-auto bg-surface-app">
                 <div v-for="npc in sortedNpcs" :key="npc.id"
                     @click="openNpcDetails(npc)"
-                    class="flex bg-interactive-bg rounded-lg overflow-hidden cursor-pointer hover:bg-interactive-bg-hover/30 transition-colors mx-2 mb-2">
-                    <div class="shrink-0 w-42 h-42 flex items-center justify-center bg-accent-primary/10 border-r border-border overflow-hidden">
-                        <img v-if="getNpcIcon(npc.id)" :src="getNpcIcon(npc.id)" :alt="npc.name"
-                            class="w-full h-full object-cover object-top select-none pointer-events-none" />
-                        <span v-else class="font-mono text-lg font-bold text-accent-primary/70 select-none">{{ npc.id }}</span>
+                    class="flex bg-surface-card rounded-lg overflow-hidden cursor-pointer hover:bg-state-hover transition-colors mx-2 mb-2">
+                    <div class="shrink-0">
+                        <Image :src="getNpcIcon(npc.id) ?? 'characters/standing/placeholder_character.png'" :alt="npc.name"
+                            class="w-42 h-42 object-cover object-top rounded-t-md aspect-square"
+                            error-src="characters/standing/placeholder_character.png" error-class="bg-text-primary" skeleton />
                     </div>
                     <div class="flex flex-col flex-1 p-2 min-w-0">
-                        <div class="text-lg font-medium truncate">{{ npc.name }}</div>
-                        <span class="text-secondary font-mono text-sm">{{ t('npcsTab.id', { id: npc.id }) }}</span>
-                        <div class="flex items-end gap-8 mt-2 text-sm">
-                            <div class="flex flex-col items-start">
-                                <span class="font-semibold">{{ t('npcsTab.npcModal.enabledMods') }}</span>
-                                <span class="font-mono text-success">{{ npc.enabledCount }}</span>
+                        <div class="text-lg font-medium flex gap-2 items-center flex-wrap">
+                            <span class="truncate">{{ npc.name }}</span>
+                            <div v-if="npc.modsCount > 0"
+                                class="flex bg-accent/75 text-text-on-accent text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap">
+                                {{ t('npcTab.tags.modsCount', { count: npc.modsCount }) }}
                             </div>
-                            <div class="flex flex-col items-start">
-                                <span class="font-semibold">{{ t('npcsTab.npcModal.totalMods') }}</span>
-                                <span class="font-mono">{{ npc.modsCount }}</span>
+                        </div>
+                        <span class="text-text-secondary font-mono text-sm">{{ t('npcTab.id', { id: npc.id }) }}</span>
+                        <div class="flex flex-1 items-end gap-8 md:gap-12 mr-4 md:mr-8 mt-2">
+                            <div class="flex flex-col items-center">
+                                <span class="font-semibold text-sm md:text-base">{{ t('charactersTab.modTypes.standing') }}</span>
+                                <span class="font-mono text-xs md:text-sm" :class="{
+                                    'text-success': npc.hasStanding,
+                                    'text-error': !npc.hasStanding
+                                }">
+                                    {{ npc.hasStanding ? t('charactersTab.modTypes.states.enabled', 'Enabled') : t('charactersTab.modTypes.states.disabled', 'Disabled') }}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -273,18 +290,18 @@ useHeader({
         </div>
 
         <div
-            class="flex overflow-y-auto flex-col gap-2.5 items-start justify-start w-full max-w-[20%] min-w-50 p-2 bg-bg-surface rounded border border-border">
-            <h1 class="text-lg font-bold text-primary flex flex-row justify-between items-center w-full">
-                {{ t('npcsTab.filters.title') }}
+            class="flex overflow-y-auto flex-col gap-2.5 items-start justify-start w-full max-w-[20%] min-w-50 p-2 bg-surface-panel rounded-md border border-border-default">
+            <h1 class="text-lg font-bold text-text-primary flex flex-row justify-between items-center w-full">
+                {{ t('npcTab.filters.title') }}
                 <div class="flex gap-1">
                     <Button @click="viewMode = 'grid'" :icon="Grid3X3" :icon-class="{
-                        'text-accent-primary': viewMode === 'grid',
-                        'text-primary': viewMode !== 'grid',
+                        'text-accent': viewMode === 'grid',
+                        'text-text-primary': viewMode !== 'grid',
                         'text-xs': true
                     }" />
                     <Button @click="viewMode = 'list'" :icon="List" :icon-class="{
-                        'text-accent-primary': viewMode === 'list',
-                        'text-primary': viewMode !== 'list',
+                        'text-accent': viewMode === 'list',
+                        'text-text-primary': viewMode !== 'list',
                         'text-xs': true
                     }" />
                 </div>
@@ -292,11 +309,11 @@ useHeader({
 
             <div class="flex flex-col gap-4 w-full">
                 <div class="min-h-10 w-full">
-                    <Input v-model="userFilters.searchQuery" :placeholder="t('npcsTab.filters.searchPlaceholder')" class="w-64" />
+                    <Input v-model="userFilters.searchQuery" :placeholder="t('npcTab.filters.searchPlaceholder')" class="w-64" />
                 </div>
 
                 <div class="flex flex-col gap-1.5">
-                    <label class="text-sm font-semibold text-primary">{{ t('npcsTab.filters.sortBy.title') }}</label>
+                    <label class="text-sm font-semibold text-text-primary">{{ t('npcTab.filters.sortBy.title') }}</label>
                     <Select v-model="userFilters.sortBy" :options="sortOptions" />
                 </div>
             </div>

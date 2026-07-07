@@ -5,7 +5,7 @@ import SettingsTab from './pages/settings/SettingsTab.vue'
 import ProfilesTab from './pages/profiles/ProfilesTab.vue'
 import BDXTab from './pages/browndustx/BDXTab.vue'
 import ScenesTab from './pages/scenes/ScenesTab.vue'
-import NpcsTab from './pages/npcs/NpcsTab.vue'
+import NpcTab from './pages/npc/NpcTab.vue'
 
 const routes = [
     {
@@ -28,9 +28,9 @@ const routes = [
         component: ScenesTab
     },
     {
-        name: 'npcs',
-        path: '/npcs',
-        component: NpcsTab
+        name: 'npc',
+        path: '/npc',
+        component: NpcTab
     },
     {
         name: 'profiles',
