@@ -1,0 +1,80 @@
+{
+    "version": "0.0.2",
+    "npc": [
+        {
+            "id": "000001",
+            "character_image": "/npc/standing/illust_npc000001.png",
+            "character_name": {
+                "en": "Shop Girl",
+                "cn": "Shop Girl",
+                "jp": "Shop Girl",
+                "tw": "Shop Girl",
+                "kr": "Shop Girl"
+            },
+            "assets": {
+                "head_image": "/npc/standing/illust_npc000001.png",
+                "character_image": "/npc/standing/illust_npc000001.png"
+            }
+        },
+        {
+            "id": "000005",
+            "character_image": "/npc/standing/illust_0000050101_1131.png",
+            "character_name": {
+                "en": "Eleanor",
+                "cn": "Eleanor",
+                "jp": "Eleanor",
+                "tw": "Eleanor",
+                "kr": "Eleanor"
+            },
+            "assets": {
+                "head_image": "/npc/standing/illust_0000050101_1131.png",
+                "character_image": "/npc/standing/illust_0000050101_1131.png"
+            }
+        },
+        {
+            "id": "0033",
+            "character_image": "/characters/standing/003301.png",
+            "character_name": {
+                "en": "Nebris - Labyrinth Gatekeeper NPC",
+                "cn": "Nebris - Labyrinth Gatekeeper NPC",
+                "jp": "Nebris - Labyrinth Gatekeeper NPC",
+                "tw": "Nebris - Labyrinth Gatekeeper NPC",
+                "kr": "Nebris - Labyrinth Gatekeeper NPC"
+            },
+            "assets": {
+                "head_image": "/characters/standing/003301.png",
+                "character_image": "/characters/standing/003301.png"
+            }
+        },
+        {
+            "id": "300302",
+            "character_image": "/characters/standing/003101.png",
+            "character_name": {
+                "en": "Elpis NPC",
+                "cn": "Elpis NPC",
+                "jp": "Elpis NPC",
+                "tw": "Elpis NPC",
+                "kr": "Elpis NPC"
+            },
+            "assets": {
+                "head_image": "/characters/standing/003101.png",
+                "character_image": "/characters/standing/003101.png"
+            }
+        },
+        {
+            "id": "400034",
+            "character_image": "/npc/standing/illust-greta-npc.png",
+            "character_name": {
+                "en": "Greta",
+                "cn": "Greta",
+                "jp": "Greta",
+                "tw": "Greta",
+                "kr": "Greta"
+            },
+            "assets": {
+                "head_image": "/npc/standing/illust-greta-npc.png",
+                "character_image": "/npc/standing/illust-greta-npc.png"
+            }
+        }
+    ]
+}

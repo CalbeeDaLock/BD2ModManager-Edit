@@ -44,7 +44,9 @@ const installedMods = computed<BD2Mod[]>(() => {
 const sortedMods = computed(() => sortModsByPath(installedMods.value));
 
 const iconSrc = computed(() =>
-    (props.selectedNpc ? getNpcIcon(props.selectedNpc.id) : undefined) ?? 'characters/standing/placeholder_character.png'
+    props.selectedNpc?.image
+    ?? (props.selectedNpc ? getNpcIcon(props.selectedNpc.id) : undefined)
+    ?? 'characters/standing/placeholder_character.png'
 );
 
 const enabledModsCount = computed(() =>

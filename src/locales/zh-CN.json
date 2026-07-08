@@ -1,815 +1,823 @@
 {
-    "common": {
-        "actions": {
-            "refreshMods": "刷新模组",
-            "cancel": "取消",
-            "close": "关闭",
-            "refresh": "刷新",
-            "continue": "继续",
-            "confirm": "确认",
-            "browse": "浏览",
-            "save": "保存"
-        },
-        "modTypes": {
-            "cutscene": "过场动画",
-            "standing": "立绘",
-            "scene": "场景",
-            "dating": "约会",
-            "npc": "NPC",
-            "minigame": "小游戏"
-        }
-    },
-    "app": {
-        "confirmations": {
-            "exit": {
-                "title": "退出模组管理器？",
-                "message": "您有未同步的模组，这些模组将不会应用到游戏中。确定要退出吗？",
-                "actions": {
-                    "exit": "退出"
-                }
-            }
-        },
-        "notifications": {
-            "brownDustXOutdated": {
-                "title": "BrownDustX 版本过旧",
-                "message": "BrownDustX 版本已过时。模组将无法使用，请先更新。"
-            }
-        }
-    },
-    "titlebar": {
-        "appUpdate": {
-            "checking": "正在检查更新...",
-            "available": "发现新版本：v{version}",
-            "downloaded": "v{version} 已就绪！点击以应用更新"
-        },
-        "sync": {
-            "applying": "正在应用：{modName}",
-            "syncSuccess": "模组同步成功",
-            "unsyncSuccess": "模组已成功移除"
-        },
-        "modPreview": {
-            "downloading": "BD2ModPreview v{version}",
-            "downloadingShort": "BD2ModPreview",
-            "updateFailed": "BD2ModPreview 更新失败",
-            "updateFailedShort": "BD2ModPreview 更新失败",
-            "updated": "BD2ModPreview v{version} 已更新！",
-            "updatedShort": "BD2ModPreview 已更新！"
-        },
-        "gameData": {
-            "downloading": "正在下载游戏数据...",
-            "downloadingShort": "数据",
-            "checking": "正在检查游戏数据...",
-            "updatedShort": "数据已更新"
-        },
-        "actions": {
-            "github": "Github",
-            "logs": "日志",
-            "kofi": "在 Ko-Fi 上支持",
-            "afdian": "在爱发电上支持"
-        }
-    },
-    "sidebar": {
-        "sections": {
-            "navigation": "导航",
-            "settings": "设置",
-            "currentProfile": "当前配置文件"
-        },
-        "tabs": {
-            "mods": "模组",
-            "characters": "角色",
-            "profiles": "配置文件",
-            "browndustx": "BrownDustX",
-            "settings": "设置",
-            "npc": "NPC"
-        },
-        "notifications": {
-            "gameLaunched": {
-                "title": "游戏已启动",
-                "description": "游戏已成功启动。"
-            }
-        },
-        "confirmations": {
-            "unsyncedMods": {
-                "title": "检测到未同步的模组",
-                "message": "您有未同步的模组，这些模组将不会应用到游戏中。是否仍要启动游戏？",
-                "actions": {
-                    "launchAnyway": "仍然启动"
-                }
-            }
-        },
-        "actions": {
-            "launchGame": "启动游戏"
-        }
-    },
-    "modsTab": {
-        "title": "模组",
-        "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个模组",
-        "actions": {
-            "addMod": "添加模组",
-            "installFromZip": "从 ZIP 安装",
-            "installFromFolder": "从文件夹安装",
-            "openModsFolder": "打开模组文件夹",
-            "syncMods": "同步模组",
-            "unsyncMods": "取消同步"
-        },
-        "browndustx": {
-            "status": {
-                "installed": "BrownDustX v{version}",
-                "installedButOutdated": "BrownDustX v{version}（版本过旧）",
-                "gameNotFound": "未设置游戏目录",
-                "notInstalled": "BrownDustX 未安装"
-            },
-            "navigation": "前往 BrownDustX"
-        },
-        "header": {
-            "searchPlaceholder": "搜索模组、角色、作者...",
-            "actions": {
-                "filters": "筛选"
-            },
-            "advancedFilters": {
-                "title": "高级筛选",
-                "actions": {
-                    "onlyEnabledMods": "仅显示已启用模组",
-                    "onlyDisabledMods": "仅显示已禁用模组",
-                    "onlyConflictsMods": "仅显示有冲突的模组",
-                    "onlyErrorsMods": "仅显示有错误的模组",
-                    "hideErrorsMods": "隐藏有错误的模组",
-                    "onlyOneModType": "仅选择一种模组类型"
-                }
-            }
-        },
-        "modlist": {
-            "header": {
-                "modName": "模组名称",
-                "modType": "模组类型",
-                "character": "角色",
-                "author": "作者"
-            },
-            "contextMenu": {
-                "refreshMods": "刷新模组",
-                "selectMods": "选择模组",
-                "selectAllMods": "全选模组",
-                "selectEnabledMods": "选择已启用的模组",
-                "selectDisabledMods": "选择已禁用的模组",
-                "deselectMods": "取消选择",
-                "enableMod": "启用模组",
-                "enableSelectedMods": "启用所选模组",
-                "disableMod": "禁用模组",
-                "disableSelectedMods": "禁用所选模组",
-                "changeModAuthor": "更改模组作者",
-                "changeSelectedModsAuthor": "更改所选模组作者",
-                "renameMod": "重命名模组",
-                "deleteMod": "删除模组",
-                "deleteSelectedMods": "删除所选模组",
-                "openModFolder": "打开模组文件夹",
-                "previewMod": "预览模组",
-                "doubleClickToPreviewTip": "提示：双击行即可预览模组。"
-            }
-        },
-        "confirmations": {
-            "syncMods": {
-                "title": "同步模组？",
-                "titleWithConflicts": "同步存在冲突的模组",
-                "message": "此操作将覆盖游戏文件夹中的模组，且无法撤销。",
-                "messageWithConflicts": "部分模组之间存在冲突，解决冲突前游戏可能无法正常启动。",
-                "actions": {
-                    "sync": "同步",
-                    "syncAnyway": "仍然同步"
-                }
-            },
-            "unsyncMods": {
-                "title": "取消同步？",
-                "message": "此操作将从游戏文件夹中移除所有模组，且无法撤销。",
-                "actions": {
-                    "unsync": "取消同步"
-                }
-            },
-            "deleteMod": {
-                "title": "删除模组？",
-                "multipleTitle": "删除所选模组？",
-                "message": "确定要删除模组\"{modName}\"吗？此操作无法撤销。",
-                "multipleMessage": "确定要删除这 {count} 个模组吗？此操作无法撤销。",
-                "actions": {
-                    "delete": "删除"
-                }
-            }
-        },
-        "notifications": {
-            "syncSuccess": {
-                "title": "模组已同步",
-                "description": "您的模组已成功同步到游戏文件夹。"
-            },
-            "unsyncSuccess": {
-                "title": "已取消同步",
-                "description": "您的模组已成功从游戏文件夹中移除。"
-            },
-            "modInstallSuccess": {
-                "title": "模组已安装",
-                "description": "模组 '{modName}' 已成功安装。"
-            }
-        },
-        "errors": {
-            "modPreview": {
-                "title": "无法预览模组",
-                "modContainErrors": "模组 '{modName}' 包含错误，无法打开预览。"
-            },
-            "syncFailed": {
-                "title": "同步失败"
-            },
-            "unsyncFailed": {
-                "title": "取消同步失败"
-            },
-            "modFolderNotFound": "未找到 '{modName}' 的模组文件夹。",
-            "modNotDirectory": "'{modName}' 的模组路径不是一个目录。",
-            "stagingDirectoryNotSet": "暂存目录未设置。",
-            "stagingDirectoryNotFound": "在 '{stagingDir}' 处未找到暂存目录，请检查设置。"
-        }
-    },
-    "charactersTab": {
-        "title": "角色",
-        "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个模组",
-        "charactersNotFound": "未找到角色。",
-        "id": "ID：{id}",
-        "filters": {
-            "title": "筛选",
-            "searchPlaceholder": "搜索角色...",
-            "sortBy": {
-                "title": "排序方式",
-                "options": {
-                    "nameAsc": "名称（A-Z）",
-                    "nameDesc": "名称（Z-A）",
-                    "releaseAsc": "发布日期（最新）",
-                    "releaseDesc": "发布日期（最早）",
-                    "modsAsc": "模组数量（最少）",
-                    "modsDesc": "模组数量（最多）"
-                }
-            },
-            "modStatus": {
-                "title": "模组状态",
-                "hasCutscene": "拥有过场动画模组",
-                "hasStanding": "拥有立绘模组",
-                "hasDating": "拥有约会模组",
-                "options": {
-                    "any": "全部",
-                    "enabled": "已启用",
-                    "disabled": "已禁用"
-                }
-            },
-            "extraFilters": {
-                "title": "额外筛选",
-                "hideMenCharacters": "隐藏男性角色",
-                "hideWomenCharacters": "隐藏女性角色",
-                "onlyCharactersWithMods": "仅显示有模组的角色",
-                "onlyCharactersWithoutMods": "仅显示无模组的角色",
-                "onlyCollabCharacters": "仅显示联动角色"
-            },
-            "releasePeriod": {
-                "title": "发布时间段",
-                "options": {
-                    "all": "全部时间",
-                    "lastWeek": "最近一周",
-                    "lastTwoWeeks": "最近两周",
-                    "lastMonth": "最近一个月",
-                    "lastThreeMonths": "最近三个月",
-                    "lastSixMonths": "最近六个月",
-                    "lastYear": "最近一年"
-                }
-            }
-        },
-        "actions": {
-            "addMod": "添加模组",
-            "installFromZip": "从 ZIP 安装",
-            "installFromFolder": "从文件夹安装"
-        },
-        "tags": {
-            "new": "新",
-            "collab": "联动",
-            "modsCount": "{count} 个模组 | {count} 个模组"
-        },
-        "modTypes": {
-            "cutscene": "过场动画",
-            "standing": "立绘",
-            "dating": "约会",
-            "states": {
-                "enabled": "已启用",
-                "disabled": "已禁用"
-            }
-        },
-        "characterModal": {
-            "enabledMods": "已启用的模组",
-            "totalMods": "模组总数",
-            "noModsFound": {
-                "title": "未找到模组",
-                "description": "请前往模组选项卡为该角色安装模组。"
-            },
-            "discoverModsDescription": "在这里你可以浏览该角色所有可用的模组。注意：列表可能不包含最新的模组。最后更新：{latestUpdate}",
-            "modsTab": "我的模组",
-            "discoverModsTab": "发现模组",
-            "paidMod": "付费",
-            "freeMod": "免费",
-            "noIndexModsFound": {
-                "title": "未找到模组",
-                "description": "该角色在索引中没有可用的模组。"
-            }
-        }
-    },
-    "profilesTab": {
-        "title": "配置文件",
-        "subtitle": "管理您的模组配置文件，轻松切换不同的模组组合。",
-        "defaultProfile": "默认配置文件",
-        "emptyDescription": "暂无描述。",
-        "activeProfile": "当前使用中",
-        "enabledMods": "{count} 个已启用的模组 | {count} 个已启用的模组",
-        "noModsEnabled": "未启用任何模组。",
-        "noProfileSelected": "未选择配置文件，请选择一个以查看详情。",
-        "actions": {
-            "createProfile": "创建配置文件",
-            "editProfile": "编辑配置文件",
-            "deleteProfile": "删除配置文件",
-            "setAsCurrent": "设为当前",
-            "refreshProfiles": "刷新配置文件"
-        },
-        "notifications": {
-            "profileCreated": {
-                "title": "配置文件已创建",
-                "description": "配置文件\"{profileName}\"已成功创建。"
-            },
-            "profileUpdated": {
-                "title": "配置文件已更新",
-                "description": "配置文件\"{profileName}\"已成功更新。"
-            },
-            "profileDeleted": {
-                "title": "配置文件已删除",
-                "description": "配置文件\"{profileName}\"已成功删除。"
-            }
-        },
-        "confirmations": {
-            "deleteProfile": {
-                "title": "删除配置文件？",
-                "message": "确定要删除配置文件\"{profileName}\"吗？此操作无法撤销。",
-                "actions": {
-                    "deleteProfile": "删除配置文件"
-                }
-            }
-        },
-        "modals": {
-            "createProfile": {
-                "title": "创建新配置文件",
-                "description": "为您的新配置文件输入名称和可选描述。",
-                "nameField": {
-                    "label": "配置文件名称",
-                    "placeholder": "输入配置文件名称"
-                },
-                "descriptionField": {
-                    "label": "配置文件描述（可选）",
-                    "placeholder": "输入配置文件描述"
-                },
-                "templateField": {
-                    "label": "模板配置文件（可选）",
-                    "placeholder": "选择一个模板配置文件"
-                },
-                "actions": {
-                    "createProfile": "创建配置文件"
-                }
-            },
-            "editProfile": {
-                "title": "编辑配置文件",
-                "nameField": {
-                    "label": "配置文件名称",
-                    "placeholder": "输入配置文件名称"
-                },
-                "descriptionField": {
-                    "label": "配置文件描述（可选）",
-                    "placeholder": "输入配置文件描述"
-                },
-                "actions": {
-                    "saveChanges": "保存更改"
-                },
-                "description": "编辑配置文件的名称和描述。"
-            }
-        }
-    },
-    "browndustxTab": {
-        "title": "BrownDustX",
-        "status": {
-            "installed": "已安装",
-            "installedButOutdated": "已安装（版本过旧）",
-            "notInstalled": "未安装",
-            "gameNotFound": "未设置游戏路径。",
-            "bepinexMissing": "BepInEx 缺失。"
-        },
-        "labels": {
-            "gameDirectory": "游戏目录：",
-            "frameworkAndPlugins": "框架与插件",
-            "logs": "日志"
-        },
-        "descriptions": {
-            "bepinex": "BepInEx 是一个模组框架，BrownDustX 正常运行需要它。",
-            "browndustx": "BrownDustX 是 BepInEx 的插件，为《棕尘2》提供多项品质改善功能并支持模组加载。",
-            "configurationManager": "Configuration Manager 是 BepInEx 的插件，允许您在游戏内配置 BrownDustX 设置。"
-        },
-        "messages": {
-            "bepinexMissing": "运行 BrownDustX 需要 BepInEx，请先安装 BepInEx。",
-            "configurationManagerMissing": "Configuration Manager 未安装，您将无法在游戏内配置 BrownDustX 设置。",
-            "brownDustXMissing": "BrownDustX 未安装，模组将无法加载。",
-            "noLogsYet": "暂无日志。",
-            "dragAndDrop": "您也可以将 BepInEx 或 BrownDustX 压缩包拖放至此处进行安装",
-            "gameDirectoryNotSet": "未设置游戏目录，请在设置中配置后再安装 BrownDustX。"
-        },
-        "actions": {
-            "installFromGithub": "从 GitHub 安装",
-            "selectFile": "选择文件",
-            "remove": "移除"
-        },
-        "notifications": {
-            "installSuccess": {
-                "title": "BrownDustX 已安装",
-                "description": "BrownDustX 已成功安装。"
-            },
-            "uninstallSuccess": {
-                "title": "BrownDustX 已卸载",
-                "description": "BrownDustX 已成功卸载。"
-            }
-        },
-        "confirmations": {
-            "removeBepInEx": {
-                "title": "移除 BepInEx？",
-                "message": "确定要移除 BepInEx 吗？这将从您的游戏目录中删除所有 BepInEx 文件，且无法撤销。",
-                "actions": {
-                    "removeBepInEx": "移除 BepInEx"
-                }
-            },
-            "removeBrownDustX": {
-                "title": "移除 BrownDustX？",
-                "message": "确定要移除 BrownDustX 吗？这将从您的游戏目录中删除所有 BrownDustX 文件及全部模组，且无法撤销。",
-                "actions": {
-                    "removeBrownDustX": "移除 BrownDustX"
-                }
-            }
-        },
-        "alerts": {
-            "caution": "注意",
-            "cautionMessage": "建议仍优先选择手动安装。若您已安装 BepInEx 或 BrownDustX，安装程序可能无法正确清除现有文件。如果您从 GitHub 安装 BepInEx 后遇到问题，请先尝试 BrownDustX Discord 中提供的版本，再提交错误报告。",
-            "danger": "使用此功能风险自负",
-            "dangerMessage": "此功能为实验性功能，对游戏安装造成的任何问题，我们概不负责。"
-        },
-        "modals": {
-            "bepinexGithub": {
-                "title": "从 GitHub 安装 BepInEx",
-                "loading": "正在从 GitHub 加载 BepInEx 版本列表...",
-                "failedToLoadVersions": "加载版本列表失败",
-                "actions": {
-                    "viewOnGithub": "在 GitHub 上查看",
-                    "install": "安装",
-                    "retry": "重试"
-                }
-            }
-        }
-    },
-    "settingsTab": {
-        "title": "设置",
-        "subtitle": "配置您的模组管理器设置。",
-        "general": {
-            "label": "常规",
-            "sections": {
-                "application": {
-                    "title": "应用程序",
-                    "theme": {
-                        "label": "主题",
-                        "placeholder": "选择主题"
-                    },
-                    "language": {
-                        "label": "语言",
-                        "placeholder": "选择语言"
-                    }
-                },
-                "directories": {
-                    "title": "目录",
-                    "gameDirectory": {
-                        "label": "游戏目录",
-                        "placeholder": "选择您的游戏目录"
-                    },
-                    "modsDirectory": {
-                        "label": "暂存模组目录",
-                        "placeholder": "选择同步前用于存放模组的目录"
-                    }
-                },
-                "modManagement": {
-                    "title": "模组管理",
-                    "searchRecursively": {
-                        "label": "递归搜索模组",
-                        "description": "启用此选项以在暂存模组目录的子目录中搜索模组。"
-                    },
-                    "autoSyncMods": {
-                        "label": "自动同步模组",
-                        "description": "启用此选项后，启用或禁用模组时将自动同步到游戏文件夹。"
-                    },
-                    "syncMethod": {
-                        "label": "同步方式",
-                        "description": "模组安装到游戏文件夹的方式。",
-                        "options": {
-                            "copy": "复制",
-                            "symlink": "符号链接（需管理员权限）"
-                        }
-                    }
-                }
-            }
-        },
-        "interface": {
-            "label": "界面",
-            "sections": {
-                "columns": {
-                    "title": "模组列表列",
-                    "visibleColumns": {
-                        "label": "显示的列",
-                        "description": "选择模组列表中显示哪些列。",
-                        "options": {
-                            "modName": "模组名称",
-                            "character": "角色",
-                            "modType": "模组类型",
-                            "author": "作者"
-                        }
-                    }
-                },
-                "modNameColumn": {
-                    "label": "模组名称列",
-                    "description": "显示模组名称时是否包含子文件夹路径。",
-                    "options": {
-                        "short": "模组名称",
-                        "full": "含子文件夹的模组名称"
-                    }
-                },
-                "characterColumn": {
-                    "label": "角色列",
-                    "description": "显示角色图标、名称或两者兼有。",
-                    "options": {
-                        "full": "图标和名称",
-                        "iconOnly": "仅图标",
-                        "nameOnly": "仅名称"
-                    }
-                },
-                "modTypeColumn": {
-                    "label": "模组类型列",
-                    "description": "显示模组类型图标、标签或两者兼有。",
-                    "options": {
-                        "full": "标签和图标",
-                        "iconOnly": "仅图标",
-                        "labelOnly": "仅标签"
-                    },
-                    "enableColors": {
-                        "label": "为模组类型启用颜色",
-                        "description": "为每种模组类型（立绘、过场动画、约会等）应用对应颜色。"
-                    }
-                }
-            }
-        },
-        "updates": {
-            "label": "更新",
-            "sections": {
-                "updates": {
-                    "title": "应用程序更新",
-                    "autoCheckForUpdates": {
-                        "label": "自动检查更新",
-                        "description": "启用此选项后，应用程序启动时将自动检查更新。"
-                    },
-                    "autoUpdateModPreview": {
-                        "label": "自动更新模组预览",
-                        "description": "启用此选项后，应用程序启动时将自动检查 BD2ModPreview 的更新，并在有新版本时自动更新。"
-                    },
-                    "actions": {
-                        "checkForUpdates": "检查更新",
-                        "checkingForUpdates": "正在检查更新...",
-                        "updateModPreview": "更新 BD2ModPreview"
-                    }
-                }
-            }
-        },
-        "experimental": {
-            "label": "实验性功能",
-            "sections": {
-                "migration": {
-                    "title": "从旧版本导入",
-                    "description": "从 v3.2.4 或更早版本导入配置文件和模组作者。",
-                    "profiles": {
-                        "title": "配置文件",
-                        "description": "选择要从 v3.2.4 或更早版本导入的配置文件。",
-                        "selectPlaceholder": "选择要导入的配置文件"
-                    },
-                    "modAuthors": {
-                        "title": "模组作者",
-                        "description": "从 v3.2.4 或更早版本导入模组作者。"
-                    },
-                    "actions": {
-                        "importProfiles": "导入配置文件",
-                        "importModAuthors": "导入模组作者"
-                    },
-                    "confirmations": {
-                        "importModAuthors": {
-                            "title": "导入模组作者？",
-                            "message": "确定要从旧版本导入模组作者吗？这将用旧版本的作者名称覆盖现有模组的作者名称。此操作无法撤销。",
-                            "actions": {
-                                "importModAuthors": "导入模组作者",
-                                "cancel": "取消"
-                            }
-                        }
-                    },
-                    "notifications": {
-                        "importProfilesSuccess": {
-                            "title": "配置文件已导入",
-                            "description": "配置文件已成功从旧版本导入。"
-                        },
-                        "importModAuthorsSuccess": {
-                            "title": "模组作者已导入",
-                            "description": "模组作者已成功从旧版本导入。"
-                        },
-                        "importFailed": {
-                            "title": "导入失败",
-                            "description": "导入数据时发生错误：{error}"
-                        },
-                        "errorFetchingProfiles": {
-                            "title": "获取配置文件失败",
-                            "description": "从旧版本获取配置文件时发生错误：{error}"
-                        },
-                        "noProfilesToImport": {
-                            "title": "没有可导入的配置文件",
-                            "description": "在旧版本中未找到可导入的配置文件。"
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "modals": {
-        "logs": {
-            "title": "应用程序日志",
-            "noLogs": "暂无日志。"
-        },
-        "sync": {
-            "titles": {
-                "syncing": "正在同步模组...",
-                "completed": "同步完成",
-                "failed": "同步失败",
-                "idle": "同步模组",
-                "removing": "正在移除模组...",
-                "removed": "模组已移除",
-                "failedToRemove": "移除模组失败",
-                "idleToRemove": "移除模组",
-                "waitingForAction": "等待操作"
-            },
-            "actions": {
-                "close": "关闭"
-            },
-            "log": {
-                "title": "同步日志",
-                "waitingToStart": "等待同步开始...",
-                "mods": "个模组"
-            },
-            "status": {
-                "synced": "已同步",
-                "upToDate": "已是最新",
-                "removed": "已移除",
-                "failed": "失败"
-            }
-        },
-        "welcome": {
-            "title": "欢迎使用 BD2ModManager！",
-            "subtitle": "看起来这是您第一次启动应用。您可以现在设置游戏目录，或跳过并稍后在设置中完成。",
-            "chips": {
-                "github": "访问我们的 Github",
-                "discord": "BrownDustX Discord",
-                "suggestFeatures": "建议功能",
-                "reportIssues": "报告问题",
-                "kofi": "在 Ko-Fi 上支持"
-            },
-            "selectGameDirectory": {
-                "title": "游戏目录",
-                "description": "请选择包含\"BrownDust II.exe\"的文件夹。",
-                "placeholders": {
-                    "gamePath": "《棕尘2》游戏目录路径"
-                },
-                "labels": {
-                    "foundPaths": "已找到路径："
-                },
-                "validPath": "游戏目录设置成功。",
-                "invalidPath": "请选择有效的游戏目录以继续。",
-                "errors": {
-                    "invalidGameExecutable": "所选文件不是《棕尘2》的可执行文件。",
-                    "invalidDirectory": "所选目录中未找到有效的《棕尘2》安装。",
-                    "unknownError": "发生未知错误：{error}",
-                    "noGamePathSelected": "未选择游戏路径，请选择有效的游戏目录以继续。"
-                }
-            },
-            "betaBanner": {
-                "message": "这是模组管理器的 {beta}，可能存在错误或意外行为。如发现任何问题，请在 {github} 上报告。",
-                "beta": "测试版",
-                "github": "GitHub Issues"
-            },
-            "supportBanner": {
-                "title": "支持项目 ❤️",
-                "messageKofi": "BD2ModManager 是免费开源的。如果对你有帮助，请考虑在 Ko-Fi 上支持我！",
-                "messageAfdian": "BD2ModManager 是免费开源的。如果对你有帮助，请考虑在爱发电上支持我！"
-            }
-        },
-        "changeModAuthor": {
-            "title": "更改模组作者",
-            "description": "为模组\"{modName}\"输入新的作者名称。",
-            "descriptionMultiple": "为所选模组输入新的作者名称。",
-            "placeholder": "输入新的作者名称",
-            "labels": {
-                "modName": "模组名称",
-                "newAuthor": "新作者名称"
-            },
-            "actions": {
-                "save": "保存"
-            }
-        },
-        "changeModName": {
-            "title": "重命名模组",
-            "description": "为模组\"{modName}\"输入新名称。",
-            "placeholder": "输入新的模组名称",
-            "labels": {
-                "modName": "模组名称",
-                "newModName": "新模组名称"
-            },
-            "actions": {
-                "save": "保存"
-            }
-        },
-        "updateAvailable": {
-            "title": "有可用更新",
-            "subtitle": "新版本 v{version} 已发布。",
-            "changelogLabel": "更新内容",
-            "skipLabel": "不再提示",
-            "actions": {
-                "downloadUpdate": "下载更新",
-                "later": "稍后",
-                "goToReleases": "前往发布页"
-            }
-        }
-    },
-    "errors": {
-        "syncFailed": "模组同步失败",
-        "unsyncFailed": "取消模组同步失败",
-        "modAlreadyExists": "同名模组已存在。",
-        "multipleModsFound": "找到多个模组，请确保只有一个模组存在。",
-        "modPreviewContainsErrors": "此模组包含错误，无法预览。",
-        "gameDirectoryNotSet": "未设置游戏目录，请在设置中配置。",
-        "stagingDirectoryNotSet": "未设置暂存模组目录，请在设置中配置。",
-        "syncMethodInvalid": "无效的同步方式：{method}",
-        "symlinkAdminRequired": "创建符号链接需要管理员权限。",
-        "modPathNotFound": "未找到模组路径：{path}",
-        "copyFailed": "复制模组文件失败：{error}",
-        "symlinkFailed": "创建符号链接失败：{error}",
-        "hardlinkFailed": "创建硬链接失败：{error}",
-        "directoryCreationFailed": "创建目录失败：{error}",
-        "removalFailed": "删除文件或目录失败：{error}",
-        "unknownError": "发生未知错误：{error}",
-        "modInstallFailed": {
-            "title": "模组安装失败"
-        },
-        "invalidMod": "所选文件或文件夹不是有效的 BrownDustX 模组。",
-        "invalidFormat": "不支持的模组格式，请选择有效的模组文件或文件夹。",
-        "unsupportedFormat": "不支持的文件格式，请选择有效的模组文件或文件夹。"
-    },
-    "modErrors": {
-        "missingTextures": "需要在模组文件夹内创建名为\"textures\"的子文件夹。",
-        "missingModfile": "需要在此模组文件夹内创建一个 .modfile 文件。",
-        "archiveNotExtracted": "此模组是尚未解压的压缩文件，请先解压再尝试启用。",
-        "shouldBeInFolder": "此模组应放置在文件夹中，请创建一个与模组同名的文件夹并将模组文件移入其中。",
-        "missingAtlasFile": "此模组缺少图集文件。",
-        "noDescription": "暂无描述。"
-    },
-    "npcTab": {
-        "title": "NPC",
-        "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个 NPC 模组",
-        "npcsNotFound": "未找到有模组的 NPC。",
-        "id": "ID：{id}",
-        "filters": {
-            "title": "筛选",
-            "searchPlaceholder": "搜索 NPC...",
-            "sortBy": {
-                "title": "排序方式",
-                "options": {
-                    "nameAsc": "名称（A-Z）",
-                    "nameDesc": "名称（Z-A）",
-                    "modsAsc": "模组数量（最少）",
-                    "modsDesc": "模组数量（最多）",
-                    "idDesc": "ID（从大到小）",
-                    "idAsc": "ID（从小到大）"
-                }
-            }
-        },
-        "tags": {
-            "modsCount": "{count} 个模组 | {count} 个模组",
-            "enabledCount": "已启用 {count} 个"
-        },
-        "npcModal": {
-            "enabledMods": "已启用的模组",
-            "totalMods": "模组总数",
-            "noModsFound": {
-                "title": "未找到模组",
-                "description": "请前往模组选项卡为该 NPC 安装模组。"
-            }
-        }
+ "common": {
+  "actions": {
+   "refreshMods": "刷新模组",
+   "cancel": "取消",
+   "close": "关闭",
+   "refresh": "刷新",
+   "continue": "继续",
+   "confirm": "确认",
+   "browse": "浏览",
+   "save": "保存"
+  },
+  "modTypes": {
+   "cutscene": "过场动画",
+   "standing": "立绘",
+   "scene": "场景",
+   "dating": "约会",
+   "npc": "NPC",
+   "minigame": "小游戏",
+   "wallpaper": "壁纸"
+  }
+ },
+ "app": {
+  "confirmations": {
+   "exit": {
+    "title": "退出模组管理器？",
+    "message": "您有未同步的模组，这些模组将不会应用到游戏中。确定要退出吗？",
+    "actions": {
+     "exit": "退出"
     }
+   }
+  },
+  "notifications": {
+   "brownDustXOutdated": {
+    "title": "BrownDustX 版本过旧",
+    "message": "BrownDustX 版本已过时。模组将无法使用，请先更新。"
+   }
+  }
+ },
+ "titlebar": {
+  "appUpdate": {
+   "checking": "正在检查更新...",
+   "available": "发现新版本：v{version}",
+   "downloaded": "v{version} 已就绪！点击以应用更新"
+  },
+  "sync": {
+   "applying": "正在应用：{modName}",
+   "syncSuccess": "模组同步成功",
+   "unsyncSuccess": "模组已成功移除"
+  },
+  "modPreview": {
+   "downloading": "BD2ModPreview v{version}",
+   "downloadingShort": "BD2ModPreview",
+   "updateFailed": "BD2ModPreview 更新失败",
+   "updateFailedShort": "BD2ModPreview 更新失败",
+   "updated": "BD2ModPreview v{version} 已更新！",
+   "updatedShort": "BD2ModPreview 已更新！"
+  },
+  "gameData": {
+   "downloading": "正在下载游戏数据...",
+   "downloadingShort": "数据",
+   "checking": "正在检查游戏数据...",
+   "updatedShort": "数据已更新"
+  },
+  "actions": {
+   "github": "Github",
+   "logs": "日志",
+   "kofi": "在 Ko-Fi 上支持",
+   "afdian": "在爱发电上支持"
+  }
+ },
+ "sidebar": {
+  "sections": {
+   "navigation": "导航",
+   "settings": "设置",
+   "currentProfile": "当前配置文件"
+  },
+  "tabs": {
+   "mods": "模组",
+   "characters": "角色",
+   "profiles": "配置文件",
+   "browndustx": "BrownDustX",
+   "settings": "设置",
+   "npc": "NPC"
+  },
+  "notifications": {
+   "gameLaunched": {
+    "title": "游戏已启动",
+    "description": "游戏已成功启动。"
+   }
+  },
+  "confirmations": {
+   "unsyncedMods": {
+    "title": "检测到未同步的模组",
+    "message": "您有未同步的模组，这些模组将不会应用到游戏中。是否仍要启动游戏？",
+    "actions": {
+     "launchAnyway": "仍然启动"
+    }
+   }
+  },
+  "actions": {
+   "launchGame": "启动游戏"
+  }
+ },
+ "modsTab": {
+  "title": "模组",
+  "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个模组",
+  "actions": {
+   "addMod": "添加模组",
+   "installFromZip": "从 ZIP 安装",
+   "installFromFolder": "从文件夹安装",
+   "openModsFolder": "打开模组文件夹",
+   "syncMods": "同步模组",
+   "unsyncMods": "取消同步"
+  },
+  "browndustx": {
+   "status": {
+    "installed": "BrownDustX v{version}",
+    "installedButOutdated": "BrownDustX v{version}（版本过旧）",
+    "gameNotFound": "未设置游戏目录",
+    "notInstalled": "BrownDustX 未安装"
+   },
+   "navigation": "前往 BrownDustX"
+  },
+  "header": {
+   "searchPlaceholder": "搜索模组、角色、作者...",
+   "actions": {
+    "filters": "筛选"
+   },
+   "advancedFilters": {
+    "title": "高级筛选",
+    "actions": {
+     "onlyEnabledMods": "仅显示已启用模组",
+     "onlyDisabledMods": "仅显示已禁用模组",
+     "onlyConflictsMods": "仅显示有冲突的模组",
+     "onlyErrorsMods": "仅显示有错误的模组",
+     "hideErrorsMods": "隐藏有错误的模组",
+     "onlyOneModType": "仅选择一种模组类型"
+    }
+   }
+  },
+  "modlist": {
+   "header": {
+    "modName": "模组名称",
+    "modType": "模组类型",
+    "character": "角色",
+    "author": "作者"
+   },
+   "contextMenu": {
+    "refreshMods": "刷新模组",
+    "selectMods": "选择模组",
+    "selectAllMods": "全选模组",
+    "selectEnabledMods": "选择已启用的模组",
+    "selectDisabledMods": "选择已禁用的模组",
+    "deselectMods": "取消选择",
+    "enableMod": "启用模组",
+    "enableSelectedMods": "启用所选模组",
+    "disableMod": "禁用模组",
+    "disableSelectedMods": "禁用所选模组",
+    "changeModAuthor": "更改模组作者",
+    "changeSelectedModsAuthor": "更改所选模组作者",
+    "renameMod": "重命名模组",
+    "deleteMod": "删除模组",
+    "deleteSelectedMods": "删除所选模组",
+    "openModFolder": "打开模组文件夹",
+    "previewMod": "预览模组",
+    "doubleClickToPreviewTip": "提示：双击行即可预览模组。"
+   }
+  },
+  "confirmations": {
+   "syncMods": {
+    "title": "同步模组？",
+    "titleWithConflicts": "同步存在冲突的模组",
+    "message": "此操作将覆盖游戏文件夹中的模组，且无法撤销。",
+    "messageWithConflicts": "部分模组之间存在冲突，解决冲突前游戏可能无法正常启动。",
+    "actions": {
+     "sync": "同步",
+     "syncAnyway": "仍然同步"
+    }
+   },
+   "unsyncMods": {
+    "title": "取消同步？",
+    "message": "此操作将从游戏文件夹中移除所有模组，且无法撤销。",
+    "actions": {
+     "unsync": "取消同步"
+    }
+   },
+   "deleteMod": {
+    "title": "删除模组？",
+    "multipleTitle": "删除所选模组？",
+    "message": "确定要删除模组\"{modName}\"吗？此操作无法撤销。",
+    "multipleMessage": "确定要删除这 {count} 个模组吗？此操作无法撤销。",
+    "actions": {
+     "delete": "删除"
+    }
+   }
+  },
+  "notifications": {
+   "syncSuccess": {
+    "title": "模组已同步",
+    "description": "您的模组已成功同步到游戏文件夹。"
+   },
+   "unsyncSuccess": {
+    "title": "已取消同步",
+    "description": "您的模组已成功从游戏文件夹中移除。"
+   },
+   "modInstallSuccess": {
+    "title": "模组已安装",
+    "description": "模组 '{modName}' 已成功安装。"
+   }
+  },
+  "errors": {
+   "modPreview": {
+    "title": "无法预览模组",
+    "modContainErrors": "模组 '{modName}' 包含错误，无法打开预览。"
+   },
+   "syncFailed": {
+    "title": "同步失败"
+   },
+   "unsyncFailed": {
+    "title": "取消同步失败"
+   },
+   "modFolderNotFound": "未找到 '{modName}' 的模组文件夹。",
+   "modNotDirectory": "'{modName}' 的模组路径不是一个目录。",
+   "stagingDirectoryNotSet": "暂存目录未设置。",
+   "stagingDirectoryNotFound": "在 '{stagingDir}' 处未找到暂存目录，请检查设置。"
+  }
+ },
+ "charactersTab": {
+  "title": "角色",
+  "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个模组",
+  "charactersNotFound": "未找到角色。",
+  "id": "ID：{id}",
+  "filters": {
+   "title": "筛选",
+   "searchPlaceholder": "搜索角色...",
+   "sortBy": {
+    "title": "排序方式",
+    "options": {
+     "nameAsc": "名称（A-Z）",
+     "nameDesc": "名称（Z-A）",
+     "releaseAsc": "发布日期（最新）",
+     "releaseDesc": "发布日期（最早）",
+     "modsAsc": "模组数量（最少）",
+     "modsDesc": "模组数量（最多）"
+    }
+   },
+   "modStatus": {
+    "title": "模组状态",
+    "hasCutscene": "拥有过场动画模组",
+    "hasStanding": "拥有立绘模组",
+    "hasDating": "拥有约会模组",
+    "options": {
+     "any": "全部",
+     "enabled": "已启用",
+     "disabled": "已禁用"
+    }
+   },
+   "extraFilters": {
+    "title": "额外筛选",
+    "hideMenCharacters": "隐藏男性角色",
+    "hideWomenCharacters": "隐藏女性角色",
+    "onlyCharactersWithMods": "仅显示有模组的角色",
+    "onlyCharactersWithoutMods": "仅显示无模组的角色",
+    "onlyCollabCharacters": "仅显示联动角色"
+   },
+   "releasePeriod": {
+    "title": "发布时间段",
+    "options": {
+     "all": "全部时间",
+     "lastWeek": "最近一周",
+     "lastTwoWeeks": "最近两周",
+     "lastMonth": "最近一个月",
+     "lastThreeMonths": "最近三个月",
+     "lastSixMonths": "最近六个月",
+     "lastYear": "最近一年"
+    }
+   }
+  },
+  "actions": {
+   "addMod": "添加模组",
+   "installFromZip": "从 ZIP 安装",
+   "installFromFolder": "从文件夹安装"
+  },
+  "tags": {
+   "new": "新",
+   "collab": "联动",
+   "modsCount": "{count} 个模组 | {count} 个模组"
+  },
+  "modTypes": {
+   "cutscene": "过场动画",
+   "standing": "立绘",
+   "dating": "约会",
+   "states": {
+    "enabled": "已启用",
+    "disabled": "已禁用"
+   }
+  },
+  "characterModal": {
+   "enabledMods": "已启用的模组",
+   "totalMods": "模组总数",
+   "noModsFound": {
+    "title": "未找到模组",
+    "description": "请前往模组选项卡为该角色安装模组。"
+   },
+   "discoverModsDescription": "在这里你可以浏览该角色所有可用的模组。注意：列表可能不包含最新的模组。最后更新：{latestUpdate}",
+   "modsTab": "我的模组",
+   "discoverModsTab": "发现模组",
+   "paidMod": "付费",
+   "freeMod": "免费",
+   "noIndexModsFound": {
+    "title": "未找到模组",
+    "description": "该角色在索引中没有可用的模组。"
+   }
+  }
+ },
+ "profilesTab": {
+  "title": "配置文件",
+  "subtitle": "管理您的模组配置文件，轻松切换不同的模组组合。",
+  "defaultProfile": "默认配置文件",
+  "emptyDescription": "暂无描述。",
+  "activeProfile": "当前使用中",
+  "enabledMods": "{count} 个已启用的模组 | {count} 个已启用的模组",
+  "noModsEnabled": "未启用任何模组。",
+  "noProfileSelected": "未选择配置文件，请选择一个以查看详情。",
+  "actions": {
+   "createProfile": "创建配置文件",
+   "editProfile": "编辑配置文件",
+   "deleteProfile": "删除配置文件",
+   "setAsCurrent": "设为当前",
+   "refreshProfiles": "刷新配置文件"
+  },
+  "notifications": {
+   "profileCreated": {
+    "title": "配置文件已创建",
+    "description": "配置文件\"{profileName}\"已成功创建。"
+   },
+   "profileUpdated": {
+    "title": "配置文件已更新",
+    "description": "配置文件\"{profileName}\"已成功更新。"
+   },
+   "profileDeleted": {
+    "title": "配置文件已删除",
+    "description": "配置文件\"{profileName}\"已成功删除。"
+   }
+  },
+  "confirmations": {
+   "deleteProfile": {
+    "title": "删除配置文件？",
+    "message": "确定要删除配置文件\"{profileName}\"吗？此操作无法撤销。",
+    "actions": {
+     "deleteProfile": "删除配置文件"
+    }
+   }
+  },
+  "modals": {
+   "createProfile": {
+    "title": "创建新配置文件",
+    "description": "为您的新配置文件输入名称和可选描述。",
+    "nameField": {
+     "label": "配置文件名称",
+     "placeholder": "输入配置文件名称"
+    },
+    "descriptionField": {
+     "label": "配置文件描述（可选）",
+     "placeholder": "输入配置文件描述"
+    },
+    "templateField": {
+     "label": "模板配置文件（可选）",
+     "placeholder": "选择一个模板配置文件"
+    },
+    "actions": {
+     "createProfile": "创建配置文件"
+    }
+   },
+   "editProfile": {
+    "title": "编辑配置文件",
+    "nameField": {
+     "label": "配置文件名称",
+     "placeholder": "输入配置文件名称"
+    },
+    "descriptionField": {
+     "label": "配置文件描述（可选）",
+     "placeholder": "输入配置文件描述"
+    },
+    "actions": {
+     "saveChanges": "保存更改"
+    },
+    "description": "编辑配置文件的名称和描述。"
+   }
+  }
+ },
+ "browndustxTab": {
+  "title": "BrownDustX",
+  "status": {
+   "installed": "已安装",
+   "installedButOutdated": "已安装（版本过旧）",
+   "notInstalled": "未安装",
+   "gameNotFound": "未设置游戏路径。",
+   "bepinexMissing": "BepInEx 缺失。"
+  },
+  "labels": {
+   "gameDirectory": "游戏目录：",
+   "frameworkAndPlugins": "框架与插件",
+   "logs": "日志"
+  },
+  "descriptions": {
+   "bepinex": "BepInEx 是一个模组框架，BrownDustX 正常运行需要它。",
+   "browndustx": "BrownDustX 是 BepInEx 的插件，为《棕尘2》提供多项品质改善功能并支持模组加载。",
+   "configurationManager": "Configuration Manager 是 BepInEx 的插件，允许您在游戏内配置 BrownDustX 设置。"
+  },
+  "messages": {
+   "bepinexMissing": "运行 BrownDustX 需要 BepInEx，请先安装 BepInEx。",
+   "configurationManagerMissing": "Configuration Manager 未安装，您将无法在游戏内配置 BrownDustX 设置。",
+   "brownDustXMissing": "BrownDustX 未安装，模组将无法加载。",
+   "noLogsYet": "暂无日志。",
+   "dragAndDrop": "您也可以将 BepInEx 或 BrownDustX 压缩包拖放至此处进行安装",
+   "gameDirectoryNotSet": "未设置游戏目录，请在设置中配置后再安装 BrownDustX。"
+  },
+  "actions": {
+   "installFromGithub": "从 GitHub 安装",
+   "selectFile": "选择文件",
+   "remove": "移除"
+  },
+  "notifications": {
+   "installSuccess": {
+    "title": "BrownDustX 已安装",
+    "description": "BrownDustX 已成功安装。"
+   },
+   "uninstallSuccess": {
+    "title": "BrownDustX 已卸载",
+    "description": "BrownDustX 已成功卸载。"
+   }
+  },
+  "confirmations": {
+   "removeBepInEx": {
+    "title": "移除 BepInEx？",
+    "message": "确定要移除 BepInEx 吗？这将从您的游戏目录中删除所有 BepInEx 文件，且无法撤销。",
+    "actions": {
+     "removeBepInEx": "移除 BepInEx"
+    }
+   },
+   "removeBrownDustX": {
+    "title": "移除 BrownDustX？",
+    "message": "确定要移除 BrownDustX 吗？这将从您的游戏目录中删除所有 BrownDustX 文件及全部模组，且无法撤销。",
+    "actions": {
+     "removeBrownDustX": "移除 BrownDustX"
+    }
+   }
+  },
+  "alerts": {
+   "caution": "注意",
+   "cautionMessage": "建议仍优先选择手动安装。若您已安装 BepInEx 或 BrownDustX，安装程序可能无法正确清除现有文件。如果您从 GitHub 安装 BepInEx 后遇到问题，请先尝试 BrownDustX Discord 中提供的版本，再提交错误报告。",
+   "danger": "使用此功能风险自负",
+   "dangerMessage": "此功能为实验性功能，对游戏安装造成的任何问题，我们概不负责。"
+  },
+  "modals": {
+   "bepinexGithub": {
+    "title": "从 GitHub 安装 BepInEx",
+    "loading": "正在从 GitHub 加载 BepInEx 版本列表...",
+    "failedToLoadVersions": "加载版本列表失败",
+    "actions": {
+     "viewOnGithub": "在 GitHub 上查看",
+     "install": "安装",
+     "retry": "重试"
+    }
+   }
+  }
+ },
+ "settingsTab": {
+  "title": "设置",
+  "subtitle": "配置您的模组管理器设置。",
+  "general": {
+   "label": "常规",
+   "sections": {
+    "application": {
+     "title": "应用程序",
+     "theme": {
+      "label": "主题",
+      "placeholder": "选择主题"
+     },
+     "language": {
+      "label": "语言",
+      "placeholder": "选择语言"
+     }
+    },
+    "directories": {
+     "title": "目录",
+     "gameDirectory": {
+      "label": "游戏目录",
+      "placeholder": "选择您的游戏目录"
+     },
+     "modsDirectory": {
+      "label": "暂存模组目录",
+      "placeholder": "选择同步前用于存放模组的目录"
+     }
+    },
+    "modManagement": {
+     "title": "模组管理",
+     "searchRecursively": {
+      "label": "递归搜索模组",
+      "description": "启用此选项以在暂存模组目录的子目录中搜索模组。"
+     },
+     "autoSyncMods": {
+      "label": "自动同步模组",
+      "description": "启用此选项后，启用或禁用模组时将自动同步到游戏文件夹。"
+     },
+     "syncMethod": {
+      "label": "同步方式",
+      "description": "模组安装到游戏文件夹的方式。",
+      "options": {
+       "copy": "复制",
+       "symlink": "符号链接（需管理员权限）"
+      }
+     }
+    }
+   }
+  },
+  "interface": {
+   "label": "界面",
+   "sections": {
+    "columns": {
+     "title": "模组列表列",
+     "visibleColumns": {
+      "label": "显示的列",
+      "description": "选择模组列表中显示哪些列。",
+      "options": {
+       "modName": "模组名称",
+       "character": "角色",
+       "modType": "模组类型",
+       "author": "作者"
+      }
+     }
+    },
+    "modNameColumn": {
+     "label": "模组名称列",
+     "description": "显示模组名称时是否包含子文件夹路径。",
+     "options": {
+      "short": "模组名称",
+      "full": "含子文件夹的模组名称"
+     }
+    },
+    "characterColumn": {
+     "label": "角色列",
+     "description": "显示角色图标、名称或两者兼有。",
+     "options": {
+      "full": "图标和名称",
+      "iconOnly": "仅图标",
+      "nameOnly": "仅名称"
+     }
+    },
+    "modTypeColumn": {
+     "label": "模组类型列",
+     "description": "显示模组类型图标、标签或两者兼有。",
+     "options": {
+      "full": "标签和图标",
+      "iconOnly": "仅图标",
+      "labelOnly": "仅标签"
+     },
+     "enableColors": {
+      "label": "为模组类型启用颜色",
+      "description": "为每种模组类型（立绘、过场动画、约会等）应用对应颜色。"
+     }
+    },
+    "datingVisibility": {
+     "title": "角色页面",
+     "showDating": {
+      "label": "在角色中显示约会",
+      "description": "在角色页面显示约会模组状态和筛选器。"
+     }
+    }
+   }
+  },
+  "updates": {
+   "label": "更新",
+   "sections": {
+    "updates": {
+     "title": "应用程序更新",
+     "autoCheckForUpdates": {
+      "label": "自动检查更新",
+      "description": "启用此选项后，应用程序启动时将自动检查更新。"
+     },
+     "autoUpdateModPreview": {
+      "label": "自动更新模组预览",
+      "description": "启用此选项后，应用程序启动时将自动检查 BD2ModPreview 的更新，并在有新版本时自动更新。"
+     },
+     "actions": {
+      "checkForUpdates": "检查更新",
+      "checkingForUpdates": "正在检查更新...",
+      "updateModPreview": "更新 BD2ModPreview"
+     }
+    }
+   }
+  },
+  "experimental": {
+   "label": "实验性功能",
+   "sections": {
+    "migration": {
+     "title": "从旧版本导入",
+     "description": "从 v3.2.4 或更早版本导入配置文件和模组作者。",
+     "profiles": {
+      "title": "配置文件",
+      "description": "选择要从 v3.2.4 或更早版本导入的配置文件。",
+      "selectPlaceholder": "选择要导入的配置文件"
+     },
+     "modAuthors": {
+      "title": "模组作者",
+      "description": "从 v3.2.4 或更早版本导入模组作者。"
+     },
+     "actions": {
+      "importProfiles": "导入配置文件",
+      "importModAuthors": "导入模组作者"
+     },
+     "confirmations": {
+      "importModAuthors": {
+       "title": "导入模组作者？",
+       "message": "确定要从旧版本导入模组作者吗？这将用旧版本的作者名称覆盖现有模组的作者名称。此操作无法撤销。",
+       "actions": {
+        "importModAuthors": "导入模组作者",
+        "cancel": "取消"
+       }
+      }
+     },
+     "notifications": {
+      "importProfilesSuccess": {
+       "title": "配置文件已导入",
+       "description": "配置文件已成功从旧版本导入。"
+      },
+      "importModAuthorsSuccess": {
+       "title": "模组作者已导入",
+       "description": "模组作者已成功从旧版本导入。"
+      },
+      "importFailed": {
+       "title": "导入失败",
+       "description": "导入数据时发生错误：{error}"
+      },
+      "errorFetchingProfiles": {
+       "title": "获取配置文件失败",
+       "description": "从旧版本获取配置文件时发生错误：{error}"
+      },
+      "noProfilesToImport": {
+       "title": "没有可导入的配置文件",
+       "description": "在旧版本中未找到可导入的配置文件。"
+      }
+     }
+    }
+   }
+  }
+ },
+ "modals": {
+  "logs": {
+   "title": "应用程序日志",
+   "noLogs": "暂无日志。"
+  },
+  "sync": {
+   "titles": {
+    "syncing": "正在同步模组...",
+    "completed": "同步完成",
+    "failed": "同步失败",
+    "idle": "同步模组",
+    "removing": "正在移除模组...",
+    "removed": "模组已移除",
+    "failedToRemove": "移除模组失败",
+    "idleToRemove": "移除模组",
+    "waitingForAction": "等待操作"
+   },
+   "actions": {
+    "close": "关闭"
+   },
+   "log": {
+    "title": "同步日志",
+    "waitingToStart": "等待同步开始...",
+    "mods": "个模组"
+   },
+   "status": {
+    "synced": "已同步",
+    "upToDate": "已是最新",
+    "removed": "已移除",
+    "failed": "失败"
+   }
+  },
+  "welcome": {
+   "title": "欢迎使用 BD2ModManager！",
+   "subtitle": "看起来这是您第一次启动应用。您可以现在设置游戏目录，或跳过并稍后在设置中完成。",
+   "chips": {
+    "github": "访问我们的 Github",
+    "discord": "BrownDustX Discord",
+    "suggestFeatures": "建议功能",
+    "reportIssues": "报告问题",
+    "kofi": "在 Ko-Fi 上支持"
+   },
+   "selectGameDirectory": {
+    "title": "游戏目录",
+    "description": "请选择包含\"BrownDust II.exe\"的文件夹。",
+    "placeholders": {
+     "gamePath": "《棕尘2》游戏目录路径"
+    },
+    "labels": {
+     "foundPaths": "已找到路径："
+    },
+    "validPath": "游戏目录设置成功。",
+    "invalidPath": "请选择有效的游戏目录以继续。",
+    "errors": {
+     "invalidGameExecutable": "所选文件不是《棕尘2》的可执行文件。",
+     "invalidDirectory": "所选目录中未找到有效的《棕尘2》安装。",
+     "unknownError": "发生未知错误：{error}",
+     "noGamePathSelected": "未选择游戏路径，请选择有效的游戏目录以继续。"
+    }
+   },
+   "betaBanner": {
+    "message": "这是模组管理器的 {beta}，可能存在错误或意外行为。如发现任何问题，请在 {github} 上报告。",
+    "beta": "测试版",
+    "github": "GitHub Issues"
+   },
+   "supportBanner": {
+    "title": "支持项目 ❤️",
+    "messageKofi": "BD2ModManager 是免费开源的。如果对你有帮助，请考虑在 Ko-Fi 上支持我！",
+    "messageAfdian": "BD2ModManager 是免费开源的。如果对你有帮助，请考虑在爱发电上支持我！"
+   }
+  },
+  "changeModAuthor": {
+   "title": "更改模组作者",
+   "description": "为模组\"{modName}\"输入新的作者名称。",
+   "descriptionMultiple": "为所选模组输入新的作者名称。",
+   "placeholder": "输入新的作者名称",
+   "labels": {
+    "modName": "模组名称",
+    "newAuthor": "新作者名称"
+   },
+   "actions": {
+    "save": "保存"
+   }
+  },
+  "changeModName": {
+   "title": "重命名模组",
+   "description": "为模组\"{modName}\"输入新名称。",
+   "placeholder": "输入新的模组名称",
+   "labels": {
+    "modName": "模组名称",
+    "newModName": "新模组名称"
+   },
+   "actions": {
+    "save": "保存"
+   }
+  },
+  "updateAvailable": {
+   "title": "有可用更新",
+   "subtitle": "新版本 v{version} 已发布。",
+   "changelogLabel": "更新内容",
+   "skipLabel": "不再提示",
+   "actions": {
+    "downloadUpdate": "下载更新",
+    "later": "稍后",
+    "goToReleases": "前往发布页"
+   }
+  }
+ },
+ "errors": {
+  "syncFailed": "模组同步失败",
+  "unsyncFailed": "取消模组同步失败",
+  "modAlreadyExists": "同名模组已存在。",
+  "multipleModsFound": "找到多个模组，请确保只有一个模组存在。",
+  "modPreviewContainsErrors": "此模组包含错误，无法预览。",
+  "gameDirectoryNotSet": "未设置游戏目录，请在设置中配置。",
+  "stagingDirectoryNotSet": "未设置暂存模组目录，请在设置中配置。",
+  "syncMethodInvalid": "无效的同步方式：{method}",
+  "symlinkAdminRequired": "创建符号链接需要管理员权限。",
+  "modPathNotFound": "未找到模组路径：{path}",
+  "copyFailed": "复制模组文件失败：{error}",
+  "symlinkFailed": "创建符号链接失败：{error}",
+  "hardlinkFailed": "创建硬链接失败：{error}",
+  "directoryCreationFailed": "创建目录失败：{error}",
+  "removalFailed": "删除文件或目录失败：{error}",
+  "unknownError": "发生未知错误：{error}",
+  "modInstallFailed": {
+   "title": "模组安装失败"
+  },
+  "invalidMod": "所选文件或文件夹不是有效的 BrownDustX 模组。",
+  "invalidFormat": "不支持的模组格式，请选择有效的模组文件或文件夹。",
+  "unsupportedFormat": "不支持的文件格式，请选择有效的模组文件或文件夹。"
+ },
+ "modErrors": {
+  "missingTextures": "需要在模组文件夹内创建名为\"textures\"的子文件夹。",
+  "missingModfile": "需要在此模组文件夹内创建一个 .modfile 文件。",
+  "archiveNotExtracted": "此模组是尚未解压的压缩文件，请先解压再尝试启用。",
+  "shouldBeInFolder": "此模组应放置在文件夹中，请创建一个与模组同名的文件夹并将模组文件移入其中。",
+  "missingAtlasFile": "此模组缺少图集文件。",
+  "noDescription": "暂无描述。"
+ },
+ "npcTab": {
+  "title": "NPC",
+  "subtitle": "已启用 {enabledModsCount} / {totalModsCount} 个 NPC 模组",
+  "npcsNotFound": "未找到有模组的 NPC。",
+  "id": "ID：{id}",
+  "filters": {
+   "title": "筛选",
+   "searchPlaceholder": "搜索 NPC...",
+   "sortBy": {
+    "title": "排序方式",
+    "options": {
+     "nameAsc": "名称（A-Z）",
+     "nameDesc": "名称（Z-A）",
+     "modsAsc": "模组数量（最少）",
+     "modsDesc": "模组数量（最多）",
+     "idDesc": "ID（从大到小）",
+     "idAsc": "ID（从小到大）"
+    }
+   }
+  },
+  "tags": {
+   "modsCount": "{count} 个模组 | {count} 个模组",
+   "enabledCount": "已启用 {count} 个"
+  },
+  "npcModal": {
+   "enabledMods": "已启用的模组",
+   "totalMods": "模组总数",
+   "noModsFound": {
+    "title": "未找到模组",
+    "description": "请前往模组选项卡为该 NPC 安装模组。"
+   }
+  }
+ }
 }

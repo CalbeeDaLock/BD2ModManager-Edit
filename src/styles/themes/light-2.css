@@ -57,6 +57,9 @@
   --mod-minigame: #506080;      
   --mod-minigame-bg: rgba(80, 96, 128, 0.12);
 
+  --mod-wallpaper: #508070;      
+  --mod-wallpaper-bg: rgba(80, 128, 112, 0.12);
+
   --mod-gameplay: #7a5c48;      
   --mod-gameplay-bg: rgba(122, 92, 72, 0.12);
 }

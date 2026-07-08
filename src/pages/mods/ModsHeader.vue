@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Check, Filter, SearchIcon } from 'lucide-vue-next'
+import { Filter, SearchIcon } from 'lucide-vue-next'
+import { watch } from 'vue'
 import Input from '../../components/common/Input.vue'
 import Button from '../../components/common/Button.vue'
 import Checkbox from '../../components/common/Checkbox.vue'
@@ -32,7 +33,16 @@ const filters = defineModel<Filters>("filters", {
     })
 })
 
-const modTypes = ["Cutscene", "Standing", "Scene", "Dating", "NPC", "Minigame"];
+const modTypes = ["Cutscene", "Standing", "Scene", "Dating", "NPC", "Minigame", "Wallpaper"];
+
+// When "Only Select One Mod Type" is turned on, immediately collapse any active
+// selection down to just the newest (last) chosen type so the buttons reflect
+// the single-select state right away.
+watch(() => filters.value.onlyOneModType, (enabled) => {
+    if (enabled && filters.value.modTypes.length > 1) {
+        filters.value.modTypes = [filters.value.modTypes[filters.value.modTypes.length - 1]]
+    }
+})
 
 function toggleModTypes(modType: string) {
     if (filters.value.onlyOneModType) {
@@ -70,6 +80,8 @@ function getModTypeClass(modType: string) {
             return 'text-mod-npc! bg-mod-npc-bg! border-transparent!'
         case 'Minigame':
             return 'text-mod-minigame! bg-mod-minigame-bg! border-transparent!'
+        case 'Wallpaper':
+            return 'text-mod-wallpaper! bg-mod-wallpaper-bg! border-transparent!'
         default:
             return ''
     }   
@@ -125,16 +137,6 @@ function getModTypeClass(modType: string) {
                     class="text-xs transition-all focus:outline-none bg-surface-input border-border-default cursor-pointer capitalize items-center flex border font-semibold rounded-full py-1 px-2 active:scale-[1] active:bg-state-active disabled:pointer-events-none disabled:opacity-50"
 
                     :class="[filters.modTypes.includes(modType) ? getModTypeClass(modType) : 'hover:bg-state-hover! text-text-secondary']">
-                    <span class="overflow-hidden transition-all duration-150"
-                        :class="filters.modTypes.includes(modType) ? 'w-4 mr-1' : 'w-0'">
-                        <Transition enter-active-class="transition-all duration-150"
-                            enter-from-class="opacity-0 scale-50" enter-to-class="opacity-100 scale-100"
-                            leave-active-class="transition-all duration-100" leave-from-class="opacity-100 scale-100"
-                            leave-to-class="opacity-0 scale-50">
-                            <Check v-if="filters.modTypes.includes(modType)" class="w-4 h-4 shrink-0"
-                                :stroke-width="2" />
-                        </Transition>
-                    </span>
                     {{ $t(`common.modTypes.${modType.toLowerCase()}`) }}
                 </button>
             </div>

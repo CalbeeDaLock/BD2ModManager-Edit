@@ -6,6 +6,8 @@ import ProfilesTab from './pages/profiles/ProfilesTab.vue'
 import BDXTab from './pages/browndustx/BDXTab.vue'
 import ScenesTab from './pages/scenes/ScenesTab.vue'
 import NpcTab from './pages/npc/NpcTab.vue'
+import WallpapersTab from './pages/wallpapers/WallpapersTab.vue'
+import DatingTab from './pages/dating/DatingTab.vue'
 
 const routes = [
     {
@@ -31,6 +33,16 @@ const routes = [
         name: 'npc',
         path: '/npc',
         component: NpcTab
+    },
+    {
+        name: 'dating',
+        path: '/dating',
+        component: DatingTab
+    },
+    {
+        name: 'wallpapers',
+        path: '/wallpapers',
+        component: WallpapersTab
     },
     {
         name: 'profiles',

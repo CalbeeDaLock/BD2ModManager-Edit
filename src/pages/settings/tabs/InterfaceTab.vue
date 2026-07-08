@@ -104,6 +104,14 @@ const modTypeDisplayOptions = computed(() => [
                     </div>
                 </div>
             </Section>
+
+            <Section :title="$t('settingsTab.interface.sections.datingVisibility.title')">
+                <div class="flex items-start gap-3">
+                    <Checkbox v-model="preferencesStore.showDatingInCharacters"
+                        :label="$t('settingsTab.interface.sections.datingVisibility.showDating.label')"
+                        :description="$t('settingsTab.interface.sections.datingVisibility.showDating.description')" />
+                </div>
+            </Section>
         </div>
     </TabPanel>
 </template>

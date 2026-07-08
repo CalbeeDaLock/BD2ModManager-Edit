@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref, computed, onActivated, onDeactivated, nextTick } from 'vue'
+import { h, ref, computed, onActivated, onDeactivated, nextTick, watch } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { BD2ModExtended } from '../../stores/mods'
 import {
@@ -87,7 +87,8 @@ function getTypeClass(type: string) {
         'Scene': 'text-mod-scene',
         'Dating': 'text-mod-dating',
         'NPC': 'text-mod-npc',
-        'Minigame': 'text-mod-minigame'
+        'Minigame': 'text-mod-minigame',
+        'Wallpaper': 'text-mod-wallpaper'
     }[type] || ''
 }
 
@@ -131,6 +132,18 @@ const columns = [
             ])
         },
         header: () => h('span', { class: 'flex text-text-primary items-center' }, t('modsTab.modlist.header.modName')),
+        // Sort by whatever the Mod Name column is configured to display: the
+        // short display name ("Mod Name") or the full folder name ("Mod Name
+        // with Subfolders"). Otherwise the list would always sort by the
+        // folder name regardless of what the user sees.
+        sortingFn: (rowA, rowB) => {
+            const useDisplayName = preferencesStore.modNameDisplay === "short"
+            const nameA = useDisplayName ? rowA.original.displayName : rowA.original.name
+            const nameB = useDisplayName ? rowB.original.displayName : rowB.original.name
+
+            return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' })
+        },
+        sortDescFirst: false,
         size: 300
     }),
     columnHelper.accessor('modType', {
@@ -340,6 +353,16 @@ const table = useVueTable({
 
 const rows = computed(() => table.getRowModel().rows)
 
+// The name column's sortingFn depends on modNameDisplay, but TanStack memoizes
+// the sorted row model and won't recompute when only the preference changes.
+// Re-apply the current sorting so the list re-orders as soon as the setting
+// toggles between "Mod Name" and "Mod Name with Subfolders".
+watch(() => preferencesStore.modNameDisplay, () => {
+    if (sorting.value.some(sort => sort.id === 'name')) {
+        table.setSorting([...sorting.value])
+    }
+})
+
 const selectedMods = computed(() => {
     return rows.value
         .filter(row => row.getIsSelected())
@@ -461,6 +484,15 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             label: t('modsTab.modlist.contextMenu.previewMod'),
             key: 'preview',
             show: isSingleSelection
+        } as ContextMenuItem,
+        {
+            type: 'divider' as const,
+            key: 'd-tip'
+        } as ContextMenuItem,
+        {
+            type: 'tip' as const,
+            label: t('modsTab.modlist.contextMenu.doubleClickToPreviewTip'),
+            key: 'tip-double-click'
         } as ContextMenuItem,
     ].filter(item => item.show !== false)
 })
@@ -666,7 +698,7 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
                                 </span>
                                 <span @click.stop @mousedown.stop @touchstart.stop>
                                     <Input v-if="header.column.id == 'name' || header.column.id == 'author'" class="min-w-0 w-full" placeholder="" />
-                                    <Select v-if="header.column.id == 'modType'" multiple class="w-full min-w-0" placeholder="" :options="[...['Cutscene', 'Standing', 'Scene', 'Dating', 'NPC', 'Minigame'].map((modType) => ({
+                                    <Select v-if="header.column.id == 'modType'" multiple class="w-full min-w-0" placeholder="" :options="[...['Cutscene', 'Standing', 'Scene', 'Dating', 'NPC', 'Minigame', 'Wallpaper'].map((modType) => ({
                                         value: modType,
                                         label: modType
                                     }))]" />

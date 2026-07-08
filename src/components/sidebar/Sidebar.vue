@@ -84,6 +84,8 @@ function onProfileSelected(profile_id: string) {
                 <NavigationButton :icon="Component" :label="$t('sidebar.tabs.mods')" value="mods" />
                 <NavigationButton :icon="Users" :label="$t('sidebar.tabs.characters')" value="characters" />
                 <NavigationButton icon-src="/icons/npc.png" :label="$t('sidebar.tabs.npc')" value="npc" />
+                <NavigationButton icon-src="/icons/dating.png" :label="$t('sidebar.tabs.dating')" value="dating" />
+                <NavigationButton icon-src="/icons/wallpaper.png" :label="$t('sidebar.tabs.wallpapers')" value="wallpapers" />
             </NavigationSection>
             <NavigationSection :title="$t('sidebar.sections.settings')">
                 <NavigationButton :icon="Bolt" :label="$t('sidebar.tabs.profiles')" value="profiles" />

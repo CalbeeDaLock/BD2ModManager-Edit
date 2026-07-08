@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef } from 'vue'
 import { useProfilesStore } from '../../stores/profiles'
-import { Edit, PlusCircle, RefreshCcw, Trash2, TriangleAlert } from 'lucide-vue-next'
+import { Edit, ListChecks, PlusCircle, RefreshCcw, Trash2, TriangleAlert } from 'lucide-vue-next'
 import { useHeader } from '../../composables/useHeader'
 import { useI18n } from 'vue-i18n'
 import EditProfile from './modals/EditProfile.vue'
+import EditProfileMods from './modals/EditProfileMods.vue'
 import CreateProfile from './modals/CreateProfile.vue'
 import Button from '../../components/common/Button.vue'
 import { useConfirm } from '../../plugins/ConfirmService'
@@ -16,6 +17,7 @@ const confirm = useConfirm()
 const { t } = useI18n()
 
 const editProfileModal = useTemplateRef('editProfileModal')
+const editProfileModsModal = useTemplateRef('editProfileModsModal')
 const createProfileModal = useTemplateRef('createProfileModal')
 
 const profileSelectedId = ref<string | null>('default')
@@ -26,14 +28,14 @@ const selectedProfile = computed(() => {
 })
 
 function editSelected() {
-  if (!profileSelectedId.value || profileSelectedId.value === 'default') return
+  if (!profileSelectedId.value) return
 
   const profile = profilesStore.getProfileById(profileSelectedId.value)
 
   editProfileModal.value?.show({
     id: profile?.id || '',
     name: profile?.name || '',
-    description: profile?.description || null
+    description: profile?.description === 'd3f4ult' ? null : (profile?.description || null)
   })
 }
 
@@ -95,6 +97,39 @@ async function onProfileEdit(id: string, name: string, description: string | nul
       severity: 'error',
       title: t('profilesTab.notifications.profileUpdateFailed.title'),
       message: t('profilesTab.notifications.profileUpdateFailed.description', { profileName: name }),
+      duration: 3000
+    })
+  }
+}
+
+function editModsSelected() {
+  if (!profileSelectedId.value) return
+
+  const profile = profilesStore.getProfileById(profileSelectedId.value)
+  if (!profile) return
+
+  editProfileModsModal.value?.show({
+    id: profile.id,
+    name: profile.name,
+    enabledMods: [...(profile.enabledMods || [])]
+  })
+}
+
+async function onProfileModsEdit(id: string, modNames: string[]) {
+  const profile = profilesStore.getProfileById(id)
+  try {
+    await profilesStore.setProfileEnabledMods(id, modNames)
+    notificationStore.add({
+      severity: 'success',
+      title: t('profilesTab.notifications.modsUpdated.title'),
+      message: t('profilesTab.notifications.modsUpdated.description', { profileName: profile?.name }),
+      duration: 3000
+    })
+  } catch {
+    notificationStore.add({
+      severity: 'error',
+      title: t('profilesTab.notifications.modsUpdateFailed.title'),
+      message: t('profilesTab.notifications.modsUpdateFailed.description', { profileName: profile?.name }),
       duration: 3000
     })
   }
@@ -163,6 +198,7 @@ useHeader({
   <div class="w-full h-full flex flex-col">
     <CreateProfile ref="createProfileModal" @on-profile-create="onProfileCreate" />
     <EditProfile ref="editProfileModal" @on-profile-edit="onProfileEdit" />
+    <EditProfileMods ref="editProfileModsModal" @on-profile-mods-edit="onProfileModsEdit" />
 
     <div class="flex flex-col p-4 py-2 w-full h-full">
       <div class="w-full flex-1 border border-border-default rounded-lg bg-surface-panel flex overflow-hidden">
@@ -224,8 +260,13 @@ useHeader({
                   variant="text"
                   :label="$t('profilesTab.actions.editProfile')"
                   :icon="Edit"
-                  :disabled="selectedProfile.id === 'default'"
                   @click="editSelected"
+                />
+                <Button
+                  variant="text"
+                  :label="$t('profilesTab.actions.editMods')"
+                  :icon="ListChecks"
+                  @click="editModsSelected"
                 />
                 <Button
                   variant="text"

@@ -18,12 +18,13 @@ import { useHeader } from "../../composables/useHeader";
 
 import UpdateAuthorModal from "./modals/UpdateAuthorModal.vue";
 import RenameModModal from "./modals/RenameModModal.vue";
+import RecognizeModsModal from "./modals/RecognizeModsModal.vue";
 import ModsHeader from "./ModsHeader.vue";
 import Modlist from "./Modlist.vue";
 import Button from "../../components/common/Button.vue";
 import MultiButton from "../../components/common/MultiButton.vue";
 import Popover from "../../components/common/Popover.vue";
-import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw } from "lucide-vue-next";
+import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw, FolderInput } from "lucide-vue-next";
 import { invoke } from "@tauri-apps/api/core";
 import { useModInstall } from "../../composables/useModInstall";
 
@@ -31,6 +32,7 @@ let unlistenFns: Array<() => void> = []
 
 const updateAuthorModal = useTemplateRef("updateAuthorModal")
 const renameModModal = useTemplateRef("renameModModal")
+const recognizeModsModal = useTemplateRef("recognizeModsModal")
 
 const loggingStore = useLoggingStore()
 const notificationStore = useNotificationStore()
@@ -77,16 +79,21 @@ const debouncedSync = useDebounceFn(async () => {
   }
 }, 1500);
 
-const filters = ref({
+// Persist the chosen filters across sessions. The free-text search is reset on
+// load (below) so a stale query never hides mods unexpectedly.
+const filters = useLocalStorage('modsFilters', {
   searchQuery: '',
-  modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame")[],
+  modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame" | "Wallpaper")[],
   onlyEnabled: false,
   onlyDisabled: false,
   onlyConflicts: false,
   onlyErrors: false,
   hideErrors: false,
   onlyOneModType: false,
-});
+}, { mergeDefaults: true });
+
+// Don't restore a previous search query on startup.
+filters.value.searchQuery = '';
 const totalModsCount = computed(() => modsStore.mods.length)
 const enabledModsCount = computed(() => modsStore.mods.filter(mod => mod.enabled && !mod.errors.length).length)
 
@@ -510,6 +517,8 @@ async function setupEventListeners() {
 }
 
 onMounted(async () => {
+  // Don't restore a stale search query — only the filter toggles/types persist.
+  filters.value.searchQuery = ''
   Promise.all([
     updateBDXVersion()
   ])
@@ -601,6 +610,11 @@ useHeader({
   ),
   buttons: [
     {
+      icon: FolderInput,
+      label: t('modsTab.actions.recognizeMods'),
+      action: () => recognizeModsModal.value?.open()
+    },
+    {
       icon: RefreshCcw,
       label: t('common.actions.refreshMods'),
       action: async () => {
@@ -646,6 +660,7 @@ async function openGameModsFolder() {
   <div class="flex flex-col h-full gap-0 select-none p-4 py-0 pb-2">
     <UpdateAuthorModal ref="updateAuthorModal" />
     <RenameModModal ref="renameModModal" />
+    <RecognizeModsModal ref="recognizeModsModal" />
 
     <div class="shrink-0 mb-2">
       <ModsHeader v-model:filters="filters" />

@@ -281,6 +281,7 @@ pub fn main() {
             mods::get_mods,
             mods::enable_mods,
             mods::disable_mods,
+            mods::enable_mods_in_profile,
             mods::delete_mods,
             mods::rename_mod,
             mods::set_mod_author,
@@ -290,6 +291,10 @@ pub fn main() {
             mods::unsync_mods,
             mods::is_sync_needed,
             mods::preview_mod,
+            mods::scan_active_mods,
+            mods::import_orphan_mod,
+            mods::delete_active_mods,
+            mods::set_profile_enabled_mods,
             // profiles
             profiles::get_profiles,
             profiles::switch_profile,
@@ -315,6 +320,8 @@ pub fn main() {
             game::uninstall_configmanager,
             game::determine_archive_type,
             game::get_characters,
+            game::get_npc,
+            game::get_dating,
             // updater
             updater::get_mod_preview_version,
             updater::check_for_app_update,

@@ -5,6 +5,7 @@ import { formatCharName, useLang } from '../../utils/formatCharName.ts';
 import { CharacterListItem, CostumeWithMods } from './CharacterList.vue';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { computed } from 'vue';
+import { usePreferencesStore } from '../../stores/preferences';
 
 const props = defineProps<{
     item: CharacterListItem
@@ -14,6 +15,7 @@ const emit = defineEmits<{
     openModDetails: [costume: Character]
 }>()
 
+const preferencesStore = usePreferencesStore()
 const imageUrl = computed(() => {
     if (props.item.type !== 'costume') return '#'
     const costume = props.item.data
@@ -98,7 +100,7 @@ const charName = computed(() => {
                     </span>
                 </div>
 
-                <div v-if="item.data.dating_id" class="flex flex-col items-center">
+                <div v-if="item.data.dating_id && preferencesStore.showDatingInCharacters" class="flex flex-col items-center">
                     <span class="font-semibold text-sm md:text-base">
                         {{ $t('charactersTab.modTypes.dating') }}
                     </span>

@@ -15,7 +15,9 @@ defineEmits<{
 
 const PLACEHOLDER = 'characters/standing/placeholder_character.png';
 
-const imageUrl = computed(() => getNpcIcon(props.npc.id) ?? PLACEHOLDER);
+// Prefer the full image path from npc.json, then the legacy hardcoded icon
+// map, then the placeholder.
+const imageUrl = computed(() => props.npc.image ?? getNpcIcon(props.npc.id) ?? PLACEHOLDER);
 </script>
 
 <template>

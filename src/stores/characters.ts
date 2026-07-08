@@ -28,9 +28,45 @@ export interface Character {
     element: "dark" | "light" | "water" | "fire" | "wind"
 }
 
+/** A statically-known NPC entry from npc.json. */
+export interface NpcDefinition {
+    id: string;
+    character_image: string;
+    character_name: { [Lang in Language]: string };
+    assets: {
+        head_image: string;
+        character_image: string;
+    };
+}
+
+/** A single labelled affection entry within a dating definition. */
+export interface AffectionEntry {
+    /** Label from dating.txt, e.g. "1", "2-1", "2-2". */
+    label: string;
+    /** Scene mod id (matches modType.id for a Scene-typed mod). */
+    id: string;
+}
+
+/** A dating character entry from dating.json. */
+export interface DatingDefinition {
+    dating_id: string;
+    costume_id: string;
+    character: string;
+    costume: string;
+    affection: AffectionEntry[];
+}
+
 interface CharactersJson {
     characters: Character[];
     dating: DatingMap;
+}
+
+interface NpcJson {
+    npc: NpcDefinition[];
+}
+
+interface DatingJson {
+    dating: DatingDefinition[];
 }
 
 type DatingMap = Record<string, string>;
@@ -50,6 +86,14 @@ export const useCharactersStore = defineStore("characters", () => {
     const datingMap = shallowRef<DatingMap>({});
     const charactersMap = shallowRef<Record<string, Character>>({});
     const datingToCharacterMap = shallowRef<Record<string, Character>>({});
+
+    // NPC catalog from npc.json
+    const npcDefinitions = shallowRef<NpcDefinition[]>([]);
+    const npcDefinitionsMap = shallowRef<Record<string, NpcDefinition>>({});
+
+    // Dating affection data from dating.json
+    const datingDefinitions = shallowRef<DatingDefinition[]>([]);
+    const datingDefinitionsMap = shallowRef<Record<string, DatingDefinition>>({});
 
     const groupedCharacters = computed<Record<string, Character[]>>(() => {
         return characters.value.reduce((acc, c) => {
@@ -88,6 +132,20 @@ export const useCharactersStore = defineStore("characters", () => {
         }, `updateCharacters (${data.characters.length} characters, ${Object.keys(data.dating).length} dating mappings)`);
     }
 
+    function updateNpc(data: NpcJson) {
+        npcDefinitions.value = data.npc ?? [];
+        npcDefinitionsMap.value = Object.fromEntries(
+            (data.npc ?? []).map(n => [n.id, n])
+        );
+    }
+
+    function updateDating(data: DatingJson) {
+        datingDefinitions.value = data.dating ?? [];
+        datingDefinitionsMap.value = Object.fromEntries(
+            (data.dating ?? []).map(d => [d.dating_id, d])
+        );
+    }
+
     function getCharacterById(id: string): Character | null {
         return timeOperation(() => {
             return charactersMap.value[id] || null;
@@ -112,6 +170,16 @@ export const useCharactersStore = defineStore("characters", () => {
         }, `getCharacterByNpcId(${npcId})`, false);
     }
 
+    /** Returns the NpcDefinition for a given NPC id, or null. */
+    function getNpcDefinition(id: string): NpcDefinition | null {
+        return npcDefinitionsMap.value[id] ?? null;
+    }
+
+    /** Returns the labelled affection list for a dating_id, or []. */
+    function getAffection(datingId: string): AffectionEntry[] {
+        return datingDefinitionsMap.value[datingId]?.affection ?? [];
+    }
+
     async function loadCharacters() {
         try {
             const data = await invoke<CharactersJson>("get_characters");
@@ -123,13 +191,41 @@ export const useCharactersStore = defineStore("characters", () => {
         }
     }
 
+    async function loadNpc() {
+        try {
+            const data = await invoke<NpcJson>("get_npc");
+            updateNpc(data);
+            if (import.meta.env.DEV)
+                console.info("NPC definitions loaded:", npcDefinitions.value.length);
+        } catch (error) {
+            console.error("Failed to load npc definitions:", error);
+        }
+    }
+
+    async function loadDating() {
+        try {
+            const data = await invoke<DatingJson>("get_dating");
+            updateDating(data);
+            if (import.meta.env.DEV)
+                console.info("Dating definitions loaded:", datingDefinitions.value.length);
+        } catch (error) {
+            console.error("Failed to load dating definitions:", error);
+        }
+    }
+
     return {
         characters: readonly(characters),
+        npcDefinitions: readonly(npcDefinitions),
+        datingDefinitions: readonly(datingDefinitions),
         groupedCharacters: readonly(groupedCharacters),
         loadCharacters,
+        loadNpc,
+        loadDating,
         getCharacterById,
         getCharacterByDatingId,
         getCharacterIdByDatingId,
-        getCharacterByNpcId
+        getCharacterByNpcId,
+        getNpcDefinition,
+        getAffection,
     };
 });

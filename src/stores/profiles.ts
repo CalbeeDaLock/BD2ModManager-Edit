@@ -61,6 +61,13 @@ export const useProfilesStore = defineStore("profiles", () => {
         return profiles.value.find(p => p.id === id) || null;
     }
 
+    // Replace a profile's entire enabled-mods list (used for manual edit and
+    // clearing). Passing an empty array clears all enabled mods.
+    async function setProfileEnabledMods(id: string, modNames: string[]) {
+        await invoke("set_profile_enabled_mods", { profileId: id, modNames });
+        await loadProfiles();
+    }
+
     return {
         activeProfile,
         activeProfileId,
@@ -71,6 +78,7 @@ export const useProfilesStore = defineStore("profiles", () => {
         createProfile,
         deleteProfile,
         getProfileById,
-        editProfile
+        editProfile,
+        setProfileEnabledMods
     };
 });

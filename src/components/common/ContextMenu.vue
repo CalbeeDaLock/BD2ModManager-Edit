@@ -6,7 +6,7 @@ import { ChevronRight } from 'lucide-vue-next'
 export interface ContextMenuItem {
     label?: string
     key: string
-    type?: 'divider'
+    type?: 'divider' | 'tip'
     children?: ContextMenuItem[]
     show?: boolean
 }
@@ -125,6 +125,11 @@ watch(() => props.show, (val) => {
             class="z-5 min-w-48 rounded-md border border-border-default bg-surface-popover py-1" @contextmenu.prevent>
             <template v-for="item in options" :key="item.key">
                 <div v-if="item.type === 'divider'" class="my-0.5 h-px bg-border-default" />
+
+                <div v-else-if="item.type === 'tip'"
+                    class="px-3 py-1.5 text-xs text-text-secondary select-none cursor-default">
+                    {{ item.label }}
+                </div>
 
                 <div v-else-if="item.children"
                     class="flex cursor-pointer items-center justify-between px-3 py-1.5 text-sm hover:bg-state-hover transition-colors"

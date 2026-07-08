@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { convertFileSrc } from '@tauri-apps/api/core'
-import { CostumeWithMods } from './CharacterGrid.vue'
 import { isCostumeNew } from '../../stores/characters'
 import { Check, X } from 'lucide-vue-next'
 import { computed } from 'vue'
 import Image from '../../components/common/Image.vue'
 import { formatCharName, useLang } from '../../utils/formatCharName.ts'
-import { usePreferencesStore } from '../../stores/preferences'
+import type { DatingCostume } from './DatingGrid.vue'
 
 const props = defineProps<{
-    costume: CostumeWithMods
+    costume: DatingCostume
 }>()
-
-const preferencesStore = usePreferencesStore()
 
 const imageUrl = computed(() => {
     const ids = Array.isArray(props.costume.id)
@@ -48,8 +45,7 @@ const charName = computed(() => {
 
         <div class="px-2 py-2 flex flex-col shrink-0">
             <div class="mb-2">
-                <div class="font-semibold text-sm min-w-0 flex gap-2 items-center"
-                    :title="charName">
+                <div class="font-semibold text-sm min-w-0 flex gap-2 items-center" :title="charName">
                     <div v-if="isCostumeNew(costume)"
                         class="bg-error-bg text-error text-xs px-2 py-0.5 rounded-sm font-medium shrink-0">
                         {{ $t('charactersTab.tags.new') }}
@@ -60,31 +56,11 @@ const charName = computed(() => {
                 </div>
             </div>
 
+            <!-- Dating indicator, plus an Affection count when the character has
+                 affection entries defined in dating.json. -->
             <div
                 class="flex justify-around items-center gap-2 text-xs text-text-primary font-mono overflow-x-auto scrollbar-hide">
                 <div class="text-center p-1">
-                    <div class="mb-1 flex items-center font-semibold gap-1">
-                        {{ $t('charactersTab.modTypes.cutscene') }}
-                    </div>
-                    <div class="flex items-center justify-center"
-                        :class="costume.hasCutscene ? 'text-success font-bold' : 'text-error'">
-                        <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasCutscene" />
-                        <X class="w-[1.25em] h-[1.25em]" v-else />
-                    </div>
-                </div>
-
-                <div class="text-center p-1">
-                    <div class="mb-1 flex items-center font-bold gap-1">
-                        {{ $t('charactersTab.modTypes.standing') }}
-                    </div>
-                    <div class="flex justify-center"
-                        :class="costume.hasStanding ? 'text-success font-bold' : 'text-error'">
-                        <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasStanding" />
-                        <X class="w-[1.25em] h-[1.25em]" v-else />
-                    </div>
-                </div>
-
-                <div class="text-center p-1" v-if="costume.dating_id && preferencesStore.showDatingInCharacters">
                     <div class="mb-1 flex items-center font-bold gap-1">
                         {{ $t('charactersTab.modTypes.dating') }}
                     </div>
@@ -92,6 +68,18 @@ const charName = computed(() => {
                         :class="costume.hasDating ? 'text-success font-bold' : 'text-error'">
                         <Check class="w-[1.25em] h-[1.25em]" v-if="costume.hasDating" />
                         <X class="w-[1.25em] h-[1.25em]" v-else />
+                    </div>
+                </div>
+                <div v-if="(costume.affectionTotal ?? 0) > 0" class="text-center p-1">
+                    <div class="mb-1 flex items-center font-bold gap-1">
+                        {{ $t('datingTab.affection.title') }}
+                    </div>
+                    <div class="flex justify-center font-bold" :class="{
+                        'text-success': costume.affectionEnabled === costume.affectionTotal,
+                        'text-warning': (costume.affectionEnabled ?? 0) > 0 && costume.affectionEnabled !== costume.affectionTotal,
+                        'text-error': (costume.affectionEnabled ?? 0) === 0
+                    }">
+                        {{ costume.affectionEnabled }}/{{ costume.affectionTotal }}
                     </div>
                 </div>
             </div>

@@ -7,8 +7,10 @@ import { useVirtualizer } from '@tanstack/vue-virtual';
 import { useI18n } from 'vue-i18n';
 
 import { BD2Mod, BD2ModExtended, useModsStore } from '../../stores/mods';
+import { useCharactersStore } from '../../stores/characters';
 import { useHeader } from '../../composables/useHeader';
 import { useSaveScroll } from '../../composables/useSaveScroll';
+import { useLang } from '../../utils/formatCharName';
 
 import NpcGridItem from './NpcGridItem.vue';
 import NpcModal from './modals/NpcModal.vue';
@@ -21,12 +23,14 @@ import type { NpcEntry } from './types';
 
 const { t } = useI18n();
 const modsStore = useModsStore();
+const charactersStore = useCharactersStore();
+const lang = useLang();
 
 const viewMode = useLocalStorage('npc-view-mode', 'grid'); // 'grid' or 'list'
 
 const userFilters = reactive({
     searchQuery: '',
-    sortBy: 'id-desc'
+    sortBy: 'id-asc'
 });
 
 const sortOptions = computed(() => [
@@ -43,39 +47,57 @@ const sortOptions = computed(() => [
 // she is still reachable from the Characters page via her npc_id.
 const EXCLUDED_NPC_IDS = new Set(['300501']);
 
-// Manual display-name overrides for NPCs that are known but not resolved
-// from characters.json. Keyed by the numeric NPC id (no "npc" prefix).
+// Fallback display-name overrides for NPCs discovered only from mods (i.e. not
+// present in npc.json). Keyed by the numeric NPC id (no "npc" prefix).
 const NPC_NAME_OVERRIDES: Record<string, string> = {
     '000001': 'Shop Girl',
     '000005': 'Eleanor',
 };
 
-// Derive the NPC list from NPC-typed mods in the mods store, grouped by
-// the NPC id reported on each mod's modType. Most NPCs are not present in
-// characters.json (only 1 of 181 entries has npc_id), so we cannot rely on
-// the characters store here — the mod list is the source of truth.
+// Resolve an NPC's display name honoring the language / forceEnglishNames
+// preference: prefer the multilang name from npc.json, then a manual override,
+// then the character resolved from a mod, then the "NPC <id>" fallback.
+function resolveNpcName(id: string, modCharacter?: string): string {
+    const def = charactersStore.getNpcDefinition(id);
+    if (def) {
+        return def.character_name[lang.value] ?? def.character_name.en;
+    }
+    return NPC_NAME_OVERRIDES[id] || modCharacter || `NPC ${id}`;
+}
+
+// Build the NPC list by seeding from the static npc.json catalog (so every
+// known NPC shows even with zero mods installed), then augmenting counts from
+// NPC-typed mods. NPCs found only in mods (not in npc.json) are still added.
 const npcs = computed<NpcEntry[]>(() => {
     const groups = new Map<string, NpcEntry>();
 
+    // 1) Seed from the static NPC catalog.
+    for (const def of charactersStore.npcDefinitions) {
+        if (EXCLUDED_NPC_IDS.has(def.id)) continue;
+        groups.set(def.id, {
+            id: def.id,
+            name: resolveNpcName(def.id),
+            image: def.character_image,
+            character_name: def.character_name,
+            modsCount: 0,
+            enabledCount: 0,
+            hasStanding: false
+        });
+    }
+
+    // 2) Augment with live mod data (and add unknown NPCs from mods).
     for (const mod of modsStore.mods as readonly BD2ModExtended[]) {
         if (mod.modType?.type !== 'NPC') continue;
         if (!('id' in mod.modType)) continue;
         const id = mod.modType.id;
 
-        // Skip ids that aren't real NPCs (e.g. characters whose standing id
-        // starts with "npc").
         if (EXCLUDED_NPC_IDS.has(id)) continue;
-
-        // Prefer a manual override, then the resolved character name from the
-        // store (extendedMods sets mod.character via getCharacterByNpcId), and
-        // finally fall back to "NPC <id>" when the NPC isn't otherwise known.
-        const characterName = NPC_NAME_OVERRIDES[id] || mod.character?.character;
 
         let entry = groups.get(id);
         if (!entry) {
             entry = {
                 id,
-                name: characterName || `NPC ${id}`,
+                name: resolveNpcName(id, mod.character?.character),
                 modsCount: 0,
                 enabledCount: 0,
                 hasStanding: false
@@ -204,6 +226,7 @@ function toggleMod(mod: BD2Mod) {
 }
 
 function refreshData() {
+    charactersStore.loadNpc();
     modsStore.discoverMods();
 }
 
@@ -260,7 +283,7 @@ useHeader({
                     @click="openNpcDetails(npc)"
                     class="flex bg-surface-card rounded-lg overflow-hidden cursor-pointer hover:bg-state-hover transition-colors mx-2 mb-2">
                     <div class="shrink-0">
-                        <Image :src="getNpcIcon(npc.id) ?? 'characters/standing/placeholder_character.png'" :alt="npc.name"
+                        <Image :src="npc.image ?? getNpcIcon(npc.id) ?? 'characters/standing/placeholder_character.png'" :alt="npc.name"
                             class="w-42 h-42 object-cover object-top rounded-t-md aspect-square"
                             error-src="characters/standing/placeholder_character.png" error-class="bg-text-primary" skeleton />
                     </div>
