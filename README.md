@@ -20,50 +20,16 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 ## 🌟 What's Different in EditVer?
 
-This version includes several enhancements and features not present in the original [bruhnn/BD2ModManager](https://github.com/bruhnn/BD2ModManager) v4.1.1:
+Enhancements not present in the original [bruhnn/BD2ModManager](https://github.com/bruhnn/BD2ModManager) v4.1.1:
 
-### 👥 NPC Page
-- **Full NPC Implementation**: Replaced the placeholder NPC stub with a fully functional page.
-- **Always-Visible Catalog**: NPCs are seeded from a standalone `npc.json` catalog, so every known NPC shows up (with a live mod count) even before you install any mods.
-- **NPC Management**: Dedicated grid/list view with search, sorting, and filtering.
-- **NPC Details**: Added `NpcModal` to list and manage mods for specific NPCs.
-- **Custom Assets**: Integrated specific NPC icons and name overrides (e.g., Shop Girl, Eleanor, Greta, Elpis NPC).
-
-### 💕 Dating Page (New)
-- **Dedicated Dating Tab**: Browse every dating costume in its own page, shown even when no mods are installed.
-- **Affection Tracking**: Each dating entry lists its labelled affection scenes with an enable/disable checkbox and preview button. An `x/total` indicator shows how many affection mods are installed (green = all, amber = partial, red = none).
-- **Standalone Catalog**: Backed by a hand-editable `dating.json` that auto-syncs new dating IDs from the game data without overwriting your manual edits.
-- **Visibility Toggle**: Settings › Interface lets you show or hide dating costumes on the Characters page.
-
-### 🖼️ Wallpapers Page (New)
-- **Dedicated Wallpapers Tab**: Manage wallpaper mods in their own page.
-- **Quick Naming**: Unnamed wallpapers display their ID (pre-filled when editing) instead of a generic placeholder.
-- **Clickable Mod Count**: The mod-count badge toggles the mod list, same as the "Show Mods" button.
-
-### 🧬 Recognize Active Mods (New, Experimental)
-- **Fingerprint Matching**: Matches manually-installed *active* game mods back to their staging sources by **content fingerprint** (name-agnostic), so renamed or re-exported copies still match.
-- **Orphan Import**: Imports mods found only in the active folder into a staging destination and maps them into a profile of your choice.
-- **Safe Cleanup**: Optionally deletes the loose original copies from the active folder behind a required second confirmation (never touches the manager's own `BD2MM` sync folder).
-- **Performance**: Scanning runs off the UI thread and fingerprints in parallel; results are cached so reopening is instant, with a manual Rescan available.
-- **Configurable Path**: Set the "Active Mods Directory" in Settings › General.
-
-### 📦 Mods Tab Improvements
-- **Error Filtering**: Added a "Not show Error Mods" toggle to hide mods with errors.
-- **Selection Logic**: Added an "Only select one mod type" tickbox for faster filtering.
-- **UX Polish**: Added the ability to deselect a mod row by clicking on empty space.
-- **Preview Tip**: Added a context-menu reminder that double-clicking previews a mod.
-- **Name Column Sorting**: The Mod Name column now sorts by whatever it displays (short display name vs. full folder path), following the Interface preference.
-
-### 🎭 Characters Tab Enhancements
-- **Collab Filter**: Added an "Only Collab Characters" filter to easily find collaboration characters.
-- **Path Sorting**: Character mods are now sorted A-Z by their folder path, with the path displayed as a subtitle for better organization.
-
-### 🗂️ Profiles Enhancements
-- **Edit Mods List**: A new "Edit Mods List" action opens a modal to edit a profile's enabled mods directly as a text list (one staging path per line), with a "Clear All" shortcut.
-- **Editable Default Profile**: The Default profile's name and description can now be edited (deletion is still blocked).
-
-### 🌐 Localization
-- All the above features have been translated across all supported locales (English, Japanese, Korean, Portuguese, Chinese Simplified, Chinese Traditional).
+- **👥 NPC Page**: Full page with grid/list view, search, sort, and filter. Every known NPC shows up (with live mod count) even before you install mods, with custom icons and name overrides.
+- **💕 Dating Page** *(new)*: Browse every dating costume, with per-entry affection tracking (`x/total` indicator, enable/disable, preview). Optional visibility toggle on the Characters page.
+- **🖼️ Wallpapers Page** *(new)*: Manage wallpaper mods in their own page; unnamed wallpapers show their ID, and the mod-count badge toggles the mod list.
+- **🧬 Recognize Active Mods** *(new, experimental)*: Matches manually-installed game mods back to staging sources by content fingerprint (name-agnostic), imports orphans into a chosen profile, and can safely delete loose originals behind a confirmation. Runs off the UI thread with cached results.
+- **📦 Mods Tab**: Hide-errors toggle, single mod-type selection, deselect by clicking empty space, a double-click-to-preview tip, and Mod Name column sorting that follows your display preference.
+- **🎭 Characters Tab**: "Only Collab Characters" filter and A-Z path sorting with the folder path shown as a subtitle.
+- **🗂️ Profiles**: "Edit Mods List" modal to edit enabled mods as text (one path per line), and the Default profile is now editable.
+- **🌐 Localization**: All features translated across all 6 locales (EN, JA, KO, PT-BR, ZH-CN, ZH-TW).
 
 ---
 
