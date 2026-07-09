@@ -22,14 +22,14 @@ If you have suggestions or run into any problems with the app, feel free to open
 
 Enhancements not present in the original [bruhnn/BD2ModManager](https://github.com/bruhnn/BD2ModManager) v4.1.1:
 
-- **👥 NPC Page**: Full page with grid/list view, search, sort, and filter. Every known NPC shows up (with live mod count) even before you install mods, with custom icons and name overrides.
-- **💕 Dating Page** *(new)*: Browse every dating costume, with per-entry affection tracking (`x/total` indicator, enable/disable, preview). Each affection entry is its own group and supports multiple mods (like dating mods). Optional visibility toggle on the Characters page.
-- **🖼️ Wallpapers Page** *(new)*: Manage wallpaper mods in their own page; unnamed wallpapers show their ID, and the mod-count badge toggles the mod list.
-- **🧬 Recognize Active Mods** *(new, experimental)*: Matches manually-installed game mods back to staging sources by content fingerprint (name-agnostic), imports orphans into a chosen profile, and can safely delete loose originals behind a confirmation. Runs off the UI thread with cached results.
-- **📦 Mods Tab**: Hide-errors toggle, single mod-type selection, deselect by clicking empty space, a double-click-to-preview tip, and Mod Name column sorting that follows your display preference.
-- **🎭 Characters Tab**: "Only Collab Characters" filter and A-Z path sorting with the folder path shown as a subtitle.
-- **🗂️ Profiles**: "Edit Mods List" modal to edit enabled mods as text (one path per line), and the Default profile is now editable.
-- **🌐 Localization**: All features translated across all 6 locales (EN, JA, KO, PT-BR, ZH-CN, ZH-TW).
+- **👥 NPC Page** *(new)*: Dedicated page for NPC characters, backed by a new `npc.json` dataset.
+- **💕 Dating Page** *(new)*: Browse dating costumes with affection tracking, backed by a new `dating.json` dataset. Toggle visibility via Settings > Interface > Show Dating in Characters.
+- **🖼️ Wallpapers Page** *(new)*: Manage wallpaper mods in their own page. Wallpaper mods are detected by the `"original": "bg"` line in the mod file.
+- **🧬 Recognize Active Mods** *(new, experimental)*: Links mods you already installed in the game's mod directory back to your mod library automatically. Set the active mods directory in Settings > General. Still experimental, so results are not guaranteed to be 100% correct.
+- **📦 Mods Tab**: Added a "Hide Error Mods" filter (with remembered filter settings), a Wallpaper mod type, an "Only Select One Mod Type" toggle, and a "double-click a row to preview" tip. Mods now sort by Mod Name when that column is selected, and each character allows only one mod per mod type.
+- **🎭 Characters Tab**: Added an "Only Collab Characters" filter and A-Z sorting.
+- **🗂️ Profiles**: Edit the Default profile's name and description, and edit your mod list manually.
+- **⚙️ Other**: A UAC prompt now appears when syncing with the Symlink method.
 
 ---
 
