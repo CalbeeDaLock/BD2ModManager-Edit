@@ -23,7 +23,7 @@ If you have suggestions or run into any problems with the app, feel free to open
 Enhancements not present in the original [bruhnn/BD2ModManager](https://github.com/bruhnn/BD2ModManager) v4.1.1:
 
 - **👥 NPC Page**: Full page with grid/list view, search, sort, and filter. Every known NPC shows up (with live mod count) even before you install mods, with custom icons and name overrides.
-- **💕 Dating Page** *(new)*: Browse every dating costume, with per-entry affection tracking (`x/total` indicator, enable/disable, preview). Optional visibility toggle on the Characters page.
+- **💕 Dating Page** *(new)*: Browse every dating costume, with per-entry affection tracking (`x/total` indicator, enable/disable, preview). Each affection entry is its own group and supports multiple mods (like dating mods). Optional visibility toggle on the Characters page.
 - **🖼️ Wallpapers Page** *(new)*: Manage wallpaper mods in their own page; unnamed wallpapers show their ID, and the mod-count badge toggles the mod list.
 - **🧬 Recognize Active Mods** *(new, experimental)*: Matches manually-installed game mods back to staging sources by content fingerprint (name-agnostic), imports orphans into a chosen profile, and can safely delete loose originals behind a confirmation. Runs off the UI thread with cached results.
 - **📦 Mods Tab**: Hide-errors toggle, single mod-type selection, deselect by clicking empty space, a double-click-to-preview tip, and Mod Name column sorting that follows your display preference.

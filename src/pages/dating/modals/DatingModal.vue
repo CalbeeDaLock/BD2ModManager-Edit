@@ -49,30 +49,40 @@ const enabledModsCount = computed(() =>
     installedMods.value.filter(mod => mod.enabled).length
 );
 
-// Labelled affection entries (from dating.json) paired with their matching
-// Scene-typed mod, when one is installed. Entries with no installed mod are
-// still shown (greyed out) so the user can see what's missing.
-interface AffectionRow {
+// Labelled affection entries (from dating.json). Each entry can have multiple
+// mods created for it (same as Dating mods), so it becomes its own group with
+// its own header and the full list of matching Scene-typed mods beneath it.
+// Entries with no installed mod keep a single greyed "not installed" row.
+interface AffectionGroup {
     label: string;
     id: string;
-    mod: BD2Mod | null;
+    mods: BD2Mod[];
+    enabledCount: number;
 }
 
-const affectionRows = computed<AffectionRow[]>(() => {
+const affectionGroups = computed<AffectionGroup[]>(() => {
     if (!props.selectedCostume?.dating_id) return [];
     const affection = charactersStore.getAffection(props.selectedCostume.dating_id);
     return affection.map(entry => {
-        const mod = modsStore.mods.find(m =>
-            m.modType?.type === 'Scene' &&
-            'id' in m.modType &&
-            m.modType.id === entry.id
-        ) ?? null;
-        return { label: entry.label, id: entry.id, mod };
+        const mods = sortModsByPath(
+            modsStore.mods.filter(m =>
+                m.modType?.type === 'Scene' &&
+                'id' in m.modType &&
+                m.modType.id === entry.id
+            )
+        );
+        return {
+            label: entry.label,
+            id: entry.id,
+            mods,
+            enabledCount: mods.filter(m => m.enabled).length,
+        };
     });
 });
 
-const enabledAffectionCount = computed(() =>
-    affectionRows.value.filter(r => r.mod?.enabled).length
+// Only groups that actually have at least one installed mod are rendered.
+const installedAffectionGroups = computed(() =>
+    affectionGroups.value.filter(g => g.mods.length > 0)
 );
 
 async function openPreviewMod(mod: BD2Mod) {
@@ -163,7 +173,7 @@ const charName = computed(() => {
             </div>
 
             <div class="flex flex-col min-h-0 flex-1 overflow-y-auto h-100">
-                <div v-if="installedMods.length === 0 && affectionRows.length === 0" class="text-center py-12 px-4 text-text-secondary">
+                <div v-if="installedMods.length === 0 && installedAffectionGroups.length === 0" class="text-center py-12 px-4 text-text-secondary">
                     <p class="text-sm font-medium mb-1">{{ $t('charactersTab.characterModal.noModsFound.title') }}</p>
                     <p class="text-xs text-text-secondary">{{ $t('charactersTab.characterModal.noModsFound.description') }}</p>
                 </div>
@@ -190,31 +200,25 @@ const charName = computed(() => {
                         </label>
                     </template>
 
-                    <!-- Affection mods section (labelled from dating.json) -->
-                    <template v-if="affectionRows.length > 0">
+                    <!-- Affection mods section: one group (with its own header)
+                         per labelled affection entry from dating.json. -->
+                    <template v-for="group in installedAffectionGroups" :key="group.id">
                         <div class="flex items-center justify-between px-4 py-2 bg-surface-dialog border-b border-border-default top-0 z-10">
                             <span class="text-xs font-medium text-text-secondary uppercase tracking-wide">
-                                {{ $t('datingTab.affection.title') }}
+                                {{ $t('datingTab.affection.label', { label: group.label }) }}
                             </span>
-                            <span class="text-xs text-text-secondary">{{ enabledAffectionCount }}/{{ affectionRows.length }}</span>
+                            <span class="text-xs text-text-secondary">{{ group.enabledCount }}/{{ group.mods.length }}</span>
                         </div>
-                        <label v-for="row in affectionRows" :key="row.id"
-                            class="flex items-center gap-3 px-4 py-2.5 border-b border-border-default transition-colors"
-                            :class="row.mod
-                                ? ['cursor-pointer hover:bg-state-hover', { 'bg-surface-dialog': !row.mod.enabled }]
-                                : 'opacity-60'">
-                            <Checkbox :model-value="!!row.mod?.enabled" :disabled="!row.mod"
-                                @update:model-value="row.mod && toggleMod(row.mod)" class="shrink-0" />
-                            <button v-if="row.mod" @click.stop="openPreviewMod(row.mod)" :aria-label="$t('charactersTab.characterModal.previewMod')">
+                        <label v-for="mod in group.mods" :key="mod.name"
+                            class="flex items-center gap-3 px-4 py-2.5 border-b border-border-default cursor-pointer hover:bg-state-hover transition-colors"
+                            :class="{ 'bg-surface-dialog': !mod.enabled }">
+                            <Checkbox :model-value="mod.enabled" @update:model-value="toggleMod(mod)" class="shrink-0" />
+                            <button @click.stop="openPreviewMod(mod)" :aria-label="$t('charactersTab.characterModal.previewMod')">
                                 <Eye class="w-6 h-6 cursor-pointer hover:text-text-primary! transition-colors active:scale-95 text-text-secondary" />
                             </button>
-                            <div v-else class="w-6 h-6 shrink-0" />
                             <div class="flex-1 min-w-0">
-                                <p class="text-sm truncate" :class="row.mod?.enabled ? 'text-text-primary' : 'text-text-secondary'">
-                                    {{ $t('datingTab.affection.label', { label: row.label }) }}
-                                </p>
-                                <p v-if="row.mod" class="text-xs text-text-secondary mt-0.5 truncate">{{ row.mod.name }}</p>
-                                <p v-else class="text-xs text-text-secondary mt-0.5 italic">{{ $t('datingTab.affection.notInstalled') }}</p>
+                                <p class="text-sm truncate" :class="mod.enabled ? 'text-text-primary' : 'text-text-secondary'">{{ mod.name }}</p>
+                                <p v-if="mod.author" class="text-xs text-text-secondary mt-0.5">{{ mod.author }}</p>
                             </div>
                         </label>
                     </template>

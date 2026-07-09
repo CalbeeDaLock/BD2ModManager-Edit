@@ -650,7 +650,16 @@
  "modals": {
   "logs": {
    "title": "應用程式日誌",
-   "noLogs": "沒有可用的日誌。"
+   "noLogs": "沒有可用的日誌。",
+   "uploadLog": "儲存日誌",
+   "uploadSuccess": {
+    "title": "日誌已儲存",
+    "message": "日誌已寫入 {path}"
+   },
+   "uploadError": {
+    "title": "日誌儲存失敗",
+    "message": "無法寫入日誌檔案。"
+   }
   },
   "sync": {
    "titles": {

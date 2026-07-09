@@ -650,7 +650,16 @@
  "modals": {
   "logs": {
    "title": "애플리케이션 로그",
-   "noLogs": "사용 가능한 로그가 없습니다."
+   "noLogs": "사용 가능한 로그가 없습니다.",
+   "uploadLog": "로그 저장",
+   "uploadSuccess": {
+    "title": "로그 저장됨",
+    "message": "로그를 {path}에 기록했습니다"
+   },
+   "uploadError": {
+    "title": "로그 저장 실패",
+    "message": "로그 파일을 기록할 수 없습니다."
+   }
   },
   "sync": {
    "titles": {

@@ -650,7 +650,16 @@
  "modals": {
   "logs": {
    "title": "应用程序日志",
-   "noLogs": "暂无日志。"
+   "noLogs": "暂无日志。",
+   "uploadLog": "保存日志",
+   "uploadSuccess": {
+    "title": "日志已保存",
+    "message": "日志已写入 {path}"
+   },
+   "uploadError": {
+    "title": "日志保存失败",
+    "message": "无法写入日志文件。"
+   }
   },
   "sync": {
    "titles": {

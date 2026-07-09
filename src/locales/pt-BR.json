@@ -650,7 +650,16 @@
  "modals": {
   "logs": {
    "title": "Logs do Aplicativo",
-   "noLogs": "Nenhum log disponível."
+   "noLogs": "Nenhum log disponível.",
+   "uploadLog": "Salvar Log",
+   "uploadSuccess": {
+    "title": "Log Salvo",
+    "message": "Logs gravados em {path}"
+   },
+   "uploadError": {
+    "title": "Falha ao Salvar Log",
+    "message": "Não foi possível gravar o arquivo de log."
+   }
   },
   "sync": {
    "titles": {

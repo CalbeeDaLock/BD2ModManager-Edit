@@ -5,6 +5,7 @@ import { computed, readonly, ref, shallowRef } from 'vue';
 import { Character, useCharactersStore } from './characters';
 import { useLoggingStore } from './logging';
 import { usePreferencesStore } from './preferences';
+import { useProfilesStore } from './profiles';
 
 export type BD2ModType =
     | { type: 'Standing'; id: string }
@@ -194,6 +195,15 @@ export const useModsStore = defineStore('mods', () => {
             modsCache.value.set(mod.name, mod);
         }
         );
+
+        // The backend persists mod toggles straight to the active profile, but
+        // only emits "mods-changed". Refresh the profiles store here so the
+        // Profiles tab's enabled-mods list updates instantly on select/deselect.
+        try {
+            await useProfilesStore().loadProfiles();
+        } catch (error) {
+            loggingStore.logError("Failed to refresh profiles after mods change:", error);
+        }
     })
 
     return {

@@ -242,8 +242,8 @@ useHeader({
           </div>
         </div>
 
-        <div class="flex-1 min-w-0 p-4 box-border">
-          <div v-if="selectedProfile" class="flex flex-col gap-4 h-full">
+        <div class="flex-1 min-w-0 p-4 box-border flex flex-col min-h-0">
+          <div v-if="selectedProfile" class="flex flex-col gap-4 flex-1 min-h-0">
 
             <div class="flex justify-between items-center gap-2">
               <div class="overflow-hidden min-w-0">
@@ -278,12 +278,12 @@ useHeader({
               </div>
             </div>
 
-            <div class="flex flex-col gap-1 h-full flex-1 overflow-y-auto">
-              <h4 class="font-semibold text-base text-text-primary">
+            <div class="flex flex-col gap-1 flex-1 min-h-0">
+              <h4 class="font-semibold text-base text-text-primary shrink-0">
                 {{ $t('profilesTab.enabledMods', { count: selectedProfile.enabledMods?.length || 0 }) }}
               </h4>
 
-              <div class="flex flex-col gap-1 bg-surface-card rounded-md p-2 flex-1 h-full overflow-y-auto select-text">
+              <div class="flex flex-col gap-1 bg-surface-card rounded-md p-2 flex-1 min-h-0 overflow-y-auto select-text">
                 <div
                   v-for="mod in selectedProfile.enabledMods"
                   :key="mod"

@@ -650,7 +650,16 @@
  "modals": {
   "logs": {
    "title": "アプリケーションログ",
-   "noLogs": "利用可能なログはありません。"
+   "noLogs": "利用可能なログはありません。",
+   "uploadLog": "ログを保存",
+   "uploadSuccess": {
+    "title": "ログを保存しました",
+    "message": "ログを {path} に書き込みました"
+   },
+   "uploadError": {
+    "title": "ログの保存に失敗しました",
+    "message": "ログファイルを書き込めませんでした。"
+   }
   },
   "sync": {
    "titles": {

@@ -848,7 +848,16 @@
   },
   "logs": {
    "title": "Application Logs",
-   "noLogs": "No logs available."
+   "noLogs": "No logs available.",
+   "uploadLog": "Upload Log",
+   "uploadSuccess": {
+    "title": "Log Saved",
+    "message": "Logs written to {path}"
+   },
+   "uploadError": {
+    "title": "Log Save Failed",
+    "message": "Could not write the log file."
+   }
   },
   "sync": {
    "titles": {

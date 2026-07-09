@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n';
 import Select from '../common/Select.vue';
 import { computed, ref } from 'vue';
 import Button from '../common/Button.vue';
+import { invoke } from '@tauri-apps/api/core';
+import { useNotificationStore } from '../../stores/notification';
 
 const { t } = useI18n()
 
@@ -21,6 +23,10 @@ function handleClose() {
 }
 
 const loggingStore = useLoggingStore()
+const notificationStore = useNotificationStore()
+
+const LOG_FILE_PATH = 'H:\\BD2\\BD2ModManager-Edit\\log.log'
+const isUploading = ref(false)
 
 const logLevels = [
     { label: 'All', value: 'All' },
@@ -38,6 +44,38 @@ const filteredLogs = computed(() => {
     }
     return loggingStore.logs.filter(log => log.level === selectedLogLevel.value)
 })
+
+// Write the currently-filtered logs to the fixed log file on disk.
+async function handleUploadLog() {
+    if (isUploading.value) return
+    isUploading.value = true
+    try {
+        const content = filteredLogs.value
+            .map(log => `[${log.timestamp.toISOString()}] [${log.level.toUpperCase()}] ${log.message}`)
+            .join('\n')
+
+        await invoke('write_log_file', { path: LOG_FILE_PATH, content })
+
+        notificationStore.add({
+            closable: true,
+            title: t('modals.logs.uploadSuccess.title'),
+            message: t('modals.logs.uploadSuccess.message', { path: LOG_FILE_PATH }),
+            duration: 5000,
+            severity: 'success'
+        })
+    } catch (error) {
+        loggingStore.logError('Failed to write log file:', error)
+        notificationStore.add({
+            closable: true,
+            title: t('modals.logs.uploadError.title'),
+            message: t('modals.logs.uploadError.message'),
+            duration: 5000,
+            severity: 'error'
+        })
+    } finally {
+        isUploading.value = false
+    }
+}
 </script>
 
 <template>
@@ -73,6 +111,9 @@ const filteredLogs = computed(() => {
                 </div>
             </div>
             <div class="mt-4 flex justify-end gap-2 shrink-0">
+                <Button variant="text" :disabled="isUploading || filteredLogs.length === 0" @click="handleUploadLog">
+                    {{ t('modals.logs.uploadLog') }}
+                </Button>
                 <Button @click="handleClose">{{ t('common.actions.close') }}</Button>
             </div>
         </div>

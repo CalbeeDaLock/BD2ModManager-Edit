@@ -38,3 +38,5 @@ log.log
 node_modules
 run.bat
 run_exe.bat
+# Built release installers (upload as GitHub Release instead)
+release_assets/

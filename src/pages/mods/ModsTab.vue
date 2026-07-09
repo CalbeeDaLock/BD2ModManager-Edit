@@ -55,6 +55,33 @@ const debouncedSearchQuery = ref('');
 const skipSyncConfirmation = useLocalStorage('skipSyncModsConfirmation', false)
 const skipUnsyncConfirmation = useLocalStorage('skipUnsyncModsConfirmation', false)
 
+// When the sync method is "symlink", Windows requires the app to run elevated.
+// Elevation can't be granted in place, so we relaunch the app through a UAC
+// prompt. Returns true when we're clear to sync (already elevated, or a
+// non-symlink method), and false when a relaunch was requested or the user
+// declined the prompt (in which case the caller should abort and, on decline,
+// surface a sync-fail message).
+async function ensureSymlinkElevation(): Promise<boolean> {
+  if (settingsStore.settings.syncMethod !== 'symlink') return true;
+
+  const elevated = await invoke<boolean>("is_elevated").catch(() => false);
+  if (elevated) return true;
+
+  // Not elevated: trigger the UAC prompt. On accept the backend relaunches the
+  // app elevated and exits this process; on decline it rejects.
+  try {
+    await invoke("relaunch_as_admin");
+  } catch (error) {
+    loggingStore.logError("User declined elevation for symlink sync:", error);
+    // Surface the existing localized "admin required" message via the caller's
+    // error handling.
+    throw "SymlinkAdminRequired";
+  }
+  // If we get here without the process exiting, elevation is pending; abort
+  // this sync attempt (the elevated instance will take over).
+  return false;
+}
+
 const debouncedSync = useDebounceFn(async () => {
   if (!settingsStore.settings.autoSyncMods) return;
   if (isSyncing.value) {
@@ -64,6 +91,7 @@ const debouncedSync = useDebounceFn(async () => {
 
   isSyncing.value = true;
   try {
+    if (!(await ensureSymlinkElevation())) return;
     await modsStore.syncMods();
   } catch (error) {
     let errorMessage = getErrorMessage(t, error);
@@ -315,6 +343,12 @@ async function handleSyncMods() {
     }
 
     isSyncing.value = true
+
+    // Symlink sync needs admin rights; prompt for elevation before syncing.
+    if (!(await ensureSymlinkElevation())) {
+      isSyncing.value = false
+      return
+    }
 
     let result = await modsStore.syncMods().then((res) => {
       loggingStore.logDebug("Mods sync result:", res);
