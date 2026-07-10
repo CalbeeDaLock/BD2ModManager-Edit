@@ -56,6 +56,25 @@ const debouncedSearchQuery = ref('');
 const skipSyncConfirmation = useLocalStorage('skipSyncModsConfirmation', false)
 const skipUnsyncConfirmation = useLocalStorage('skipUnsyncModsConfirmation', false)
 
+// When the sync method is "symlink", Windows requires the app to run elevated.
+// Elevation can't be granted in place, so we relaunch the app through a UAC
+// prompt. Returns true when we're clear to sync, and false when a relaunch was
+// requested or the user declined (abort the sync attempt in that case).
+async function ensureSymlinkElevation(): Promise<boolean> {
+  if (settingsStore.settings.syncMethod !== 'symlink') return true;
+
+  const elevated = await invoke<boolean>("is_elevated").catch(() => false);
+  if (elevated) return true;
+
+  try {
+    await invoke("relaunch_as_admin");
+  } catch (error) {
+    loggingStore.logError("User declined elevation for symlink sync:", error);
+    throw "SymlinkAdminRequired";
+  }
+  return false;
+}
+
 const debouncedSync = useDebounceFn(async () => {
   if (!settingsStore.settings.autoSyncMods) return;
   if (isSyncing.value) {
@@ -65,6 +84,7 @@ const debouncedSync = useDebounceFn(async () => {
 
   isSyncing.value = true;
   try {
+    if (!(await ensureSymlinkElevation())) return;
     await modsStore.syncMods();
   } catch (error) {
     let errorMessage = getErrorMessage(t, error);
@@ -318,6 +338,11 @@ async function handleSyncMods() {
     isSyncing.value = true
 
     // [TODO] syncmods return error
+    if (!(await ensureSymlinkElevation())) {
+      isSyncing.value = false
+      return
+    }
+
     let result = await modsStore.syncMods().then((res) => {
       loggingStore.logDebug("Mods sync result:", res);
 

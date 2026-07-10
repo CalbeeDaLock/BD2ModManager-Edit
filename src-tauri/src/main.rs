@@ -332,6 +332,9 @@ pub fn main() {
             utils::path_exists,
             utils::is_portable,
             utils::get_user_locale,
+            utils::is_elevated,
+            utils::relaunch_as_admin,
+            utils::write_log_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
