@@ -28,9 +28,24 @@ export interface Character {
     element: "dark" | "light" | "water" | "fire" | "wind"
 }
 
+/** A statically-known NPC entry from npc.json. */
+export interface NpcDefinition {
+    id: string;
+    character_image: string;
+    character_name: { [Lang in Language]: string };
+    assets: {
+        head_image: string;
+        character_image: string;
+    };
+}
+
 interface CharactersJson {
     characters: Character[];
     dating: DatingMap;
+}
+
+interface NpcJson {
+    npc: NpcDefinition[];
 }
 
 type DatingMap = Record<string, string>;
@@ -50,6 +65,10 @@ export const useCharactersStore = defineStore("characters", () => {
     const datingMap = shallowRef<DatingMap>({});
     const charactersMap = shallowRef<Record<string, Character>>({});
     const datingToCharacterMap = shallowRef<Record<string, Character>>({});
+
+    // NPC catalog from npc.json
+    const npcDefinitions = shallowRef<NpcDefinition[]>([]);
+    const npcDefinitionsMap = shallowRef<Record<string, NpcDefinition>>({});
 
     const groupedCharacters = computed<Record<string, Character[]>>(() => {
         return characters.value.reduce((acc, c) => {
@@ -88,6 +107,13 @@ export const useCharactersStore = defineStore("characters", () => {
         }, `updateCharacters (${data.characters.length} characters, ${Object.keys(data.dating).length} dating mappings)`);
     }
 
+    function updateNpc(data: NpcJson) {
+        npcDefinitions.value = data.npc ?? [];
+        npcDefinitionsMap.value = Object.fromEntries(
+            (data.npc ?? []).map(n => [n.id, n])
+        );
+    }
+
     function getCharacterById(id: string): Character | null {
         return timeOperation(() => {
             return charactersMap.value[id] || null;
@@ -112,6 +138,11 @@ export const useCharactersStore = defineStore("characters", () => {
         }, `getCharacterByNpcId(${npcId})`, false);
     }
 
+    /** Returns the NpcDefinition for a given NPC id, or null. */
+    function getNpcDefinition(id: string): NpcDefinition | null {
+        return npcDefinitionsMap.value[id] ?? null;
+    }
+
     async function loadCharacters() {
         try {
             const data = await invoke<CharactersJson>("get_characters");
@@ -123,13 +154,27 @@ export const useCharactersStore = defineStore("characters", () => {
         }
     }
 
+    async function loadNpc() {
+        try {
+            const data = await invoke<NpcJson>("get_npc");
+            updateNpc(data);
+            if (import.meta.env.DEV)
+                console.info("NPC definitions loaded:", npcDefinitions.value.length);
+        } catch (error) {
+            console.error("Failed to load npc definitions:", error);
+        }
+    }
+
     return {
         characters: readonly(characters),
+        npcDefinitions: readonly(npcDefinitions),
         groupedCharacters: readonly(groupedCharacters),
         loadCharacters,
+        loadNpc,
         getCharacterById,
         getCharacterByDatingId,
         getCharacterIdByDatingId,
-        getCharacterByNpcId
+        getCharacterByNpcId,
+        getNpcDefinition,
     };
 });

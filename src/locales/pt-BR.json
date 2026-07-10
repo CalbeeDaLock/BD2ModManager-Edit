@@ -1,777 +1,811 @@
 {
-    "common": {
+  "common": {
+    "actions": {
+      "refreshMods": "Atualizar Mods",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "refresh": "Atualizar",
+      "continue": "Continuar",
+      "confirm": "Confirmar",
+      "browse": "Procurar",
+      "save": "Salvar"
+    },
+    "modTypes": {
+      "cutscene": "Cutscene",
+      "standing": "Standing",
+      "scene": "Cena",
+      "dating": "Date",
+      "npc": "NPC",
+      "minigame": "Minijogo"
+    }
+  },
+  "app": {
+    "confirmations": {
+      "exit": {
+        "title": "Sair do Gerenciador de Mods?",
+        "message": "Você tem mods não sincronizados que não serão aplicados ao jogo. Tem certeza que deseja sair?",
         "actions": {
-            "refreshMods": "Atualizar Mods",
-            "cancel": "Cancelar",
-            "close": "Fechar",
-            "refresh": "Atualizar",
-            "continue": "Continuar",
-            "confirm": "Confirmar",
-            "browse": "Procurar",
-            "save": "Salvar"
-        },
-        "modTypes": {
-            "cutscene": "Cutscene",
-            "standing": "Standing",
-            "scene": "Cena",
-            "dating": "Date",
-            "npc": "NPC",
-            "minigame": "Minijogo"
+          "exit": "Sair"
         }
+      }
     },
-    "app": {
-        "confirmations": {
-            "exit": {
-                "title": "Sair do Gerenciador de Mods?",
-                "message": "Você tem mods não sincronizados que não serão aplicados ao jogo. Tem certeza que deseja sair?",
-                "actions": {
-                    "exit": "Sair"
-                }
-            }
-        },
-        "notifications": {
-            "brownDustXOutdated": {
-                "title": "BrownDustX Desatualizado",
-                "message": "O BrownDustX está desatualizado. Os mods não funcionarão até que seja atualizado."
-            }
-        }
+    "notifications": {
+      "brownDustXOutdated": {
+        "title": "BrownDustX Desatualizado",
+        "message": "O BrownDustX está desatualizado. Os mods não funcionarão até que seja atualizado."
+      }
+    }
+  },
+  "titlebar": {
+    "appUpdate": {
+      "checking": "Verificando atualizações...",
+      "available": "Atualização disponível: v{version}",
+      "downloaded": "v{version} pronta! Clique para aplicar a atualização"
     },
-    "titlebar": {
-        "appUpdate": {
-            "checking": "Verificando atualizações...",
-            "available": "Atualização disponível: v{version}",
-            "downloaded": "v{version} pronta! Clique para aplicar a atualização"
-        },
-        "sync": {
-            "applying": "Aplicando: {modName}",
-            "syncSuccess": "Mods Sincronizados com Sucesso",
-            "unsyncSuccess": "Mods Removidos com Sucesso"
-        },
-        "modPreview": {
-            "downloading": "BD2ModPreview v{version}",
-            "downloadingShort": "BD2ModPreview",
-            "updateFailed": "Falha ao atualizar BD2ModPreview",
-            "updateFailedShort": "Falha na atualização do BD2ModPreview",
-            "updated": "BD2ModPreview v{version} atualizado!",
-            "updatedShort": "BD2ModPreview atualizado!"
-        },
-        "gameData": {
-            "downloading": "Dados do jogo...",
-            "downloadingShort": "Dados",
-            "checking": "Verificando dados do jogo...",
-            "updatedShort": "Dados atualizados"
-        },
+    "sync": {
+      "applying": "Aplicando: {modName}",
+      "syncSuccess": "Mods Sincronizados com Sucesso",
+      "unsyncSuccess": "Mods Removidos com Sucesso"
+    },
+    "modPreview": {
+      "downloading": "BD2ModPreview v{version}",
+      "downloadingShort": "BD2ModPreview",
+      "updateFailed": "Falha ao atualizar BD2ModPreview",
+      "updateFailedShort": "Falha na atualização do BD2ModPreview",
+      "updated": "BD2ModPreview v{version} atualizado!",
+      "updatedShort": "BD2ModPreview atualizado!"
+    },
+    "gameData": {
+      "downloading": "Dados do jogo...",
+      "downloadingShort": "Dados",
+      "checking": "Verificando dados do jogo...",
+      "updatedShort": "Dados atualizados"
+    },
+    "actions": {
+      "github": "Github",
+      "logs": "Logs",
+      "kofi": "Apoiar no Ko-Fi",
+      "afdian": "Apoiar no Afdian"
+    }
+  },
+  "sidebar": {
+    "sections": {
+      "navigation": "Navegação",
+      "settings": "Configurações",
+      "currentProfile": "Perfil Atual"
+    },
+    "tabs": {
+      "mods": "Mods",
+      "characters": "Personagens",
+      "profiles": "Perfis",
+      "browndustx": "BrownDustX",
+      "settings": "Configurações",
+      "npc": "NPC"
+    },
+    "notifications": {
+      "gameLaunched": {
+        "title": "Jogo Iniciado",
+        "description": "O jogo foi iniciado com sucesso."
+      }
+    },
+    "confirmations": {
+      "unsyncedMods": {
+        "title": "Mods Não Sincronizados Detectados",
+        "message": "Você tem mods não sincronizados que não serão aplicados ao jogo. Deseja iniciar o jogo mesmo assim?",
         "actions": {
-            "github": "Github",
-            "logs": "Logs",
-            "kofi": "Apoiar no Ko-Fi",
-            "afdian": "Apoiar no Afdian"
+          "launchAnyway": "Iniciar Mesmo Assim"
         }
+      }
     },
-    "sidebar": {
-        "sections": {
-            "navigation": "Navegação",
-            "settings": "Configurações",
-            "currentProfile": "Perfil Atual"
-        },
-        "tabs": {
-            "mods": "Mods",
-            "characters": "Personagens",
-            "profiles": "Perfis",
-            "browndustx": "BrownDustX",
-            "settings": "Configurações"
-        },
-        "notifications": {
-            "gameLaunched": {
-                "title": "Jogo Iniciado",
-                "description": "O jogo foi iniciado com sucesso."
-            }
-        },
-        "confirmations": {
-            "unsyncedMods": {
-                "title": "Mods Não Sincronizados Detectados",
-                "message": "Você tem mods não sincronizados que não serão aplicados ao jogo. Deseja iniciar o jogo mesmo assim?",
-                "actions": {
-                    "launchAnyway": "Iniciar Mesmo Assim"
-                }
-            }
-        },
+    "actions": {
+      "launchGame": "Iniciar Jogo"
+    }
+  },
+  "modsTab": {
+    "title": "Mods",
+    "subtitle": "{enabledModsCount} de {totalModsCount} mods ativados",
+    "actions": {
+      "addMod": "Adicionar Mod",
+      "installFromZip": "Instalar do ZIP",
+      "installFromFolder": "Instalar da Pasta",
+      "openModsFolder": "Abrir Pasta de Mods",
+      "syncMods": "Sincronizar Mods",
+      "unsyncMods": "Dessincronizar Mods"
+    },
+    "browndustx": {
+      "status": {
+        "installed": "BrownDustX v{version}",
+        "installedButOutdated": "BrownDustX v{version} (Desatualizado)",
+        "gameNotFound": "Diretório do jogo não definido",
+        "notInstalled": "BrownDustX não instalado"
+      },
+      "navigation": "Ir para BrownDustX"
+    },
+    "header": {
+      "searchPlaceholder": "Pesquisar mods, personagens, autores...",
+      "actions": {
+        "filters": "Filtros"
+      },
+      "advancedFilters": {
+        "title": "Filtros Avançados",
         "actions": {
-            "launchGame": "Iniciar Jogo"
+          "onlyEnabledMods": "Apenas Mods Ativados",
+          "onlyDisabledMods": "Apenas Mods Desativados",
+          "onlyConflictsMods": "Apenas Mods com Conflitos",
+          "onlyErrorsMods": "Apenas Mods com Erros"
         }
+      }
     },
-    "modsTab": {
-        "title": "Mods",
-        "subtitle": "{enabledModsCount} de {totalModsCount} mods ativados",
+    "modlist": {
+      "header": {
+        "modName": "Nome do Mod",
+        "modType": "Tipo do Mod",
+        "character": "Personagem",
+        "author": "Autor"
+      },
+      "contextMenu": {
+        "refreshMods": "Atualizar Mods",
+        "selectMods": "Selecionar Mods",
+        "selectAllMods": "Selecionar Todos os Mods",
+        "selectEnabledMods": "Selecionar Mods Ativados",
+        "selectDisabledMods": "Selecionar Mods Desativados",
+        "deselectMods": "Desmarcar Mods",
+        "enableMod": "Ativar Mod",
+        "enableSelectedMods": "Ativar Mods Selecionados",
+        "disableMod": "Desativar Mod",
+        "disableSelectedMods": "Desativar Mods Selecionados",
+        "changeModAuthor": "Alterar Autor do Mod",
+        "changeSelectedModsAuthor": "Alterar Autor dos Mods Selecionados",
+        "renameMod": "Renomear Mod",
+        "deleteMod": "Excluir Mod",
+        "deleteSelectedMods": "Excluir Mods Selecionados",
+        "openModFolder": "Abrir Pasta do Mod",
+        "previewMod": "Visualizar Mod"
+      }
+    },
+    "confirmations": {
+      "syncMods": {
+        "title": "Sincronizar Mods?",
+        "titleWithConflicts": "Sincronizar Mods com Conflitos",
+        "message": "Isso irá sobrescrever os mods na pasta do jogo. Esta ação não pode ser desfeita.",
+        "messageWithConflicts": "Alguns mods possuem conflitos entre si. O jogo pode falhar ao iniciar até que os conflitos sejam resolvidos.",
         "actions": {
-            "addMod": "Adicionar Mod",
-            "installFromZip": "Instalar do ZIP",
-            "installFromFolder": "Instalar da Pasta",
-            "openModsFolder": "Abrir Pasta de Mods",
-            "syncMods": "Sincronizar Mods",
-            "unsyncMods": "Dessincronizar Mods"
-        },
-        "browndustx": {
-            "status": {
-                "installed": "BrownDustX v{version}",
-                "installedButOutdated": "BrownDustX v{version} (Desatualizado)",
-                "gameNotFound": "Diretório do jogo não definido",
-                "notInstalled": "BrownDustX não instalado"
-            },
-            "navigation": "Ir para BrownDustX"
-        },
-        "header": {
-            "searchPlaceholder": "Pesquisar mods, personagens, autores...",
-            "actions": {
-                "filters": "Filtros"
-            },
-            "advancedFilters": {
-                "title": "Filtros Avançados",
-                "actions": {
-                    "onlyEnabledMods": "Apenas Mods Ativados",
-                    "onlyDisabledMods": "Apenas Mods Desativados",
-                    "onlyConflictsMods": "Apenas Mods com Conflitos",
-                    "onlyErrorsMods": "Apenas Mods com Erros"
-                }
-            }
-        },
-        "modlist": {
-            "header": {
-                "modName": "Nome do Mod",
-                "modType": "Tipo do Mod",
-                "character": "Personagem",
-                "author": "Autor"
-            },
-            "contextMenu": {
-                "refreshMods": "Atualizar Mods",
-                "selectMods": "Selecionar Mods",
-                "selectAllMods": "Selecionar Todos os Mods",
-                "selectEnabledMods": "Selecionar Mods Ativados",
-                "selectDisabledMods": "Selecionar Mods Desativados",
-                "deselectMods": "Desmarcar Mods",
-                "enableMod": "Ativar Mod",
-                "enableSelectedMods": "Ativar Mods Selecionados",
-                "disableMod": "Desativar Mod",
-                "disableSelectedMods": "Desativar Mods Selecionados",
-                "changeModAuthor": "Alterar Autor do Mod",
-                "changeSelectedModsAuthor": "Alterar Autor dos Mods Selecionados",
-                "renameMod": "Renomear Mod",
-                "deleteMod": "Excluir Mod",
-                "deleteSelectedMods": "Excluir Mods Selecionados",
-                "openModFolder": "Abrir Pasta do Mod",
-                "previewMod": "Visualizar Mod"
-            }
-        },
-        "confirmations": {
-            "syncMods": {
-                "title": "Sincronizar Mods?",
-                "titleWithConflicts": "Sincronizar Mods com Conflitos",
-                "message": "Isso irá sobrescrever os mods na pasta do jogo. Esta ação não pode ser desfeita.",
-                "messageWithConflicts": "Alguns mods possuem conflitos entre si. O jogo pode falhar ao iniciar até que os conflitos sejam resolvidos.",
-                "actions": {
-                    "sync": "Sincronizar",
-                    "syncAnyway": "Sincronizar Mesmo Assim"
-                }
-            },
-            "unsyncMods": {
-                "title": "Dessincronizar Mods?",
-                "message": "Isso irá remover todos os mods da pasta do jogo. Esta ação não pode ser desfeita.",
-                "actions": {
-                    "unsync": "Dessincronizar"
-                }
-            },
-            "deleteMod": {
-                "title": "Excluir Mod?",
-                "multipleTitle": "Excluir Mods Selecionados?",
-                "message": "Tem certeza que deseja excluir o mod \"{modName}\"? Esta ação não pode ser desfeita.",
-                "multipleMessage": "Tem certeza que deseja excluir esses {count} mods? Esta ação não pode ser desfeita.",
-                "actions": {
-                    "delete": "Excluir"
-                }
-            }
-        },
-        "notifications": {
-            "syncSuccess": {
-                "title": "Mods Sincronizados",
-                "description": "Seus mods foram sincronizados com sucesso na pasta do jogo."
-            },
-            "unsyncSuccess": {
-                "title": "Mods Dessincronizados",
-                "description": "Seus mods foram removidos com sucesso da pasta do jogo."
-            },
-            "modInstallSuccess": {
-                "title": "Mod Instalado",
-                "description": "O mod '{modName}' foi instalado com sucesso."
-            }
-        },
-        "errors": {
-            "modPreview": {
-                "title": "Não é Possível Visualizar o Mod",
-                "modContainErrors": "O mod '{modName}' contém erros. Não é possível abrir a visualização."
-            },
-            "syncFailed": {
-                "title": "Falha na Sincronização"
-            },
-            "unsyncFailed": {
-                "title": "Falha na Dessincronização"
-            },
-            "modFolderNotFound": "Pasta do mod '{modName}' não encontrada.",
-            "modNotDirectory": "O caminho do mod '{modName}' não é um diretório.",
-            "stagingDirectoryNotSet": "O diretório de preparo não está definido.",
-            "stagingDirectoryNotFound": "Diretório de preparo não encontrado em '{stagingDir}'. Por favor, verifique suas configurações."
+          "sync": "Sincronizar",
+          "syncAnyway": "Sincronizar Mesmo Assim"
         }
-    },
-    "charactersTab": {
-        "title": "Personagens",
-        "subtitle": "{enabledModsCount} de {totalModsCount} mods ativados",
-        "charactersNotFound": "Nenhum personagem encontrado.",
-        "id": "ID: {id}",
-        "filters": {
-            "title": "Filtros",
-            "searchPlaceholder": "Pesquisar personagens...",
-            "sortBy": {
-                "title": "Ordenar Por",
-                "options": {
-                    "nameAsc": "Nome (A-Z)",
-                    "nameDesc": "Nome (Z-A)",
-                    "releaseAsc": "Data de Lançamento (Mais Recente)",
-                    "releaseDesc": "Data de Lançamento (Mais Antigo)",
-                    "modsAsc": "Quantidade de Mods (Menos)",
-                    "modsDesc": "Quantidade de Mods (Mais)"
-                }
-            },
-            "modStatus": {
-                "title": "Status do Mod",
-                "hasCutscene": "Tem Mod de Cutscene",
-                "hasStanding": "Tem Mod de Standing",
-                "hasDating": "Tem Mod de Date",
-                "options": {
-                    "any": "Qualquer",
-                    "enabled": "Ativado",
-                    "disabled": "Desativado"
-                }
-            },
-            "extraFilters": {
-                "title": "Filtros Extras",
-                "hideMenCharacters": "Ocultar Personagens Masculinos",
-                "hideWomenCharacters": "Ocultar Personagens Femininos",
-                "onlyCharactersWithMods": "Apenas Personagens com Mods",
-                "onlyCharactersWithoutMods": "Apenas Personagens sem Mods"
-            },
-            "releasePeriod": {
-                "title": "Período de Lançamento",
-                "options": {
-                    "all": "Todo o Período",
-                    "lastWeek": "Última Semana",
-                    "lastTwoWeeks": "Últimas Duas Semanas",
-                    "lastMonth": "Último Mês",
-                    "lastThreeMonths": "Últimos Três Meses",
-                    "lastSixMonths": "Últimos Seis Meses",
-                    "lastYear": "Último Ano"
-                }
-            }
-        },
+      },
+      "unsyncMods": {
+        "title": "Dessincronizar Mods?",
+        "message": "Isso irá remover todos os mods da pasta do jogo. Esta ação não pode ser desfeita.",
         "actions": {
-            "addMod": "Adicionar Mod",
-            "installFromZip": "Instalar do ZIP",
-            "installFromFolder": "Instalar da Pasta"
-        },
-        "tags": {
-            "new": "Novo",
-            "collab": "Collab",
-            "modsCount": "{count} mod | {count} mods"
-        },
-        "modTypes": {
-            "cutscene": "Cutscene",
-            "standing": "Standing",
-            "dating": "Date",
-            "states": {
-                "enabled": "Ativado",
-                "disabled": "Desativado"
-            }
-        },
-        "characterModal": {
-            "enabledMods": "Mods Ativados",
-            "totalMods": "Total de Mods",
-            "noModsFound": {
-                "title": "Nenhum Mod Encontrado",
-                "description": "Acesse a aba Mods para instalar mods para este personagem."
-            },
-            "discoverModsDescription": "Aqui você pode explorar todos os mods disponíveis para este personagem. Nota: a lista pode não incluir os mods mais recentes. Última atualização: {latestUpdate}",
-            "modsTab": "Seus Mods",
-            "discoverModsTab": "Descobrir Mods",
-            "paidMod": "Pago",
-            "freeMod": "Gratuito",
-            "noIndexModsFound": {
-                "title": "Nenhum Mod Encontrado",
-                "description": "Não há mods disponíveis no índice para este personagem."
-            }
+          "unsync": "Dessincronizar"
         }
-    },
-    "profilesTab": {
-        "title": "Perfis",
-        "subtitle": "Gerencie seus perfis de mods para alternar facilmente entre diferentes configurações.",
-        "defaultProfile": "Perfil Padrão",
-        "emptyDescription": "Nenhuma descrição fornecida.",
-        "activeProfile": "Perfil em Uso",
-        "enabledMods": "{count} Mod Ativado | {count} Mods Ativados",
-        "noModsEnabled": "Nenhum mod ativado.",
-        "noProfileSelected": "Nenhum perfil selecionado. Por favor, selecione um perfil para ver seus detalhes.",
+      },
+      "deleteMod": {
+        "title": "Excluir Mod?",
+        "multipleTitle": "Excluir Mods Selecionados?",
+        "message": "Tem certeza que deseja excluir o mod \"{modName}\"? Esta ação não pode ser desfeita.",
+        "multipleMessage": "Tem certeza que deseja excluir esses {count} mods? Esta ação não pode ser desfeita.",
         "actions": {
-            "createProfile": "Criar Perfil",
-            "editProfile": "Editar Perfil",
-            "deleteProfile": "Excluir Perfil",
-            "setAsCurrent": "Definir como Atual",
-            "refreshProfiles": "Atualizar Perfis"
-        },
-        "notifications": {
-            "profileCreated": {
-                "title": "Perfil Criado",
-                "description": "O perfil \"{profileName}\" foi criado com sucesso."
-            },
-            "profileUpdated": {
-                "title": "Perfil Atualizado",
-                "description": "O perfil \"{profileName}\" foi atualizado com sucesso."
-            },
-            "profileDeleted": {
-                "title": "Perfil Excluído",
-                "description": "O perfil \"{profileName}\" foi excluído com sucesso."
-            }
-        },
-        "confirmations": {
-            "deleteProfile": {
-                "title": "Excluir Perfil?",
-                "message": "Tem certeza que deseja excluir o perfil \"{profileName}\"? Esta ação não pode ser desfeita.",
-                "actions": {
-                    "deleteProfile": "Excluir Perfil"
-                }
-            }
-        },
-        "modals": {
-            "createProfile": {
-                "title": "Criar Novo Perfil",
-                "description": "Digite um nome e uma descrição opcional para o seu novo perfil.",
-                "nameField": {
-                    "label": "Nome do Perfil",
-                    "placeholder": "Digite o nome do perfil"
-                },
-                "descriptionField": {
-                    "label": "Descrição do Perfil (opcional)",
-                    "placeholder": "Digite a descrição do perfil"
-                },
-                "templateField": {
-                    "label": "Perfil Modelo (opcional)",
-                    "placeholder": "Selecione um perfil modelo"
-                },
-                "actions": {
-                    "createProfile": "Criar Perfil"
-                }
-            },
-            "editProfile": {
-                "title": "Editar Perfil",
-                "nameField": {
-                    "label": "Nome do Perfil",
-                    "placeholder": "Digite o nome do perfil"
-                },
-                "descriptionField": {
-                    "label": "Descrição do Perfil (opcional)",
-                    "placeholder": "Digite a descrição do perfil"
-                },
-                "actions": {
-                    "saveChanges": "Salvar Alterações"
-                },
-                "description": "Edite o nome e a descrição do seu perfil."
-            }
+          "delete": "Excluir"
         }
+      }
     },
-    "browndustxTab": {
-        "title": "BrownDustX",
-        "status": {
-            "installed": "Instalado",
-            "installedButOutdated": "Instalado (Desatualizado)",
-            "notInstalled": "Não Instalado",
-            "gameNotFound": "Caminho do jogo não definido.",
-            "bepinexMissing": "BepInEx não encontrado."
-        },
-        "labels": {
-            "gameDirectory": "Diretório do Jogo: ",
-            "frameworkAndPlugins": "Framework e Plugins",
-            "logs": "Logs"
-        },
-        "descriptions": {
-            "bepinex": "BepInEx é um framework de modding. É necessário para que o BrownDustX funcione corretamente.",
-            "browndustx": "BrownDustX é um plugin para BepInEx que adiciona diversas melhorias de qualidade de vida e permite o uso de mods em Brown Dust II.",
-            "configurationManager": "Configuration Manager é um plugin para BepInEx que permite configurar as opções do BrownDustX dentro do jogo."
-        },
-        "messages": {
-            "bepinexMissing": "O BepInEx é necessário para executar o BrownDustX. Por favor, instale o BepInEx primeiro.",
-            "configurationManagerMissing": "O Configuration Manager não está instalado, você não poderá configurar as opções do BrownDustX dentro do jogo.",
-            "brownDustXMissing": "O BrownDustX não está instalado. Os mods não serão carregados sem ele.",
-            "noLogsYet": "Nenhum log ainda.",
-            "dragAndDrop": "Você também pode arrastar e soltar um arquivo do BepInEx ou BrownDustX aqui para instalá-lo",
-            "gameDirectoryNotSet": "O diretório do jogo não está definido. Por favor, defina-o nas configurações para habilitar a instalação do BrownDustX."
-        },
-        "actions": {
-            "installFromGithub": "Instalar do GitHub",
-            "selectFile": "Selecionar Arquivo",
-            "remove": "Remover"
-        },
-        "notifications": {
-            "installSuccess": {
-                "title": "BrownDustX Instalado",
-                "description": "O BrownDustX foi instalado com sucesso."
-            },
-            "uninstallSuccess": {
-                "title": "BrownDustX Desinstalado",
-                "description": "O BrownDustX foi desinstalado com sucesso."
-            }
-        },
-        "confirmations": {
-            "removeBepInEx": {
-                "title": "Remover BepInEx?",
-                "message": "Tem certeza que deseja remover o BepInEx? Isso irá remover todos os arquivos do BepInEx do seu diretório do jogo. Esta ação não pode ser desfeita.",
-                "actions": {
-                    "removeBepInEx": "Remover BepInEx"
-                }
-            },
-            "removeBrownDustX": {
-                "title": "Remover BrownDustX?",
-                "message": "Tem certeza que deseja remover o BrownDustX? Isso irá remover todos os arquivos do BrownDustX do seu diretório do jogo, incluindo todos os seus mods. Esta ação não pode ser desfeita.",
-                "actions": {
-                    "removeBrownDustX": "Remover BrownDustX"
-                }
-            }
-        },
-        "alerts": {
-            "caution": "Atenção",
-            "cautionMessage": "A instalação manual ainda é preferível. Se você já tem o BepInEx ou BrownDustX instalado, o instalador pode não remover corretamente os arquivos existentes. Se você instalou o BepInEx pelo GitHub e encontrar problemas, tente a versão disponível no Discord do BrownDustX antes de reportar qualquer bug.",
-            "danger": "Use este recurso por sua conta e risco",
-            "dangerMessage": "Este recurso é experimental. Não nos responsabilizamos por quaisquer problemas causados à sua instalação do jogo."
-        },
-        "modals": {
-            "bepinexGithub": {
-                "title": "Instalar BepInEx do GitHub",
-                "loading": "Carregando versões do BepInEx do Github...",
-                "failedToLoadVersions": "Falha ao carregar versões",
-                "actions": {
-                    "viewOnGithub": "Ver no GitHub",
-                    "install": "Instalar",
-                    "retry": "Tentar Novamente"
-                }
-            }
-        }
-    },
-    "settingsTab": {
-        "title": "Configurações",
-        "subtitle": "Configure as opções do seu gerenciador de mods.",
-        "general": {
-            "label": "Geral",
-            "sections": {
-                "application": {
-                    "title": "Aplicativo",
-                    "theme": {
-                        "label": "Tema",
-                        "placeholder": "Selecione um tema"
-                    },
-                    "language": {
-                        "label": "Idioma",
-                        "placeholder": "Selecione um idioma"
-                    }
-                },
-                "directories": {
-                    "title": "Diretórios",
-                    "gameDirectory": {
-                        "label": "Diretório do Jogo",
-                        "placeholder": "Selecione o diretório do jogo"
-                    },
-                    "modsDirectory": {
-                        "label": "Diretório de Preparo dos Mods",
-                        "placeholder": "Selecione um diretório para armazenar seus mods antes de sincronizar"
-                    }
-                },
-                "modManagement": {
-                    "title": "Gerenciamento de Mods",
-                    "searchRecursively": {
-                        "label": "Pesquisar Mods Recursivamente",
-                        "description": "Ative esta opção para pesquisar mods em subpastas do diretório de preparo."
-                    },
-                    "autoSyncMods": {
-                        "label": "Sincronização Automática de Mods",
-                        "description": "Ative esta opção para sincronizar automaticamente os mods na pasta do jogo ao ativá-los ou desativá-los."
-                    },
-                    "syncMethod": {
-                        "label": "Método de Sincronização",
-                        "description": "Como os mods são instalados na pasta do jogo.",
-                        "options": {
-                            "copy": "Copiar",
-                            "symlink": "Link Simbólico (Administrador)"
-                        }
-                    }
-                }
-            }
-        },
-        "interface": {
-            "label": "Interface",
-            "sections": {
-                "columns": {
-                    "title": "Colunas da Lista de Mods",
-                    "visibleColumns": {
-                        "label": "Colunas Visíveis",
-                        "description": "Selecione quais colunas são visíveis na lista de mods.",
-                        "options": {
-                            "modName": "Nome do Mod",
-                            "character": "Personagem",
-                            "modType": "Tipo do Mod",
-                            "author": "Autor"
-                        }
-                    }
-                },
-                "modNameColumn": {
-                    "label": "Coluna de Nome do Mod",
-                    "description": "Exibir o nome do mod com ou sem subpastas.",
-                    "options": {
-                        "short": "Nome do Mod",
-                        "full": "Nome do Mod com Subpastas"
-                    }
-                },
-                "characterColumn": {
-                    "label": "Coluna de Personagem",
-                    "description": "Exibir o ícone do personagem, o nome, ou ambos.",
-                    "options": {
-                        "full": "Ícone e Nome",
-                        "iconOnly": "Apenas Ícone",
-                        "nameOnly": "Apenas Nome"
-                    }
-                },
-                "modTypeColumn": {
-                    "label": "Coluna de Tipo do Mod",
-                    "description": "Exibir o ícone do tipo do mod, o rótulo, ou ambos.",
-                    "options": {
-                        "full": "Rótulo e Ícone",
-                        "iconOnly": "Apenas Ícone",
-                        "labelOnly": "Apenas Rótulo"
-                    },
-                    "enableColors": {
-                        "label": "Ativar Cores para Tipos de Mod",
-                        "description": "Aplicar uma cor por tipo de mod (standing, cutscene, date, etc.)."
-                    }
-                }
-            }
-        },
-        "updates": {
-            "label": "Atualizações",
-            "sections": {
-                "updates": {
-                    "title": "Atualizações do Aplicativo",
-                    "autoCheckForUpdates": {
-                        "label": "Verificar Atualizações Automaticamente",
-                        "description": "Ative esta opção para verificar automaticamente atualizações do aplicativo ao iniciar."
-                    },
-                    "autoUpdateModPreview": {
-                        "label": "Atualizar Mod Preview Automaticamente",
-                        "description": "Ative esta opção para verificar automaticamente atualizações do BD2ModPreview ao iniciar o aplicativo e atualizá-lo caso uma nova versão esteja disponível."
-                    },
-                    "actions": {
-                        "checkForUpdates": "Verificar Atualizações",
-                        "checkingForUpdates": "Verificando Atualizações...",
-                        "updateModPreview": "Atualizar BD2ModPreview"
-                    }
-                }
-            }
-        },
-        "experimental": {
-            "label": "Experimental",
-            "sections": {
-                "migration": {
-                    "title": "Importar da Versão Legada",
-                    "description": "Importe perfis e autores de mods da versão v3.2.4 ou anterior.",
-                    "profiles": {
-                        "title": "Perfis",
-                        "description": "Selecione os perfis que deseja importar da versão v3.2.4 ou anterior.",
-                        "selectPlaceholder": "Selecione um perfil para importar"
-                    },
-                    "modAuthors": {
-                        "title": "Autores de Mods",
-                        "description": "Importe autores de mods da versão v3.2.4 ou anterior."
-                    },
-                    "actions": {
-                        "importProfiles": "Importar Perfis",
-                        "importModAuthors": "Importar Autores de Mods"
-                    },
-                    "confirmations": {
-                        "importModAuthors": {
-                            "title": "Importar Autores de Mods?",
-                            "message": "Tem certeza que deseja importar os autores de mods da versão legada? Isso irá sobrescrever os nomes dos autores dos seus mods atuais com os da versão legada. Esta ação não pode ser desfeita.",
-                            "actions": {
-                                "importModAuthors": "Importar Autores de Mods",
-                                "cancel": "Cancelar"
-                            }
-                        }
-                    },
-                    "notifications": {
-                        "importProfilesSuccess": {
-                            "title": "Perfis Importados",
-                            "description": "Os perfis foram importados com sucesso da versão legada."
-                        },
-                        "importModAuthorsSuccess": {
-                            "title": "Autores de Mods Importados",
-                            "description": "Os autores de mods foram importados com sucesso da versão legada."
-                        },
-                        "importFailed": {
-                            "title": "Importação Falhou",
-                            "description": "Ocorreu um erro ao importar os dados: {error}"
-                        },
-                        "errorFetchingProfiles": {
-                            "title": "Falha ao Buscar Perfis",
-                            "description": "Ocorreu um erro ao buscar perfis da versão legada: {error}"
-                        },
-                        "noProfilesToImport": {
-                            "title": "Nenhum Perfil para Importar",
-                            "description": "Nenhum perfil foi encontrado na versão legada para importar."
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "modals": {
-        "logs": {
-            "title": "Logs do Aplicativo",
-            "noLogs": "Nenhum log disponível."
-        },
-        "sync": {
-            "titles": {
-                "syncing": "Sincronizando Mods...",
-                "completed": "Sincronização Concluída",
-                "failed": "Falha na Sincronização",
-                "idle": "Sincronizar Mods",
-                "removing": "Removendo Mods...",
-                "removed": "Mods Removidos",
-                "failedToRemove": "Falha ao Remover Mods",
-                "idleToRemove": "Remover Mods",
-                "waitingForAction": "Aguardando Ação"
-            },
-            "actions": {
-                "close": "Fechar"
-            },
-            "log": {
-                "title": "Log de Sincronização",
-                "waitingToStart": "Aguardando início da sincronização...",
-                "mods": "mods"
-            },
-            "status": {
-                "synced": "Sincronizado",
-                "upToDate": "Atualizado",
-                "removed": "Removido",
-                "failed": "Falhou"
-            }
-        },
-        "welcome": {
-            "title": "Bem-vindo ao BD2ModManager!",
-            "subtitle": "Parece que esta é a primeira vez que você abre o aplicativo. Você pode configurar o diretório do jogo agora ou pular e fazer isso depois nas configurações.",
-            "chips": {
-                "github": "Visite nosso Github",
-                "discord": "Discord do BrownDustX",
-                "suggestFeatures": "Sugerir Recursos",
-                "reportIssues": "Reportar Problemas",
-                "kofi": "Apoiar no Ko-Fi"
-            },
-            "selectGameDirectory": {
-                "title": "Diretório do Jogo",
-                "description": "Por favor, selecione a pasta que contém o arquivo 'BrownDust II.exe'.",
-                "placeholders": {
-                    "gamePath": "Caminho para o diretório do Brown Dust II"
-                },
-                "labels": {
-                    "foundPaths": "Caminho(s) Encontrado(s):"
-                },
-                "validPath": "Diretório do jogo definido com sucesso.",
-                "invalidPath": "Por favor, selecione um diretório de jogo válido para continuar.",
-                "errors": {
-                    "invalidGameExecutable": "O arquivo selecionado não é o executável do Brown Dust II.",
-                    "invalidDirectory": "O diretório selecionado não contém uma instalação válida do Brown Dust II.",
-                    "unknownError": "Ocorreu um erro desconhecido: {error}",
-                    "noGamePathSelected": "Nenhum caminho de jogo selecionado. Por favor, selecione um diretório de jogo válido para continuar."
-                }
-            },
-            "betaBanner": {
-                "message": "Esta é uma {beta} do gerenciador de mods. Bugs ou comportamentos inesperados podem ocorrer. Se encontrar algum problema, por favor reporte em {github}.",
-                "beta": "versão beta",
-                "github": "GitHub Issues"
-            },
-            "supportBanner": {
-                "title": "Apoie o projeto ❤️",
-                "messageKofi": "BD2ModManager é gratuito e de código aberto. Se foi útil, considere me apoiar no Ko-Fi!",
-                "messageAfdian": "BD2ModManager é gratuito e de código aberto. Se foi útil, considere me apoiar no Afdian!"
-            }
-        },
-        "changeModAuthor": {
-            "title": "Alterar Autor do Mod",
-            "description": "Digite um novo nome de autor para o mod \"{modName}\".",
-            "descriptionMultiple": "Digite um novo nome de autor para os mods selecionados.",
-            "placeholder": "Digite o novo nome do autor",
-            "labels": {
-                "modName": "Nome do Mod",
-                "newAuthor": "Novo Nome do Autor"
-            },
-            "actions": {
-                "save": "Salvar"
-            }
-        },
-        "changeModName": {
-            "title": "Renomear Mod",
-            "description": "Digite um novo nome para o mod \"{modName}\".",
-            "placeholder": "Digite o novo nome do mod",
-            "labels": {
-                "modName": "Nome do Mod",
-                "newModName": "Novo Nome do Mod"
-            },
-            "actions": {
-                "save": "Salvar"
-            }
-        },
-        "updateAvailable": {
-            "title": "Atualização Disponível",
-            "subtitle": "Uma nova versão está disponível v{version}.",
-            "changelogLabel": "O que há de novo",
-            "skipLabel": "Não mostrar novamente",
-            "actions": {
-                "downloadUpdate": "Baixar Atualização",
-                "later": "Depois",
-                "goToReleases": "Ver Releases"
-            }
-        }
+    "notifications": {
+      "syncSuccess": {
+        "title": "Mods Sincronizados",
+        "description": "Seus mods foram sincronizados com sucesso na pasta do jogo."
+      },
+      "unsyncSuccess": {
+        "title": "Mods Dessincronizados",
+        "description": "Seus mods foram removidos com sucesso da pasta do jogo."
+      },
+      "modInstallSuccess": {
+        "title": "Mod Instalado",
+        "description": "O mod '{modName}' foi instalado com sucesso."
+      }
     },
     "errors": {
-        "syncFailed": "Falha na Sincronização dos Mods",
-        "unsyncFailed": "Falha ao dessincronizar os mods",
-        "modAlreadyExists": "Já existe um mod com o mesmo nome.",
-        "multipleModsFound": "Vários mods encontrados. Por favor, certifique-se de que apenas um mod está presente.",
-        "modPreviewContainsErrors": "Este mod contém erros e não pode ser visualizado.",
-        "gameDirectoryNotSet": "O diretório do jogo não está definido. Por favor, defina-o nas configurações.",
-        "stagingDirectoryNotSet": "O diretório de preparo dos mods não está definido. Por favor, defina-o nas configurações.",
-        "syncMethodInvalid": "Método de sincronização inválido: {method}",
-        "symlinkAdminRequired": "Privilégios de administrador são necessários para criar links simbólicos.",
-        "modPathNotFound": "Caminho do mod não encontrado: {path}",
-        "copyFailed": "Falha ao copiar arquivos do mod: {error}",
-        "symlinkFailed": "Falha ao criar link simbólico: {error}",
-        "hardlinkFailed": "Falha ao criar link físico: {error}",
-        "directoryCreationFailed": "Falha ao criar diretório: {error}",
-        "removalFailed": "Falha ao remover arquivo ou diretório: {error}",
-        "unknownError": "Ocorreu um erro desconhecido: {error}",
-        "modInstallFailed": {
-            "title": "Falha ao instalar mod"
-        },
-        "invalidMod": "O arquivo ou pasta selecionado não é um mod BrownDustX válido.",
-        "invalidFormat": "Formato de mod não suportado. Por favor, selecione um arquivo ou pasta de mod válido.",
-        "unsupportedFormat": "Formato de arquivo não suportado. Por favor, selecione um arquivo ou pasta de mod válido."
-    },
-    "modErrors": {
-        "missingTextures": "Você precisa criar uma pasta chamada 'textures' dentro da pasta do mod.",
-        "missingModfile": "Você precisa criar um arquivo .modfile dentro desta pasta do mod.",
-        "archiveNotExtracted": "Este mod é um arquivo compactado que ainda não foi extraído. Por favor, extraia-o antes de tentar ativá-lo.",
-        "shouldBeInFolder": "Este mod deve estar dentro de uma pasta. Por favor, crie uma pasta com o mesmo nome do mod e mova o arquivo do mod para dentro dela.",
-        "missingAtlasFile": "Este mod está sem o arquivo de atlas.",
-        "noDescription": "Nenhuma descrição fornecida."
+      "modPreview": {
+        "title": "Não é Possível Visualizar o Mod",
+        "modContainErrors": "O mod '{modName}' contém erros. Não é possível abrir a visualização."
+      },
+      "syncFailed": {
+        "title": "Falha na Sincronização"
+      },
+      "unsyncFailed": {
+        "title": "Falha na Dessincronização"
+      },
+      "modFolderNotFound": "Pasta do mod '{modName}' não encontrada.",
+      "modNotDirectory": "O caminho do mod '{modName}' não é um diretório.",
+      "stagingDirectoryNotSet": "O diretório de preparo não está definido.",
+      "stagingDirectoryNotFound": "Diretório de preparo não encontrado em '{stagingDir}'. Por favor, verifique suas configurações."
     }
+  },
+  "charactersTab": {
+    "title": "Personagens",
+    "subtitle": "{enabledModsCount} de {totalModsCount} mods ativados",
+    "charactersNotFound": "Nenhum personagem encontrado.",
+    "id": "ID: {id}",
+    "filters": {
+      "title": "Filtros",
+      "searchPlaceholder": "Pesquisar personagens...",
+      "sortBy": {
+        "title": "Ordenar Por",
+        "options": {
+          "nameAsc": "Nome (A-Z)",
+          "nameDesc": "Nome (Z-A)",
+          "releaseAsc": "Data de Lançamento (Mais Recente)",
+          "releaseDesc": "Data de Lançamento (Mais Antigo)",
+          "modsAsc": "Quantidade de Mods (Menos)",
+          "modsDesc": "Quantidade de Mods (Mais)"
+        }
+      },
+      "modStatus": {
+        "title": "Status do Mod",
+        "hasCutscene": "Tem Mod de Cutscene",
+        "hasStanding": "Tem Mod de Standing",
+        "hasDating": "Tem Mod de Date",
+        "options": {
+          "any": "Qualquer",
+          "enabled": "Ativado",
+          "disabled": "Desativado"
+        }
+      },
+      "extraFilters": {
+        "title": "Filtros Extras",
+        "hideMenCharacters": "Ocultar Personagens Masculinos",
+        "hideWomenCharacters": "Ocultar Personagens Femininos",
+        "onlyCharactersWithMods": "Apenas Personagens com Mods",
+        "onlyCharactersWithoutMods": "Apenas Personagens sem Mods"
+      },
+      "releasePeriod": {
+        "title": "Período de Lançamento",
+        "options": {
+          "all": "Todo o Período",
+          "lastWeek": "Última Semana",
+          "lastTwoWeeks": "Últimas Duas Semanas",
+          "lastMonth": "Último Mês",
+          "lastThreeMonths": "Últimos Três Meses",
+          "lastSixMonths": "Últimos Seis Meses",
+          "lastYear": "Último Ano"
+        }
+      }
+    },
+    "actions": {
+      "addMod": "Adicionar Mod",
+      "installFromZip": "Instalar do ZIP",
+      "installFromFolder": "Instalar da Pasta"
+    },
+    "tags": {
+      "new": "Novo",
+      "collab": "Collab",
+      "modsCount": "{count} mod | {count} mods"
+    },
+    "modTypes": {
+      "cutscene": "Cutscene",
+      "standing": "Standing",
+      "dating": "Date",
+      "states": {
+        "enabled": "Ativado",
+        "disabled": "Desativado"
+      }
+    },
+    "characterModal": {
+      "enabledMods": "Mods Ativados",
+      "totalMods": "Total de Mods",
+      "noModsFound": {
+        "title": "Nenhum Mod Encontrado",
+        "description": "Acesse a aba Mods para instalar mods para este personagem."
+      },
+      "discoverModsDescription": "Aqui você pode explorar todos os mods disponíveis para este personagem. Nota: a lista pode não incluir os mods mais recentes. Última atualização: {latestUpdate}",
+      "modsTab": "Seus Mods",
+      "discoverModsTab": "Descobrir Mods",
+      "paidMod": "Pago",
+      "freeMod": "Gratuito",
+      "noIndexModsFound": {
+        "title": "Nenhum Mod Encontrado",
+        "description": "Não há mods disponíveis no índice para este personagem."
+      }
+    }
+  },
+  "profilesTab": {
+    "title": "Perfis",
+    "subtitle": "Gerencie seus perfis de mods para alternar facilmente entre diferentes configurações.",
+    "defaultProfile": "Perfil Padrão",
+    "emptyDescription": "Nenhuma descrição fornecida.",
+    "activeProfile": "Perfil em Uso",
+    "enabledMods": "{count} Mod Ativado | {count} Mods Ativados",
+    "noModsEnabled": "Nenhum mod ativado.",
+    "noProfileSelected": "Nenhum perfil selecionado. Por favor, selecione um perfil para ver seus detalhes.",
+    "actions": {
+      "createProfile": "Criar Perfil",
+      "editProfile": "Editar Perfil",
+      "deleteProfile": "Excluir Perfil",
+      "setAsCurrent": "Definir como Atual",
+      "refreshProfiles": "Atualizar Perfis"
+    },
+    "notifications": {
+      "profileCreated": {
+        "title": "Perfil Criado",
+        "description": "O perfil \"{profileName}\" foi criado com sucesso."
+      },
+      "profileUpdated": {
+        "title": "Perfil Atualizado",
+        "description": "O perfil \"{profileName}\" foi atualizado com sucesso."
+      },
+      "profileDeleted": {
+        "title": "Perfil Excluído",
+        "description": "O perfil \"{profileName}\" foi excluído com sucesso."
+      }
+    },
+    "confirmations": {
+      "deleteProfile": {
+        "title": "Excluir Perfil?",
+        "message": "Tem certeza que deseja excluir o perfil \"{profileName}\"? Esta ação não pode ser desfeita.",
+        "actions": {
+          "deleteProfile": "Excluir Perfil"
+        }
+      }
+    },
+    "modals": {
+      "createProfile": {
+        "title": "Criar Novo Perfil",
+        "description": "Digite um nome e uma descrição opcional para o seu novo perfil.",
+        "nameField": {
+          "label": "Nome do Perfil",
+          "placeholder": "Digite o nome do perfil"
+        },
+        "descriptionField": {
+          "label": "Descrição do Perfil (opcional)",
+          "placeholder": "Digite a descrição do perfil"
+        },
+        "templateField": {
+          "label": "Perfil Modelo (opcional)",
+          "placeholder": "Selecione um perfil modelo"
+        },
+        "actions": {
+          "createProfile": "Criar Perfil"
+        }
+      },
+      "editProfile": {
+        "title": "Editar Perfil",
+        "nameField": {
+          "label": "Nome do Perfil",
+          "placeholder": "Digite o nome do perfil"
+        },
+        "descriptionField": {
+          "label": "Descrição do Perfil (opcional)",
+          "placeholder": "Digite a descrição do perfil"
+        },
+        "actions": {
+          "saveChanges": "Salvar Alterações"
+        },
+        "description": "Edite o nome e a descrição do seu perfil."
+      }
+    }
+  },
+  "browndustxTab": {
+    "title": "BrownDustX",
+    "status": {
+      "installed": "Instalado",
+      "installedButOutdated": "Instalado (Desatualizado)",
+      "notInstalled": "Não Instalado",
+      "gameNotFound": "Caminho do jogo não definido.",
+      "bepinexMissing": "BepInEx não encontrado."
+    },
+    "labels": {
+      "gameDirectory": "Diretório do Jogo: ",
+      "frameworkAndPlugins": "Framework e Plugins",
+      "logs": "Logs"
+    },
+    "descriptions": {
+      "bepinex": "BepInEx é um framework de modding. É necessário para que o BrownDustX funcione corretamente.",
+      "browndustx": "BrownDustX é um plugin para BepInEx que adiciona diversas melhorias de qualidade de vida e permite o uso de mods em Brown Dust II.",
+      "configurationManager": "Configuration Manager é um plugin para BepInEx que permite configurar as opções do BrownDustX dentro do jogo."
+    },
+    "messages": {
+      "bepinexMissing": "O BepInEx é necessário para executar o BrownDustX. Por favor, instale o BepInEx primeiro.",
+      "configurationManagerMissing": "O Configuration Manager não está instalado, você não poderá configurar as opções do BrownDustX dentro do jogo.",
+      "brownDustXMissing": "O BrownDustX não está instalado. Os mods não serão carregados sem ele.",
+      "noLogsYet": "Nenhum log ainda.",
+      "dragAndDrop": "Você também pode arrastar e soltar um arquivo do BepInEx ou BrownDustX aqui para instalá-lo",
+      "gameDirectoryNotSet": "O diretório do jogo não está definido. Por favor, defina-o nas configurações para habilitar a instalação do BrownDustX."
+    },
+    "actions": {
+      "installFromGithub": "Instalar do GitHub",
+      "selectFile": "Selecionar Arquivo",
+      "remove": "Remover"
+    },
+    "notifications": {
+      "installSuccess": {
+        "title": "BrownDustX Instalado",
+        "description": "O BrownDustX foi instalado com sucesso."
+      },
+      "uninstallSuccess": {
+        "title": "BrownDustX Desinstalado",
+        "description": "O BrownDustX foi desinstalado com sucesso."
+      }
+    },
+    "confirmations": {
+      "removeBepInEx": {
+        "title": "Remover BepInEx?",
+        "message": "Tem certeza que deseja remover o BepInEx? Isso irá remover todos os arquivos do BepInEx do seu diretório do jogo. Esta ação não pode ser desfeita.",
+        "actions": {
+          "removeBepInEx": "Remover BepInEx"
+        }
+      },
+      "removeBrownDustX": {
+        "title": "Remover BrownDustX?",
+        "message": "Tem certeza que deseja remover o BrownDustX? Isso irá remover todos os arquivos do BrownDustX do seu diretório do jogo, incluindo todos os seus mods. Esta ação não pode ser desfeita.",
+        "actions": {
+          "removeBrownDustX": "Remover BrownDustX"
+        }
+      }
+    },
+    "alerts": {
+      "caution": "Atenção",
+      "cautionMessage": "A instalação manual ainda é preferível. Se você já tem o BepInEx ou BrownDustX instalado, o instalador pode não remover corretamente os arquivos existentes. Se você instalou o BepInEx pelo GitHub e encontrar problemas, tente a versão disponível no Discord do BrownDustX antes de reportar qualquer bug.",
+      "danger": "Use este recurso por sua conta e risco",
+      "dangerMessage": "Este recurso é experimental. Não nos responsabilizamos por quaisquer problemas causados à sua instalação do jogo."
+    },
+    "modals": {
+      "bepinexGithub": {
+        "title": "Instalar BepInEx do GitHub",
+        "loading": "Carregando versões do BepInEx do Github...",
+        "failedToLoadVersions": "Falha ao carregar versões",
+        "actions": {
+          "viewOnGithub": "Ver no GitHub",
+          "install": "Instalar",
+          "retry": "Tentar Novamente"
+        }
+      }
+    }
+  },
+  "settingsTab": {
+    "title": "Configurações",
+    "subtitle": "Configure as opções do seu gerenciador de mods.",
+    "general": {
+      "label": "Geral",
+      "sections": {
+        "application": {
+          "title": "Aplicativo",
+          "theme": {
+            "label": "Tema",
+            "placeholder": "Selecione um tema"
+          },
+          "language": {
+            "label": "Idioma",
+            "placeholder": "Selecione um idioma"
+          }
+        },
+        "directories": {
+          "title": "Diretórios",
+          "gameDirectory": {
+            "label": "Diretório do Jogo",
+            "placeholder": "Selecione o diretório do jogo"
+          },
+          "modsDirectory": {
+            "label": "Diretório de Preparo dos Mods",
+            "placeholder": "Selecione um diretório para armazenar seus mods antes de sincronizar"
+          }
+        },
+        "modManagement": {
+          "title": "Gerenciamento de Mods",
+          "searchRecursively": {
+            "label": "Pesquisar Mods Recursivamente",
+            "description": "Ative esta opção para pesquisar mods em subpastas do diretório de preparo."
+          },
+          "autoSyncMods": {
+            "label": "Sincronização Automática de Mods",
+            "description": "Ative esta opção para sincronizar automaticamente os mods na pasta do jogo ao ativá-los ou desativá-los."
+          },
+          "syncMethod": {
+            "label": "Método de Sincronização",
+            "description": "Como os mods são instalados na pasta do jogo.",
+            "options": {
+              "copy": "Copiar",
+              "symlink": "Link Simbólico (Administrador)"
+            }
+          }
+        }
+      }
+    },
+    "interface": {
+      "label": "Interface",
+      "sections": {
+        "columns": {
+          "title": "Colunas da Lista de Mods",
+          "visibleColumns": {
+            "label": "Colunas Visíveis",
+            "description": "Selecione quais colunas são visíveis na lista de mods.",
+            "options": {
+              "modName": "Nome do Mod",
+              "character": "Personagem",
+              "modType": "Tipo do Mod",
+              "author": "Autor"
+            }
+          }
+        },
+        "modNameColumn": {
+          "label": "Coluna de Nome do Mod",
+          "description": "Exibir o nome do mod com ou sem subpastas.",
+          "options": {
+            "short": "Nome do Mod",
+            "full": "Nome do Mod com Subpastas"
+          }
+        },
+        "characterColumn": {
+          "label": "Coluna de Personagem",
+          "description": "Exibir o ícone do personagem, o nome, ou ambos.",
+          "options": {
+            "full": "Ícone e Nome",
+            "iconOnly": "Apenas Ícone",
+            "nameOnly": "Apenas Nome"
+          }
+        },
+        "modTypeColumn": {
+          "label": "Coluna de Tipo do Mod",
+          "description": "Exibir o ícone do tipo do mod, o rótulo, ou ambos.",
+          "options": {
+            "full": "Rótulo e Ícone",
+            "iconOnly": "Apenas Ícone",
+            "labelOnly": "Apenas Rótulo"
+          },
+          "enableColors": {
+            "label": "Ativar Cores para Tipos de Mod",
+            "description": "Aplicar uma cor por tipo de mod (standing, cutscene, date, etc.)."
+          }
+        }
+      }
+    },
+    "updates": {
+      "label": "Atualizações",
+      "sections": {
+        "updates": {
+          "title": "Atualizações do Aplicativo",
+          "autoCheckForUpdates": {
+            "label": "Verificar Atualizações Automaticamente",
+            "description": "Ative esta opção para verificar automaticamente atualizações do aplicativo ao iniciar."
+          },
+          "autoUpdateModPreview": {
+            "label": "Atualizar Mod Preview Automaticamente",
+            "description": "Ative esta opção para verificar automaticamente atualizações do BD2ModPreview ao iniciar o aplicativo e atualizá-lo caso uma nova versão esteja disponível."
+          },
+          "actions": {
+            "checkForUpdates": "Verificar Atualizações",
+            "checkingForUpdates": "Verificando Atualizações...",
+            "updateModPreview": "Atualizar BD2ModPreview"
+          }
+        }
+      }
+    },
+    "experimental": {
+      "label": "Experimental",
+      "sections": {
+        "migration": {
+          "title": "Importar da Versão Legada",
+          "description": "Importe perfis e autores de mods da versão v3.2.4 ou anterior.",
+          "profiles": {
+            "title": "Perfis",
+            "description": "Selecione os perfis que deseja importar da versão v3.2.4 ou anterior.",
+            "selectPlaceholder": "Selecione um perfil para importar"
+          },
+          "modAuthors": {
+            "title": "Autores de Mods",
+            "description": "Importe autores de mods da versão v3.2.4 ou anterior."
+          },
+          "actions": {
+            "importProfiles": "Importar Perfis",
+            "importModAuthors": "Importar Autores de Mods"
+          },
+          "confirmations": {
+            "importModAuthors": {
+              "title": "Importar Autores de Mods?",
+              "message": "Tem certeza que deseja importar os autores de mods da versão legada? Isso irá sobrescrever os nomes dos autores dos seus mods atuais com os da versão legada. Esta ação não pode ser desfeita.",
+              "actions": {
+                "importModAuthors": "Importar Autores de Mods",
+                "cancel": "Cancelar"
+              }
+            }
+          },
+          "notifications": {
+            "importProfilesSuccess": {
+              "title": "Perfis Importados",
+              "description": "Os perfis foram importados com sucesso da versão legada."
+            },
+            "importModAuthorsSuccess": {
+              "title": "Autores de Mods Importados",
+              "description": "Os autores de mods foram importados com sucesso da versão legada."
+            },
+            "importFailed": {
+              "title": "Importação Falhou",
+              "description": "Ocorreu um erro ao importar os dados: {error}"
+            },
+            "errorFetchingProfiles": {
+              "title": "Falha ao Buscar Perfis",
+              "description": "Ocorreu um erro ao buscar perfis da versão legada: {error}"
+            },
+            "noProfilesToImport": {
+              "title": "Nenhum Perfil para Importar",
+              "description": "Nenhum perfil foi encontrado na versão legada para importar."
+            }
+          }
+        }
+      }
+    }
+  },
+  "modals": {
+    "logs": {
+      "title": "Logs do Aplicativo",
+      "noLogs": "Nenhum log disponível."
+    },
+    "sync": {
+      "titles": {
+        "syncing": "Sincronizando Mods...",
+        "completed": "Sincronização Concluída",
+        "failed": "Falha na Sincronização",
+        "idle": "Sincronizar Mods",
+        "removing": "Removendo Mods...",
+        "removed": "Mods Removidos",
+        "failedToRemove": "Falha ao Remover Mods",
+        "idleToRemove": "Remover Mods",
+        "waitingForAction": "Aguardando Ação"
+      },
+      "actions": {
+        "close": "Fechar"
+      },
+      "log": {
+        "title": "Log de Sincronização",
+        "waitingToStart": "Aguardando início da sincronização...",
+        "mods": "mods"
+      },
+      "status": {
+        "synced": "Sincronizado",
+        "upToDate": "Atualizado",
+        "removed": "Removido",
+        "failed": "Falhou"
+      }
+    },
+    "welcome": {
+      "title": "Bem-vindo ao BD2ModManager!",
+      "subtitle": "Parece que esta é a primeira vez que você abre o aplicativo. Você pode configurar o diretório do jogo agora ou pular e fazer isso depois nas configurações.",
+      "chips": {
+        "github": "Visite nosso Github",
+        "discord": "Discord do BrownDustX",
+        "suggestFeatures": "Sugerir Recursos",
+        "reportIssues": "Reportar Problemas",
+        "kofi": "Apoiar no Ko-Fi"
+      },
+      "selectGameDirectory": {
+        "title": "Diretório do Jogo",
+        "description": "Por favor, selecione a pasta que contém o arquivo 'BrownDust II.exe'.",
+        "placeholders": {
+          "gamePath": "Caminho para o diretório do Brown Dust II"
+        },
+        "labels": {
+          "foundPaths": "Caminho(s) Encontrado(s):"
+        },
+        "validPath": "Diretório do jogo definido com sucesso.",
+        "invalidPath": "Por favor, selecione um diretório de jogo válido para continuar.",
+        "errors": {
+          "invalidGameExecutable": "O arquivo selecionado não é o executável do Brown Dust II.",
+          "invalidDirectory": "O diretório selecionado não contém uma instalação válida do Brown Dust II.",
+          "unknownError": "Ocorreu um erro desconhecido: {error}",
+          "noGamePathSelected": "Nenhum caminho de jogo selecionado. Por favor, selecione um diretório de jogo válido para continuar."
+        }
+      },
+      "betaBanner": {
+        "message": "Esta é uma {beta} do gerenciador de mods. Bugs ou comportamentos inesperados podem ocorrer. Se encontrar algum problema, por favor reporte em {github}.",
+        "beta": "versão beta",
+        "github": "GitHub Issues"
+      },
+      "supportBanner": {
+        "title": "Apoie o projeto ❤️",
+        "messageKofi": "BD2ModManager é gratuito e de código aberto. Se foi útil, considere me apoiar no Ko-Fi!",
+        "messageAfdian": "BD2ModManager é gratuito e de código aberto. Se foi útil, considere me apoiar no Afdian!"
+      }
+    },
+    "changeModAuthor": {
+      "title": "Alterar Autor do Mod",
+      "description": "Digite um novo nome de autor para o mod \"{modName}\".",
+      "descriptionMultiple": "Digite um novo nome de autor para os mods selecionados.",
+      "placeholder": "Digite o novo nome do autor",
+      "labels": {
+        "modName": "Nome do Mod",
+        "newAuthor": "Novo Nome do Autor"
+      },
+      "actions": {
+        "save": "Salvar"
+      }
+    },
+    "changeModName": {
+      "title": "Renomear Mod",
+      "description": "Digite um novo nome para o mod \"{modName}\".",
+      "placeholder": "Digite o novo nome do mod",
+      "labels": {
+        "modName": "Nome do Mod",
+        "newModName": "Novo Nome do Mod"
+      },
+      "actions": {
+        "save": "Salvar"
+      }
+    },
+    "updateAvailable": {
+      "title": "Atualização Disponível",
+      "subtitle": "Uma nova versão está disponível v{version}.",
+      "changelogLabel": "O que há de novo",
+      "skipLabel": "Não mostrar novamente",
+      "actions": {
+        "downloadUpdate": "Baixar Atualização",
+        "later": "Depois",
+        "goToReleases": "Ver Releases"
+      }
+    }
+  },
+  "errors": {
+    "syncFailed": "Falha na Sincronização dos Mods",
+    "unsyncFailed": "Falha ao dessincronizar os mods",
+    "modAlreadyExists": "Já existe um mod com o mesmo nome.",
+    "multipleModsFound": "Vários mods encontrados. Por favor, certifique-se de que apenas um mod está presente.",
+    "modPreviewContainsErrors": "Este mod contém erros e não pode ser visualizado.",
+    "gameDirectoryNotSet": "O diretório do jogo não está definido. Por favor, defina-o nas configurações.",
+    "stagingDirectoryNotSet": "O diretório de preparo dos mods não está definido. Por favor, defina-o nas configurações.",
+    "syncMethodInvalid": "Método de sincronização inválido: {method}",
+    "symlinkAdminRequired": "Privilégios de administrador são necessários para criar links simbólicos.",
+    "modPathNotFound": "Caminho do mod não encontrado: {path}",
+    "copyFailed": "Falha ao copiar arquivos do mod: {error}",
+    "symlinkFailed": "Falha ao criar link simbólico: {error}",
+    "hardlinkFailed": "Falha ao criar link físico: {error}",
+    "directoryCreationFailed": "Falha ao criar diretório: {error}",
+    "removalFailed": "Falha ao remover arquivo ou diretório: {error}",
+    "unknownError": "Ocorreu um erro desconhecido: {error}",
+    "modInstallFailed": {
+      "title": "Falha ao instalar mod"
+    },
+    "invalidMod": "O arquivo ou pasta selecionado não é um mod BrownDustX válido.",
+    "invalidFormat": "Formato de mod não suportado. Por favor, selecione um arquivo ou pasta de mod válido.",
+    "unsupportedFormat": "Formato de arquivo não suportado. Por favor, selecione um arquivo ou pasta de mod válido."
+  },
+  "modErrors": {
+    "missingTextures": "Você precisa criar uma pasta chamada 'textures' dentro da pasta do mod.",
+    "missingModfile": "Você precisa criar um arquivo .modfile dentro desta pasta do mod.",
+    "archiveNotExtracted": "Este mod é um arquivo compactado que ainda não foi extraído. Por favor, extraia-o antes de tentar ativá-lo.",
+    "shouldBeInFolder": "Este mod deve estar dentro de uma pasta. Por favor, crie uma pasta com o mesmo nome do mod e mova o arquivo do mod para dentro dela.",
+    "missingAtlasFile": "Este mod está sem o arquivo de atlas.",
+    "noDescription": "Nenhuma descrição fornecida."
+  },
+  "npcTab": {
+    "title": "NPC",
+    "subtitle": "{enabledModsCount} de {totalModsCount} mods de NPC ativados",
+    "npcsNotFound": "Nenhum NPC com mods encontrado.",
+    "id": "ID: {id}",
+    "filters": {
+      "title": "Filtros",
+      "searchPlaceholder": "Pesquisar NPC...",
+      "sortBy": {
+        "title": "Ordenar Por",
+        "options": {
+          "nameAsc": "Nome (A-Z)",
+          "nameDesc": "Nome (Z-A)",
+          "modsAsc": "Quantidade de Mods (Menos)",
+          "modsDesc": "Quantidade de Mods (Mais)",
+          "idDesc": "ID (Maior primeiro)",
+          "idAsc": "ID (Menor primeiro)"
+        }
+      }
+    },
+    "tags": {
+      "modsCount": "{count} mod | {count} mods",
+      "enabledCount": "{count} ativados"
+    },
+    "npcModal": {
+      "enabledMods": "Mods Ativados",
+      "totalMods": "Total de Mods",
+      "noModsFound": {
+        "title": "Nenhum Mod Encontrado",
+        "description": "Acesse a aba Mods para instalar mods para este NPC."
+      }
+    }
+  }
 }

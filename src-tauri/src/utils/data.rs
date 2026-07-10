@@ -2,6 +2,7 @@ use std::fs;
 use tauri::Manager;
 
 const CHARACTERS: &str = include_str!("../../data/characters.json");
+const NPC: &str = include_str!("../../data/npc.json");
 
 pub fn move_data_to_appdata(app_handle: &tauri::AppHandle) -> Result<(), String> {
     let app_data = app_handle
@@ -11,40 +12,48 @@ pub fn move_data_to_appdata(app_handle: &tauri::AppHandle) -> Result<(), String>
 
     fs::create_dir_all(&app_data).map_err(|e| e.to_string())?;
 
-    let chars_path = app_data.join("characters.json");
+    seed_versioned_file(&app_data.join("characters.json"), CHARACTERS, "characters.json")?;
+    seed_versioned_file(&app_data.join("npc.json"), NPC, "npc.json")?;
 
-    if !chars_path.exists() {
-        println!("Seeding characters.json to appdata");
-        fs::write(&chars_path, CHARACTERS).map_err(|e| e.to_string())?;
-    } else {
-        let bundled_version = semver::Version::parse(
-            serde_json::from_str::<serde_json::Value>(CHARACTERS)
-                .map_err(|e| e.to_string())?["version"]
-                .as_str()
-                .ok_or("Missing 'version' in bundled characters.json")?,
-        )
-        .map_err(|e| e.to_string())?;
 
-        let existing_version = semver::Version::parse(
-            serde_json::from_str::<serde_json::Value>(
-                &fs::read_to_string(&chars_path).map_err(|e| e.to_string())?,
-            )
+    Ok(())
+}
+
+/// Seeds `bundled` into `path`, or overwrites it when the bundled version is
+/// newer. Both the bundled string and the existing file must carry a top-level
+/// semver `"version"` string.
+fn seed_versioned_file(path: &std::path::Path, bundled: &str, label: &str) -> Result<(), String> {
+    if !path.exists() {
+        println!("Seeding {label} to appdata");
+        fs::write(path, bundled).map_err(|e| e.to_string())?;
+        return Ok(());
+    }
+
+    let bundled_version = semver::Version::parse(
+        serde_json::from_str::<serde_json::Value>(bundled)
             .map_err(|e| e.to_string())?["version"]
-                .as_str()
-                .ok_or("Missing 'version' in existing characters.json")?,
+            .as_str()
+            .ok_or_else(|| format!("Missing 'version' in bundled {label}"))?,
+    )
+    .map_err(|e| e.to_string())?;
+
+    let existing_version = semver::Version::parse(
+        serde_json::from_str::<serde_json::Value>(
+            &fs::read_to_string(path).map_err(|e| e.to_string())?,
         )
-        .map_err(|e| e.to_string())?;
+        .map_err(|e| e.to_string())?["version"]
+            .as_str()
+            .ok_or_else(|| format!("Missing 'version' in existing {label}"))?,
+    )
+    .map_err(|e| e.to_string())?;
 
-        println!(
-            "characters.json bundled v{} vs appdata v{}",
-            bundled_version, existing_version
-        );
+    println!("{label} bundled v{bundled_version} vs appdata v{existing_version}");
 
-        if bundled_version > existing_version {
-            println!("Updating characters.json from bundled (newer version)");
-            fs::write(&chars_path, CHARACTERS).map_err(|e| e.to_string())?;
-        }
+    if bundled_version > existing_version {
+        println!("Updating {label} from bundled (newer version)");
+        fs::write(path, bundled).map_err(|e| e.to_string())?;
     }
 
     Ok(())
 }
+

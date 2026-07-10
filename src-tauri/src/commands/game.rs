@@ -1,5 +1,5 @@
 use std::{fs, path::PathBuf};
-use bd2modmanager_lib::{game::{game::{self, VersionResult}, installer::{self, is_bdx_archive, is_bepinex_archive, is_configmanager_archive}}, utils::path::get_characters_path};
+use bd2modmanager_lib::{game::{game::{self, VersionResult}, installer::{self, is_bdx_archive, is_bepinex_archive, is_configmanager_archive}}, utils::path::{get_characters_path, get_npc_path}};
 use winreg::{enums::HKEY_CURRENT_USER, RegKey};
 use log::{info, warn};
 
@@ -237,4 +237,11 @@ pub fn determine_archive_type(path: String) -> Result<Option<String>, String> {
     }
 
     Ok(None)
+}
+
+#[tauri::command]
+pub fn get_npc(app_handle: tauri::AppHandle) -> Result<serde_json::Value, String> {
+    let npc_path = get_npc_path(&app_handle).ok_or("failed to get npc path")?;
+    let content = std::fs::read_to_string(&npc_path).map_err(|e| e.to_string())?;
+    serde_json::from_str(&content).map_err(|e| e.to_string())
 }
