@@ -18,6 +18,30 @@ pub fn extract_character_id(filename: &str, prefix: &str) -> Option<String> {
     }
 }
 
+/// Returns true when a `.modfile` describes a wallpaper mod. Wallpaper mods
+/// have inconsistent filename prefixes (`pack...`, `P..._EventPackGUI`,
+/// `bg_home_wallpaper_...`), so prefix matching is unreliable. Instead we read
+/// the modfile's JSON content and look for a modify entry with
+/// `"original": "bg"`, which all analyzed wallpaper modfiles share.
+fn is_wallpaper_modfile(path: &Path) -> bool {
+    let Ok(content) = fs::read_to_string(path) else {
+        return false;
+    };
+
+    match serde_json::from_str::<serde_json::Value>(&content) {
+        Ok(json) => json
+            .get("modify")
+            .and_then(|m| m.as_array())
+            .map(|entries| {
+                entries.iter().any(|entry| {
+                    entry.get("original").and_then(|v| v.as_str()) == Some("bg")
+                })
+            })
+            .unwrap_or(false),
+        Err(_) => false,
+    }
+}
+
 pub fn get_mod_type(folder_path: &Path) -> Option<BD2ModType> {
     if let Ok(entries) = fs::read_dir(folder_path) {
         let patterns = [
@@ -31,6 +55,10 @@ pub fn get_mod_type(folder_path: &Path) -> Option<BD2ModType> {
             ("NPC", "npc"),
             ("Minigame", "RhythmHitAnim"),
         ];
+
+        // Collect modfile paths so we can run the prefix checks first and fall
+        // back to a content-based wallpaper check afterwards.
+        let mut modfiles: Vec<(String, std::path::PathBuf)> = Vec::new();
 
         for entry in entries.flatten() {
             let path = entry.path();
@@ -56,8 +84,26 @@ pub fn get_mod_type(folder_path: &Path) -> Option<BD2ModType> {
                                 };
                             }
                         }
+
+                        modfiles.push((filename.to_string(), path.clone()));
                     }
                 }
+            }
+        }
+
+        // No prefix matched: check whether any modfile is a wallpaper. Use the
+        // full modfile filename (minus the `.modfile` extension) as a stable id.
+        for (filename, path) in &modfiles {
+            if is_wallpaper_modfile(path) {
+                // Strip the `.modfile` extension case-insensitively for a stable id.
+                let id = if filename.len() >= 8
+                    && filename[filename.len() - 8..].eq_ignore_ascii_case(".modfile")
+                {
+                    filename[..filename.len() - 8].to_string()
+                } else {
+                    filename.to_string()
+                };
+                return Some(BD2ModType::Wallpaper { id });
             }
         }
     }

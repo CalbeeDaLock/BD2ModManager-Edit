@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 import { computed, readonly, ref, shallowRef } from 'vue';
 import { Character, useCharactersStore } from './characters';
 import { useLoggingStore } from './logging';
+import { usePreferencesStore } from './preferences';
 
 export type BD2ModType =
     | { type: 'Standing'; id: string }
@@ -11,6 +12,7 @@ export type BD2ModType =
     | { type: 'Scene'; id: string }
     | { type: 'NPC'; id: string }
     | { type: 'Dating'; id: string }
+    | { type: 'Wallpaper'; id: string }
     | { type: 'Minigame' };
 
 export interface BD2Mod {
@@ -31,6 +33,7 @@ export interface BD2ModExtended extends BD2Mod {
 export const useModsStore = defineStore('mods', () => {
     const charactersStore = useCharactersStore()
     const loggingStore = useLoggingStore()
+    const preferencesStore = usePreferencesStore()
 
     const mods = shallowRef<BD2Mod[]>([]);
     const modsCache = ref<Map<string, BD2Mod>>(new Map());
@@ -47,6 +50,14 @@ export const useModsStore = defineStore('mods', () => {
                 character = charactersStore.getCharacterByNpcId(mod.modType.id) ?? undefined
             }
 
+            // Wallpaper mods can be given a custom display name from the
+            // Wallpapers management tab; override displayName when one exists.
+            let displayName = mod.displayName
+            if (mod.modType && mod.modType.type == "Wallpaper") {
+                const nickname = preferencesStore.wallpaperNicknames[mod.modType.id]
+                if (nickname) displayName = nickname
+            }
+
             let conflictingMods: BD2Mod[] = []
 
             if (mod.enabled && mod.conflictsWith.length > 0) {
@@ -58,7 +69,7 @@ export const useModsStore = defineStore('mods', () => {
                 })
             }
 
-            return { ...mod, character, conflictingMods }
+            return { ...mod, displayName, character, conflictingMods }
         })
     })
 

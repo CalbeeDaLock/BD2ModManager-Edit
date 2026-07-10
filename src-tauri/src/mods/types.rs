@@ -21,6 +21,7 @@ pub enum BD2ModType {
     Scene { id: String },
     NPC { id: String },
     Dating { id: String },
+    Wallpaper { id: String },
     Minigame { id: Option<String> },
 }
 

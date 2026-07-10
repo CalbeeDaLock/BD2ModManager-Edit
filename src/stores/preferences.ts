@@ -15,6 +15,14 @@ export const usePreferencesStore = defineStore("preferences", () => {
   const enableModTypeColors = useLocalStorage("modTypeColors", true);
   const forceEnglishNames  = useLocalStorage("forceEnglishNames", false)
 
+  // Custom display names for wallpaper mods, keyed by the wallpaper mod id
+  // (the `.modfile` filename without its extension). Edited from the
+  // Wallpapers management tab.
+  const wallpaperNicknames = useLocalStorage<Record<string, string>>(
+    "wallpaperNicknames",
+    {}
+  )
+
 
   return {
     visibleModListColumns,
@@ -22,6 +30,7 @@ export const usePreferencesStore = defineStore("preferences", () => {
     modNameDisplay,
     characterDisplay,
     modTypeDisplay,
-    forceEnglishNames    
+    forceEnglishNames,
+    wallpaperNicknames
   };
 });

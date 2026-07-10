@@ -92,6 +92,8 @@ body {
   --color-mod-dating-bg: var(--mod-dating-bg);
   --color-mod-minigame: var(--mod-minigame);
   --color-mod-minigame-bg: var(--mod-minigame-bg);
+  --color-mod-wallpaper: var(--mod-wallpaper);
+  --color-mod-wallpaper-bg: var(--mod-wallpaper-bg);
 
   /* --animate-pulse: pulse 1s ease-in-out infinite; */
 

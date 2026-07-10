@@ -19,17 +19,17 @@ interface Filters {
 }
 
 const filters = defineModel<Filters>("filters", {
-    default: {
+    default: () => ({
         searchQuery: '',
         modTypes: [],
         onlyEnabled: false,
         onlyDisabled: false,
         onlyConflicts: false,
         onlyErrors: false,
-    }
+    })
 })
 
-const modTypes = ["Cutscene", "Standing", "Scene", "Dating", "NPC", "Minigame"];
+const modTypes = ["Cutscene", "Standing", "Scene", "Dating", "NPC", "Minigame", "Wallpaper"];
 
 function toggleModTypes(modType: string) {
     let index = filters.value.modTypes.indexOf(modType)
@@ -58,6 +58,8 @@ function getModTypeClass(modType: string) {
             return 'text-mod-npc! bg-mod-npc-bg! border-transparent!'
         case 'Minigame':
             return 'text-mod-minigame! bg-mod-minigame-bg! border-transparent!'
+        case 'Wallpaper':
+            return 'text-mod-wallpaper! bg-mod-wallpaper-bg! border-transparent!'
         default:
             return ''
     }   

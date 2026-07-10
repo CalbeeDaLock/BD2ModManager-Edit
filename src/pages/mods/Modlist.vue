@@ -87,7 +87,8 @@ function getTypeClass(type: string) {
         'Scene': 'text-mod-scene',
         'Dating': 'text-mod-dating',
         'NPC': 'text-mod-npc',
-        'Minigame': 'text-mod-minigame'
+        'Minigame': 'text-mod-minigame',
+        'Wallpaper': 'text-mod-wallpaper'
     }[type] || ''
 }
 
@@ -666,7 +667,7 @@ function handleHeaderMouseDown(e: MouseEvent, headerId: string) {
                                 </span>
                                 <span @click.stop @mousedown.stop @touchstart.stop>
                                     <Input v-if="header.column.id == 'name' || header.column.id == 'author'" class="min-w-0 w-full" placeholder="" />
-                                    <Select v-if="header.column.id == 'modType'" multiple class="w-full min-w-0" placeholder="" :options="[...['Cutscene', 'Standing', 'Scene', 'Dating', 'NPC', 'Minigame'].map((modType) => ({
+                                    <Select v-if="header.column.id == 'modType'" multiple class="w-full min-w-0" placeholder="" :options="[...['Cutscene', 'Standing', 'Scene', 'Dating', 'NPC', 'Minigame', 'Wallpaper'].map((modType) => ({
                                         value: modType,
                                         label: modType
                                     }))]" />

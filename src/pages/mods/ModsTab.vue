@@ -82,7 +82,7 @@ const debouncedSync = useDebounceFn(async () => {
 
 let filters = reactive({
   searchQuery: '',
-  modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame")[],
+  modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame" | "Wallpaper")[],
   onlyEnabled: false,
   onlyDisabled: false,
   onlyConflicts: false,
