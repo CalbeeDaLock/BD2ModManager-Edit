@@ -320,6 +320,7 @@
         "actions": {
             "createProfile": "创建配置文件",
             "editProfile": "编辑配置文件",
+            "editMods": "编辑模组列表",
             "deleteProfile": "删除配置文件",
             "setAsCurrent": "设为当前",
             "refreshProfiles": "刷新配置文件"

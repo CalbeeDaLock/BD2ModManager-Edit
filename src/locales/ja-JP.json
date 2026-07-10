@@ -320,6 +320,7 @@
         "actions": {
             "createProfile": "プロファイルを作成",
             "editProfile": "プロファイルを編集",
+            "editMods": "MODリストを編集",
             "deleteProfile": "プロファイルを削除",
             "setAsCurrent": "現在のプロファイルに設定",
             "refreshProfiles": "プロフィールを更新"
@@ -332,6 +333,14 @@
             "profileUpdated": {
                 "title": "プロファイルを更新しました",
                 "description": "プロファイル「{profileName}」が正常に更新されました。"
+            },
+            "modsUpdated": {
+                "title": "MODリスト更新済み",
+                "description": "「{profileName}」の有効なMODが保存されました。"
+            },
+            "modsUpdateFailed": {
+                "title": "MODリストの更新に失敗",
+                "description": "「{profileName}」のMODの保存中にエラーが発生しました。"
             },
             "profileDeleted": {
                 "title": "プロファイルを削除しました",

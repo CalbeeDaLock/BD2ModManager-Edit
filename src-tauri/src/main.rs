@@ -280,6 +280,7 @@ pub fn main() {
             mods::discover_mods,
             mods::get_mods,
             mods::enable_mods,
+            mods::enable_mods_in_profile,
             mods::disable_mods,
             mods::delete_mods,
             mods::rename_mod,
@@ -290,6 +291,7 @@ pub fn main() {
             mods::unsync_mods,
             mods::is_sync_needed,
             mods::preview_mod,
+            mods::set_profile_enabled_mods,
             // profiles
             profiles::get_profiles,
             profiles::switch_profile,

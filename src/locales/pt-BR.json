@@ -320,6 +320,7 @@
         "actions": {
             "createProfile": "Criar Perfil",
             "editProfile": "Editar Perfil",
+            "editMods": "Editar Lista de Mods",
             "deleteProfile": "Excluir Perfil",
             "setAsCurrent": "Definir como Atual",
             "refreshProfiles": "Atualizar Perfis"

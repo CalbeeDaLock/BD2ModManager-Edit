@@ -320,6 +320,7 @@
         "actions": {
             "createProfile": "建立設定檔",
             "editProfile": "編輯設定檔",
+            "editMods": "編輯模組列表",
             "deleteProfile": "刪除設定檔",
             "setAsCurrent": "設為目前設定檔",
             "refreshProfiles": "重新整理設定檔"
@@ -332,6 +333,14 @@
             "profileUpdated": {
                 "title": "設定檔已更新",
                 "description": "設定檔「{profileName}」已成功更新。"
+            },
+            "modsUpdated": {
+                "title": "模組列表已更新",
+                "description": "「{profileName}」的已啟用模組已儲存。"
+            },
+            "modsUpdateFailed": {
+                "title": "更新模組列表失敗",
+                "description": "儲存「{profileName}」的模組時發生錯誤。"
             },
             "profileDeleted": {
                 "title": "設定檔已刪除",

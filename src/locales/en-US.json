@@ -326,6 +326,7 @@
         "actions": {
             "createProfile": "Create Profile",
             "editProfile": "Edit Profile",
+            "editMods": "Edit Mods List",
             "deleteProfile": "Delete Profile",
             "setAsCurrent": "Set as Current",
             "refreshProfiles": "Refresh Profiles"
@@ -346,6 +347,14 @@
             "profileUpdateFailed": {
                 "title": "Failed to Update Profile",
                 "description": "An error occurred while updating profile \"{profileName}\"."
+            },
+            "modsUpdated": {
+                "title": "Mods List Updated",
+                "description": "Enabled mods for \"{profileName}\" have been saved."
+            },
+            "modsUpdateFailed": {
+                "title": "Failed to Update Mods List",
+                "description": "An error occurred while saving mods for \"{profileName}\"."
             },
             "profileDeleted": {
                 "title": "Profile Deleted",

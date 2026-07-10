@@ -320,6 +320,7 @@
         "actions": {
             "createProfile": "프로필 생성",
             "editProfile": "프로필 편집",
+            "editMods": "모드 목록 편집",
             "deleteProfile": "프로필 삭제",
             "setAsCurrent": "현재 프로필로 설정",
             "refreshProfiles": "프로필 새로고침"
