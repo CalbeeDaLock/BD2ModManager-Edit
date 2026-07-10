@@ -40,6 +40,7 @@ const userFilters = reactive({
     standing: 'any',
     dating: 'any',
     hideCollabCharacters: false,
+    onlyCollabCharacters: false,
     hideMenCharacters: false,
     hideWomenCharacters: false,
     releasePeriod: 'all',
@@ -438,6 +439,8 @@ watch(() => route.query.characterId, (newCharacterId) => {
                             :label="t('charactersTab.filters.extraFilters.onlyCharactersWithMods')" />
                         <Checkbox v-model="userFilters.onlyCharactersWithoutMods"
                             :label="t('charactersTab.filters.extraFilters.onlyCharactersWithoutMods')" />
+                        <Checkbox v-model="userFilters.onlyCollabCharacters"
+                            :label="t('charactersTab.filters.extraFilters.onlyCollabCharacters')" />
                     </div>
                 </div>
 
