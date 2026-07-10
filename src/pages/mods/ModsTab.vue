@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw } from "lucide-vue-next";
 
-import { computed, defineComponent, h, onActivated, onDeactivated, onMounted, reactive, ref, useTemplateRef, watch } from "vue";
+import { computed, defineComponent, h, onActivated, onDeactivated, onMounted, ref, useTemplateRef, watch } from "vue";
 import { useDebounceFn, useLocalStorage, watchDebounced } from "@vueuse/core";
 import { useNotificationStore } from '../../stores/notification';;
 import { useI18n } from "vue-i18n";
@@ -80,14 +80,19 @@ const debouncedSync = useDebounceFn(async () => {
   }
 }, 1500);
 
-let filters = reactive({
+// Persist the chosen filters across sessions. The free-text search is reset on
+// load so a stale query never hides mods unexpectedly.
+const filters = useLocalStorage('modsFilters', {
   searchQuery: '',
   modTypes: [] as ("Standing" | "Cutscene" | "Scene" | "NPC" | "Dating" | "Minigame")[],
   onlyEnabled: false,
   onlyDisabled: false,
   onlyConflicts: false,
   onlyErrors: false,
-});
+}, { mergeDefaults: true });
+
+// Don't restore a previous search query on startup.
+filters.value.searchQuery = '';
 const totalModsCount = computed(() => modsStore.mods.length)
 const enabledModsCount = computed(() => modsStore.mods.filter(mod => mod.enabled && !mod.errors.length).length)
 
@@ -132,17 +137,17 @@ const filteredMods = computed(() => {
       }
     }
 
-    if (filters.modTypes.length > 0) {
+    if (filters.value.modTypes.length > 0) {
       if (!mod.modType) return false
-      if (!filters.modTypes.includes(mod.modType.type)) return false
+      if (!filters.value.modTypes.includes(mod.modType.type)) return false
     }
 
-    if (filters.onlyEnabled && !mod.enabled) return false
-    if (filters.onlyDisabled && mod.enabled) return false
-    if (filters.onlyErrors && mod.errors.length === 0) return false
+    if (filters.value.onlyEnabled && !mod.enabled) return false
+    if (filters.value.onlyDisabled && mod.enabled) return false
+    if (filters.value.onlyErrors && mod.errors.length === 0) return false
     // mods with conflicts, a conflict is when the mod has at least one mod in its conflictsWith array that is also enabled
-    // if (filters.onlyConflicts && mod.conflictsWith.length === 0) return false
-    if (filters.onlyConflicts && mod.conflictingMods.length === 0) return false
+    // if (filters.value.onlyConflicts && mod.conflictsWith.length === 0) return false
+    if (filters.value.onlyConflicts && mod.conflictingMods.length === 0) return false
 
     return true
   })
@@ -538,6 +543,8 @@ async function setupEventListeners() {
 }
 
 onMounted(async () => {
+  // Don't restore a stale search query — only filter toggles/types persist.
+  filters.value.searchQuery = ''
   Promise.all([
     updateBDXVersion()
   ])
@@ -558,7 +565,7 @@ onDeactivated(() => {
 
 
 watchDebounced(
-  () => filters.searchQuery,
+  () => filters.value.searchQuery,
   (newValue) => {
     debouncedSearchQuery.value = newValue;
   },
@@ -673,10 +680,10 @@ function handleRenameMod(mod: BD2Mod) {
 }
 
 function handleShowModConflicts(mod: BD2Mod) {
-  // filters.searchQuery = `"${mod.name}", "${mod.conflictsWith.join(', ')}"`;
+  // filters.value.searchQuery = `"${mod.name}", "${mod.conflictsWith.join(', ')}"`;
   // const names = [mod.name, ...mod.conflictsWith]
-  // filters.searchQuery = names.map(n => `"${n}"`).join(', ')
-  filters.searchQuery = `conflictsWith:"${mod.name}"`;
+  // filters.value.searchQuery = names.map(n => `"${n}"`).join(', ')
+  filters.value.searchQuery = `conflictsWith:"${mod.name}"`;
   // searhc by id?
   // show modal?
 }
