@@ -115,7 +115,8 @@
             "openGameFolder": "Open Game Folder",
             "openGameModsFolder": "Open Game Mods Folder",
             "syncMods": "Sync Mods",
-            "unsyncMods": "Unsync Mods"
+            "unsyncMods": "Unsync Mods",
+            "recognizeMods": "Recognize Active Mods"
         },
         "browndustx": {
             "status": {
@@ -225,6 +226,72 @@
             "modNotDirectory": "Mod path for '{modName}' is not a directory.",
             "stagingDirectoryNotSet": "Staging directory is not set.",
             "stagingDirectoryNotFound": "Staging directory not found at '{stagingDir}'. Please check your settings."
+        },
+        "recognizeMods": {
+            "title": "Recognize Active Mods (Experimental)",
+            "description": "Scan the active game mods folder, match mods to their staging sources by content, then enable them in this profile. Mods with no staging source can be imported.",
+            "scanning": "Scanning active mods...",
+            "scanningCount": "Scanning active mods... ({scanned}/{total})",
+            "scanPerfNote": "Scan time may vary depending on computer performance.",
+            "summary": "{matched} matched, {orphans} to import",
+            "matchedHeader": "Matched Mods",
+            "orphansHeader": "Unmatched Mods",
+            "newTag": "import",
+            "importedTag": "imported",
+            "searchPlaceholder": "Search recognized mods...",
+            "noResults": "No mods match your search.",
+            "importOrphans": {
+                "title": "Import Unmatched Mods?",
+                "message": "You can import {count} unmatched mod(s) into your staging library.\nNote: all of them will be copied into a single destination folder you choose next. Choose Include to pick that folder, or Exclude to skip importing.",
+                "chooseDestinationTitle": "Choose one destination folder for all imported mods",
+                "actions": {
+                    "include": "Include Import",
+                    "exclude": "Exclude Import"
+                }
+            },
+            "chooseProfile": {
+                "title": "Import Into Which Profile?",
+                "description": "The imported mods will be enabled in the profile you choose here.",
+                "confirm": "Import"
+            },
+            "empty": {
+                "title": "Nothing to Recognize",
+                "description": "No active mods were found, or they are already in your staging directory."
+            },
+            "actions": {
+                "rescan": "Rescan",
+                "apply": "Apply"
+            },
+            "deleteOriginals": {
+                "title": "Remove Original Copies?",
+                "message": "The recognized mods now live in your staging folder and are synced by the manager. You can remove the loose original copies left in the active mods folder.",
+                "actions": {
+                    "keep": "Keep Originals",
+                    "review": "Choose What to Remove",
+                    "delete": "Remove Selected"
+                },
+                "confirmTitle": "Delete original mod folders?",
+                "confirmMessage": "This permanently deletes {count} original mod folder(s) from the active mods directory. This cannot be undone."
+            },
+            "notifications": {
+                "scanFailed": {
+                    "title": "Scan Failed"
+                },
+                "importFailed": {
+                    "title": "Import Failed"
+                },
+                "applySuccess": {
+                    "title": "Mods Recognized",
+                    "message": "{mapped} enabled, {imported} imported."
+                },
+                "deleteFailed": {
+                    "title": "Delete Failed"
+                },
+                "deleteSuccess": {
+                    "title": "Originals Removed",
+                    "message": "Removed {count} original mod folder(s)."
+                }
+            }
         }
     },
     "charactersTab": {
@@ -566,6 +633,11 @@
                     "modsDirectory": {
                         "label": "Staging Mods Directory",
                         "placeholder": "Select a directory to store your mods before syncing"
+                    },
+                    "gameModsDirectory": {
+                        "label": "Active Mods Directory",
+                        "placeholder": "(Optional) Neowiz\\Browndust2\\Browndust2_10000001\\BepInEx\\plugins\\BrownDustX\\mods",
+                        "description": "The game's live mods folder. Leave empty to derive it from the Game Directory."
                     }
                 },
                 "modManagement": {

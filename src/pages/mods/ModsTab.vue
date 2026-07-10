@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw } from "lucide-vue-next";
+import { Folder, FolderMinus, FolderPlus, FolderSync, RefreshCcw, FolderInput } from "lucide-vue-next";
 
 import { computed, defineComponent, h, onActivated, onDeactivated, onMounted, reactive, ref, useTemplateRef, watch } from "vue";
 import { useDebounceFn, useLocalStorage, watchDebounced } from "@vueuse/core";
@@ -19,6 +19,7 @@ import { useHeader } from "../../composables/useHeader";
 
 import UpdateAuthorModal from "./modals/UpdateAuthorModal.vue";
 import RenameModModal from "./modals/RenameModModal.vue";
+import RecognizeModsModal from "./modals/RecognizeModsModal.vue";
 import ModsHeader from "./ModsHeader.vue";
 import Modlist from "./Modlist.vue";
 import Button from "../../components/common/Button.vue";
@@ -33,6 +34,7 @@ let unlistenFns: Array<() => void> = []
 
 const updateAuthorModal = useTemplateRef("updateAuthorModal")
 const renameModModal = useTemplateRef("renameModModal")
+const recognizeModsModal = useTemplateRef("recognizeModsModal")
 
 const loggingStore = useLoggingStore()
 
@@ -647,6 +649,11 @@ useHeader({
   ),
   buttons: [
     {
+      icon: FolderInput,
+      label: t('modsTab.actions.recognizeMods'),
+      action: () => recognizeModsModal.value?.open()
+    },
+    {
       icon: RefreshCcw,
       label: t('common.actions.refreshMods'),
       action: async () => {
@@ -705,6 +712,7 @@ async function openGameModsFolder() {
   <div class="flex flex-col h-full gap-0 select-none p-4 py-0 pb-2">
     <UpdateAuthorModal ref="updateAuthorModal" />
     <RenameModModal ref="renameModModal" />
+    <RecognizeModsModal ref="recognizeModsModal" />
 
     <div class="shrink-0 mb-2">
       <ModsHeader v-model:filters="filters" />

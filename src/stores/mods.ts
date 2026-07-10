@@ -28,6 +28,25 @@ export interface BD2ModExtended extends BD2Mod {
     character?: Character
     conflictingMods: readonly BD2Mod[]
 }
+
+// A staging mod matched to an active game mod by content fingerprint.
+export interface MatchedMod {
+    activePath: string
+    activeName: string
+    stagingName: string
+    stagingPath: string
+}
+
+// An active game mod with no matching source in the staging directory.
+export interface OrphanMod {
+    activePath: string
+    activeName: string
+}
+
+export interface ActiveScanResult {
+    matched: MatchedMod[]
+    orphans: OrphanMod[]
+}
 export const useModsStore = defineStore('mods', () => {
     const charactersStore = useCharactersStore()
     const loggingStore = useLoggingStore()
@@ -145,6 +164,18 @@ export const useModsStore = defineStore('mods', () => {
         );
     })
 
+
+    async function scanActiveMods(): Promise<ActiveScanResult> {
+        return invoke("scan_active_mods")
+    }
+
+    async function importOrphanMod(sourcePath: string, destinationPath: string): Promise<string> {
+        return invoke("import_orphan_mod", { sourcePath, destinationPath })
+    }
+
+    async function deleteActiveMods(paths: string[]) {
+        return invoke("delete_active_mods", { paths })
+    }
     return {
         mods: readonly(extendedMods),
         discoverMods,
@@ -158,6 +189,10 @@ export const useModsStore = defineStore('mods', () => {
         setModAuthor,
         isSyncNeeded,
         deleteMods,
-        renameMod
+        renameMod,
+        enableModsInProfile,
+        scanActiveMods,
+        importOrphanMod,
+        deleteActiveMods
     }
 })

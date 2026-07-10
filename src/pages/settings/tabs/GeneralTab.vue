@@ -162,6 +162,25 @@ async function handleStagingModsBrowse() {
 }
 
 
+async function handleGameModsDirectoryBrowse() {
+    const folder = await open({
+        multiple: false,
+        directory: true,
+    })
+
+    if (folder && settingsStore) {
+        await settingsStore.saveSettings({ gameModsDirectory: folder })
+        logInfo(`Game mods directory changed to ${folder}`)
+        notificationStore.add({
+            severity: 'success',
+            title: 'Game Mods Directory Updated',
+            message: `Game mods directory has been updated to ${folder}.`,
+            duration: 3000
+        })
+    }
+}
+
+
 async function handleGameDirectoryBrowse() {
     const folder = await open({
         multiple: false,
@@ -238,6 +257,21 @@ async function handleGameDirectoryBrowse() {
                                 @click="handleGameDirectoryBrowse" class="whitespace-nowrap min-w-32" />
                             <Button class="whitespace-nowrap" :icon="SquareArrowOutUpRight"
                                 @click="handleOpenFolder(settings.gameDirectory)" :disabled="!settings.gameDirectory" />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 items-center gap-4">
+                        <label class="text-sm font-medium">
+                            {{ $t('settingsTab.general.sections.directories.gameModsDirectory.label') }}
+                        </label>
+                        <div class="flex col-span-2 gap-2 items-center">
+                            <Input class="w-full min-w-32" :model-value="settings.gameModsDirectory ?? ''"
+                                :placeholder="$t('settingsTab.general.sections.directories.gameModsDirectory.placeholder')"
+                                readonly />
+                            <Button :label="$t('common.actions.browse')" :icon="Folder"
+                                @click="handleGameModsDirectoryBrowse" class="min-w-32" />
+                            <Button @click="handleOpenFolder(settings.gameModsDirectory)" :icon="SquareArrowOutUpRight"
+                                :disabled="!settings.gameModsDirectory" />
                         </div>
                     </div>
 

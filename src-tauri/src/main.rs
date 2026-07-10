@@ -290,6 +290,9 @@ pub fn main() {
             mods::unsync_mods,
             mods::is_sync_needed,
             mods::preview_mod,
+            mods::scan_active_mods,
+            mods::import_orphan_mod,
+            mods::delete_active_mods,
             // profiles
             profiles::get_profiles,
             profiles::switch_profile,
