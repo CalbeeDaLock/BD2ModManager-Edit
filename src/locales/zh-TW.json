@@ -159,8 +159,9 @@
                 "deleteMod": "刪除模組",
                 "deleteSelectedMods": "刪除所選模組",
                 "openModFolder": "開啟模組資料夾",
-                "previewMod": "預覽模組"
-            }
+                "previewMod": "預覽模組",
+            "doubleClickToPreviewTip": "提示：雙擊列即可預覽模組。"
+        }
         },
         "confirmations": {
             "syncMods": {

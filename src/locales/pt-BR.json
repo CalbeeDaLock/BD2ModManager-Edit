@@ -159,8 +159,9 @@
                 "deleteMod": "Excluir Mod",
                 "deleteSelectedMods": "Excluir Mods Selecionados",
                 "openModFolder": "Abrir Pasta do Mod",
-                "previewMod": "Visualizar Mod"
-            }
+                "previewMod": "Visualizar Mod",
+            "doubleClickToPreviewTip": "Dica: dê um duplo clique em uma linha para visualizar um mod."
+        }
         },
         "confirmations": {
             "syncMods": {

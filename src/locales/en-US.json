@@ -165,8 +165,9 @@
                 "deleteMod": "Delete Mod",
                 "deleteSelectedMods": "Delete Selected Mods",
                 "openModFolder": "Open Mod Folder",
-                "previewMod": "Preview Mod"
-            }
+                "previewMod": "Preview Mod",
+            "doubleClickToPreviewTip": "Tip: double-click a row to preview a mod."
+        }
         },
         "confirmations": {
             "syncMods": {
