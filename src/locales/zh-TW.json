@@ -556,6 +556,13 @@
                         "description": "為每種模組類型套用不同顏色（立繪、過場動畫、約會等）。"
                     }
                 }
+            },
+            "datingVisibility": {
+                "title": "角色頁面",
+                "showDating": {
+                    "label": "在角色中顯示約會",
+                    "description": "在角色頁面顯示約會模組狀態與篩選器。"
+                }
             }
         },
         "updates": {

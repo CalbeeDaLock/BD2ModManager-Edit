@@ -6,10 +6,13 @@ import { Check, X } from 'lucide-vue-next'
 import { computed } from 'vue'
 import Image from '../../components/common/Image.vue'
 import { formatCharName, useLang } from '../../utils/formatCharName.ts'
+import { usePreferencesStore } from '../../stores/preferences'
 
 const props = defineProps<{
     costume: CostumeWithMods
 }>()
+
+const preferencesStore = usePreferencesStore()
 
 const imageUrl = computed(() => {
     const ids = Array.isArray(props.costume.id)
@@ -81,7 +84,7 @@ const charName = computed(() => {
                     </div>
                 </div>
 
-                <div class="text-center p-1" v-if="costume.dating_id">
+                <div class="text-center p-1" v-if="costume.dating_id && preferencesStore.showDatingInCharacters">
                     <div class="mb-1 flex items-center font-bold gap-1">
                         {{ $t('charactersTab.modTypes.dating') }}
                     </div>

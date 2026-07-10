@@ -556,6 +556,13 @@
                         "description": "모드 유형별로 색상을 적용합니다 (스탠딩, 컷씬, 데이트 등)."
                     }
                 }
+            },
+            "datingVisibility": {
+                "title": "캐릭터 페이지",
+                "showDating": {
+                    "label": "캐릭터에 데이트 표시",
+                    "description": "캐릭터 페이지에 데이트 모드 상태와 필터를 표시합니다."
+                }
             }
         },
         "updates": {

@@ -21,12 +21,14 @@ import Select from '../../components/common/Select.vue';
 import Checkbox from '../../components/common/Checkbox.vue';
 import { useModInstall } from '../../composables/useModInstall';
 import Popover from '../../components/common/Popover.vue';
+import { usePreferencesStore } from '../../stores/preferences';
 
 const { t } = useI18n()
 const route = useRoute()
 
 const charactersStore = useCharactersStore()
 const modsStore = useModsStore()
+const preferencesStore = usePreferencesStore()
 
 const totalModsCount = computed(() => modsStore.mods.length)
 const enabledModsCount = computed(() => modsStore.mods.filter(mod => mod.enabled && !mod.errors.length).length)
@@ -183,10 +185,11 @@ const filteredCharacters = computed(() => {
         if (userFilters.standing === 'enabled' && !standingEnabled) return false;
         if (userFilters.standing === 'disabled' && standingEnabled) return false;
 
-        // if filtering by dating, also exclude characters that don't have dating at all. we can check dating_id
-        if (userFilters.dating !== 'any' && !char.dating_id) return false;
-        if (userFilters.dating === 'enabled' && !datingEnabled) return false;
-        if (userFilters.dating === 'disabled' && datingEnabled) return false;
+        if (preferencesStore.showDatingInCharacters) {
+            if (userFilters.dating !== 'any' && !char.dating_id) return false;
+            if (userFilters.dating === 'enabled' && !datingEnabled) return false;
+            if (userFilters.dating === 'disabled' && datingEnabled) return false;
+        }
 
         if (userFilters.hideMenCharacters && char?.gender === 'male') return false;
         if (userFilters.hideWomenCharacters && char?.gender === 'female') return false;
@@ -418,7 +421,7 @@ watch(() => route.query.characterId, (newCharacterId) => {
                                 t('charactersTab.filters.modStatus.hasStanding') }}</label>
                             <Select id="standing" v-model="userFilters.standing" :options="modStatusOptions" />
                         </div>
-                        <div class="flex flex-col gap-1">
+                        <div v-if="preferencesStore.showDatingInCharacters" class="flex flex-col gap-1">
                             <label for="dating" class="text-xs font-medium text-text-secondary">{{
                                 t('charactersTab.filters.modStatus.hasDating') }}</label>
                             <Select id="dating" v-model="userFilters.dating" :options="modStatusOptions" />

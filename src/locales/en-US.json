@@ -635,6 +635,13 @@
                         "description": "Apply a color per mod type (standing, cutscene, dating, etc.)."
                     }
                 }
+            },
+            "datingVisibility": {
+                "title": "Characters Page",
+                "showDating": {
+                    "label": "Show Dating in Characters",
+                    "description": "Show the Dating mod status and filter in the Characters page."
+                }
             }
         },
         "updates": {

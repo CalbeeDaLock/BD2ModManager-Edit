@@ -556,6 +556,13 @@
                         "description": "MODタイプごとに色を適用します（立ち絵、カットシーン、デートなど）。"
                     }
                 }
+            },
+            "datingVisibility": {
+                "title": "キャラクターページ",
+                "showDating": {
+                    "label": "キャラクターにデートを表示",
+                    "description": "キャラクターページにデートMODの状態とフィルターを表示します。"
+                }
             }
         },
         "updates": {

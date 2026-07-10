@@ -556,6 +556,13 @@
                         "description": "为每种模组类型（立绘、过场动画、约会等）应用对应颜色。"
                     }
                 }
+            },
+            "datingVisibility": {
+                "title": "角色页面",
+                "showDating": {
+                    "label": "在角色中显示约会",
+                    "description": "在角色页面显示约会模组状态和筛选器。"
+                }
             }
         },
         "updates": {

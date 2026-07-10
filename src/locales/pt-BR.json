@@ -556,6 +556,13 @@
                         "description": "Aplicar uma cor por tipo de mod (standing, cutscene, date, etc.)."
                     }
                 }
+            },
+            "datingVisibility": {
+                "title": "Página de Personagens",
+                "showDating": {
+                    "label": "Mostrar Date em Personagens",
+                    "description": "Mostrar o status e o filtro de mods de date na página de Personagens."
+                }
             }
         },
         "updates": {
