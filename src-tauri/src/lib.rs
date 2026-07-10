@@ -78,29 +78,42 @@ impl BD2ModManager {
 
     // mods Methods
     pub fn enable_mods(&mut self, app_handle: &AppHandle, mod_names: Vec<String>) {
+        // Single-select: enabling a mod auto-disables any conflicting mod
+        // (same type+id), keeping each character slot to at most one enabled mod.
+        let mut mods_to_disable: Vec<String> = Vec::new();
         for mod_name in mod_names.iter() {
             if let Some(bd2mod) = self.cached_mods.get_mut(mod_name) {
                 bd2mod.enabled = true;
                 info!("Enabled mod: {}", bd2mod.name);
+                for conflict_name in bd2mod.conflicts_with.clone() {
+                    if !mod_names.contains(&conflict_name) && !mods_to_disable.contains(&conflict_name) {
+                        mods_to_disable.push(conflict_name);
+                    }
+                }
             } else {
                 warn!("Mod not found: {}", mod_name);
             }
         }
-
+        for mod_name in mods_to_disable.iter() {
+            if let Some(bd2mod) = self.cached_mods.get_mut(mod_name) {
+                bd2mod.enabled = false;
+                info!("Disabled conflicting mod: {}", bd2mod.name);
+            }
+        }
         if let Some(active_profile) = self.profile_manager.get_active_profile() {
             for mod_name in mod_names.iter() {
                 active_profile.set_mod_state(mod_name, true);
             }
+            for mod_name in mods_to_disable.iter() {
+                active_profile.set_mod_state(mod_name, false);
+            }
         }
-
         if let Err(e) = self.profile_manager.save_active_profile() {
             warn!("Failed to save profiles after enabling mods: {:?}", e);
         }
-
         let all_mods: Vec<&BD2Mod> = self.cached_mods.values().collect();
         app_handle.emit("mods-changed", all_mods).unwrap();
     }
-
     pub fn disable_mods(&mut self, app_handle: &AppHandle, mod_names: Vec<String>) {
         for mod_name in mod_names.iter() {
             if let Some(bd2mod) = self.cached_mods.get_mut(mod_name) {
