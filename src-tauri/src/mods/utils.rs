@@ -26,6 +26,11 @@ pub fn get_mod_type(folder_path: &Path) -> Option<BD2ModType> {
             ("Dating", "illust_dating"),
             ("Scene", "illust_special"),
             ("Scene", "specialillust"),
+            // illust_talk assets belong to NPCs; the full asset id (prefix
+            // included, e.g. "illust_talk7", "illust_talk9016") is kept as the
+            // NPC id below. This must precede the Scene "illust_talk" line so
+            // NPC wins.
+            ("NPC", "illust_talk"),
             ("Scene", "illust_talk"),
             ("Scene", "storypack2_2"),
             ("NPC", "npc"),
@@ -51,7 +56,12 @@ pub fn get_mod_type(folder_path: &Path) -> Option<BD2ModType> {
                                     "Cutscene" => Some(BD2ModType::Cutscene { id: mod_id }),
                                     "Dating" => Some(BD2ModType::Dating { id: mod_id }),
                                     "Scene" => Some(BD2ModType::Scene { id: mod_id }),
-                                    "NPC" => Some(BD2ModType::NPC { id: mod_id }),
+                                    // Keep the prefix on NPC ids so the whole
+                                    // asset id shows in the UI (e.g. "npc000001",
+                                    // "illust_talk7") instead of just the number.
+                                    "NPC" => Some(BD2ModType::NPC {
+                                        id: format!("{}{}", prefix, mod_id),
+                                    }),
                                     _ => None,
                                 };
                             }

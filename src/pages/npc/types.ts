@@ -10,7 +10,7 @@ export interface NpcEntry {
     id: string;
     /** Display name resolved through the current language / forceEnglishNames preference. */
     name: string;
-    /** Full image path from npc.json (e.g. "/npc/illust_npc000001.png"). Undefined
+    /** Full image path from npc.json (e.g. "/npc/standing/000001.png"). Undefined
      *  for NPCs discovered only from mods (no static definition). */
     image?: string;
     /** Multilang name map from npc.json. Undefined for mod-only NPCs. */

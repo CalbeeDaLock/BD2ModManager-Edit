@@ -1,9 +1,9 @@
 {
-    "version": "0.0.3",
+    "version": "0.0.8",
     "npc": [
         {
-            "id": "000001",
-            "character_image": "/npc/standing/illust_npc000001.png",
+            "id": "npc000001",
+            "character_image": "/npc/standing/000001.png",
             "character_name": {
                 "en": "Shop Girl",
                 "cn": "Shop Girl",
@@ -12,13 +12,13 @@
                 "kr": "Shop Girl"
             },
             "assets": {
-                "head_image": "/npc/standing/illust_npc000001.png",
-                "character_image": "/npc/standing/illust_npc000001.png"
+                "head_image": "/npc/standing/000001.png",
+                "character_image": "/npc/standing/000001.png"
             }
         },
         {
-            "id": "000005",
-            "character_image": "/npc/standing/illust_0000050101_1131.png",
+            "id": "npc000005",
+            "character_image": "/npc/standing/000005.png",
             "character_name": {
                 "en": "Eleanor",
                 "cn": "Eleanor",
@@ -27,19 +27,19 @@
                 "kr": "Eleanor"
             },
             "assets": {
-                "head_image": "/npc/standing/illust_0000050101_1131.png",
-                "character_image": "/npc/standing/illust_0000050101_1131.png"
+                "head_image": "/npc/standing/000005.png",
+                "character_image": "/npc/standing/000005.png"
             }
         },
         {
-            "id": "0033",
+            "id": "npc0033",
             "character_image": "/characters/standing/003301.png",
             "character_name": {
-                "en": "Nebris - Labyrinth Gatekeeper NPC",
-                "cn": "Nebris - Labyrinth Gatekeeper NPC",
-                "jp": "Nebris - Labyrinth Gatekeeper NPC",
-                "tw": "Nebris - Labyrinth Gatekeeper NPC",
-                "kr": "Nebris - Labyrinth Gatekeeper NPC"
+                "en": "Nebris",
+                "cn": "内布利斯",
+                "jp": "ネブリス",
+                "tw": "內布利斯",
+                "kr": "네브리스"
             },
             "assets": {
                 "head_image": "/characters/standing/003301.png",
@@ -47,14 +47,14 @@
             }
         },
         {
-            "id": "300302",
+            "id": "npc300302",
             "character_image": "/characters/standing/003101.png",
             "character_name": {
-                "en": "Elpis NPC",
-                "cn": "Elpis NPC",
-                "jp": "Elpis NPC",
-                "tw": "Elpis NPC",
-                "kr": "Elpis NPC"
+                "en": "Elpis",
+                "cn": "厄尔比斯",
+                "jp": "エルピス",
+                "tw": "厄爾比斯",
+                "kr": "엘피스"
             },
             "assets": {
                 "head_image": "/characters/standing/003101.png",
@@ -62,8 +62,8 @@
             }
         },
         {
-            "id": "400034",
-            "character_image": "/npc/standing/illust-greta-npc.png",
+            "id": "npc400034",
+            "character_image": "/npc/standing/400034.png",
             "character_name": {
                 "en": "Greta",
                 "cn": "Greta",
@@ -72,8 +72,38 @@
                 "kr": "Greta"
             },
             "assets": {
-                "head_image": "/npc/standing/illust-greta-npc.png",
-                "character_image": "/npc/standing/illust-greta-npc.png"
+                "head_image": "/npc/standing/400034.png",
+                "character_image": "/npc/standing/400034.png"
+            }
+        },
+        {
+            "id": "illust_talk7",
+            "character_image": "/npc/standing/illust_talk7.png",
+            "character_name": {
+                "en": "Eclipse",
+                "cn": "伊柯利普斯",
+                "jp": "エクリプス",
+                "tw": "伊柯利普斯",
+                "kr": "이클립스"
+            },
+            "assets": {
+                "head_image": "/npc/standing/illust_talk7.png",
+                "character_image": "/npc/standing/illust_talk7.png"
+            }
+        },
+        {
+            "id": "illust_talk9016",
+            "character_image": "/npc/standing/illust_talk9016.png",
+            "character_name": {
+                "en": "NPC illust_talk9016",
+                "cn": "NPC illust_talk9016",
+                "jp": "NPC illust_talk9016",
+                "tw": "NPC illust_talk9016",
+                "kr": "NPC illust_talk9016"
+            },
+            "assets": {
+                "head_image": "/npc/standing/illust_talk9016.png",
+                "character_image": "/npc/standing/illust_talk9016.png"
             }
         }
     ]

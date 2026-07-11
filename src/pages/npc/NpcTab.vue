@@ -45,13 +45,13 @@ const sortOptions = computed(() => [
 // npc300501 is not an NPC — she is the character "Loen" (003201) whose
 // standing id happens to start with "npc". Exclude her from the NPC list;
 // she is still reachable from the Characters page via her npc_id.
-const EXCLUDED_NPC_IDS = new Set(['300501']);
+const EXCLUDED_NPC_IDS = new Set(['npc300501']);
 
 // Fallback display-name overrides for NPCs discovered only from mods (i.e. not
-// present in npc.json). Keyed by the numeric NPC id (no "npc" prefix).
+// present in npc.json). Keyed by the full NPC id (including the "npc" prefix).
 const NPC_NAME_OVERRIDES: Record<string, string> = {
-    '000001': 'Shop Girl',
-    '000005': 'Eleanor',
+    'npc000001': 'Shop Girl',
+    'npc000005': 'Eleanor',
 };
 
 // Resolve an NPC's display name honoring the language / forceEnglishNames
