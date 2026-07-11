@@ -192,6 +192,8 @@ const filteredCharacters = computed(() => {
         if (userFilters.hideMenCharacters && char?.gender === 'male') return false;
         if (userFilters.hideWomenCharacters && char?.gender === 'female') return false;
 
+        if (userFilters.onlyCollabCharacters && !char.is_collab) return false;
+
         if (userFilters.onlyCharactersWithMods && getInstalledModsCount(char.id) === 0) return false;
         if (userFilters.onlyCharactersWithoutMods && getInstalledModsCount(char.id) > 0) return false;
 
