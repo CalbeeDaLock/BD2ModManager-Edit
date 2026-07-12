@@ -16,6 +16,7 @@ import { useSettingsStore } from "../../stores/settings";
 import { useLoggingStore } from "../../stores/logging";
 
 import { useHeader } from "../../composables/useHeader";
+import { useSymlinkElevation } from "../../composables/useSymlinkElevation";
 
 import UpdateAuthorModal from "./modals/UpdateAuthorModal.vue";
 import RenameModModal from "./modals/RenameModModal.vue";
@@ -43,6 +44,8 @@ const { t } = useI18n();
 const modsStore = useModsStore();
 const settingsStore = useSettingsStore();
 
+const { needsElevation, ensureSymlinkElevation } = useSymlinkElevation();
+
 const isRefreshing = ref(false);
 const isSyncing = ref(false);
 const isUnsyncing = ref(false);
@@ -55,25 +58,6 @@ const bdxVersion = ref<{
 const debouncedSearchQuery = ref('');
 const skipSyncConfirmation = useLocalStorage('skipSyncModsConfirmation', false)
 const skipUnsyncConfirmation = useLocalStorage('skipUnsyncModsConfirmation', false)
-
-// When the sync method is "symlink", Windows requires the app to run elevated.
-// Elevation can't be granted in place, so we relaunch the app through a UAC
-// prompt. Returns true when we're clear to sync, and false when a relaunch was
-// requested or the user declined (abort the sync attempt in that case).
-async function ensureSymlinkElevation(): Promise<boolean> {
-  if (settingsStore.settings.syncMethod !== 'symlink') return true;
-
-  const elevated = await invoke<boolean>("is_elevated").catch(() => false);
-  if (elevated) return true;
-
-  try {
-    await invoke("relaunch_as_admin");
-  } catch (error) {
-    loggingStore.logError("User declined elevation for symlink sync:", error);
-    throw "SymlinkAdminRequired";
-  }
-  return false;
-}
 
 const debouncedSync = useDebounceFn(async () => {
   if (!settingsStore.settings.autoSyncMods) return;
@@ -313,10 +297,19 @@ async function handleSyncMods() {
       }
     }
 
+    // When symlink is selected and the app isn't elevated yet, a UAC prompt
+    // will appear after this confirmation. Warn the user in the dialog.
+    const willNeedElevation = await needsElevation().catch(() => false)
+
     if (!skipSyncConfirmation.value) {
+      let message = t('modsTab.confirmations.syncMods.message')
+      if (willNeedElevation) {
+        message += '\n\n' + t('modsTab.confirmations.syncMods.symlinkElevationNote')
+      }
+
       const { confirmed, rememberChoice } = await confirm.confirm({
         title: t('modsTab.confirmations.syncMods.title'),
-        message: t('modsTab.confirmations.syncMods.message'),
+        message,
         acceptButton: {
           label: t('modsTab.confirmations.syncMods.actions.sync'),
         },

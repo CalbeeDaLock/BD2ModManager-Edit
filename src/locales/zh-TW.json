@@ -168,6 +168,7 @@
                 "titleWithConflicts": "同步存在衝突的模組",
                 "message": "此操作將覆蓋遊戲資料夾中的模組，且無法復原。",
                 "messageWithConflicts": "部分模組之間存在衝突，在解決衝突之前遊戲可能無法啟動。",
+                "symlinkElevationNote": "沒有符號連結所需的系統管理員權限。確認後將彈出 UAC 提示。",
                 "actions": {
                     "sync": "同步",
                     "syncAnyway": "仍要同步"
@@ -505,6 +506,10 @@
                         "options": {
                             "copy": "複製",
                             "symlink": "符號連結（需要系統管理員權限）"
+                        },
+                        "uacDeclined": {
+                            "title": "系統管理員權限遭拒",
+                            "message": "UAC 已被拒絕。同步方式已還原為複製。"
                         }
                     }
                 }

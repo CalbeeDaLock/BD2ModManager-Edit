@@ -14,11 +14,14 @@ import { useLoggingStore } from '../../../stores/logging';
 import { Language, useSettingsStore } from '../../../stores/settings';
 import { useNotificationStore } from '../../../stores/notification.ts';
 import { usePreferencesStore } from '../../../stores/preferences.ts';
+import { useSymlinkElevation } from '../../../composables/useSymlinkElevation.ts';
 
 const settingsStore = useSettingsStore()
 const preferencesStore = usePreferencesStore()
 
 const notificationStore = useNotificationStore()
+
+const { ensureSymlinkElevation } = useSymlinkElevation()
 
 const { t, availableLocales } = useI18n()
 
@@ -125,6 +128,27 @@ async function onSyncMethodChanged(value: string) {
 
     await settingsStore.saveSettings({ syncMethod: value })
     logInfo(`Sync method changed to ${value}`)
+
+    // Symlink sync on Windows requires the app to run elevated. Trigger the UAC
+    // prompt immediately when the user switches to symlink. If they decline, we
+    // revert the setting back to copy and let them know.
+    if (value === 'symlink') {
+        try {
+            await ensureSymlinkElevation()
+        } catch (error) {
+            logError('User declined elevation for symlink sync method:', error)
+
+            await settingsStore.saveSettings({ syncMethod: 'copy' })
+
+            notificationStore.add({
+                severity: 'error',
+                closable: true,
+                title: t('settingsTab.general.sections.modManagement.syncMethod.uacDeclined.title'),
+                message: t('settingsTab.general.sections.modManagement.syncMethod.uacDeclined.message'),
+                duration: 5000
+            })
+        }
+    }
 }
 
 async function handleOpenFolder(path: string | undefined | null) {

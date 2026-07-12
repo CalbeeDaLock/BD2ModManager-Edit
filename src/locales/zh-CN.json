@@ -168,6 +168,7 @@
                 "titleWithConflicts": "同步存在冲突的模组",
                 "message": "此操作将覆盖游戏文件夹中的模组，且无法撤销。",
                 "messageWithConflicts": "部分模组之间存在冲突，解决冲突前游戏可能无法正常启动。",
+                "symlinkElevationNote": "当前没有创建符号链接所需的管理员权限，确认后将弹出 UAC 提示。",
                 "actions": {
                     "sync": "同步",
                     "syncAnyway": "仍然同步"
@@ -505,6 +506,10 @@
                         "options": {
                             "copy": "复制",
                             "symlink": "符号链接（需管理员权限）"
+                        },
+                        "uacDeclined": {
+                            "title": "已拒绝管理员权限",
+                            "message": "UAC 已被拒绝，同步方式已恢复为复制。"
                         }
                     }
                 }

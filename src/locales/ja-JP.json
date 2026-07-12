@@ -168,6 +168,7 @@
                 "titleWithConflicts": "競合があるMODを同期",
                 "message": "この操作はゲームフォルダ内のMODを上書きします。この操作は元に戻せません。",
                 "messageWithConflicts": "一部のMODが互いに競合しています。競合が解決されるまでゲームが起動しない場合があります。",
+                "symlinkElevationNote": "シンボリックリンクには管理者権限がありません。確認後にUACのプロンプトが表示されます。",
                 "actions": {
                     "sync": "同期",
                     "syncAnyway": "このまま同期"
@@ -505,6 +506,10 @@
                         "options": {
                             "copy": "コピー",
                             "symlink": "シンボリックリンク（管理者権限が必要）"
+                        },
+                        "uacDeclined": {
+                            "title": "管理者権限が拒否されました",
+                            "message": "UACが拒否されました。同期方式はコピーに戻されました。"
                         }
                     }
                 }

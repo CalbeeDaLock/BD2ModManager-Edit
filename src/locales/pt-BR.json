@@ -168,6 +168,7 @@
                 "titleWithConflicts": "Sincronizar Mods com Conflitos",
                 "message": "Isso irá sobrescrever os mods na pasta do jogo. Esta ação não pode ser desfeita.",
                 "messageWithConflicts": "Alguns mods possuem conflitos entre si. O jogo pode falhar ao iniciar até que os conflitos sejam resolvidos.",
+                "symlinkElevationNote": "Sem permissao de administrador para Link Simbolico. Uma solicitacao do UAC aparecera apos isto.",
                 "actions": {
                     "sync": "Sincronizar",
                     "syncAnyway": "Sincronizar Mesmo Assim"
@@ -505,6 +506,10 @@
                         "options": {
                             "copy": "Copiar",
                             "symlink": "Link Simbólico (Administrador)"
+                        },
+                        "uacDeclined": {
+                            "title": "Acesso de Administrador Negado",
+                            "message": "O UAC foi negado. O metodo de sincronizacao voltou para Copiar."
                         }
                     }
                 }

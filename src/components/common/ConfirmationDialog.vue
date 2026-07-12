@@ -52,7 +52,7 @@ const reject = () => {
                 </span>
               </div>
 
-              <p class="py-4 text-base text-text-primary">{{ state.message }}</p>
+              <p class="py-4 text-base text-text-primary whitespace-pre-line">{{ state.message }}</p>
 
               <div class="flex justify-between items-center">
                 <Checkbox v-if="state.showRememberChoice" v-model="rememberChoice" input-id="remember-choice"
