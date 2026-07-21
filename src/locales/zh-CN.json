@@ -334,9 +334,6 @@
             "setAsCurrent": "设为当前",
             "refreshProfiles": "刷新配置文件"
         },
-        "tooltips": {
-            "cannotDeleteDefault": "无法删除默认配置文件"
-        },
         "notifications": {
             "profileCreated": {
                 "title": "配置文件已创建",

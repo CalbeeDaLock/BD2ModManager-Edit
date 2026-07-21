@@ -334,9 +334,6 @@
             "setAsCurrent": "Set as Current",
             "refreshProfiles": "Refresh Profiles"
         },
-        "tooltips": {
-            "cannotDeleteDefault": "Cannot delete default profile"
-        },
         "notifications": {
             "profileCreated": {
                 "title": "Profile Created",

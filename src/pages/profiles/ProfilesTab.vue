@@ -29,6 +29,13 @@ const selectedProfile = computed(() => {
   return profilesStore.getProfileById(profileSelectedId.value)
 })
 
+const sortedEnabledMods = computed(() => {
+  if (!selectedProfile.value?.enabledMods) return []
+  return [...selectedProfile.value.enabledMods].sort((a, b) => 
+    a.localeCompare(b, undefined, { sensitivity: 'base' })
+  )
+})
+
 function editSelected() {
   if (!profileSelectedId.value) return
 
@@ -272,7 +279,6 @@ useHeader({
                   @click="editModsSelected"
                 />
                 <Button
-                  v-tooltip="selectedProfile.id === 'default' ? $t('profilesTab.tooltips.cannotDeleteDefault') : ''"
                   variant="text"
                   :label="$t('profilesTab.actions.deleteProfile')"
                   :icon="Trash2"
@@ -284,12 +290,12 @@ useHeader({
 
             <div class="flex flex-col gap-1 h-full flex-1 overflow-y-auto">
               <h4 class="font-semibold text-base text-text-primary">
-                {{ $t('profilesTab.enabledMods', { count: selectedProfile.enabledMods?.length || 0 }) }}
+                {{ $t('profilesTab.enabledMods', { count: sortedEnabledMods.length }) }}
               </h4>
 
               <div class="flex flex-col gap-1 bg-surface-card rounded-md p-2 flex-1 h-full overflow-y-auto select-text">
                 <div
-                  v-for="mod in selectedProfile.enabledMods"
+                  v-for="mod in sortedEnabledMods"
                   :key="mod"
                   class="text-sm text-text-secondary hover:bg-state-hover"
                 >
@@ -297,7 +303,7 @@ useHeader({
                 </div>
 
                 <div
-                  v-if="!selectedProfile.enabledMods || selectedProfile.enabledMods.length === 0"
+                  v-if="sortedEnabledMods.length === 0"
                   class="text-sm text-text-secondary italic"
                 >
                   {{ $t('profilesTab.noModsEnabled') }}

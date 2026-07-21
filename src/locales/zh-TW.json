@@ -334,9 +334,6 @@
             "setAsCurrent": "設為目前設定檔",
             "refreshProfiles": "重新整理設定檔"
         },
-        "tooltips": {
-            "cannotDeleteDefault": "無法刪除預設設定檔"
-        },
         "notifications": {
             "profileCreated": {
                 "title": "設定檔已建立",

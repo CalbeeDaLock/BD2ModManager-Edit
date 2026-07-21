@@ -334,9 +334,6 @@
             "setAsCurrent": "現在のプロファイルに設定",
             "refreshProfiles": "プロフィールを更新"
         },
-        "tooltips": {
-            "cannotDeleteDefault": "デフォルトプロファイルは削除できません"
-        },
         "notifications": {
             "profileCreated": {
                 "title": "プロファイルを作成しました",

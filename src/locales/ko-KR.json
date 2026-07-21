@@ -334,9 +334,6 @@
             "setAsCurrent": "현재 프로필로 설정",
             "refreshProfiles": "프로필 새로고침"
         },
-        "tooltips": {
-            "cannotDeleteDefault": "기본 프로필은 삭제할 수 없습니다"
-        },
         "notifications": {
             "profileCreated": {
                 "title": "프로필 생성 완료",
