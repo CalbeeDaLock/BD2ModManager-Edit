@@ -293,11 +293,11 @@ useHeader({
                 {{ $t('profilesTab.enabledMods', { count: sortedEnabledMods.length }) }}
               </h4>
 
-              <div class="flex flex-col gap-1 bg-surface-card rounded-md p-2 flex-1 h-full overflow-y-auto select-text">
+              <div class="flex flex-col gap-1 bg-surface-card rounded-md p-2 flex-1 h-full overflow-y-auto select-text scrollbar-hide">
                 <div
                   v-for="mod in sortedEnabledMods"
                   :key="mod"
-                  class="text-sm text-text-secondary hover:bg-state-hover"
+                  class="text-sm text-text-secondary hover:bg-state-hover break-all"
                 >
                   {{ mod }}
                 </div>
