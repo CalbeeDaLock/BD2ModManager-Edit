@@ -150,11 +150,11 @@ pub fn main() {
     }
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
-            let _ = app.get_webview_window("main")
-            .expect("no main window")
-            .set_focus();
-        }))
+        // .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+        //     let _ = app.get_webview_window("main")
+        //     .expect("no main window")
+        //     .set_focus();
+        // }))
         .register_uri_scheme_protocol("bd2assets", |ctx, request| {
             // standing/065001,065002
             // standing/065001
