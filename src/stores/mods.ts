@@ -190,7 +190,6 @@ export const useModsStore = defineStore('mods', () => {
         isSyncNeeded,
         deleteMods,
         renameMod,
-        enableModsInProfile,
         scanActiveMods,
         importOrphanMod,
         deleteActiveMods
