@@ -334,6 +334,9 @@
             "setAsCurrent": "現在のプロファイルに設定",
             "refreshProfiles": "プロフィールを更新"
         },
+        "tooltips": {
+            "cannotDeleteDefault": "デフォルトプロファイルは削除できません"
+        },
         "notifications": {
             "profileCreated": {
                 "title": "プロファイルを作成しました",
@@ -405,7 +408,8 @@
                 "title": "プロファイルを編集",
                 "nameField": {
                     "label": "プロファイル名",
-                    "placeholder": "プロファイル名を入力"
+                    "placeholder": "プロファイル名を入力",
+                    "defaultWarning": "デフォルトプロファイルの名前は編集できません"
                 },
                 "descriptionField": {
                     "label": "プロファイルの説明（任意）",
@@ -415,6 +419,20 @@
                     "saveChanges": "変更を保存"
                 },
                 "description": "プロフィールの名前と説明を編集します。"
+            },
+            "editMods": {
+                "title": "MODリストを編集",
+                "description": "このプロファイルの有効なMODリストを手動で編集します。",
+                "field": {
+                    "label": "有効なMOD",
+                    "placeholder": "MOD名を入力（1行に1つ）"
+                },
+                "count": "{count} 個のMOD | {count} 個のMOD",
+                "hint": "各行には1つのMOD名を含める必要があります。重複は削除され、MODはA-Z順に並べ替えられます。",
+                "actions": {
+                    "clearAll": "すべてクリア",
+                    "save": "保存"
+                }
             }
         }
     },
@@ -657,6 +675,13 @@
                     "enableColors": {
                         "label": "MODタイプのカラー表示を有効化",
                         "description": "MODタイプごとに色を適用します（立ち絵、カットシーン、デートなど）。"
+                    }
+                },
+                "profiles": {
+                    "title": "プロファイル",
+                    "showEditModsButton": {
+                        "label": "MODリスト編集ボタンを表示",
+                        "description": "プロファイルタブにMODリスト編集ボタンを表示します。"
                     }
                 }
             }

@@ -27,7 +27,7 @@ const emit = defineEmits<{
 }>()
 
 // Parse the textarea into a clean list: trim, normalize separators, drop blanks
-// and duplicates while preserving order.
+// and duplicates while preserving order, then sort A-Z.
 const parsedMods = computed(() => {
   const seen = new Set<string>()
   const result: string[] = []
@@ -37,7 +37,8 @@ const parsedMods = computed(() => {
     seen.add(name)
     result.push(name)
   }
-  return result
+  // Sort alphabetically (case-insensitive)
+  return result.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
 })
 
 function save() {

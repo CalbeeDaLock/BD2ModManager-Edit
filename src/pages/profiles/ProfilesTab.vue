@@ -10,9 +10,11 @@ import CreateProfile from './modals/CreateProfile.vue'
 import Button from '../../components/common/Button.vue'
 import { useConfirm } from '../../plugins/ConfirmService'
 import { useNotificationStore } from '../../stores/notification.ts'
+import { usePreferencesStore } from '../../stores/preferences'
 
 const profilesStore = useProfilesStore()
 const notificationStore = useNotificationStore()
+const preferencesStore = usePreferencesStore()
 const confirm = useConfirm()
 const { t } = useI18n()
 
@@ -263,12 +265,14 @@ useHeader({
                   @click="editSelected"
                 />
                 <Button
+                  v-if="preferencesStore.showEditModsButton"
                   variant="text"
                   :label="$t('profilesTab.actions.editMods')"
                   :icon="ListChecks"
                   @click="editModsSelected"
                 />
                 <Button
+                  v-tooltip="selectedProfile.id === 'default' ? $t('profilesTab.tooltips.cannotDeleteDefault') : ''"
                   variant="text"
                   :label="$t('profilesTab.actions.deleteProfile')"
                   :icon="Trash2"
